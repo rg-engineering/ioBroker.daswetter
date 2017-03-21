@@ -1,0 +1,36 @@
+{
+  "common": {
+    "name": "DasWetter.com",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "en": "initial release",
+        "de": "erste Version"
+      }
+    },
+    "title": "DasWetter.com",
+    "desc": {
+      "en": "load weather forecast for your location",
+      "de": "lädt den Wetterbericht für ausgewählte Station"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "schedule",
+    "schedule": "*/15 * * * *",
+    "icon": "daswettercom.png",
+    "enabled": true,
+    "messagebox": true,
+    "extIcon": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/admin/daswettercom.PNG",
+    "keywords": [ "iobroker", "weather", "forecast", "DasWetter" ],
+    "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
+    "loglevel": "debug",
+    "stopBeforeUpdate": true,
+    "type": "weather",
+    "license": "GPL V3"
+  },
+  "native": {
+    "Days7Forecast": "",
+    "Days5Forecast": "",
+    "HourlyForecast": ""
+  }
+  
+}
