@@ -25,7 +25,7 @@
     "loglevel": "debug",
     "stopBeforeUpdate": true,
     "type": "weather",
-    "license": "GPL V3"
+    "license": "GPL-3.0"
   },
   "native": {
     "Days7Forecast": "",
