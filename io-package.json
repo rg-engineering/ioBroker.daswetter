@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "news": {
+      "0.1.0": {
+        "en": "first release",
+        "de": "erste freigegebene Version"
+      },
       "0.0.1": {
         "en": "initial release",
         "de": "erste Version"
