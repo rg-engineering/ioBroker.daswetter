@@ -15,6 +15,8 @@ All three models are implemented but and one should be used at least.
 
 ## Changelog
 
+#### 0.1.1
+* (René) UTF8 coding
 
 #### 0.1.0
 * (René) first release
