@@ -1,4 +1,4 @@
-# ioBroker.DasWetter.com
+ï»¿# ioBroker.DasWetter.com
 ===========================
 
 This adapter reads weather forecast data from DasWetter.com.
@@ -17,10 +17,10 @@ All three models are implemented but and one should be used at least.
 
 
 #### 0.1.0
-* (René) first release
+* (RenÃ©) first release
 
 #### 0.0.1
-* (René) initial release
+* (RenÃ©) initial release
 
 ## License
 Copyright (C) <2017>  <info@rg-engineering.eu>
