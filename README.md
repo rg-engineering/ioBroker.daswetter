@@ -4,12 +4,20 @@
 This adapter reads weather forecast data from DasWetter.com.
 
 Hint: you need an account on DasWetter.com.
-The account is for free under crtain conditions.
+The account is for free under certain conditions.
 
+There are three data models:
+* 7 days forecast and general overview
+* 5 days forecast and detailed 3 hours overview
+* hourly forecast
 
+All three models are implemented but and one should be used at least.
 
 ## Changelog
 
+
+#### 0.1.0
+* (René) first release
 
 #### 0.0.1
 * (René) initial release

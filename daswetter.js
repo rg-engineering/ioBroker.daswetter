@@ -1,17 +1,17 @@
-/*
- * DasWetter.com adapter für iobroker
+ï»¿/*
+ * DasWetter.com adapter fÃ¼r iobroker
  *
  * Created: 21.03.2017 21:31:28
  *  Author: Rene
 
-Copyright(C)[2016, 2017][René Glaß]
+Copyright(C)[2016, 2017][RenÃ© GlaÃŸ]
 
-Dieses Programm ist freie Software.Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software 
-Foundation veröffentlicht, weitergeben und/ oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder 
-späteren Version.
+Dieses Programm ist freie Software.Sie kÃ¶nnen es unter den Bedingungen der GNU General Public License, wie von der Free Software 
+Foundation verÃ¶ffentlicht, weitergeben und/ oder modifizieren, entweder gemÃ¤ÃŸ Version 3 der Lizenz oder (nach Ihrer Option) jeder 
+spÃ¤teren Version.
 
-Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE,
-    sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK.Details finden Sie in der
+Die VerÃ¶ffentlichung dieses Programms erfolgt in der Hoffnung, daÃŸ es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE,
+    sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÃœR EINEN BESTIMMTEN ZWECK.Details finden Sie in der
 GNU General Public License.
 
 Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben.Falls nicht,
@@ -327,12 +327,12 @@ function checkWeatherVariables() {
             });
             adapter.setObjectNotExists(id + 'Temperature_Min', {
                 type: 'state',
-                common: { name: 'Temperature_Min', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                common: { name: 'Temperature_Min', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                 native: { id: id + 'Temperature_Min' }
             });
             adapter.setObjectNotExists(id + 'Temperature_Max', {
                 type: 'state',
-                common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                 native: { id: id + 'Temperature_Max' }
             });
             adapter.setObjectNotExists(id + 'Wind_Max', {
@@ -408,12 +408,12 @@ function checkWeatherVariables() {
             }); 
             adapter.setObjectNotExists(id + 'Temperature_Min', {
                 type: 'state',
-                common: { name: 'Temperature_Min', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                common: { name: 'Temperature_Min', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                 native: { id: id + 'Temperature_Min' }
             });
             adapter.setObjectNotExists(id + 'Temperature_Max', {
                 type: 'state',
-                common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                 native: { id: id + 'Temperature_Max' }
             });
   
@@ -475,7 +475,7 @@ function checkWeatherVariables() {
                 });                  
                 adapter.setObjectNotExists(id1 + 'Temperature', {
                     type: 'state',
-                    common: { name: 'Temperature', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                    common: { name: 'Temperature', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                     native: { id: id1 + 'Temperature' }
                 });  
                 adapter.setObjectNotExists(id1 + 'SymbolID', {
@@ -541,7 +541,7 @@ function checkWeatherVariables() {
                 }); 
                 adapter.setObjectNotExists(id1 + 'Windchill', {
                     type: 'state',
-                    common: { name: 'Windchill', type: 'number', role: 'windchill', unit: '°C', read: true, write: false },
+                    common: { name: 'Windchill', type: 'number', role: 'windchill', unit: 'Â°C', read: true, write: false },
                     native: { id: id1 + 'Windchill' }
                 }); 
                }
@@ -589,12 +589,12 @@ function checkWeatherVariables() {
             });
             adapter.setObjectNotExists(id + 'Temperature_Min', {
                 type: 'state',
-                common: { name: 'Temperature_Min', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                common: { name: 'Temperature_Min', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                 native: { id: id + 'Temperature_Min' }
             });
             adapter.setObjectNotExists(id + 'Temperature_Max', {
                 type: 'state',
-                common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                 native: { id: id + 'Temperature_Max' }
             });
 
@@ -656,7 +656,7 @@ function checkWeatherVariables() {
                 });
                 adapter.setObjectNotExists(id1 + 'Temperature', {
                     type: 'state',
-                    common: { name: 'Temperature', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
+                    common: { name: 'Temperature', type: 'number', role: 'temperature', unit: 'Â°C', read: true, write: false },
                     native: { id: id1 + 'Temperature' }
                 });
                 adapter.setObjectNotExists(id1 + 'SymbolID', {
@@ -722,7 +722,7 @@ function checkWeatherVariables() {
                 });
                 adapter.setObjectNotExists(id1 + 'Windchill', {
                     type: 'state',
-                    common: { name: 'Windchill', type: 'number', role: 'windchill', unit: '°C', read: true, write: false },
+                    common: { name: 'Windchill', type: 'number', role: 'windchill', unit: 'Â°C', read: true, write: false },
                     native: { id: id1 + 'Windchill' }
                 });
             }

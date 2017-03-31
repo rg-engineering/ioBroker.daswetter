@@ -1,4 +1,4 @@
-{
+Ôªø{
   "common": {
     "name": "daswetter",
     "version": "0.1.0",
@@ -15,7 +15,7 @@
     "title": "DasWetter.com",
     "desc": {
       "en": "load weather forecast for your location",
-      "de": "l‰dt den Wetterbericht f¸r ausgew‰hlte Stationen"
+      "de": "l√§dt den Wetterbericht f√ºr ausgew√§hlte Stationen"
     },
     "platform": "Javascript/Node.js",
     "mode": "schedule",

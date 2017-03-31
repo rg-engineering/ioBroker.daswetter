@@ -1,9 +1,9 @@
-{
+﻿{
   "name": "iobroker.daswetter",
   "version": "0.1.0",
   "description": "ioBroker DasWetter.com Adapter",
   "author": {
-    "name": "Ren� G.",
+    "name": "René G.",
     "email": "info@rg-engineering.eu"
   },
   "contributors": [
