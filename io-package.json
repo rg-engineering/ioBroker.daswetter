@@ -1,8 +1,16 @@
-﻿{
+{
   "common": {
     "name": "daswetter",
-    "version": "0.1.1",
+    "version": "0.1.3",
     "news": {
+      "0.1.3": {
+        "en": "external png's corrected",
+        "de": "externe png's korrigiert"
+      },
+      "0.1.2": {
+        "en": "dependencies added",
+        "de": "Abhängigkeiten hinzugefügt"
+      },
       "0.1.1": {
         "en": "UTF8 coding",
         "de": "UTF8 Kodierung"
@@ -27,7 +35,7 @@
     "icon": "daswettercom.png",
     "enabled": true,
     "messagebox": true,
-    "extIcon": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/admin/daswettercom.PNG",
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
     "keywords": [ "iobroker", "weather", "forecast", "DasWetter" ],
     "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
     "loglevel": "debug",
@@ -40,5 +48,4 @@
     "Days5Forecast": "",
     "HourlyForecast": ""
   }
-  
 }

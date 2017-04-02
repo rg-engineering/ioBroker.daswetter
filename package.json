@@ -1,9 +1,9 @@
 {
   "name": "iobroker.daswetter",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "ioBroker DasWetter.com Adapter",
   "author": {
-    "name": "RenÃ© G.",
+    "name": "René G.",
     "email": "info@rg-engineering.eu"
   },
   "contributors": [
@@ -25,7 +25,8 @@
     "url": "https://github.com/rg-engineering/ioBroker.daswetter"
   },
   "dependencies": {
-    
+    "request": "^2.81.0",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

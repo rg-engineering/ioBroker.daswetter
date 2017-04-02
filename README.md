@@ -15,6 +15,12 @@ All three models are implemented but and one should be used at least.
 
 ## Changelog
 
+#### 0.1.3
+* (René) external png's corrected
+
+#### 0.1.2
+* (René) dependencies added
+
 #### 0.1.1
 * (René) UTF8 coding
 
