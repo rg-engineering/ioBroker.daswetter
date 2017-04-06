@@ -37,10 +37,15 @@
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-compress": "^0.13.0",
     "grunt-contrib-copy": "^0.8.0",
-    "grunt-exec": "^0.4.6"
+    "grunt-exec": "^0.4.6",
+    "mocha": "^2.3.4",
+    "chai": "^3.4.1"
   },
   "bugs": {
     "url": "https://github.com/rg-engineering/ioBroker.daswetter"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha"
   },
   "readmeFilename": "README.md"
 }

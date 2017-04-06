@@ -18,9 +18,14 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
     <Compile Include="test.js" />
+    <Compile Include="test\lib\setup.js" />
+    <Compile Include="test\testAdapter.js" />
+    <Compile Include="test\testPackageFiles.js" />
     <Content Include=".gitignore" />
+    <Content Include=".travis.yml" />
     <Content Include="admin\daswettercom_1.png" />
     <Content Include="admin\daswettercom.png" />
+    <Content Include="appveyor.yml" />
     <Content Include="handbuch.pdf" />
     <Content Include="LICENSE" />
     <Content Include="readme.txt" />
@@ -303,7 +308,9 @@
   <ItemGroup>
     <Folder Include="admin" />
     <Folder Include="lib" />
+    <Folder Include="test\" />
     <Folder Include="tasks" />
+    <Folder Include="test\lib\" />
     <Folder Include="www\" />
     <Folder Include="www\icons\" />
     <Folder Include="www\icons\luna-moon\" />
