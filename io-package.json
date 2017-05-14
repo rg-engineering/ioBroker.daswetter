@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "news": {
+      "0.1.4": {
+        "en": "license changed",
+        "de": "Lizenz geändert"
+      },
       "0.1.3": {
         "en": "external png's corrected",
         "de": "externe png's korrigiert"
@@ -41,7 +45,7 @@
     "loglevel": "debug",
     "stopBeforeUpdate": true,
     "type": "weather",
-    "license": "GPL-3.0"
+    "license": "MIT"
   },
   "native": {
     "Days7Forecast": "",
