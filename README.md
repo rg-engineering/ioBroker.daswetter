@@ -1,5 +1,12 @@
-﻿# ioBroker.DasWetter.com
+﻿![Logo](admin/daswettercom.png)
+# ioBroker.DasWetter.com
 ===========================
+
+[![NPM version](https://img.shields.io/npm/v/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
+
+[![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)](https://nodei.co/npm/iobroker.daswetter/)
+
 
 This adapter reads weather forecast data from DasWetter.com.
 
