@@ -311,6 +311,9 @@
     <Folder Include="test\" />
     <Folder Include="tasks" />
     <Folder Include="test\lib\" />
+    <Folder Include="typings\" />
+    <Folder Include="typings\globals\" />
+    <Folder Include="typings\globals\node\" />
     <Folder Include="www\" />
     <Folder Include="www\icons\" />
     <Folder Include="www\icons\luna-moon\" />
@@ -323,6 +326,10 @@
     <Folder Include="www\icons\viento-wind\" />
     <Folder Include="www\icons\viento-wind\galeria 2 - Beaufort\" />
     <Folder Include="www\icons\viento-wind\galeria1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="typings\globals\node\index.d.ts" />
+    <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
