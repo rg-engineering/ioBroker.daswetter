@@ -30,8 +30,8 @@
     },
     "title": "DasWetter.com",
     "desc": {
-      "en": "load weather forecast for your location",
-      "de": "lädt den Wetterbericht für ausgewählte Stationen"
+      "en": "This adapter reads weather forecast data from DasWetter.com. Three different forecast models are available.",
+      "de": "Der Adapter liest den Wetterbericht von DasWetter.com. Drei verschiedene Vorschauen sind verfügbar."
     },
     "platform": "Javascript/Node.js",
     "mode": "schedule",
