@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "news": {
+      "0.1.5": {
+        "en": "testing changed",
+        "de": "test geändert"
+      },
       "0.1.4": {
         "en": "license changed",
         "de": "Lizenz geändert"

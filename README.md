@@ -22,6 +22,9 @@ All three models are implemented and one should be used at least.
 
 ## Changelog
 
+#### 0.1.5
+* (René) testing changed
+
 #### 0.1.4
 * (René) license changed
 

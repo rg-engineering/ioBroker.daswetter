@@ -1,17 +1,11 @@
 {
   "name": "iobroker.daswetter",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "ioBroker DasWetter.com Adapter",
   "author": {
     "name": "Ren� G.",
     "email": "info@rg-engineering.eu"
   },
-  "contributors": [
-    {
-      "name": "@@Author@@",
-      "email": "@@email@@"
-    }
-  ],
   "homepage": "https://github.com/rg-engineering/ioBroker.daswetter",
   "license": "MIT",
   "keywords": [
