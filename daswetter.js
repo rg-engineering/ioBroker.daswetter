@@ -137,8 +137,10 @@ function getForecastData7Days(cb) {
                             var id = "NextDays." + d + "d.";
                             adapter.setState(id + 'Temperature_Min', { ack: true, val: result.report.location[0].var[0].data[0].forecast[d].$.value });
                             adapter.setState(id + 'Temperature_Max', { ack: true, val: result.report.location[0].var[1].data[0].forecast[d].$.value });
-                            adapter.setState(id + 'Wind_Max', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.idB });
-                            adapter.setState(id + 'Wind', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.valueB });
+                            adapter.setState(id + 'WindID', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.id });
+                            adapter.setState(id + 'WindIDB', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.idB });
+                            adapter.setState(id + 'Wind', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'WindB', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.valueB });
                             adapter.setState(id + 'ConditionID', { ack: true, val: result.report.location[0].var[3].data[0].forecast[d].$.id });
                             adapter.setState(id + 'Condition', { ack: true, val: result.report.location[0].var[3].data[0].forecast[d].$.value2 });
                             adapter.setState(id + 'day', { ack: true, val: result.report.location[0].var[4].data[0].forecast[d].$.value });
@@ -175,7 +177,9 @@ function getForecastData5Days(cb) {
 
                 try {
                     //adapter.log.debug('got body: ' + body);
-                    parseString(body, function (err, result) {
+                    var body1 = body.replace(/wind-gusts/g, "windgusts");
+
+                    parseString(body1, function (err, result) {
                         //adapter.log.debug('parsed5: ' + JSON.stringify(result));
 
 
@@ -191,7 +195,7 @@ function getForecastData5Days(cb) {
                             adapter.setState(id + 'Wind_Max', { ack: true, val: result.report.location[0].day[d].wind[0].$.value });
                             adapter.setState(id + 'WindSymbol', { ack: true, val: result.report.location[0].day[d].wind[0].$.symbol });
                             adapter.setState(id + 'WindSymbolB', { ack: true, val: result.report.location[0].day[d].wind[0].$.symbolB });
-                            //adapter.setState(id + 'WindGusts', { ack: true, val: result.report.location[0].day[d].wind - gusts[0].$.value });
+                            adapter.setState(id + 'WindGusts', { ack: true, val: result.report.location[0].day[d].windgusts[0].$.value });
                             adapter.setState(id + 'Rain', { ack: true, val: result.report.location[0].day[d].rain[0].$.value });
                             adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
                             adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
@@ -208,7 +212,7 @@ function getForecastData5Days(cb) {
                                 adapter.setState(id1 + 'WindDir', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.dir });
                                 adapter.setState(id1 + 'WindSymbol', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.symbol });
                                 adapter.setState(id1 + 'WindSymbolB', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.symbolB });
-                                //adapter.setState(id1 + 'WindGusts', { ack: true, val: result.report.location[0].day[d].hour[h].wind - gusts[0].$.value });
+                                adapter.setState(id1 + 'WindGusts', { ack: true, val: result.report.location[0].day[d].hour[h].windgusts[0].$.value });
                                 adapter.setState(id1 + 'Rain', { ack: true, val: result.report.location[0].day[d].hour[h].rain[0].$.value });
                                 adapter.setState(id1 + 'Humidity', { ack: true, val: result.report.location[0].day[d].hour[h].humidity[0].$.value });
                                 adapter.setState(id1 + 'Pressure', { ack: true, val: result.report.location[0].day[d].hour[h].pressure[0].$.value });
@@ -248,8 +252,16 @@ function getForecastDataHourly(cb) {
 
                 try {
                     //adapter.log.debug('got body: ' + body);
-                    parseString(body, function (err, result) {
+
+                    var body1=body.replace(/wind-gusts/g, "windgusts");
+                    //adapter.log.debug('got body: ' + body);
+
+                    parseString(body1, function (err, result) {
                         //adapter.log.debug('parsedhourly: ' + JSON.stringify(result));
+
+                        
+
+
                         for (var d = 0; d < 2; d++) {
 
                             var id = "hourly." + d + "d.";
@@ -263,7 +275,7 @@ function getForecastDataHourly(cb) {
                             adapter.setState(id + 'Wind_Max', { ack: true, val: result.report.location[0].day[d].wind[0].$.value });
                             adapter.setState(id + 'WindSymbol', { ack: true, val: result.report.location[0].day[d].wind[0].$.symbol });
                             adapter.setState(id + 'WindSymbolB', { ack: true, val: result.report.location[0].day[d].wind[0].$.symbolB });
-                            //adapter.setState(id + 'WindGusts', { ack: true, val: result.report.location[0].day[d].wind - gusts[0].$.value });
+                            adapter.setState(id + 'WindGusts', { ack: true, val: result.report.location[0].day[d].windgusts[0].$.value });
                             adapter.setState(id + 'Rain', { ack: true, val: result.report.location[0].day[d].rain[0].$.value });
                             adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
                             adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
@@ -280,7 +292,7 @@ function getForecastDataHourly(cb) {
                                 adapter.setState(id1 + 'WindDir', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.dir });
                                 adapter.setState(id1 + 'WindSymbol', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.symbol });
                                 adapter.setState(id1 + 'WindSymbolB', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.symbolB });
-                                //adapter.setState(id1 + 'WindGusts', { ack: true, val: result.report.location[0].day[d].hour[h].wind - gusts[0].$.value });
+                                adapter.setState(id1 + 'WindGusts', { ack: true, val: result.report.location[0].day[d].hour[h].windgusts[0].$.value });
                                 adapter.setState(id1 + 'Rain', { ack: true, val: result.report.location[0].day[d].hour[h].rain[0].$.value });
                                 adapter.setState(id1 + 'Humidity', { ack: true, val: result.report.location[0].day[d].hour[h].humidity[0].$.value });
                                 adapter.setState(id1 + 'Pressure', { ack: true, val: result.report.location[0].day[d].hour[h].pressure[0].$.value });
@@ -335,17 +347,27 @@ function checkWeatherVariables() {
                 common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
                 native: { id: id + 'Temperature_Max' }
             });
-            adapter.setObjectNotExists(id + 'Wind_Max', {
+            adapter.setObjectNotExists(id + 'WindID', {
                 type: 'state',
-                common: { name: 'Wind_Max', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
-                native: { id: id + 'Wind_Max' }
+                common: { name: 'WindID', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'Wind_ID' }
             });
+            adapter.setObjectNotExists(id + 'WindIDB', {
+                type: 'state',
+                common: { name: 'WindIDB', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'Wind_IDB' }
+            });
+
             adapter.setObjectNotExists(id + 'Wind', {
                 type: 'state',
                 common: { name: 'Wind', type: 'string', role: 'wind', unit: '', read: true, write: false },
                 native: { id: id + 'Wind' }
             });
- 
+            adapter.setObjectNotExists(id + 'WindB', {
+                type: 'state',
+                common: { name: 'WindB', type: 'string', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'WindB' }
+            }); 
             adapter.setObjectNotExists(id + 'ConditionID', {
                 type: 'state',
                 common: { name: 'ConditionID', type: 'number', role: 'condition', unit: '', read: true, write: false },

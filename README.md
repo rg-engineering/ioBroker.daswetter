@@ -22,6 +22,10 @@ All three models are implemented and one should be used at least.
 
 ## Changelog
 
+
+#### 0.1.6
+* (René) bug fixing: wind-gust and wind-idb
+
 #### 0.1.5
 * (René) testing changed
 

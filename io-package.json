@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "news": {
+      "0.1.6": {
+        "en": "bug fixing",
+        "de": "Fehlerbehebung"
+      },
       "0.1.5": {
         "en": "testing changed",
         "de": "test geändert"
