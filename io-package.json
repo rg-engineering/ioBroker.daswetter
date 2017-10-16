@@ -1,63 +1,74 @@
 {
-  "common": {
-    "name": "daswetter",
-    "version": "0.1.6",
-    "news": {
-      "0.1.6": {
-        "en": "bug fixing",
-        "de": "Fehlerbehebung"
-      },
-      "0.1.5": {
-        "en": "testing changed",
-        "de": "test geändert"
-      },
-      "0.1.4": {
-        "en": "license changed",
-        "de": "Lizenz geändert"
-      },
-      "0.1.3": {
-        "en": "external png's corrected",
-        "de": "externe png's korrigiert"
-      },
-      "0.1.2": {
-        "en": "dependencies added",
-        "de": "Abhängigkeiten hinzugefügt"
-      },
-      "0.1.1": {
-        "en": "UTF8 coding",
-        "de": "UTF8 Kodierung"
-      },
-      "0.1.0": {
-        "en": "first release",
-        "de": "erste freigegebene Version"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "erste Version"
-      }
+    "common": {
+        "name": "daswetter",
+        "version": "0.1.6",
+        "news": {
+            "0.1.6": {
+                "en": "bug fixing",
+                "de": "Fehlerbehebung"
+            },
+            "0.1.5": {
+                "en": "testing changed",
+                "de": "test geändert"
+            },
+            "0.1.4": {
+                "en": "license changed",
+                "de": "Lizenz geändert"
+            },
+            "0.1.3": {
+                "en": "external png's corrected",
+                "de": "externe png's korrigiert"
+            },
+            "0.1.2": {
+                "en": "dependencies added",
+                "de": "Abhängigkeiten hinzugefügt"
+            },
+            "0.1.1": {
+                "en": "UTF8 coding",
+                "de": "UTF8 Kodierung"
+            },
+            "0.1.0": {
+                "en": "first release",
+                "de": "erste freigegebene Version"
+            },
+            "0.0.1": {
+                "en": "initial release",
+                "de": "erste Version"
+            }
+        },
+        "title": "DasWetter.com",
+        "desc": {
+            "en": "This adapter reads weather forecast data from DasWetter.com. Three different forecast models are available.",
+            "de": "Der Adapter liest den Wetterbericht von DasWetter.com. Drei verschiedene Vorschauen sind verfügbar."
+        },
+        "platform": "Javascript/Node.js",
+        "mode": "schedule",
+        "schedule": "*/15 * * * *",
+        "icon": "daswettercom.png",
+        "enabled": true,
+        "messagebox": true,
+        "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
+        "keywords": [
+            "iobroker",
+            "weather",
+            "forecast",
+            "DasWetter"
+        ],
+        "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
+        "loglevel": "debug",
+        "stopBeforeUpdate": true,
+        "type": "weather",
+        "license": "MIT",
+        "authors": [
+            {
+                "name": "Ren� G.",
+                "email": "info@rg-engineering.eu"
+            }
+        ]
     },
-    "title": "DasWetter.com",
-    "desc": {
-      "en": "This adapter reads weather forecast data from DasWetter.com. Three different forecast models are available.",
-      "de": "Der Adapter liest den Wetterbericht von DasWetter.com. Drei verschiedene Vorschauen sind verfügbar."
-    },
-    "platform": "Javascript/Node.js",
-    "mode": "schedule",
-    "schedule": "*/15 * * * *",
-    "icon": "daswettercom.png",
-    "enabled": true,
-    "messagebox": true,
-    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
-    "keywords": [ "iobroker", "weather", "forecast", "DasWetter" ],
-    "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
-    "loglevel": "debug",
-    "stopBeforeUpdate": true,
-    "type": "weather",
-    "license": "MIT"
-  },
-  "native": {
-    "Days7Forecast": "",
-    "Days5Forecast": "",
-    "HourlyForecast": ""
-  }
+    "native": {
+        "Days7Forecast": "",
+        "Days5Forecast": "",
+        "HourlyForecast": ""
+    }
 }
