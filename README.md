@@ -23,6 +23,10 @@ All three models are implemented and one should be used at least.
 ## Changelog
 
 
+#### 1.0.0
+* (René) first stable version
+* (René) symbol and symbolid: both values parsed	
+
 #### 0.1.6
 * (René) bug fixing: wind-gust and wind-idb
 
