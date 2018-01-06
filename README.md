@@ -21,7 +21,8 @@ There are three data models:
 All three models are implemented and one should be used at least.
 
 ## Changelog
-
+#### 1.0.1
+* (René) Support of admin3
 
 #### 1.0.0
 * (René) first stable version

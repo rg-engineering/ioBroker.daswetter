@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <!-- these 4 files always have to be included -->
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+
+    <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <!-- these files always have to be included -->
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="words.js"></script>
+
+
+    <!-- you have to define 2 functions in the global scope: -->
+    <script type="text/javascript">
+
+
+
+
+
+
+
+        // the function loadSettings has to exist ...
+        function load(settings, onChange) {
+
+            if (!settings) return;
+
+            // example: select elements with id=key and class=value and insert value
+            for (var key in settings) {
+                // example: select elements with id=key and class=value and insert value
+                if ($('#' + key + '.value').attr('type') == 'checkbox') {
+                    $('#' + key + '.value').prop('checked', settings[key]).change(function () {
+                        onChange();
+                    });
+                } else {
+                    $('#' + key + '.value').val(settings[key]).change(function () {
+                        onChange();
+                    }).keyup(function () {
+                        $(this).trigger('change');
+                    });
+                }
+            }
+
+
+            // Signal to admin, that no changes yet
+            onChange(false);
+        }
+
+
+        // ... and the function save has to exist.
+        // you have to make sure the callback is called with the settings object as first param!
+        function save(callback) {
+            // example: select elements with class=value and build settings object
+            var obj = {};
+            $('.value').each(function () {
+                var $this = $(this);
+                obj[$this.attr('id')] = $this.val();
+            });
+            callback(obj);
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <!-- you have to put your config page in a div with id adapter-container -->
+    <div class="m adapter-container">
+        <div class="row">
+            <div class="col s12 m4 l2">
+                <img src="daswettercom_1.png" class="logo">
+            </div>
+        </div>
+
+        <p class="translate">on save adapter restarts with new config immediately</p>
+
+        <p class="translate">use only the URL you need, leave the others blank</p>
+
+        <div class="row">
+            <div class="col s12">
+                <input type="text" id="Days7Forecast" class="value" />
+                <label for="Days7Forecast" class="translate">URL 7 days forecast</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <input type="text" id="Days5Forecast" class="value" />
+                <label for="Days5Forecast" class="translate">URL 5 days forecast</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <input type="text" id="HourlyForecast" class="value" />
+                <label for="HourlyForecast" class="translate">URL hourly forecast</label>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
