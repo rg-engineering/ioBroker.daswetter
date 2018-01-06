@@ -30,7 +30,7 @@ var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 // you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.template.0
-var adapter = utils.adapter('daswetter');
+var adapter = utils.Adapter('daswetter');
 var request = require('request');
 var parseString = require('xml2js').parseString;
 
