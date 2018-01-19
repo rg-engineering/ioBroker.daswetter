@@ -101,6 +101,13 @@ adapter.on('ready', function () {
 
 function main() {
 
+    // force terminate after 1min
+    // don't know why it does not terminate by itself...
+    setTimeout(function () {
+        adapter.log.warn('force terminate');
+        process.exit(0);
+    }, 60000);
+
     checkWeatherVariables();
 
     getForecastData7Days(function () {
@@ -109,12 +116,7 @@ function main() {
         }, 6000);
     });
 
-    // force terminate after 1min
-    // don't know why it does not terminate by itself...
-    setTimeout(function () {
-        adapter.log.warn('force terminate');
-        process.exit(0);
-    }, 60000);
+    
 
 }
 
