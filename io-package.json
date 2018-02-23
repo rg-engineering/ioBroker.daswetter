@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "news": {
+      "1.0.3": {
+        "en": "admin bug fixes",
+        "de": "Admin Fehler behoben",
+        "ru": "Исправлены ошибки администратора",
+        "pt": "correções de erros administrativos",
+        "nl": "bugfixes voor beheerders",
+        "fr": "corrections de bugs d'administration",
+        "it": "correzioni di errori di amministrazione",
+        "es": "correcciones de errores de administrador",
+        "pl": "Naprawiono błędy administratora"
+      },
       "1.0.2": {
         "en": "Support of admin3",
         "de": "Unterstützung von admin3",
@@ -109,9 +120,9 @@
       }
     ]
   },
-    "native": {
-        "Days7Forecast": "",
-        "Days5Forecast": "",
-        "HourlyForecast": ""
-    }
+  "native": {
+    "Days7Forecast": "",
+    "Days5Forecast": "",
+    "HourlyForecast": ""
+  }
 }

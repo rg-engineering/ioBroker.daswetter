@@ -47,17 +47,7 @@ systemDictionary = {
         "es": "Pronóstico por hora de URL",
         "pl": "Prognoza godzinowa adresu URL"
     },
-    "restart_hint": {
-        "en": "on save adapter restarts with new config immediately",
-        "de": "Beim Speichern von Einstellungen wird der Adapter sofort neu gestartet.",
-        "ru": "на перезаписываемом адаптере перезагружается с новой конфигурацией немедленно",
-        "pt": "no adaptador de salvar reinicia com nova configuração imediatamente",
-        "nl": "on save-adapter wordt onmiddellijk opnieuw opgestart met nieuwe config",
-        "fr": "sur l'adaptateur de sauvegarde redémarre avec la nouvelle config immédiatement",
-        "it": "su save adapter si riavvia immediatamente con la nuova configurazione",
-        "es": "en el adaptador de guardar se reinicia con nueva configuración de inmediato",
-        "pl": "na karcie save natychmiast uruchamia si? z now? konfiguracj?"
-    },
+    
     "use_only_the_URL_you_need": {
         "en": "use only the URL you need, leave the others blank",
         "de": "nur die URL verwenden, die benötigt wird, die anderen können leer bleiben",
