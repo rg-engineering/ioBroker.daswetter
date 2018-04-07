@@ -10,15 +10,16 @@
 
 This adapter reads weather forecast data from DasWetter.com.
 
-Hint: you need an account on DasWetter.com.
+You need an account on DasWetter.com. Register at https://www.daswetter.com/api/#/login
 The account is for free under certain conditions.
 
-There are three data models:
+In your account you will find three URL for three different data models:
 * 7 days forecast and general overview
 * 5 days forecast and detailed 3 hours overview
 * hourly forecast
 
 All three models are implemented and one should be used at least.
+In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
 
 ## Changelog
 #### 1.0.3
