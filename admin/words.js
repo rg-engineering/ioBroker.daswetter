@@ -59,4 +59,28 @@ systemDictionary = {
         "es": "use solo la URL que necesita, deje los otros en blanco",
         "pl": "u?ywaj tylko potrzebnego adresu URL, pozostawiaj?c pozosta?e puste"
     },
+
+    "use_new_dataset_hint": {
+        "en": "data structure in version 2.x is different to 1.x. If you still want to stay compatible with 1.x just disable 'use new structure'",
+        "de": "Datenstruktur in Version 2.x unterscheidet sich von 1.x. Wenn du immer noch mit 1.x kompatibel bleiben willst, deaktiviere einfach 'neue Datenstruktur verwenden'",
+        "ru": "структура данных в версии 2.x отличается от 1.x. Если вы все еще хотите оставаться совместимыми с 1.x, просто отключите «использовать новую структуру»,",
+        "pt": "estrutura de dados na versão 2.x é diferente para 1.x. Se você ainda quiser ficar compatível com 1.x apenas desabilite 'use new structure'",
+        "nl": "datastructuur in versie 2.x is anders dan 1.x. Als je nog steeds compatibel wilt blijven met 1.x, schakel dan gewoon 'gebruik nieuwe structuur' uit",
+        "fr": "structure de données dans la version 2.x est différente de 1.x. Si vous voulez toujours rester compatible avec 1.x, désactivez simplement 'utiliser une nouvelle structure'",
+        "it": "la struttura dei dati nella versione 2.x è diversa da 1.x. Se vuoi ancora rimanere compatibile con 1.x, basta disabilitare 'usa nuova struttura'",
+        "es": "la estructura de datos en la versión 2.x es diferente de 1.x. Si aún quiere seguir siendo compatible con 1.x, simplemente desactive 'usar nueva estructura'",
+        "pl": "struktura danych w wersji 2.x różni się od 1.x. Jeśli nadal chcesz być kompatybilny z 1.x, po prostu wyłącz \"używaj nowej struktury\""
+    },
+
+    "use_new_dataset": {
+        "en": "use new data structure",
+        "de": "neue Datenstruktur verwenden",
+        "ru": "использовать новую структуру данных",
+        "pt": "usar nova estrutura de dados",
+        "nl": "gebruik nieuwe datastructuur",
+        "fr": "utiliser une nouvelle structure de données",
+        "it": "usa una nuova struttura dati",
+        "es": "usar nueva estructura de datos",
+        "pl": "użyj nowej struktury danych"
+    },
 };

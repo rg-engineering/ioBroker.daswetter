@@ -127,6 +127,7 @@
   "native": {
     "Days7Forecast": "",
     "Days5Forecast": "",
-    "HourlyForecast": ""
+    "HourlyForecast": "",
+    "UseNewDataset":  true
   }
 }
