@@ -91,38 +91,25 @@ adapter.on('ready', function () {
 });
 
 function main() {
-
-
+    // force terminate after 4 min
+    // don't know why it does not terminate by itself...
+    setTimeout(function () {
+        adapter.log.warn('force terminate, objects still in list: ' + Object.keys(tasks).length);
+        process.exit(0);
+    }, 300000);
+    AllDone = false;
     if (adapter.config.UseNewDataset) {
+        adapter.log.debug('using new datastaructure');
 
-        // force terminate after 4 min
-        // don't know why it does not terminate by itself...
-        setTimeout(function () {
-
-            adapter.log.warn('force terminate, objects still in list: ' + Object.keys(tasks).length);
-
-            process.exit(0);
-        }, 240000);
-
-        AllDone = false;
         getForecastData7Days();
 
     }
     else {
-        // force terminate after 1min
-        // don't know why it does not terminate by itself...
-        setTimeout(function () {
-            adapter.log.warn('force terminate');
-            process.exit(0);
-        }, 60000);
+        adapter.log.debug('using old datastaructure');
 
         checkWeatherVariables_old();
 
-        getForecastData7Days_old(function () {
-            setTimeout(function () {
-                adapter.stop();
-            }, 6000);
-        });
+        getForecastData7Days_old();
     }
 
 }
@@ -140,7 +127,7 @@ function getprops(obj, keyName) {
                 if(prop != "data_sequence") {
                     var keyNameLong = keyName + "." + prop;
 
-                    InsertIntoList(keyNameLong, obj, datavalue);
+                    InsertIntoList(keyNameLong,  datavalue);
                 }
             }
     }
@@ -596,7 +583,7 @@ function getForecastDataHourly(cb) {
 
 var tasks = [];
 
-function InsertIntoList(key, obj, value) {
+function InsertIntoList(key, value) {
 
     var obj = {
         type: 'state',
@@ -609,12 +596,7 @@ function InsertIntoList(key, obj, value) {
         obj: obj,
         value: value
     });
-    tasks.push({
-        name: "update",
-        key: key,
-        obj: obj,
-        value: value
-    });
+    
 }
 
 function StartDBUpdate() {
@@ -641,7 +623,7 @@ function processTasks(tasks) {
     DBRunning = true;
     var task = tasks.shift();
     if (task.name === 'add') {
-        createExtendObject(task.key, task.obj, function () {
+        createExtendObject(task.key, task.obj, task.value, function () {
             setTimeout(processTasks, 0, tasks);
         });
     } else if (task.name === 'update') {
@@ -654,15 +636,19 @@ function processTasks(tasks) {
 }
 
 
-function createExtendObject(key, objData, callback) {
+function createExtendObject(key, objData, value, callback) {
 
     adapter.getObject(key, function (err, obj) {
         if (!obj) {
             adapter.setObjectNotExists(key, objData, callback);
-            //adapter.log.debug('create: ' + key);
+            adapter.log.debug('back to list: ' + key + " " + value);
+            InsertIntoList(key,  value);
+            
         }
         else {
-            adapter.extendObject(key, objData, callback);
+            adapter.setState(key, { ack: true, val: value }, callback);
+            //if (callback) callback();
+            //adapter.extendObject(key, objData, callback);
         }
     });
 }
@@ -695,6 +681,20 @@ function getForecastData7Days_old(cb) {
                         //adapter.log.debug('parsed7: ' + JSON.stringify(result));
                         for (var d = 0; d < 7; d++) {
                             var id = "NextDays." + d + "d.";
+
+                            InsertIntoList(id + 'Temperature_Min',  result.report.location[0].var[0].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'Temperature_Max',  result.report.location[0].var[1].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'WindID',  result.report.location[0].var[2].data[0].forecast[d].$.id );
+                            InsertIntoList(id + 'WindIDB',  result.report.location[0].var[2].data[0].forecast[d].$.idB );
+                            InsertIntoList(id + 'Wind',  result.report.location[0].var[2].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'WindB',  result.report.location[0].var[2].data[0].forecast[d].$.valueB );
+                            InsertIntoList(id + 'ConditionID',  result.report.location[0].var[3].data[0].forecast[d].$.id );
+                            InsertIntoList(id + 'Condition',  result.report.location[0].var[3].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'ConditionID2',  result.report.location[0].var[3].data[0].forecast[d].$.id2 );
+                            InsertIntoList(id + 'Condition2',  result.report.location[0].var[3].data[0].forecast[d].$.value2 );
+                            InsertIntoList(id + 'day',  result.report.location[0].var[4].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'atmosphere',  result.report.location[0].var[5].data[0].forecast[d].$.value );
+                            /*
                             adapter.setState(id + 'Temperature_Min', { ack: true, val: result.report.location[0].var[0].data[0].forecast[d].$.value });
                             adapter.setState(id + 'Temperature_Max', { ack: true, val: result.report.location[0].var[1].data[0].forecast[d].$.value });
                             adapter.setState(id + 'WindID', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.id });
@@ -707,9 +707,18 @@ function getForecastData7Days_old(cb) {
                             adapter.setState(id + 'Condition2', { ack: true, val: result.report.location[0].var[3].data[0].forecast[d].$.value2 });
                             adapter.setState(id + 'day', { ack: true, val: result.report.location[0].var[4].data[0].forecast[d].$.value });
                             adapter.setState(id + 'atmosphere', { ack: true, val: result.report.location[0].var[5].data[0].forecast[d].$.value });
+                            */
                         }
-                        adapter.log.debug('7 days forecast done');
+                        adapter.log.debug('7 days forecast done, objects in list ' + Object.keys(tasks).length);
                         getForecastData5Days_old(cb);
+
+                        
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
                     });
                 }
                 catch (e) {
@@ -748,6 +757,25 @@ function getForecastData5Days_old(cb) {
                         for (var d = 0; d < 5; d++) {
                             var id = "NextDaysDetailed." + d + "d.";
 
+                            InsertIntoList(id + 'Weekday',  result.report.location[0].day[d].$.name );
+                            InsertIntoList(id + 'date',  result.report.location[0].day[d].$.value );
+                            InsertIntoList(id + 'SymbolID',  result.report.location[0].day[d].symbol[0].$.value );
+                            InsertIntoList(id + 'Symbol',  result.report.location[0].day[d].symbol[0].$.desc );
+                            InsertIntoList(id + 'SymbolID2',  result.report.location[0].day[d].symbol[0].$.value2 );
+                            InsertIntoList(id + 'Symbol2',  result.report.location[0].day[d].symbol[0].$.desc2 );
+                            InsertIntoList(id + 'Temperature_Min',  result.report.location[0].day[d].tempmin[0].$.value );
+                            InsertIntoList(id + 'Temperature_Max',  result.report.location[0].day[d].tempmax[0].$.value );
+                            InsertIntoList(id + 'Wind_Max',  result.report.location[0].day[d].wind[0].$.value );
+                            InsertIntoList(id + 'WindSymbol',  result.report.location[0].day[d].wind[0].$.symbol );
+                            InsertIntoList(id + 'WindSymbolB', result.report.location[0].day[d].wind[0].$.symbolB );
+                            InsertIntoList(id + 'WindGusts',  result.report.location[0].day[d].windgusts[0].$.value );
+                            InsertIntoList(id + 'Rain', result.report.location[0].day[d].rain[0].$.value);
+                            InsertIntoList(id + 'Humidity', result.report.location[0].day[d].humidity[0].$.value );
+                            InsertIntoList(id + 'Pressure',  result.report.location[0].day[d].pressure[0].$.value );
+                            InsertIntoList(id + 'Snowline',  result.report.location[0].day[d].snowline[0].$.value );
+
+
+                            /*
                             adapter.setState(id + 'Weekday', { ack: true, val: result.report.location[0].day[d].$.name });
                             adapter.setState(id + 'date', { ack: true, val: result.report.location[0].day[d].$.value });
                             adapter.setState(id + 'SymbolID', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value });
@@ -764,10 +792,29 @@ function getForecastData5Days_old(cb) {
                             adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
                             adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
                             adapter.setState(id + 'Snowline', { ack: true, val: result.report.location[0].day[d].snowline[0].$.value });
+                            */
 
                             for (var h = 0; h < 8; h++) {
                                 var id1 = "NextDaysDetailed." + d + "d." + h + 'h.';
 
+                                InsertIntoList(id1 + 'hour', result.report.location[0].day[d].hour[h].$.value );
+                                InsertIntoList(id1 + 'Temperature',  result.report.location[0].day[d].hour[h].temp[0].$.value );
+                                InsertIntoList(id1 + 'SymbolID',  result.report.location[0].day[d].hour[h].symbol[0].$.value );
+                                InsertIntoList(id1 + 'Symbol',  result.report.location[0].day[d].hour[h].symbol[0].$.desc );
+                                InsertIntoList(id1 + 'SymbolID2',  result.report.location[0].day[d].hour[h].symbol[0].$.value2 );
+                                InsertIntoList(id1 + 'Symbol2',  result.report.location[0].day[d].hour[h].symbol[0].$.desc2 );
+                                InsertIntoList(id1 + 'Wind',  result.report.location[0].day[d].hour[h].wind[0].$.value );
+                                InsertIntoList(id1 + 'WindDir',  result.report.location[0].day[d].hour[h].wind[0].$.dir );
+                                InsertIntoList(id1 + 'WindSymbol',  result.report.location[0].day[d].hour[h].wind[0].$.symbol );
+                                InsertIntoList(id1 + 'WindSymbolB',  result.report.location[0].day[d].hour[h].wind[0].$.symbolB );
+                                InsertIntoList(id1 + 'WindGusts',  result.report.location[0].day[d].hour[h].windgusts[0].$.value );
+                                InsertIntoList(id1 + 'Rain',  result.report.location[0].day[d].hour[h].rain[0].$.value );
+                                InsertIntoList(id1 + 'Humidity',  result.report.location[0].day[d].hour[h].humidity[0].$.value );
+                                InsertIntoList(id1 + 'Pressure',  result.report.location[0].day[d].hour[h].pressure[0].$.value );
+                                InsertIntoList(id1 + 'Snowline',  result.report.location[0].day[d].hour[h].snowline[0].$.value );
+                                InsertIntoList(id1 + 'Clouds',  result.report.location[0].day[d].hour[h].clouds[0].$.value );
+                                InsertIntoList(id1 + 'Windchill',  result.report.location[0].day[d].hour[h].windchill[0].$.value );
+                                /*
                                 adapter.setState(id1 + 'hour', { ack: true, val: result.report.location[0].day[d].hour[h].$.value });
                                 adapter.setState(id1 + 'Temperature', { ack: true, val: result.report.location[0].day[d].hour[h].temp[0].$.value });
                                 adapter.setState(id1 + 'SymbolID', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.value });
@@ -785,10 +832,20 @@ function getForecastData5Days_old(cb) {
                                 adapter.setState(id1 + 'Snowline', { ack: true, val: result.report.location[0].day[d].hour[h].snowline[0].$.value });
                                 adapter.setState(id1 + 'Clouds', { ack: true, val: result.report.location[0].day[d].hour[h].clouds[0].$.value });
                                 adapter.setState(id1 + 'Windchill', { ack: true, val: result.report.location[0].day[d].hour[h].windchill[0].$.value });
+                                */
+
                             }
                         }
-                        adapter.log.debug('5 days forecast done');
+                        adapter.log.debug('5 days forecast done, objects in list ' + Object.keys(tasks).length);
                         getForecastDataHourly_old(cb);
+
+                        
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
                     });
                 }
                 catch (e) {
@@ -832,6 +889,24 @@ function getForecastDataHourly_old(cb) {
 
                             var id = "hourly." + d + "d.";
 
+                            InsertIntoList(id + 'Weekday', result.report.location[0].day[d].$.name);
+                            InsertIntoList(id + 'date', result.report.location[0].day[d].$.value);
+                            InsertIntoList(id + 'SymbolID', result.report.location[0].day[d].symbol[0].$.value);
+                            InsertIntoList(id + 'Symbol', result.report.location[0].day[d].symbol[0].$.desc);
+                            InsertIntoList(id + 'SymbolID2', result.report.location[0].day[d].symbol[0].$.value2);
+                            InsertIntoList(id + 'Symbol2', result.report.location[0].day[d].symbol[0].$.desc2);
+                            InsertIntoList(id + 'Temperature_Min', result.report.location[0].day[d].tempmin[0].$.value);
+                            InsertIntoList(id + 'Temperature_Max', result.report.location[0].day[d].tempmax[0].$.value);
+                            InsertIntoList(id + 'Wind_Max', result.report.location[0].day[d].wind[0].$.value);
+                            InsertIntoList(id + 'WindSymbol', result.report.location[0].day[d].wind[0].$.symbol);
+                            InsertIntoList(id + 'WindSymbolB', result.report.location[0].day[d].wind[0].$.symbolB);
+                            InsertIntoList(id + 'WindGusts', result.report.location[0].day[d].windgusts[0].$.value);
+                            InsertIntoList(id + 'Rain', result.report.location[0].day[d].rain[0].$.value);
+                            InsertIntoList(id + 'Humidity', result.report.location[0].day[d].humidity[0].$.value);
+                            InsertIntoList(id + 'Pressure', result.report.location[0].day[d].pressure[0].$.value);
+                            InsertIntoList(id + 'Snowline', result.report.location[0].day[d].snowline[0].$.value);
+
+                            /*
                             adapter.setState(id + 'Weekday', { ack: true, val: result.report.location[0].day[d].$.name });
                             adapter.setState(id + 'date', { ack: true, val: result.report.location[0].day[d].$.value });
                             adapter.setState(id + 'SymbolID', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value });
@@ -848,10 +923,32 @@ function getForecastDataHourly_old(cb) {
                             adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
                             adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
                             adapter.setState(id + 'Snowline', { ack: true, val: result.report.location[0].day[d].snowline[0].$.value });
+                            */
 
                             for (var h = 0; h < 24; h++) {
                                 var id1 = "hourly." + d + "d." + h + 'h.';
 
+                                InsertIntoList(id1 + 'hour', result.report.location[0].day[d].hour[h].$.value);
+                                InsertIntoList(id1 + 'Temperature', result.report.location[0].day[d].hour[h].temp[0].$.value);
+                                InsertIntoList(id1 + 'SymbolID', result.report.location[0].day[d].hour[h].symbol[0].$.value);
+                                InsertIntoList(id1 + 'Symbol', result.report.location[0].day[d].hour[h].symbol[0].$.desc);
+
+                                InsertIntoList(id1 + 'SymbolID2', result.report.location[0].day[d].hour[h].symbol[0].$.value2);
+                                InsertIntoList(id1 + 'Symbol2', result.report.location[0].day[d].hour[h].symbol[0].$.desc2);
+
+                                InsertIntoList(id1 + 'Wind', result.report.location[0].day[d].hour[h].wind[0].$.value);
+                                InsertIntoList(id1 + 'WindDir', result.report.location[0].day[d].hour[h].wind[0].$.dir);
+                                InsertIntoList(id1 + 'WindSymbol', result.report.location[0].day[d].hour[h].wind[0].$.symbol);
+                                InsertIntoList(id1 + 'WindSymbolB', result.report.location[0].day[d].hour[h].wind[0].$.symbolB);
+                                InsertIntoList(id1 + 'WindGusts', result.report.location[0].day[d].hour[h].windgusts[0].$.value);
+                                InsertIntoList(id1 + 'Rain', result.report.location[0].day[d].hour[h].rain[0].$.value);
+                                InsertIntoList(id1 + 'Humidity',  result.report.location[0].day[d].hour[h].humidity[0].$.value);
+                                InsertIntoList(id1 + 'Pressure', result.report.location[0].day[d].hour[h].pressure[0].$.value);
+                                InsertIntoList(id1 + 'Snowline', result.report.location[0].day[d].hour[h].snowline[0].$.value);
+                                InsertIntoList(id1 + 'Clouds', result.report.location[0].day[d].hour[h].clouds[0].$.value);
+                                InsertIntoList(id1 + 'Windchill', result.report.location[0].day[d].hour[h].windchill[0].$.value);
+
+                                /*
                                 adapter.setState(id1 + 'hour', { ack: true, val: result.report.location[0].day[d].hour[h].$.value });
                                 adapter.setState(id1 + 'Temperature', { ack: true, val: result.report.location[0].day[d].hour[h].temp[0].$.value });
                                 adapter.setState(id1 + 'SymbolID', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.value });
@@ -871,9 +968,17 @@ function getForecastDataHourly_old(cb) {
                                 adapter.setState(id1 + 'Snowline', { ack: true, val: result.report.location[0].day[d].hour[h].snowline[0].$.value });
                                 adapter.setState(id1 + 'Clouds', { ack: true, val: result.report.location[0].day[d].hour[h].clouds[0].$.value });
                                 adapter.setState(id1 + 'Windchill', { ack: true, val: result.report.location[0].day[d].hour[h].windchill[0].$.value });
+                                */
                             }
                         }
-                        adapter.log.debug('hourly forecast done');
+                        adapter.log.debug('hourly forecast done, objects in list ' + Object.keys(tasks).length);
+                        AllDone = true;
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
                     });
                 }
                 catch (e) {
@@ -885,6 +990,15 @@ function getForecastDataHourly_old(cb) {
                 adapter.log.error('DasWetter.com reported an error: ' + error);
             }
         });
+    }
+    else {
+        AllDone = true;
+        if (!DBRunning) {
+            StartDBUpdate();
+        }
+        else {
+            adapter.log.debug('update already running');
+        }
     }
     if (cb) cb();
 }
