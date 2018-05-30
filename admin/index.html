@@ -65,7 +65,16 @@
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
-            obj[$this.attr('id')] = $this.val();
+
+            var id = $this.attr('id');
+
+            if ($this.attr('type') == 'checkbox') {
+                obj[$this.attr('id')] = $this.prop('checked');
+            } else {
+                obj[$this.attr('id')] = $this.val();
+            }
+
+            //obj[$this.attr('id')] = $this.val();
         });
         callback(obj);
     }
@@ -90,6 +99,13 @@
     <p class="translate">use_only_the_URL_you_need</p>
 
     <table>
+        <tr>
+            <td class="translate">use_new_dataset</td>
+            <td>
+
+                <input type="checkbox" id="UseNewDataset" class="value" />
+            </td>
+        </tr>
         <tr>
             <td class="translate">URL_7_days_forecast</td>
             <td>

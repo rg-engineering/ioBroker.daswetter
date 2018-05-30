@@ -53,7 +53,16 @@
             var obj = {};
             $('.value').each(function () {
                 var $this = $(this);
-                obj[$this.attr('id')] = $this.val();
+
+                var id = $this.attr('id');
+
+                if ($this.attr('type') == 'checkbox') {
+                    obj[$this.attr('id')] = $this.prop('checked');
+                } else {
+                    obj[$this.attr('id')] = $this.val();
+                }
+
+                //obj[$this.attr('id')] = $this.val();
             });
             callback(obj);
         }
@@ -72,12 +81,23 @@
                         <img src="daswettercom.png" class="logo">
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col s12">
                         <span class="translate">use_only_the_URL_you_need</span>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="checkbox" id="UseNewDataset" class="value" />
+                        <label for="UseNewDataset" class="translate">use_new_dataset</label>
+                    </div>
+                    <div class="col s6">
+                        <span class="translate">use_new_dataset_hint</span>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input type="text" id="Days7Forecast" class="value" />

@@ -4,18 +4,7 @@
  * Created: 21.03.2017 21:31:28
  *  Author: Rene
 
-Copyright(C)[2016, 2017][René Glaß]
-
-Dieses Programm ist freie Software.Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software 
-Foundation veröffentlicht, weitergeben und/ oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder 
-späteren Version.
-
-Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE,
-    sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK.Details finden Sie in der
-GNU General Public License.
-
-Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben.Falls nicht,
-    siehe < http://www.gnu.org/licenses/>.
+Copyright(C)[2016, 2017, 2018][René Glaß]
 
 */
 
@@ -34,6 +23,8 @@ var adapter = utils.Adapter('daswetter');
 var request = require('request');
 var parseString = require('xml2js').parseString;
 
+var DBRunning = false;
+var AllDone = false;
 
 //Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on('message', function (obj) {
@@ -100,29 +91,582 @@ adapter.on('ready', function () {
 });
 
 function main() {
-
-    // force terminate after 1min
+    // force terminate after 4 min
     // don't know why it does not terminate by itself...
     setTimeout(function () {
-        adapter.log.warn('force terminate');
+        adapter.log.warn('force terminate, objects still in list: ' + Object.keys(tasks).length);
         process.exit(0);
-    }, 60000);
+    }, 300000);
+    AllDone = false;
+    if (adapter.config.UseNewDataset) {
+        adapter.log.debug('using new datastaructure');
 
-    checkWeatherVariables();
+        getForecastData7Days();
 
-    getForecastData7Days(function () {
-        setTimeout(function () {
-            adapter.stop();
-        }, 6000);
-    });
+    }
+    else {
+        adapter.log.debug('using old datastaructure');
 
-    
+        checkWeatherVariables_old();
 
+        getForecastData7Days_old();
+    }
+
+}
+
+function getprops(obj, keyName) {
+    //adapter.log.debug(JSON.stringify(obj));
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            //adapter.log.debug(prop);
+
+                var datavalue = obj[prop];
+
+                //adapter.log.debug(keyName + " key " + prop + " = " + datavalue);
+
+                if(prop != "data_sequence") {
+                    var keyNameLong = keyName + "." + prop;
+
+                    InsertIntoList(keyNameLong,  datavalue);
+                }
+            }
+    }
+}
+
+function getForecastData7Days(cb) {
+
+    if (adapter.config.Days7Forecast) {
+        var url = adapter.config.Days7Forecast;
+        adapter.log.debug('calling forecast 7 days: ' + url);
+
+        request(url, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+
+                try {
+
+                    //adapter.log.debug(body);
+
+                    //convert xml to json first
+                    parseString(body, function (err, result) {
+                        //var oData = JSON.parse(result);
+
+                        //adapter.log.debug(JSON.stringify(result));
+
+                        //result.report.location[0].var[0].data[0].forecast[d].$.value
+                        var NoOfLocations = result.report.location.length;
+                        
+                        //adapter.log.debug("locations: " + NoOfLocations + " periods: " + NoOfPeriods + " datapoints: " + NoOfDatapoints);
+
+                        for (var l = 0; l < NoOfLocations; l++) {
+
+                            var NoOfPeriods = result.report.location[l].var[0].data[0].forecast.length;
+
+                            for (var p = 0; p < NoOfPeriods; p++) {
+
+                                var NoOfDatapoints = result.report.location[l].var.length;
+
+                                for (var d = 0; d < NoOfDatapoints; d++) {
+
+                                    var DatapointName = result.report.location[l].var[d].name;
+                                    var pp = p + 1;
+                                    var ll = l + 1;
+                                    var keyName = "NextDays.Location_" + ll + ".Day_" + pp + "." + DatapointName;
+
+                                    var value = result.report.location[l].var[d].data[0].forecast[p].$;
+
+                                    //var size = Object.keys(value).length;
+                                    var size = 0;
+
+                                    getprops(value, keyName);
+
+                                }
+                            }
+                        }
+                        adapter.log.debug('7 days forecast done, ojects in list' + Object.keys(tasks).length);
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
+                        getForecastData5Days(cb);
+                    });
+              
+                }
+                catch (e) {
+                    adapter.log.error('exception in 7DaysForecast [' + e + ']');
+                    getForecastData5Days(cb);
+                }
+            }
+            else {
+                // ERROR
+                adapter.log.error('DasWetter.com reported an error: ' + error);
+                getForecastData5Days(cb);
+            }
+        });
+    }
+    else {
+        getForecastData5Days(cb);
+    }
+    if (cb) cb();
 }
 
 
 
-function getForecastData7Days(cb) {
+
+function getForecastData5Days(cb) {
+
+    if (adapter.config.Days5Forecast) {
+        var url = adapter.config.Days5Forecast;
+        adapter.log.debug('calling forecast 5 days: ' + url);
+
+        request(url, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+
+                try {
+                    //adapter.log.debug('got body: ' + body);
+                    var body1 = body.replace(/wind-gusts/g, "windgusts");
+
+                    parseString(body1, function (err, result) {
+                        //var oData = JSON.parse(result);
+
+                        //adapter.log.debug(JSON.stringify(result));
+
+                        var NoOfLocations = result.report.location.length;
+                       
+                        for (var l = 0; l < NoOfLocations; l++) {
+
+                            var NoOfDays = result.report.location[l].day.length;
+
+                            for (var d = 0; d < NoOfDays; d++) {
+
+                                var keyName = "";
+                                var ll = l + 1;
+                                var dd = d + 1;
+                                
+                                var value = result.report.location[l].day[d].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd;
+                                
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].symbol[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".symbol";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].tempmin[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".tempmin";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].tempmax[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".tempmax";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].wind[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".wind";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].windgusts[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".windgusts";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].rain[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".rain";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].humidity[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".humidity";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].pressure[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".pressure";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].snowline[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".snowline";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].sun[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".sun";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].moon[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moon";
+                                getprops(value, keyName);
+
+                                value = result.report.location[l].day[d].local_info[0].$;
+                                keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".local_info";
+                                getprops(value, keyName);
+
+                                var NoOfHours = result.report.location[l].day[d].hour.length;
+
+                                for (var h = 0; h < NoOfHours; h++) {
+
+                                    //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
+                                    var hh = h + 1;
+
+                                    value = result.report.location[l].day[d].hour[h].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh;
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].temp[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].symbol[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].wind[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].windgusts[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windgusts";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].rain[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].humidity[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].pressure[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].clouds[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].snowline[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
+                                    getprops(value, keyName);
+
+                                    value = result.report.location[l].day[d].hour[h].windchill[0].$;
+                                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
+                                    getprops(value, keyName);
+                                }
+                            }
+                        }
+
+                        adapter.log.debug('5 days forecast done, objects in list ' + Object.keys(tasks).length);
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
+                        getForecastDataHourly(cb);
+                    });
+                }
+                catch (e) {
+                    adapter.log.error('exception in 5DaysForecast [' + e + ']');
+                    getForecastDataHourly(cb);
+                }
+            }
+            else {
+                // ERROR
+                adapter.log.error('DasWetter.com reported an error: ' + error);
+                getForecastDataHourly(cb);
+            }
+        });
+    }
+    else {
+        getForecastDataHourly(cb);
+    }
+    //if (cb) cb();
+}
+
+
+
+
+function getForecastDataHourly(cb) {
+
+    if (adapter.config.HourlyForecast) {
+        var url = adapter.config.HourlyForecast;
+        adapter.log.debug('calling forecast hourly: ' + url);
+
+        request(url, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+
+
+                try {
+                    //adapter.log.debug('got body: ' + body);
+
+                    var body1 = body.replace(/wind-gusts/g, "windgusts");
+                    //adapter.log.debug('got body: ' + body);
+
+                    parseString(body1, function (err, result) {
+                        //var oData = JSON.parse(result);
+
+                        //adapter.log.debug(JSON.stringify(result));
+
+                        var NoOfLocations = result.report.location.length;
+
+                        for (var l = 0; l < NoOfLocations; l++) {
+
+                            var NoOfDays = result.report.location[l].day.length;
+
+                            for (var d = 0; d < NoOfDays; d++) {
+
+                                var keyName = "";
+                                var ll = l + 1;
+                                var dd = d + 1;
+
+                                //adapter.log.debug("loc: " + l + " day: " + d + " = " + JSON.stringify(result.report.location[l].day[d]));
+
+                                var value = result.report.location[l].day[d].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd;
+                                //adapter.log.debug(JSON.stringify(result.report.location[l].day[d].$));
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].symbol[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".symbol";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].tempmin[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".tempmin";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].tempmax[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".tempmax";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].wind[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".wind";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].windgusts[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".windgusts";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].rain[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".rain";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].humidity[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".humidity";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].pressure[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".pressure";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].snowline[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".snowline";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].sun[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".sun";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].moon[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".moon";
+                                getprops(value, keyName);
+
+
+                                value = result.report.location[l].day[d].local_info[0].$;
+                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".local_info";
+                                getprops(value, keyName);
+
+
+                                var NoOfHours = result.report.location[l].day[d].hour.length;
+
+                                for (var h = 0; h < NoOfHours; h++) {
+
+                                    //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
+                                    var hh = h + 1;
+
+                                    value = result.report.location[l].day[d].hour[h].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh;
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].temp[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].symbol[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].wind[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].windgusts[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windgusts";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].rain[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].humidity[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].pressure[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].clouds[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].snowline[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
+                                    getprops(value, keyName);
+
+
+                                    value = result.report.location[l].day[d].hour[h].windchill[0].$;
+                                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
+                                    getprops(value, keyName);
+
+                                }
+                            }
+                        }
+
+
+                        adapter.log.debug('hourly forecast done, objects in list ' + Object.keys(tasks).length);
+                        AllDone = true;
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
+
+                    });
+                }
+                catch (e) {
+                    adapter.log.error('exception in HourlyForecast [' + e + ']');
+                }
+            }
+            else {
+                // ERROR
+                adapter.log.error('DasWetter.com reported an error: ' + error);
+            }
+        });
+    }
+    else {
+        AllDone = true;
+        if (!DBRunning) {
+            StartDBUpdate();
+        }
+        else {
+            adapter.log.debug('update already running');
+        }
+    }
+}
+
+var tasks = [];
+
+function InsertIntoList(key, value) {
+
+    var obj = {
+        type: 'state',
+        common: { name: 'data', type: 'string', role: 'history', unit: '', read: true, write: false },
+        native: { location: key }
+    };
+    tasks.push({
+        name: "add",
+        key: key,
+        obj: obj,
+        value: value
+    });
+    
+}
+
+function StartDBUpdate() {
+    adapter.log.debug('objects in list: ' + Object.keys(tasks).length);
+
+    
+    processTasks(tasks);
+}
+
+function processTasks(tasks) {
+    if (!tasks || !tasks.length) {
+        adapter.log.debug('nothing to do');
+        DBRunning = false;
+
+        if (AllDone) {
+            adapter.log.debug('exit, all done');
+
+            process.exit(0);
+        }
+
+        return;
+    }
+
+    DBRunning = true;
+    var task = tasks.shift();
+    if (task.name === 'add') {
+        createExtendObject(task.key, task.obj, task.value, function () {
+            setTimeout(processTasks, 0, tasks);
+        });
+    } else if (task.name === 'update') {
+        updateExtendObject(task.key, task.value, function () {
+            setTimeout(processTasks, 0, tasks);
+        });
+    }  else {
+        throw 'Unknown task';
+    }
+}
+
+
+function createExtendObject(key, objData, value, callback) {
+
+    adapter.getObject(key, function (err, obj) {
+        if (!obj) {
+            adapter.setObjectNotExists(key, objData, callback);
+            adapter.log.debug('back to list: ' + key + " " + value);
+            InsertIntoList(key,  value);
+            
+        }
+        else {
+            adapter.setState(key, { ack: true, val: value }, callback);
+            //if (callback) callback();
+            //adapter.extendObject(key, objData, callback);
+        }
+    });
+}
+
+function updateExtendObject(key, value, callback) {
+
+    adapter.setState(key, { ack: true, val: value },callback);
+    //adapter.log.debug('update: ' + key + " " + value);
+
+}
+
+
+//============================================================================================
+// old functions for compatibility
+
+
+
+function getForecastData7Days_old(cb) {
 
     if (adapter.config.Days7Forecast) {
         var url = adapter.config.Days7Forecast;
@@ -137,6 +681,20 @@ function getForecastData7Days(cb) {
                         //adapter.log.debug('parsed7: ' + JSON.stringify(result));
                         for (var d = 0; d < 7; d++) {
                             var id = "NextDays." + d + "d.";
+
+                            InsertIntoList(id + 'Temperature_Min',  result.report.location[0].var[0].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'Temperature_Max',  result.report.location[0].var[1].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'WindID',  result.report.location[0].var[2].data[0].forecast[d].$.id );
+                            InsertIntoList(id + 'WindIDB',  result.report.location[0].var[2].data[0].forecast[d].$.idB );
+                            InsertIntoList(id + 'Wind',  result.report.location[0].var[2].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'WindB',  result.report.location[0].var[2].data[0].forecast[d].$.valueB );
+                            InsertIntoList(id + 'ConditionID',  result.report.location[0].var[3].data[0].forecast[d].$.id );
+                            InsertIntoList(id + 'Condition',  result.report.location[0].var[3].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'ConditionID2',  result.report.location[0].var[3].data[0].forecast[d].$.id2 );
+                            InsertIntoList(id + 'Condition2',  result.report.location[0].var[3].data[0].forecast[d].$.value2 );
+                            InsertIntoList(id + 'day',  result.report.location[0].var[4].data[0].forecast[d].$.value );
+                            InsertIntoList(id + 'atmosphere',  result.report.location[0].var[5].data[0].forecast[d].$.value );
+                            /*
                             adapter.setState(id + 'Temperature_Min', { ack: true, val: result.report.location[0].var[0].data[0].forecast[d].$.value });
                             adapter.setState(id + 'Temperature_Max', { ack: true, val: result.report.location[0].var[1].data[0].forecast[d].$.value });
                             adapter.setState(id + 'WindID', { ack: true, val: result.report.location[0].var[2].data[0].forecast[d].$.id });
@@ -149,9 +707,18 @@ function getForecastData7Days(cb) {
                             adapter.setState(id + 'Condition2', { ack: true, val: result.report.location[0].var[3].data[0].forecast[d].$.value2 });
                             adapter.setState(id + 'day', { ack: true, val: result.report.location[0].var[4].data[0].forecast[d].$.value });
                             adapter.setState(id + 'atmosphere', { ack: true, val: result.report.location[0].var[5].data[0].forecast[d].$.value });
+                            */
                         }
-                        adapter.log.debug('7 days forecast done');
-                        getForecastData5Days(cb);
+                        adapter.log.debug('7 days forecast done, objects in list ' + Object.keys(tasks).length);
+                        getForecastData5Days_old(cb);
+
+                        
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
                     });
                 }
                 catch (e) {
@@ -165,12 +732,12 @@ function getForecastData7Days(cb) {
         });
     }
     else {
-        getForecastData5Days(cb);
+        getForecastData5Days_old(cb);
     }
     if (cb) cb();
 }
 
-function getForecastData5Days(cb) {
+function getForecastData5Days_old(cb) {
 
     if (adapter.config.Days5Forecast) {
         var url = adapter.config.Days5Forecast;
@@ -190,6 +757,25 @@ function getForecastData5Days(cb) {
                         for (var d = 0; d < 5; d++) {
                             var id = "NextDaysDetailed." + d + "d.";
 
+                            InsertIntoList(id + 'Weekday',  result.report.location[0].day[d].$.name );
+                            InsertIntoList(id + 'date',  result.report.location[0].day[d].$.value );
+                            InsertIntoList(id + 'SymbolID',  result.report.location[0].day[d].symbol[0].$.value );
+                            InsertIntoList(id + 'Symbol',  result.report.location[0].day[d].symbol[0].$.desc );
+                            InsertIntoList(id + 'SymbolID2',  result.report.location[0].day[d].symbol[0].$.value2 );
+                            InsertIntoList(id + 'Symbol2',  result.report.location[0].day[d].symbol[0].$.desc2 );
+                            InsertIntoList(id + 'Temperature_Min',  result.report.location[0].day[d].tempmin[0].$.value );
+                            InsertIntoList(id + 'Temperature_Max',  result.report.location[0].day[d].tempmax[0].$.value );
+                            InsertIntoList(id + 'Wind_Max',  result.report.location[0].day[d].wind[0].$.value );
+                            InsertIntoList(id + 'WindSymbol',  result.report.location[0].day[d].wind[0].$.symbol );
+                            InsertIntoList(id + 'WindSymbolB', result.report.location[0].day[d].wind[0].$.symbolB );
+                            InsertIntoList(id + 'WindGusts',  result.report.location[0].day[d].windgusts[0].$.value );
+                            InsertIntoList(id + 'Rain', result.report.location[0].day[d].rain[0].$.value);
+                            InsertIntoList(id + 'Humidity', result.report.location[0].day[d].humidity[0].$.value );
+                            InsertIntoList(id + 'Pressure',  result.report.location[0].day[d].pressure[0].$.value );
+                            InsertIntoList(id + 'Snowline',  result.report.location[0].day[d].snowline[0].$.value );
+
+
+                            /*
                             adapter.setState(id + 'Weekday', { ack: true, val: result.report.location[0].day[d].$.name });
                             adapter.setState(id + 'date', { ack: true, val: result.report.location[0].day[d].$.value });
                             adapter.setState(id + 'SymbolID', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value });
@@ -206,10 +792,29 @@ function getForecastData5Days(cb) {
                             adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
                             adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
                             adapter.setState(id + 'Snowline', { ack: true, val: result.report.location[0].day[d].snowline[0].$.value });
+                            */
 
                             for (var h = 0; h < 8; h++) {
                                 var id1 = "NextDaysDetailed." + d + "d." + h + 'h.';
 
+                                InsertIntoList(id1 + 'hour', result.report.location[0].day[d].hour[h].$.value );
+                                InsertIntoList(id1 + 'Temperature',  result.report.location[0].day[d].hour[h].temp[0].$.value );
+                                InsertIntoList(id1 + 'SymbolID',  result.report.location[0].day[d].hour[h].symbol[0].$.value );
+                                InsertIntoList(id1 + 'Symbol',  result.report.location[0].day[d].hour[h].symbol[0].$.desc );
+                                InsertIntoList(id1 + 'SymbolID2',  result.report.location[0].day[d].hour[h].symbol[0].$.value2 );
+                                InsertIntoList(id1 + 'Symbol2',  result.report.location[0].day[d].hour[h].symbol[0].$.desc2 );
+                                InsertIntoList(id1 + 'Wind',  result.report.location[0].day[d].hour[h].wind[0].$.value );
+                                InsertIntoList(id1 + 'WindDir',  result.report.location[0].day[d].hour[h].wind[0].$.dir );
+                                InsertIntoList(id1 + 'WindSymbol',  result.report.location[0].day[d].hour[h].wind[0].$.symbol );
+                                InsertIntoList(id1 + 'WindSymbolB',  result.report.location[0].day[d].hour[h].wind[0].$.symbolB );
+                                InsertIntoList(id1 + 'WindGusts',  result.report.location[0].day[d].hour[h].windgusts[0].$.value );
+                                InsertIntoList(id1 + 'Rain',  result.report.location[0].day[d].hour[h].rain[0].$.value );
+                                InsertIntoList(id1 + 'Humidity',  result.report.location[0].day[d].hour[h].humidity[0].$.value );
+                                InsertIntoList(id1 + 'Pressure',  result.report.location[0].day[d].hour[h].pressure[0].$.value );
+                                InsertIntoList(id1 + 'Snowline',  result.report.location[0].day[d].hour[h].snowline[0].$.value );
+                                InsertIntoList(id1 + 'Clouds',  result.report.location[0].day[d].hour[h].clouds[0].$.value );
+                                InsertIntoList(id1 + 'Windchill',  result.report.location[0].day[d].hour[h].windchill[0].$.value );
+                                /*
                                 adapter.setState(id1 + 'hour', { ack: true, val: result.report.location[0].day[d].hour[h].$.value });
                                 adapter.setState(id1 + 'Temperature', { ack: true, val: result.report.location[0].day[d].hour[h].temp[0].$.value });
                                 adapter.setState(id1 + 'SymbolID', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.value });
@@ -227,10 +832,20 @@ function getForecastData5Days(cb) {
                                 adapter.setState(id1 + 'Snowline', { ack: true, val: result.report.location[0].day[d].hour[h].snowline[0].$.value });
                                 adapter.setState(id1 + 'Clouds', { ack: true, val: result.report.location[0].day[d].hour[h].clouds[0].$.value });
                                 adapter.setState(id1 + 'Windchill', { ack: true, val: result.report.location[0].day[d].hour[h].windchill[0].$.value });
+                                */
+
                             }
                         }
-                        adapter.log.debug('5 days forecast done');
-                        getForecastDataHourly(cb);
+                        adapter.log.debug('5 days forecast done, objects in list ' + Object.keys(tasks).length);
+                        getForecastDataHourly_old(cb);
+
+                        
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
                     });
                 }
                 catch (e) {
@@ -244,12 +859,12 @@ function getForecastData5Days(cb) {
         });
     }
     else {
-        getForecastDataHourly(cb);
+        getForecastDataHourly_old(cb);
     }
     if (cb) cb();
 }
 
-function getForecastDataHourly(cb) {
+function getForecastDataHourly_old(cb) {
 
     if (adapter.config.HourlyForecast) {
         var url = adapter.config.HourlyForecast;
@@ -261,25 +876,43 @@ function getForecastDataHourly(cb) {
                 try {
                     //adapter.log.debug('got body: ' + body);
 
-                    var body1=body.replace(/wind-gusts/g, "windgusts");
+                    var body1 = body.replace(/wind-gusts/g, "windgusts");
                     //adapter.log.debug('got body: ' + body);
 
                     parseString(body1, function (err, result) {
                         //adapter.log.debug('parsedhourly: ' + JSON.stringify(result));
 
-                        
+
 
 
                         for (var d = 0; d < 2; d++) {
 
                             var id = "hourly." + d + "d.";
 
+                            InsertIntoList(id + 'Weekday', result.report.location[0].day[d].$.name);
+                            InsertIntoList(id + 'date', result.report.location[0].day[d].$.value);
+                            InsertIntoList(id + 'SymbolID', result.report.location[0].day[d].symbol[0].$.value);
+                            InsertIntoList(id + 'Symbol', result.report.location[0].day[d].symbol[0].$.desc);
+                            InsertIntoList(id + 'SymbolID2', result.report.location[0].day[d].symbol[0].$.value2);
+                            InsertIntoList(id + 'Symbol2', result.report.location[0].day[d].symbol[0].$.desc2);
+                            InsertIntoList(id + 'Temperature_Min', result.report.location[0].day[d].tempmin[0].$.value);
+                            InsertIntoList(id + 'Temperature_Max', result.report.location[0].day[d].tempmax[0].$.value);
+                            InsertIntoList(id + 'Wind_Max', result.report.location[0].day[d].wind[0].$.value);
+                            InsertIntoList(id + 'WindSymbol', result.report.location[0].day[d].wind[0].$.symbol);
+                            InsertIntoList(id + 'WindSymbolB', result.report.location[0].day[d].wind[0].$.symbolB);
+                            InsertIntoList(id + 'WindGusts', result.report.location[0].day[d].windgusts[0].$.value);
+                            InsertIntoList(id + 'Rain', result.report.location[0].day[d].rain[0].$.value);
+                            InsertIntoList(id + 'Humidity', result.report.location[0].day[d].humidity[0].$.value);
+                            InsertIntoList(id + 'Pressure', result.report.location[0].day[d].pressure[0].$.value);
+                            InsertIntoList(id + 'Snowline', result.report.location[0].day[d].snowline[0].$.value);
+
+                            /*
                             adapter.setState(id + 'Weekday', { ack: true, val: result.report.location[0].day[d].$.name });
                             adapter.setState(id + 'date', { ack: true, val: result.report.location[0].day[d].$.value });
                             adapter.setState(id + 'SymbolID', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value });
                             adapter.setState(id + 'Symbol', { ack: true, val: result.report.location[0].day[d].symbol[0].$.desc });
                             adapter.setState(id + 'SymbolID2', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value2 });
-                            adapter.setState(id + 'Symbol2', { ack: true, val: result.report.location[0].day[d].symbol[0].$.desc2 });                  
+                            adapter.setState(id + 'Symbol2', { ack: true, val: result.report.location[0].day[d].symbol[0].$.desc2 });
                             adapter.setState(id + 'Temperature_Min', { ack: true, val: result.report.location[0].day[d].tempmin[0].$.value });
                             adapter.setState(id + 'Temperature_Max', { ack: true, val: result.report.location[0].day[d].tempmax[0].$.value });
                             adapter.setState(id + 'Wind_Max', { ack: true, val: result.report.location[0].day[d].wind[0].$.value });
@@ -290,10 +923,32 @@ function getForecastDataHourly(cb) {
                             adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
                             adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
                             adapter.setState(id + 'Snowline', { ack: true, val: result.report.location[0].day[d].snowline[0].$.value });
+                            */
 
                             for (var h = 0; h < 24; h++) {
                                 var id1 = "hourly." + d + "d." + h + 'h.';
 
+                                InsertIntoList(id1 + 'hour', result.report.location[0].day[d].hour[h].$.value);
+                                InsertIntoList(id1 + 'Temperature', result.report.location[0].day[d].hour[h].temp[0].$.value);
+                                InsertIntoList(id1 + 'SymbolID', result.report.location[0].day[d].hour[h].symbol[0].$.value);
+                                InsertIntoList(id1 + 'Symbol', result.report.location[0].day[d].hour[h].symbol[0].$.desc);
+
+                                InsertIntoList(id1 + 'SymbolID2', result.report.location[0].day[d].hour[h].symbol[0].$.value2);
+                                InsertIntoList(id1 + 'Symbol2', result.report.location[0].day[d].hour[h].symbol[0].$.desc2);
+
+                                InsertIntoList(id1 + 'Wind', result.report.location[0].day[d].hour[h].wind[0].$.value);
+                                InsertIntoList(id1 + 'WindDir', result.report.location[0].day[d].hour[h].wind[0].$.dir);
+                                InsertIntoList(id1 + 'WindSymbol', result.report.location[0].day[d].hour[h].wind[0].$.symbol);
+                                InsertIntoList(id1 + 'WindSymbolB', result.report.location[0].day[d].hour[h].wind[0].$.symbolB);
+                                InsertIntoList(id1 + 'WindGusts', result.report.location[0].day[d].hour[h].windgusts[0].$.value);
+                                InsertIntoList(id1 + 'Rain', result.report.location[0].day[d].hour[h].rain[0].$.value);
+                                InsertIntoList(id1 + 'Humidity',  result.report.location[0].day[d].hour[h].humidity[0].$.value);
+                                InsertIntoList(id1 + 'Pressure', result.report.location[0].day[d].hour[h].pressure[0].$.value);
+                                InsertIntoList(id1 + 'Snowline', result.report.location[0].day[d].hour[h].snowline[0].$.value);
+                                InsertIntoList(id1 + 'Clouds', result.report.location[0].day[d].hour[h].clouds[0].$.value);
+                                InsertIntoList(id1 + 'Windchill', result.report.location[0].day[d].hour[h].windchill[0].$.value);
+
+                                /*
                                 adapter.setState(id1 + 'hour', { ack: true, val: result.report.location[0].day[d].hour[h].$.value });
                                 adapter.setState(id1 + 'Temperature', { ack: true, val: result.report.location[0].day[d].hour[h].temp[0].$.value });
                                 adapter.setState(id1 + 'SymbolID', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.value });
@@ -313,9 +968,17 @@ function getForecastDataHourly(cb) {
                                 adapter.setState(id1 + 'Snowline', { ack: true, val: result.report.location[0].day[d].hour[h].snowline[0].$.value });
                                 adapter.setState(id1 + 'Clouds', { ack: true, val: result.report.location[0].day[d].hour[h].clouds[0].$.value });
                                 adapter.setState(id1 + 'Windchill', { ack: true, val: result.report.location[0].day[d].hour[h].windchill[0].$.value });
+                                */
                             }
                         }
-                        adapter.log.debug('hourly forecast done');
+                        adapter.log.debug('hourly forecast done, objects in list ' + Object.keys(tasks).length);
+                        AllDone = true;
+                        if (!DBRunning) {
+                            StartDBUpdate();
+                        }
+                        else {
+                            adapter.log.debug('update already running');
+                        }
                     });
                 }
                 catch (e) {
@@ -328,11 +991,20 @@ function getForecastDataHourly(cb) {
             }
         });
     }
+    else {
+        AllDone = true;
+        if (!DBRunning) {
+            StartDBUpdate();
+        }
+        else {
+            adapter.log.debug('update already running');
+        }
+    }
     if (cb) cb();
 }
 
 
-function checkWeatherVariables() {
+function checkWeatherVariables_old() {
 
     //7 days forecast
     if (adapter.config.Days7Forecast) {
@@ -381,7 +1053,7 @@ function checkWeatherVariables() {
                 type: 'state',
                 common: { name: 'WindB', type: 'string', role: 'wind', unit: '', read: true, write: false },
                 native: { id: id + 'WindB' }
-            }); 
+            });
             adapter.setObjectNotExists(id + 'ConditionID', {
                 type: 'state',
                 common: { name: 'ConditionID', type: 'number', role: 'condition', unit: '', read: true, write: false },
@@ -408,14 +1080,14 @@ function checkWeatherVariables() {
                 type: 'state',
                 common: { name: 'day', type: 'string', role: 'day', unit: '', read: true, write: false },
                 native: { id: id + 'day' }
-            });        
+            });
             adapter.setObjectNotExists(id + 'atmosphere', {
                 type: 'state',
                 common: { name: 'atmosphere', type: 'string', role: 'atmosphere', unit: '', read: true, write: false },
                 native: { id: id + 'atmosphere' }
-            }); 
-           }
+            });
         }
+    }
     //5 days forecast
     if (adapter.config.Days5Forecast) {
         adapter.setObjectNotExists('NextDaysDetailed', {
@@ -425,7 +1097,7 @@ function checkWeatherVariables() {
             native: { location: adapter.config.location }
         });
         // all states for all 5 days...
-         for (var d = 0; d < 5; d++) {
+        for (var d = 0; d < 5; d++) {
             var id = "NextDaysDetailed." + d + "d.";
             adapter.setObjectNotExists('NextDaysDetailed.' + d + 'd', {
                 type: 'channel',
@@ -448,12 +1120,12 @@ function checkWeatherVariables() {
                 type: 'state',
                 common: { name: 'SymbolID', type: 'number', role: 'condition', unit: '', read: true, write: false },
                 native: { id: id + 'SymbolID' }
-            }); 
+            });
             adapter.setObjectNotExists(id + 'Symbol', {
                 type: 'state',
                 common: { name: 'Symbol', type: 'string', role: 'condition', unit: '', read: true, write: false },
                 native: { id: id + 'Symbol' }
-            }); 
+            });
 
             adapter.setObjectNotExists(id + 'SymbolID2', {
                 type: 'state',
@@ -464,7 +1136,7 @@ function checkWeatherVariables() {
                 type: 'state',
                 common: { name: 'Symbol2', type: 'string', role: 'condition', unit: '', read: true, write: false },
                 native: { id: id + 'Symbol2' }
-            }); 
+            });
 
             adapter.setObjectNotExists(id + 'Temperature_Min', {
                 type: 'state',
@@ -476,7 +1148,7 @@ function checkWeatherVariables() {
                 common: { name: 'Temperature_Max', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
                 native: { id: id + 'Temperature_Max' }
             });
-  
+
             adapter.setObjectNotExists(id + 'Wind_Max', {
                 type: 'state',
                 common: { name: 'Wind_Max', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
@@ -496,48 +1168,48 @@ function checkWeatherVariables() {
                 type: 'state',
                 common: { name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
                 native: { id: id + 'WindGusts' }
-            });      
+            });
             adapter.setObjectNotExists(id + 'Rain', {
                 type: 'state',
                 common: { name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false },
                 native: { id: id + 'Rain' }
-            }); 
+            });
             adapter.setObjectNotExists(id + 'Humidity', {
                 type: 'state',
                 common: { name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false },
                 native: { id: id + 'Humidity' }
-            }); 
+            });
 
             adapter.setObjectNotExists(id + 'Pressure', {
                 type: 'state',
                 common: { name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false },
                 native: { id: id + 'Pressure' }
-            }); 
+            });
             adapter.setObjectNotExists(id + 'Snowline', {
                 type: 'state',
                 common: { name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false },
                 native: { id: id + 'Snowline' }
-            }); 
+            });
 
-            for (var h=0;h<8;h++) {
-                var id1 = "NextDaysDetailed." + d + "d."+h+'h.';
-                adapter.setObjectNotExists('NextDaysDetailed.' + d + 'd.'+h+'h', {
+            for (var h = 0; h < 8; h++) {
+                var id1 = "NextDaysDetailed." + d + "d." + h + 'h.';
+                adapter.setObjectNotExists('NextDaysDetailed.' + d + 'd.' + h + 'h', {
                     type: 'channel',
                     role: 'forecast',
                     common: { name: h + ' period' },
                     native: { location: adapter.config.location }
                 });
-                
+
                 adapter.setObjectNotExists(id1 + 'hour', {
                     type: 'state',
                     common: { name: 'hour', type: 'number', role: 'hour', unit: '', read: true, write: false },
                     native: { id: id1 + 'hour' }
-                });                  
+                });
                 adapter.setObjectNotExists(id1 + 'Temperature', {
                     type: 'state',
                     common: { name: 'Temperature', type: 'number', role: 'temperature', unit: '°C', read: true, write: false },
                     native: { id: id1 + 'Temperature' }
-                });  
+                });
                 adapter.setObjectNotExists(id1 + 'SymbolID', {
                     type: 'state',
                     common: { name: 'SymbolID', type: 'number', role: 'symbol', unit: '', read: true, write: false },
@@ -580,7 +1252,7 @@ function checkWeatherVariables() {
                     type: 'state',
                     common: { name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false },
                     native: { id: id1 + 'WindSymbolB' }
-                });     
+                });
                 adapter.setObjectNotExists(id1 + 'WindGusts', {
                     type: 'state',
                     common: { name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
@@ -595,29 +1267,29 @@ function checkWeatherVariables() {
                     type: 'state',
                     common: { name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false },
                     native: { id: id1 + 'Humidity' }
-                }); 
+                });
 
                 adapter.setObjectNotExists(id1 + 'Pressure', {
                     type: 'state',
                     common: { name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false },
                     native: { id: id1 + 'Pressure' }
-                }); 
+                });
                 adapter.setObjectNotExists(id1 + 'Snowline', {
                     type: 'state',
                     common: { name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false },
                     native: { id: id1 + 'Snowline' }
-                }); 
+                });
                 adapter.setObjectNotExists(id1 + 'Clouds', {
                     type: 'state',
                     common: { name: 'Clouds', type: 'number', role: 'clouds', unit: '', read: true, write: false },
                     native: { id: id1 + 'Clouds' }
-                }); 
+                });
                 adapter.setObjectNotExists(id1 + 'Windchill', {
                     type: 'state',
                     common: { name: 'Windchill', type: 'number', role: 'windchill', unit: '°C', read: true, write: false },
                     native: { id: id1 + 'Windchill' }
-                }); 
-               }
+                });
+            }
 
         }
     }
