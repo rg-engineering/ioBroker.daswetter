@@ -25,7 +25,10 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 ## Changelog
 
 #### 2.0.0
-* (René) to do
+* (René) new datastructure !not compatible to version 1.x!
+now parsing all data from xml and store them in datapoints
+for compatibility: in configuration old data structure can be enabled (default)
+needs also 2.x of vis-weather-widget
 
 #### 1.0.3
 * (René) bug fix for admin V3

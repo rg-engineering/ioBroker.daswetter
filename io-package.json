@@ -4,8 +4,15 @@
     "version": "2.0.0",
     "news": {
       "2.0.0": {
-        "en": "to do"
-        
+        "en": "parsing all data from xml (not compatible to version 1.x anymore)",
+        "de": "Parsen aller Daten von XML (nicht mehr kompatibel zu Version 1.x)",
+        "ru": "синтаксический анализ всех данных из xml (несовместимый с версией 1.x)",
+        "pt": "analisando todos os dados do xml (não compatível com a versão 1.x mais)",
+        "nl": "alle gegevens uit xml parseren (niet meer compatibel met versie 1.x)",
+        "fr": "analyser toutes les données de xml (non compatible avec la version 1.x)",
+        "it": "analizzando tutti i dati da xml (non più compatibile con la versione 1.x più)",
+        "es": "analizar todos los datos de xml (no es compatible con la versión 1.x)",
+        "pl": "parsowanie wszystkich danych z xml (nie kompatybilne już z wersją 1.x)"
       },
       "1.0.3": {
         "en": "admin bug fixes",
@@ -128,6 +135,6 @@
     "Days7Forecast": "",
     "Days5Forecast": "",
     "HourlyForecast": "",
-    "UseNewDataset":  true
+    "UseNewDataset":  false
   }
 }
