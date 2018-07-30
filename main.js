@@ -692,7 +692,6 @@ function processTasks(tasks) {
     }
 }
 
-
 function createExtendObject(key, objData, value, callback) {
     adapter.getObject(key, (err, obj) => {
         if (!obj) {
@@ -703,8 +702,8 @@ function createExtendObject(key, objData, value, callback) {
             adapter.setObjectNotExists(key, objData, callback);
         } else if (value !== undefined) {
             adapter.setState(key, {ack: true, val: value}, callback);
-        } else if (cb) {
-            cb();
+        } else if (callback) {
+            callback();
         }
     });
 }

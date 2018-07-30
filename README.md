@@ -1,5 +1,5 @@
 ﻿![Logo](admin/daswettercom.png)
-# ioBroker.DasWetter.com
+# ioBroker.DasWetter
 ===========================
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
@@ -22,49 +22,55 @@ In your account you will find three URL for three different data models:
 All three models are implemented and one should be used at least.
 In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
 
-## Changelog
+Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
 
-#### 2.0.0
+## Changelog
+### 2.0.1
+* (bluefox) Added URLs to icons
+* (bluefox) Added the roles and the names to states
+* (bluefox) Icons moved to admin directory
+
+### 2.0.0
 * (René) new datastructure !not compatible to version 1.x!
 now parsing all data from xml and store them in datapoints
 for compatibility: in configuration old data structure can be enabled (default)
 needs also 2.x of vis-weather-widget
 
-#### 1.0.3
+### 1.0.3
 * (René) bug fix for admin V3
 
-#### 1.0.2
+### 1.0.2
 * (René) bug fix for admin V3
 
-#### 1.0.1
+### 1.0.1
 * (René) Support of admin3
 
-#### 1.0.0
+### 1.0.0
 * (René) first stable version
 * (René) symbol and symbolid: both values parsed	
 
-#### 0.1.6
+### 0.1.6
 * (René) bug fixing: wind-gust and wind-idb
 
-#### 0.1.5
+### 0.1.5
 * (René) testing changed
 
-#### 0.1.4
+### 0.1.4
 * (René) license changed
 
-#### 0.1.3
+### 0.1.3
 * (René) external png's corrected
 
-#### 0.1.2
+### 0.1.2
 * (René) dependencies added
 
-#### 0.1.1
+### 0.1.1
 * (René) UTF8 coding
 
-#### 0.1.0
+### 0.1.0
 * (René) first release
 
-#### 0.0.1
+### 0.0.1
 * (René) initial release
 
 ## License
