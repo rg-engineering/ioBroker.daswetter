@@ -110,7 +110,6 @@
     "schedule": "*/15 * * * *",
     "icon": "daswettercom.png",
     "enabled": true,
-    "messagebox": true,
     "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
     "keywords": [
       "iobroker",
@@ -135,6 +134,6 @@
     "Days7Forecast": "",
     "Days5Forecast": "",
     "HourlyForecast": "",
-    "UseNewDataset":  false
+    "UseNewDataset":  true
   }
 }

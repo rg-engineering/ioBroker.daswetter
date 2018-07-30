@@ -14,26 +14,23 @@
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
     <script type="text/javascript" src="words.js"></script>
 
-
-    <!-- you have to define 2 functions in the global scope: -->
     <script type="text/javascript">
 
-        // the function loadSettings has to exist ...
         function load(settings, onChange) {
 
             if (!settings) return;
 
-            // example: select elements with id=key and class=value and insert value
             for (var key in settings) {
-                // example: select elements with id=key and class=value and insert value
-                if ($('#' + key + '.value').attr('type') == 'checkbox') {
-                    $('#' + key + '.value').prop('checked', settings[key]).change(function () {
+                if (!settings.hasOwnProperty(key)) continue;
+                var $value = $('#' + key + '.value');
+                if ($value.attr('type') === 'checkbox') {
+                    $value.prop('checked', settings[key]).on('change', function () {
                         onChange();
                     });
                 } else {
-                    $('#' + key + '.value').val(settings[key]).change(function () {
+                    $value.val(settings[key]).on('change', function () {
                         onChange();
-                    }).keyup(function () {
+                    }).on('keyup', function () {
                         $(this).trigger('change');
                     });
                 }
@@ -45,24 +42,18 @@
             M.updateTextFields();
         }
 
-
-        // ... and the function save has to exist.
-        // you have to make sure the callback is called with the settings object as first param!
         function save(callback) {
-            // example: select elements with class=value and build settings object
             var obj = {};
             $('.value').each(function () {
                 var $this = $(this);
 
                 var id = $this.attr('id');
 
-                if ($this.attr('type') == 'checkbox') {
+                if ($this.attr('type') === 'checkbox') {
                     obj[$this.attr('id')] = $this.prop('checked');
                 } else {
                     obj[$this.attr('id')] = $this.val();
                 }
-
-                //obj[$this.attr('id')] = $this.val();
             });
             callback(obj);
         }
