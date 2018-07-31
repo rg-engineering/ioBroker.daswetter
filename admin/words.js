@@ -71,7 +71,6 @@ systemDictionary = {
         "es": "la estructura de datos en la versión 2.x es diferente de 1.x. Si aún desea seguir siendo compatible con 1.x, desactive 'usar nueva estructura'. En la versión 2.x hay muchos más datos disponibles.",
         "pl": "struktura danych w wersji 2.x różni się od 1.x. Jeśli nadal chcesz być kompatybilny z 1.x, po prostu wyłącz \"użyj nowej struktury\". W wersji 2.x dostępnych jest znacznie więcej danych."
     },
-
     "use_new_dataset": {
         "en": "use new data structure",
         "de": "neue Datenstruktur verwenden",
@@ -83,4 +82,26 @@ systemDictionary = {
         "es": "usar nueva estructura de datos",
         "pl": "użyj nowej struktury danych"
     },
+    "Icons": {
+        "en": "Icons",
+        "de": "Symbole",
+        "ru": "Иконки",
+        "pt": "Ícones",
+        "nl": "Icons",
+        "fr": "Icônes",
+        "it": "Icone",
+        "es": "Iconos",
+        "pl": "Ikony"
+    },"Icon set": {
+        "en": "Icon set",
+        "de": "Icon-Set",
+        "ru": "Набор значков",
+        "pt": "Conjunto de ícones",
+        "nl": "Icon set",
+        "fr": "Jeu d'icônes",
+        "it": "Set di icone",
+        "es": "Conjunto de iconos",
+        "pl": "Zestaw ikon"
+    }
+
 };

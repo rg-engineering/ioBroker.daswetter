@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "news": {
       "2.0.1": {
         "en": "deleting of unused date structur",
@@ -13,6 +13,16 @@
         "it": "cancellazione della struttura dati inutilizzata",
         "es": "eliminación de la estructura de datos no utilizados",
         "pl": "usunięcie nieużywanej struktury danych"
+      "2.1.0": {
+        "en": "Added URLs to icons\nAdded the roles and the names to states\nIcons was moved to admin directory",
+        "de": "URLs zu Icons hinzugefügt\nDie Rollen und die Namen zu Staaten hinzugefügt\nDie Icons wurden in das Admin-Verzeichnis verschoben",
+        "ru": "Добавлены URL-адреса для значков\nДобавлены роли и имена в состояния\nИконки были перемещены в каталог администратора",
+        "pt": "URLs adicionados aos ícones\nAdicionado os papéis e os nomes aos estados\nÍcones foi movido para o diretório admin",
+        "nl": "URL's toegevoegd aan pictogrammen\nDe rollen en de namen aan staten toegevoegd\nPictogrammen zijn verplaatst naar de beheerdersdirectory",
+        "fr": "URL ajoutées aux icônes\nAjout des rôles et des noms aux états\nLes icônes ont été déplacées dans le répertoire admin",
+        "it": "Aggiunti URL alle icone\nAggiunti i ruoli e i nomi agli stati\nLe icone sono state spostate nella directory di amministrazione",
+        "es": "URLs agregadas a los iconos\nSe agregaron los roles y los nombres a los estados\nLos iconos se movieron al directorio de administración",
+        "pl": "Dodano adresy URL do ikon\nDodano role i nazwy do stanów\nIkony zostały przeniesione do katalogu administracyjnego"
       },
       "2.0.0": {
         "en": "parsing all data from xml (not compatible to version 1.x anymore)",
@@ -121,7 +131,6 @@
       "schedule": "*/15 * * * *",
       "icon": "daswettercom.png",
       "enabled": true,
-      "messagebox": true,
       "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
       "keywords": [
         "iobroker",
@@ -146,6 +155,7 @@
     "Days7Forecast": "",
     "Days5Forecast": "",
     "HourlyForecast": "",
-    "UseNewDataset":  false
+    "UseNewDataset":  true,
+    "iconSet": 6
   }
 }

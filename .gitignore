@@ -19,4 +19,6 @@ test.js
 hs_err_pid*
 /test2.js
 /bin/*
+/.idea
+/package-lock.json
 /obj/Debug/*
