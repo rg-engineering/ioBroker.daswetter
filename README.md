@@ -24,6 +24,9 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 
 ## Changelog
 
+#### 2.0.1
+* (René) deleting of unused date structur to avoid confusion about missing updates
+
 #### 2.0.0
 * (René) new datastructure !not compatible to version 1.x!
 now parsing all data from xml and store them in datapoints

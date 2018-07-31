@@ -95,9 +95,13 @@ function main() {
     // don't know why it does not terminate by itself...
     setTimeout(function () {
         adapter.log.warn('force terminate, objects still in list: ' + Object.keys(tasks).length);
-        process.exit(0);
-    }, 300000);
+        process.exit(15);
+    }, 300000); //300000
     AllDone = false;
+    
+    
+    DeleteOldData(adapter.config.UseNewDataset);
+
     if (adapter.config.UseNewDataset) {
         adapter.log.debug('using new datastaructure');
 
@@ -111,7 +115,7 @@ function main() {
 
         getForecastData7Days_old();
     }
-
+    
 }
 
 function getprops(obj, keyName) {
@@ -150,6 +154,8 @@ function getForecastData7Days(cb) {
                     parseString(body, function (err, result) {
                         //var oData = JSON.parse(result);
 
+                        CheckObject('NextDays', "7 days forecast", 'device');
+
                         //adapter.log.debug(JSON.stringify(result));
 
                         //result.report.location[0].var[0].data[0].forecast[d].$.value
@@ -159,17 +165,24 @@ function getForecastData7Days(cb) {
 
                         for (var l = 0; l < NoOfLocations; l++) {
 
+                            var ll = l + 1;
+                            CheckObject("NextDays.Location_" + ll, "Location " + ll, 'channel');
+
+                            
                             var NoOfPeriods = result.report.location[l].var[0].data[0].forecast.length;
 
                             for (var p = 0; p < NoOfPeriods; p++) {
 
+                                var pp = p + 1;
+                                CheckObject("NextDays.Location_" + ll + ".Day_" + pp, "Day " + pp, 'channel');
+                                
                                 var NoOfDatapoints = result.report.location[l].var.length;
 
                                 for (var d = 0; d < NoOfDatapoints; d++) {
 
                                     var DatapointName = result.report.location[l].var[d].name;
-                                    var pp = p + 1;
-                                    var ll = l + 1;
+                                    
+                                    
                                     var keyName = "NextDays.Location_" + ll + ".Day_" + pp + "." + DatapointName;
 
                                     var value = result.report.location[l].var[d].data[0].forecast[p].$;
@@ -182,6 +195,8 @@ function getForecastData7Days(cb) {
                                 }
                             }
                         }
+                        
+
                         adapter.log.debug('7 days forecast done, ojects in list' + Object.keys(tasks).length);
                         if (!DBRunning) {
                             StartDBUpdate();
@@ -231,18 +246,27 @@ function getForecastData5Days(cb) {
                         //var oData = JSON.parse(result);
 
                         //adapter.log.debug(JSON.stringify(result));
+                        CheckObject('NextDaysDetailed', "5 days detailed forecast", 'device');
+                        
 
                         var NoOfLocations = result.report.location.length;
                        
                         for (var l = 0; l < NoOfLocations; l++) {
+
+                            
+                            var ll = l + 1;
+                            CheckObject("NextDaysDetailed.Location_" + ll, "Location " + ll, 'channel');
+                            
 
                             var NoOfDays = result.report.location[l].day.length;
 
                             for (var d = 0; d < NoOfDays; d++) {
 
                                 var keyName = "";
-                                var ll = l + 1;
+                                
                                 var dd = d + 1;
+                                CheckObject("NextDaysDetailed.Location_" + ll + ".Day_" + dd, "Day " + dd, 'channel');
+                                
                                 
                                 var value = result.report.location[l].day[d].$;
                                 keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd;
@@ -303,7 +327,8 @@ function getForecastData5Days(cb) {
 
                                     //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
                                     var hh = h + 1;
-
+                                    CheckObject("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, "Hour " + hh, 'channel');
+                                    
                                     value = result.report.location[l].day[d].hour[h].$;
                                     keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh;
                                     getprops(value, keyName);
@@ -350,6 +375,7 @@ function getForecastData5Days(cb) {
                                 }
                             }
                         }
+                       
 
                         adapter.log.debug('5 days forecast done, objects in list ' + Object.keys(tasks).length);
                         if (!DBRunning) {
@@ -402,18 +428,27 @@ function getForecastDataHourly(cb) {
                         //var oData = JSON.parse(result);
 
                         //adapter.log.debug(JSON.stringify(result));
+                        CheckObject('NextHours', "hourly forecast", 'device');
+                        
 
                         var NoOfLocations = result.report.location.length;
 
                         for (var l = 0; l < NoOfLocations; l++) {
+                            var ll = l + 1;
+                            CheckObject("NextHours.Location_" + ll, "Location " + ll, 'channel');
+
+
 
                             var NoOfDays = result.report.location[l].day.length;
 
                             for (var d = 0; d < NoOfDays; d++) {
 
                                 var keyName = "";
-                                var ll = l + 1;
+                               
                                 var dd = d + 1;
+                                CheckObject("NextHours.Location_" + ll + ".Day_" + dd, "Day " + dd, 'channel');
+                                
+
 
                                 //adapter.log.debug("loc: " + l + " day: " + d + " = " + JSON.stringify(result.report.location[l].day[d]));
 
@@ -462,26 +497,21 @@ function getForecastDataHourly(cb) {
                                 keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".pressure";
                                 getprops(value, keyName);
 
-
                                 value = result.report.location[l].day[d].snowline[0].$;
                                 keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".snowline";
                                 getprops(value, keyName);
-
 
                                 value = result.report.location[l].day[d].sun[0].$;
                                 keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".sun";
                                 getprops(value, keyName);
 
-
                                 value = result.report.location[l].day[d].moon[0].$;
                                 keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".moon";
                                 getprops(value, keyName);
 
-
                                 value = result.report.location[l].day[d].local_info[0].$;
                                 keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".local_info";
                                 getprops(value, keyName);
-
 
                                 var NoOfHours = result.report.location[l].day[d].hour.length;
 
@@ -489,7 +519,8 @@ function getForecastDataHourly(cb) {
 
                                     //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
                                     var hh = h + 1;
-
+                                    CheckObject("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, "Hour " + hh, 'channel');
+                                    
                                     value = result.report.location[l].day[d].hour[h].$;
                                     keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh;
                                     getprops(value, keyName);
@@ -587,16 +618,49 @@ function InsertIntoList(key, value) {
 
     var obj = {
         type: 'state',
-        common: { name: 'data', type: 'string', role: 'history', unit: '', read: true, write: false },
+        common: { name: key, type: 'string', role: 'history', unit: '', read: true, write: false },
         native: { location: key }
     };
     tasks.push({
-        name: "add",
+        name: "update",
         key: key,
         obj: obj,
         value: value
     });
     
+}
+
+function CheckObject(key, name, type) {
+    adapter.getObject(key, function (err, obj) {
+        if (!obj) {
+            adapter.log.debug('add object: ' + key);
+            var newObj = {
+                type: type,
+                common: { name: name, type: 'string', role: 'history', unit: '', read: true, write: false },
+                native: { location: key }
+            };
+
+            tasks.push({
+                name: "add",
+                key: key,
+                obj: newObj,
+            });
+
+        }
+        else {
+            //adapter.log.debug('object already there: ' + key);
+        }
+    });
+
+
+}
+
+
+function DeleteIntoList(key) {
+    tasks.push({
+        name: "delete",
+        key: key
+    });
 }
 
 function StartDBUpdate() {
@@ -627,10 +691,14 @@ function processTasks(tasks) {
             setTimeout(processTasks, 0, tasks);
         });
     } else if (task.name === 'update') {
-        updateExtendObject(task.key, task.value, function () {
+        updateExtendObject(task.key, task.obj, task.value, function () {
             setTimeout(processTasks, 0, tasks);
         });
-    }  else {
+    } else if (task.name === 'delete') {
+       DeleteState(task.key, function () {
+            setTimeout(processTasks, 0, tasks);
+        });
+    } else {
         throw 'Unknown task';
     }
 }
@@ -639,26 +707,241 @@ function processTasks(tasks) {
 function createExtendObject(key, objData, value, callback) {
 
     adapter.getObject(key, function (err, obj) {
-        if (!obj) {
-            adapter.setObjectNotExists(key, objData, callback);
-            adapter.log.debug('back to list: ' + key + " " + value);
-            InsertIntoList(key,  value);
-            
+        try {
+            if (!obj) {
+                adapter.log.debug('create: ' + key );
+                adapter.setObjectNotExists(key, objData, callback);
+            }
+            else {
+                //already exist
+                adapter.log.debug('create: already exist ' + key );
+                callback();
+            }
         }
-        else {
-            adapter.setState(key, { ack: true, val: value }, callback);
-            //if (callback) callback();
-            //adapter.extendObject(key, objData, callback);
+        catch (e) {
+            adapter.log.error('exception in createExtendObject [' + e + ']');
         }
     });
 }
 
-function updateExtendObject(key, value, callback) {
+function updateExtendObject(key, objData, value, callback) {
 
-    adapter.setState(key, { ack: true, val: value },callback);
-    //adapter.log.debug('update: ' + key + " " + value);
+    //check if exist
+    adapter.getObject(key, function (err, obj) {
+        try {
+            if (!obj) {
+                //if not exist: creat
+                adapter.log.debug('back to list: ' + key + " " + value);
+                adapter.setObjectNotExists(key, objData, callback);
+                
+                InsertIntoList(key, value);
+
+            }
+            else {
+                //adapter.log.debug('update: ' + key + " " + value);
+                adapter.setState(key, { ack: true, val: value }, callback);
+                
+            }
+        }
+        catch (e) {
+            adapter.log.error('exception in updateExtendObject [' + e + ']');
+        }
+    });
+}
+
+// Delete all states from array (one after each other)
+/*
+function deleteStates(states, callback) {
+    // If array is empty => finished
+    if (!states || !states.length) {
+        if (callback) callback();
+        return;
+    }
+
+    // Get one ID
+    var id = states.pop();
+
+    // Delete Object
+    adapter.delObject(id, function (err) {
+        // Delete state
+        adapter.delState(id, function (err) {
+            // Go to next ID
+            setTimeout(deleteStates, 0, states, callback);
+        });
+    });
+}
+*/
+
+function DeleteState(state, callback) {
+
+    adapter.delObject(state, function (err) {
+        // Delete state
+        adapter.delState(state, callback);
+    });
 
 }
+/*
+https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation
+*/
+function DeleteObject(key, callback) {
+
+    // Get all IDs of this adapter
+
+    var sKeyArr = key.split(".");
+    adapter.log.debug("*********" + JSON.stringify(sKeyArr));
+
+    adapter.getChannelsOf(sKeyArr[0], function (err, channels) {
+        if (err) {
+            adapter.log.error("error in  DeleteObject " + sKeyArr[0] + " " + err);
+        }
+        else {
+
+            adapter.log.debug("got " + channels.length + " channels, objects in list " + Object.keys(tasks).length);
+            for (var i = 0; i < channels.length; i++) {
+                //adapter.log.debug("got channel: " + JSON.stringify(channels[i]));
+
+                var channel = channels[i].common.name;
+
+                adapter.getStatesOf(sKeyArr[0], channel, function (err, states) {
+                    if (err) {
+                        adapter.log.error("error in  DeleteObject " + channel + " " + err);
+                    }
+                    else {
+                        adapter.log.debug("got " + states.length + " states in " + channel);
+                        for (var j = 0; j < states.length; j++) {
+                            //adapter.log.debug("got state " + states[j].native.location + " in " + channel + " " + JSON.stringify(states[j]));
+
+                            //adapter.log.debug("got state " + states[j]._id );
+                            DeleteIntoList(states[j]._id);
+                        }
+                    }
+                });
+
+
+            }
+        }
+    });
+
+    /*
+    got 8 channels
+    got channel: {"type":"channel","common":{"name":"Location 1","type":"string","role":"history","unit":"","read":true,"write":false},"native":{"location":"NextDays.Location_1"},"from":"system.adapter.daswetter.0","ts":1530122433923,"_id":"daswetter.0.NextDays.Location_1","acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+    got channel: {"type":"channel","common":{"name":"Day 1","type":"string","role":"history","unit":"","read":true,"write":false},"native":{"location":"NextDays.Location_1.Day_1"},"from":"system.adapter.daswetter.0","ts":1530122434020,"_id":"daswetter.0.NextDays.Location_1.Day_1","acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+    */
+
+    /*
+    adapter.getStatesOf(sKeyArr[0], sKeyArr[1], function (err, states) {
+        //var toDelete = [];
+        adapter.log.debug("got " + states.length + " states " );
+
+        for (var i = 0; i < states.length; i++) {
+            adapter.log.debug("got state: " + JSON.stringify(states[i]));
+
+        }
+
+
+
+        
+        //for (var id in states) {
+        //    // test value and store ID if value is empty
+        //    if (states[id].native.location.includes(key)) {
+        //        //toDelete.push(id);
+        //        adapter.log.debug("got state: " + JSON.stringify(states[id]));
+        //    }
+        //}
+        
+        // gently delete all empty states
+        deleteStates(toDelete, function () {
+            adapter.log.info('delete finished');
+            process.exit(12);
+        });
+    });
+*/
+    /*
+    got 84 states
+    got state: {"type":"state","common":{"name":"data","type":"string","role":"history","unit":"","read":true,"write":false},"native":{"location":"NextDays.Location_1.Day_1.Minimale Temperatur.value"},"from":"system.adapter.daswetter.0","ts":1530122423708,"_id":"daswetter.0.NextDays.Location_1.Day_1.Minimale Temperatur.value","acl":{"object":1636,"state":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+    */
+
+/*
+    adapter.getObjects(function (err, obj) {
+        if (err) {
+            adapter.log.error("error in  getObjects " + key + " " + err);
+        }
+        else {
+            adapter.log.debug("got objects " + obj.length);
+        }
+    });
+    */
+/*
+    adapter.getObject(key, function (err, obj) {
+
+        if (err) {
+            adapter.log.debug("error in deleting " + key + " " + err);
+        }
+        else {
+            if (obj) {
+
+                adapter.log.debug("deleting " + key + " " + obj.type);
+
+                if (obj.type === "channel") {
+                    adapter.log.debug(key + " " + obj._id + " is channel");
+                    adapter.deleteChannel('', obj._id, function (err, obj) {
+                        if (err) {
+                            adapter.log.debug("error 222 in deleting " + key + " " + err);
+                        }
+                        else {
+                            adapter.log.debug("deleted");
+                        }
+                    });
+                }
+                else if (obj.type === "device") {
+                    adapter.log.debug(key + " is device");
+                }
+                else if (obj.type === "state") {
+                    adapter.log.debug(key + " is state");
+                    adapter.delObject ( obj._id, function (err, obj) {
+                        if (err) {
+                            adapter.log.debug("error 222 in deleting " + key + " " + err);
+                        }
+                        else {
+                            adapter.log.debug("deleted");
+                        }
+                    });
+
+                }
+                else {
+                    adapter.log.debug(key + " is unknown");
+                }
+            }
+            else {
+                adapter.log.debug("is null " + key);
+            }
+
+            //process.exit(12);
+        }
+    });
+*/
+
+/*
+    adapter.delObject(key, function (err, obj) {
+        try {
+            if (err) {
+                adapter.log.error("delete  " + key + " : " + err + " type "  );
+            }
+            else {
+                adapter.log.info("object deleted");
+            }
+            callback();
+        }
+        catch (e) {
+            adapter.log.error('exception in DeleteObject [' + e + ']');
+        }
+    });
+*/
+}
+
+
+
+
 
 
 //============================================================================================
@@ -1001,6 +1284,98 @@ function getForecastDataHourly_old(cb) {
         }
     }
     if (cb) cb();
+}
+
+
+function DeleteOldData(bUseNewDataset) {
+
+    adapter.log.debug('checking data structures');
+
+    //daswetter.0.NextHours.Location_1
+    //daswetter.0.NextHours.Location_1.Day_1.Hour_1
+    //daswetter.0.NextHours.Location_1.Day_1.Hour_1.clouds.value
+    //DeleteObject("NextHours.Location_1.Day_1.Hour_1", null);
+    //DeleteObject("NextDays.Location_1.Day_1.Hour_1", null);
+
+    if (bUseNewDataset) {
+       
+        adapter.getObject('NextDays.0d', function (err, obj) {
+            if (err) {
+                // do nothing
+            } else {
+                if (obj) {
+                    adapter.log.debug('deleting NextDays.xd');
+                    DeleteObject("NextDays.0d", null);
+                    //DeleteObject("NextDays.1d", null);
+                    //DeleteObject("NextDays.2d", null);
+                    //DeleteObject("NextDays.3d", null);
+                    //DeleteObject("NextDays.4d", null);
+                    //DeleteObject("NextDays.5d", null);
+                    //DeleteObject("NextDays.6d", null);
+                    
+                }
+            }
+        });
+
+        adapter.getObject('NextDaysDetailed.0d', function (err, obj) {
+            if (err) {
+                // do nothing
+            } else {
+                if (obj) {
+                    adapter.log.debug('deleting NextDaysDetailed.xd');
+                    //DeleteObject("NextDaysDetailed.0d", null);
+                    //DeleteObject("NextDaysDetailed.1d", null);
+                    //DeleteObject("NextDaysDetailed.2d", null);
+                    //DeleteObject("NextDaysDetailed.3d", null);
+                    //DeleteObject("NextDaysDetailed.4d", null);
+                    
+                }
+            }
+        });
+        adapter.getObject('hourly.0d', function (err, obj) {
+            if (err) {
+                // do nothing
+            } else {
+                if (obj) {
+                    adapter.log.debug('deleting hourly.xd');
+                    //DeleteObject("hourly.0d", null);
+                    //DeleteObject("hourly.1d", null);
+                }
+            }
+        });
+    }
+    else {
+        adapter.getObject('NextDays.Location_1', function (err, obj) {
+            if (err) {
+                // do nothing
+            } else {
+                if (obj) {
+                    adapter.log.debug('deleting NextDays.Location_1');
+                    DeleteObject("NextDays.Location_1", null);
+                }
+            }
+        });
+        adapter.getObject('NextDaysDetailed.Location_1', function (err, obj) {
+            if (err) {
+                // do nothing
+            } else {
+                if (obj) {
+                    adapter.log.debug('deleting NextDaysDetailed.Location_1');
+                    DeleteObject("NextDaysDetailed.Location_1", null);
+                }
+            }
+        });
+        adapter.getObject('NextDaysDetailed.Location_1', function (err, obj) {
+            if (err) {
+                // do nothing
+            } else {
+                if (obj) {
+                    adapter.log.debug('deleting NextHours.Location_1');
+                    DeleteObject("NextHours.Location_1", null);
+                }
+            }
+        });
+    }
 }
 
 
