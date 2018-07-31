@@ -30,10 +30,10 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 * (bluefox) Added the roles and the names to states
 * (bluefox) Icons moved to admin directory
 
-#### 2.0.1
+### 2.0.1
 * (René) deleting of unused date structur to avoid confusion about missing updates
 
-#### 2.0.0
+### 2.0.0
 * (René) new datastructure !not compatible to version 1.x!
 now parsing all data from xml and store them in datapoints
 for compatibility: in configuration old data structure can be enabled (default)

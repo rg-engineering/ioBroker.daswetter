@@ -3,16 +3,6 @@
     "name": "daswetter",
     "version": "2.1.0",
     "news": {
-      "2.0.1": {
-        "en": "deleting of unused date structur",
-        "de": "Löschen nicht genutzter Datenstruktur",
-        "ru": "удаление неиспользуемой структуры данных",
-        "pt": "eliminação de estrutura de dados não utilizada",
-        "nl": "schrapping van ongebruikte gegevensstructuur",
-        "fr": "suppression de la structure de données inutilisée",
-        "it": "cancellazione della struttura dati inutilizzata",
-        "es": "eliminación de la estructura de datos no utilizados",
-        "pl": "usunięcie nieużywanej struktury danych"
       "2.1.0": {
         "en": "Added URLs to icons\nAdded the roles and the names to states\nIcons was moved to admin directory",
         "de": "URLs zu Icons hinzugefügt\nDie Rollen und die Namen zu Staaten hinzugefügt\nDie Icons wurden in das Admin-Verzeichnis verschoben",
@@ -23,6 +13,17 @@
         "it": "Aggiunti URL alle icone\nAggiunti i ruoli e i nomi agli stati\nLe icone sono state spostate nella directory di amministrazione",
         "es": "URLs agregadas a los iconos\nSe agregaron los roles y los nombres a los estados\nLos iconos se movieron al directorio de administración",
         "pl": "Dodano adresy URL do ikon\nDodano role i nazwy do stanów\nIkony zostały przeniesione do katalogu administracyjnego"
+      },
+      "2.0.1": {
+        "en": "deleting of unused date structur",
+        "de": "Löschen nicht genutzter Datenstruktur",
+        "ru": "удаление неиспользуемой структуры данных",
+        "pt": "eliminação de estrutura de dados não utilizada",
+        "nl": "schrapping van ongebruikte gegevensstructuur",
+        "fr": "suppression de la structure de données inutilisée",
+        "it": "cancellazione della struttura dati inutilizzata",
+        "es": "eliminación de la estructura de datos no utilizados",
+        "pl": "usunięcie nieużywanej struktury danych"
       },
       "2.0.0": {
         "en": "parsing all data from xml (not compatible to version 1.x anymore)",
