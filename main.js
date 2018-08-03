@@ -34,13 +34,13 @@ function main() {
     // force terminate after 4 min
     // don't know why it does not terminate by itself...
     setTimeout(() => {
-        adapter.log.warn('force terminate, objects still in list: ' + Object.keys(tasks).length);
+        adapter.log.error('force terminate, objects still in list: ' + Object.keys(tasks).length);
         process.exit(15);
     }, 300000);
     
     allDone = false;
 
-    deleteOldData(adapter.config.UseNewDataset);
+    //deleteOldData(adapter.config.UseNewDataset);
 
     if (adapter.config.UseNewDataset) {
         adapter.log.debug('using new datastaructure');
@@ -1246,7 +1246,7 @@ function getForecastDataHourlyOld(cb) {
     if (cb) cb();
 }
 
-function DeleteOldData(bUseNewDataset) {
+function deleteOldData(bUseNewDataset) {
 
     adapter.log.debug('checking data structures');
 

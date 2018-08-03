@@ -24,7 +24,7 @@
                 url = '/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/';
                 var ext = (name < 5) ? '.png' : '.svg';
                 for (var i = 1; i < (name < 5) ? 21 : 23; i++) {
-                    text.push('<img src="' + url + i + ext + '" width="50" alt="' + i + '"/>');
+                   text.push('<img src="' + url + i + ext + '" width="50" alt="' + i + '"/>');
                 }
             }
             $('.icons-show').html(text.join(' '));
@@ -81,13 +81,20 @@
 </head>
 <body>
     <div class="m adapter-container">
+
+
         <div class="row">
+
+            <!-- tab definition -->
+
             <div class="col s12">
                 <ul class="tabs">
                     <li class="tab col s4"><a href="#tab-main" class="translate active">Main settings</a></li>
                     <li class="tab col s4"><a href="#tab-icons" class="translate">Icons</a></li>
                 </ul>
             </div>
+
+            <!-- main tab-->
             <div id="tab-main" class="col s12 page">
                 <div class="row">
                     <div class="col s6 m4 l2">
@@ -130,7 +137,12 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- icon tab -->
             <div id="tab-icons" class="col s12 page">
+
+
                 <div class="row">
                     <div class="input-field col s12 m4">
                         <select id="iconSet" class="value">
@@ -148,6 +160,8 @@
                     <div class="icons-show col s12">
                     </div>
                 </div>
+
+                   
             </div>
         </div>
     </div>
