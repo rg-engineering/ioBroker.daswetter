@@ -1,5 +1,5 @@
 ﻿![Logo](admin/daswettercom.png)
-.# ioBroker.DasWetter.
+ioBroker.DasWetter.
 ===========================
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
@@ -38,7 +38,7 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 * (bluefox) Added the roles and the names to states
 * (bluefox) Icons moved to admin directory
 
-#.## 2.0.1
+### 2.0.1
 * (René) deleting of unused date structur to avoid confusion about missing updates
 
 ### 2.0.0
