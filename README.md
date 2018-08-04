@@ -1,5 +1,5 @@
 ﻿![Logo](admin/daswettercom.png)
-# ioBroker.DasWetter
+.# ioBroker.DasWetter.
 ===========================
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
@@ -24,13 +24,21 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 
 Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
 
+
+
+
 ## Changelog
+
+### 2.1.1 (2018-07-08)
+* (René)
+
+
 ### 2.1.0 (2018-07-30)
 * (bluefox) Added URLs to icons
 * (bluefox) Added the roles and the names to states
 * (bluefox) Icons moved to admin directory
 
-### 2.0.1
+#.## 2.0.1
 * (René) deleting of unused date structur to avoid confusion about missing updates
 
 ### 2.0.0

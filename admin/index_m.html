@@ -23,9 +23,16 @@
             if (name) {
                 url = '/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/';
                 var ext = (name < 5) ? '.png' : '.svg';
-                for (var i = 1; i < (name < 5) ? 21 : 23; i++) {
+                
+                //for (var i = 1; i < (name < 5) ? 21 : 23; i++) {
+                var maxIcons = (name < 5) ? 19 : 22;
+
+                for (var i = 1; i <= maxIcons; i++) {
                    text.push('<img src="' + url + i + ext + '" width="50" alt="' + i + '"/>');
                 }
+
+                text.push('<p>' + maxIcons + ' images </p>');
+                text.push('<p> Access icons like http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria'+name+'/1.svg. </p>');
             }
             $('.icons-show').html(text.join(' '));
         }

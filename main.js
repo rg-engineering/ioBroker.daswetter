@@ -43,10 +43,10 @@ function main() {
     //deleteOldData(adapter.config.UseNewDataset);
 
     if (adapter.config.UseNewDataset) {
-        adapter.log.debug('using new datastaructure');
+        adapter.log.debug('using new datastructure');
         getForecastData7Days();
     } else {
-        adapter.log.debug('using old datastaructure');
+        adapter.log.debug('using old datastructure');
         checkWeatherVariablesOld();
         getForecastData7DaysOld();
     }
@@ -691,7 +691,7 @@ function processTasks(tasks) {
             });
         } else if (task.name === 'delete') {
             DeleteState(task.key, function () {
-                setTimeout(processTasks, 0, tasks);
+                setImmediate(processTasks, tasks);
             });
         } else {
             throw 'Unknown task';
