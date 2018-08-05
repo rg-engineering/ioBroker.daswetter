@@ -614,21 +614,40 @@ function getForecastDataHourly(cb) {
                         }
 
                         adapter.log.debug('hourly forecast done, objects in list ' + Object.keys(tasks).length);
-                        allDone = true;
+
                         if (!dbRunning) {
                             startDbUpdate();
                         } else {
                             adapter.log.debug('update already running');
                         }
+                        getForecastDataHourlyJSON(cb);
                     });
                 } catch (e) {
                     adapter.log.error('exception in HourlyForecast [' + e + ']');
+                    getForecastDataHourlyJSON(cb);
                 }
             } else {
                 // ERROR
                 adapter.log.error('DasWetter.com reported an error: ' + error);
+                getForecastDataHourlyJSON(cb);
             }
         });
+    }
+    else {
+        getForecastDataHourlyJSON(cb);
+    }
+}
+
+function getForecastDataHourlyJSON(cb) {
+    if (adapter.config.HourlyForecastJSON) {
+        adapter.log.error('Pfad 4: JSON-Datei not implemented yet');
+
+        allDone = true;
+        if (!dbRunning) {
+            startDbUpdate();
+        } else {
+            adapter.log.debug('update already running');
+        }
     }
     else {
         allDone = true;
@@ -639,6 +658,7 @@ function getForecastDataHourly(cb) {
         }
     }
 }
+
 
 const tasks = [];
 

@@ -16,7 +16,7 @@ systemDictionary = {
     },
     "URL_5_days_forecast": {
         "en": "URL 5 days forecast",
-        "de": "URL 5-Tage-Wettervorhersage",
+        "de": "Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage und detaillierte Informationen für alle 3 Stunden",
         "ru": "URL прогноза на 5 дней",
         "pt": "Previsão de 5 dias",
         "nl": "URL 5 dagen voorspelling",
@@ -27,7 +27,7 @@ systemDictionary = {
     },
     "URL_7_days_forecast": {
         "en": "URL 7 days forecast",
-        "de": "URL 7-Tage-Wettervorhersage",
+        "de": "Pfad 1: XML-Datei mit der 7-Tage-Wettervorhersage und allgemeiner Tagesüberblick",
         "ru": "URL прогноза на 7 дней",
         "pt": "Previsão de 7 dias",
         "nl": "URL 7 dagen voorspelling",
@@ -38,7 +38,7 @@ systemDictionary = {
     },
     "URL_hourly_forecast": {
         "en": "URL hourly forecast",
-        "de": "URL stündlichen Wettervorhersagen",
+        "de": "Pfad 3: XML-Datei mit Wettervorhersagen für die kommenden 5 Tage und stündlicher Infos",
         "ru": "URL-адрес ежечасно",
         "pt": "Previsão horária de URL",
         "nl": "URL-uurprognose",
@@ -47,7 +47,18 @@ systemDictionary = {
         "es": "Pronóstico por hora de URL",
         "pl": "Prognoza godzinowa adresu URL"
     },
-    
+    "URL_hourly_forecast_JSON": {
+        "en": "URL hourly forecast",
+        "de": "Pfad 4: JSON-Datei mit Wettervorhersagen für die kommenden 5 Tage und stündlicher Infos",
+        "ru": "URL-адрес ежечасно",
+        "pt": "Previsão horária de URL",
+        "nl": "URL-uurprognose",
+        "fr": "Prévision horaire de l'URL",
+        "it": "Previsione oraria dell'URL",
+        "es": "Pronóstico por hora de URL",
+        "pl": "Prognoza godzinowa adresu URL"
+    },
+
     "use_only_the_URL_you_need": {
         "en": "use only the URL you need, leave the others blank",
         "de": "nur die URL verwenden, die benötigt wird, die anderen können leer bleiben",
