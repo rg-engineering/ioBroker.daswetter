@@ -330,9 +330,18 @@ function getForecastData5Days(cb) {
                                     keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                     getProps(value, keyName);
 
+                                    //add url for icon
+                                    insertIntoList('NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.iconURL', getIconUrl(value.value));
+                                    
+
+
+
                                     value = result.report.location[l].day[d].hour[h].wind[0].$;
                                     keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind';
                                     getProps(value, keyName);
+
+                                    //add url for icon
+                                    insertIntoList('NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windIconURL', getWindIconUrl(value.symbolB));
 
                                     value = result.report.location[l].day[d].hour[h].windgusts[0].$;
                                     keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windgusts';
@@ -556,11 +565,15 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                     getProps(value, keyName);
 
+                                    //add url for icon
+                                    insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.iconURL', getIconUrl(value.value));
 
                                     value = result.report.location[l].day[d].hour[h].wind[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind';
                                     getProps(value, keyName);
 
+                                    //add url for icon
+                                    insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windIconURL', getWindIconUrl(value.symbolB));
 
                                     value = result.report.location[l].day[d].hour[h].windgusts[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windgusts';
