@@ -4,6 +4,7 @@
     "version": "2.1.1",
     "news": {
       "2.1.1": {
+        "en": "parse timeout"
       },
       "2.1.0": {
         "en": "Added URLs to icons\nAdded the roles and the names to states\nIcons was moved to admin directory",
@@ -159,6 +160,7 @@
     "Days5Forecast": "",
     "HourlyForecast": "",
     "UseNewDataset": true,
-    "iconSet": 6
+    "iconSet": 6,
+    "parseTimeout": 60
   }
 }

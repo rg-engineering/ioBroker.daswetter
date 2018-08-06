@@ -30,8 +30,8 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 ## Changelog
 
 ### 2.1.1 (2018-08-04)
-* (René)
-
+* (René) parse timeout added
+* (René) missing roles and states added
 
 ### 2.1.0 (2018-07-30)
 * (bluefox) Added URLs to icons

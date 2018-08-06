@@ -31,12 +31,17 @@ let allDone = false;
 adapter.on('ready', main);
 
 function main() {
-    // force terminate after 4 min
-    // don't know why it does not terminate by itself...
+    // force terminate 
+    var nParseTimeout = 60;
+    if (adapter.config.parseTimeout > 0) {
+        nParseTimeout = adapter.config.parseTimeout;
+    }
+    adapter.log.debug('set timeout to ' + nParseTimeout + ' sec');
+    nParseTimeout = nParseTimeout * 1000;
     setTimeout(() => {
         adapter.log.error('force terminate, objects still in list: ' + Object.keys(tasks).length);
         process.exit(15);
-    }, 300000);
+    }, nParseTimeout);
     
     allDone = false;
 

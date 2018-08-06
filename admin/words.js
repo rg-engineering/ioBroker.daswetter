@@ -103,7 +103,8 @@ systemDictionary = {
         "it": "Icone",
         "es": "Iconos",
         "pl": "Ikony"
-    },"Icon set": {
+    },
+    "Icon set": {
         "en": "Icon set",
         "de": "Icon-Set",
         "ru": "Набор значков",
@@ -113,6 +114,17 @@ systemDictionary = {
         "it": "Set di icone",
         "es": "Conjunto de iconos",
         "pl": "Zestaw ikon"
+    },
+    "parse_timeout": {
+        "en": "download and parse timeout [seconds]",
+        "de": "Zeitlimit für Herunterladen und Parsen [Sekunden]",
+        "ru": "скачать и разобрать таймаут [секунды]",
+        "pt": "baixar e analisar o tempo limite [segundos]",
+        "nl": "time-out voor downloaden en parseren [seconden]",
+        "fr": "télécharger et analyser le délai d'attente [secondes]",
+        "it": "scarica e analizza il timeout [secondi]",
+        "es": "descargar y analizar el tiempo de espera [segundos]",
+        "pl": "pobierz i przeanalizuj limit czasu [sekundy]"
     }
 
 };
