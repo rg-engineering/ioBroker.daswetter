@@ -60,15 +60,15 @@ systemDictionary = {
     },
 
     "use_only_the_URL_you_need": {
-        "en": "use only the URL you need, leave the others blank",
-        "de": "nur die URL verwenden, die benötigt wird, die anderen können leer bleiben",
-        "ru": "используйте только URL-адрес, который вам нужен, оставьте остальные пустым",
-        "pt": "use apenas o URL que você precisa, deixe os outros em branco",
-        "nl": "gebruik alleen de URL die u nodig hebt, laat de anderen leeg",
-        "fr": "n'utilisez que l'URL dont vous avez besoin, laissez les autres vides",
-        "it": "usa solo l'URL che ti serve, lascia gli altri vuoti",
-        "es": "use solo la URL que necesita, deje los otros en blanco",
-        "pl": "u?ywaj tylko potrzebnego adresu URL, pozostawiaj?c pozosta?e puste"
+        "en": "Use only the URL you need, leave the others blank. Use arbitrary minutes in cron settings because the API server does respond late on exact hours, half hours and so on. (server overload problem).",
+        "de": "Verwenden Sie nur die URL, die Sie benötigen, lassen Sie die anderen leer. Verwenden Sie beliebige Minuten in Cron-Einstellungen, da der API-Server spät auf genaue Stunden, halbe Stunden usw. reagiert. (Server-Überlastungsproblem).",
+        "ru": "Используйте только URL-адрес, который вам нужен, оставьте остальные пустыми. Используйте произвольные минуты в настройках cron, потому что сервер API отвечает поздно на точные часы, полчаса и так далее. (проблема перегрузки сервера).",
+        "pt": "Use apenas o URL que você precisa, deixe os outros em branco. Use minutos arbitrários nas configurações do cron porque o servidor da API responde atrasado em horas exatas, meia hora e assim por diante. (problema de sobrecarga do servidor).",
+        "nl": "Gebruik alleen de URL die u nodig heeft, laat de anderen leeg. Gebruik willekeurige minuten in cron-instellingen, want de API-server reageert laat op exacte uren, een half uur enzovoort. (probleem met serveroverbelasting).",
+        "fr": "Utilisez uniquement l'URL dont vous avez besoin, laissez les autres vides. Utilisez des minutes arbitraires dans les paramètres cron car le serveur d'API répond en retard à des heures précises, des demi-heures, etc. (problème de surcharge du serveur).",
+        "it": "Usa solo l'URL di cui hai bisogno, lascia gli altri vuoti. Utilizza minuti arbitrari nelle impostazioni di cron perché il server API risponde in ritardo su ore esatte, mezz'ora e così via. (problema di sovraccarico del server).",
+        "es": "Use solo la URL que necesita, deje los otros en blanco. Use minutos arbitrarios en la configuración de cron porque el servidor API responde tarde en horas exactas, medias horas, etc. (problema de sobrecarga del servidor).",
+        "pl": "Użyj tylko potrzebnego adresu URL, pozostałe pozostałe pozostaw puste. Użyj arbitralnych minut w ustawieniach cron, ponieważ serwer API reaguje późno na dokładne godziny, pół godziny i tak dalej. (problem z przeciążeniem serwera)."
     },
 
     "use_new_dataset_hint": {
