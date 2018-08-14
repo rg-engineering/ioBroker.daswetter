@@ -78,17 +78,33 @@ function getWindIconUrl(num) {
     }
 }
 
+
+
 function getProps(obj, keyName) {
-    for (const prop in obj) {
+    //rückwärts parsen, dann kommt unit for dem wert und kann somit in die liste eingetragen werden
+    var arr = [];
+    var unit = "";
+    for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
-            const dataValue = obj[prop];
-            if (prop !== 'data_sequence' && prop !== 'unit') {
-                const keyNameLong = keyName + '_' + prop.replace(/\s/g, '_');
-                insertIntoList(keyNameLong, dataValue);
-            }
+            arr.push(prop);
+        }
+    }
+    for (var i = arr.length - 1; i >= 0; i--) {
+        const dataValue = obj[arr[i]];
+        if (arr[i] === 'unit') {
+            //parse unit
+            unit = dataValue.replace(/\s/g, '_');
+
+            adapter.log.debug('got unit '  + dataValue);
+        }
+        else if (arr[i] !== 'data_sequence') {
+            const keyNameLong = keyName + '_' + arr[i].replace(/\s/g, '_');
+            insertIntoList(keyNameLong, dataValue, unit);
+            unit = "";
         }
     }
 }
+
 
 function getForecastData7Days(cb) {
     if (adapter.config.Days7Forecast) {
@@ -667,7 +683,15 @@ function getForecastDataHourlyJSON(cb) {
 
 const tasks = [];
 
-function insertIntoList(key, value) {
+function insertIntoList(key, value, unit) {
+
+    var sUnit = "";
+    if (unit !== undefined) {
+        sUnit = unit;
+    }
+
+    adapter.log.debug('insert ' + key + ' with ' + value + ' ' + sUnit );
+
     let obj;
     let d = key.match(/Day_(\d)\./);
     if (d) {
@@ -690,7 +714,7 @@ function insertIntoList(key, value) {
                     name: 'Minimal day temperature',
                     type: 'number',
                     role: 'value.temperature.min.forecast.' + d,
-                    unit: '°C',
+                    unit: (sUnit.length > 0 ? sUnit : 'kk°C'),
                     read: true,
                     write: false
                 }
@@ -702,7 +726,7 @@ function insertIntoList(key, value) {
                     name: 'Maximal day temperature',
                     type: 'number',
                     role: 'value.temperature.max.forecast.' + d,
-                    unit: '°C',
+                    unit: (sUnit.length > 0 ? sUnit : 'kk°C'),
                     read: true,
                     write: false
                 }
@@ -725,7 +749,7 @@ function insertIntoList(key, value) {
                     name: 'Weather icon name',
                     type: 'string',
                     role: 'weather.icon.name.forecast.' + d,
-                    unit: '',
+                    
                     read: true,
                     write: false
                 }
@@ -737,7 +761,7 @@ function insertIntoList(key, value) {
                     name: 'Weather state URL',
                     type: 'string',
                     role: 'weather.title.forecast.' + d,
-                    unit: '',
+                    
                     read: true,
                     write: false
                 }
@@ -771,7 +795,7 @@ function insertIntoList(key, value) {
                     name: 'Weather icon URL',
                     type: 'string',
                     role: 'weather.icon.forecast.' + d,
-                    unit: '',
+                    
                     read: true,
                     write: false
                 }
@@ -825,13 +849,17 @@ function insertIntoList(key, value) {
                 }
             };
         } else if (key.match(/\.clouds_value/)) {
+
+            //sometimes % comes with value
+            value = value.replace(/%/g, '');
+
             obj = {
                 type: 'state',
                 common: {
                     name: 'clouds',
                     type: 'string',
                     role: 'weather.clouds.forecast.' + d,
-                    unit: '%',
+                    unit: (sUnit.length > 0 ? sUnit : '%'),
                     read: true,
                     write: false
                 }
@@ -843,7 +871,7 @@ function insertIntoList(key, value) {
                     name: 'humidity',
                     type: 'string',
                     role: 'weather.humidity.forecast.' + d,
-                    unit: '%',
+                    unit: (sUnit.length > 0 ? sUnit : '%'),
                     read: true,
                     write: false
                 }
@@ -855,7 +883,7 @@ function insertIntoList(key, value) {
                     name: 'pressure',
                     type: 'string',
                     role: 'weather.pressure.forecast.' + d,
-                    unit: 'mBar',
+                    unit: (sUnit.length > 0 ? sUnit : 'mBar'),
                     read: true,
                     write: false
                 }
@@ -867,7 +895,7 @@ function insertIntoList(key, value) {
                     name: 'rain',
                     type: 'string',
                     role: 'weather.rain.forecast.' + d,
-                    unit: 'mm',
+                    unit: (sUnit.length > 0 ? sUnit : 'mm'),
                     read: true,
                     write: false
                 }
@@ -879,7 +907,7 @@ function insertIntoList(key, value) {
                     name: 'snowline',
                     type: 'string',
                     role: 'weather.snowline.forecast.' + d,
-                    unit: 'm',
+                    unit: (sUnit.length > 0 ? sUnit : 'm'),
                     read: true,
                     write: false
                 }
@@ -903,7 +931,7 @@ function insertIntoList(key, value) {
                     name: 'temperature',
                     type: 'string',
                     role: 'weather.temperature.forecast.' + d,
-                    unit: '°C',
+                    unit: (sUnit.length > 0 ? sUnit : '°C'),
                     read: true,
                     write: false
                 }
@@ -939,7 +967,7 @@ function insertIntoList(key, value) {
                     name: 'wind value',
                     type: 'string',
                     role: 'weather.wind.value.forecast.' + d,
-                    unit: 'km/h',
+                    unit: (sUnit.length > 0 ? sUnit : 'km/h'),
                     read: true,
                     write: false
                 }
@@ -951,7 +979,7 @@ function insertIntoList(key, value) {
                     name: 'windchill',
                     type: 'string',
                     role: 'weather.wind.windchill.forecast.' + d,
-                    unit: '°C',
+                    unit: (sUnit.length > 0 ? sUnit : '°C'),
                     read: true,
                     write: false
                 }
@@ -963,7 +991,7 @@ function insertIntoList(key, value) {
                     name: 'windgusts',
                     type: 'string',
                     role: 'weather.wind.windgusts.forecast.' + d,
-                    unit: 'km/h',
+                    unit: (sUnit.length > 0 ? sUnit : 'km/h'),
                     read: true,
                     write: false
                 }

@@ -4,7 +4,15 @@
     "version": "2.1.1",
     "news": {
       "2.1.1": {
-        "en": "parse timeout"
+        "en": "parse timeout added and use units from data structure",
+        "de": "Parse Timeout hinzugefügt und Einheiten aus der Datenstruktur verwenden",
+        "ru": "тайм-аут синтаксического разбора и использование единиц из структуры данных",
+        "pt": "o tempo limite de análise adicionado e usa unidades da estrutura de dados",
+        "nl": "parse time-out toegevoegd en eenheden uit gegevensstructuur gebruiken",
+        "fr": "délai d'analyse ajouté et utilisation des unités de la structure de données",
+        "it": "aggiunto il timeout di analisi e utilizzare le unità dalla struttura dei dati",
+        "es": "Tiempo de espera de análisis agregado y unidades de uso de la estructura de datos",
+        "pl": "Parsuj timeout dodany i korzystaj z jednostek ze struktury danych"
       },
       "2.1.0": {
         "en": "Added URLs to icons\nAdded the roles and the names to states\nIcons was moved to admin directory",
