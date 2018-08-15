@@ -95,7 +95,7 @@ function getProps(obj, keyName) {
             //parse unit
             unit = dataValue.replace(/\s/g, '_');
 
-            adapter.log.debug('got unit '  + dataValue);
+            //adapter.log.debug('got unit '  + dataValue);
         }
         else if (arr[i] !== 'data_sequence') {
             const keyNameLong = keyName + '_' + arr[i].replace(/\s/g, '_');
@@ -690,7 +690,7 @@ function insertIntoList(key, value, unit) {
         sUnit = unit;
     }
 
-    adapter.log.debug('insert ' + key + ' with ' + value + ' ' + sUnit );
+    //adapter.log.debug('insert ' + key + ' with ' + value + ' ' + sUnit );
 
     let obj;
     let d = key.match(/Day_(\d)\./);
