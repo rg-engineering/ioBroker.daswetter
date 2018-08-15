@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "news": {
+      "2.1.2": {
+        "en": "Configuration dialog was fixed",
+        "de": "Konfigurationsdialog wurde behoben",
+        "ru": "Диалоговое окно конфигурации было исправлено",
+        "pt": "Diálogo de configuração foi corrigido",
+        "nl": "Configuratie dialoog was opgelost",
+        "fr": "La boîte de dialogue de configuration a été corrigée",
+        "it": "La finestra di configurazione è stata risolta",
+        "es": "El diálogo de configuración fue arreglado",
+        "pl": "Okno dialogowe konfiguracji zostało poprawione"
+      },
       "2.1.1": {
         "en": "parse timeout added and use units from data structure",
         "de": "Parse Timeout hinzugefügt und Einheiten aus der Datenstruktur verwenden",
