@@ -45,7 +45,7 @@ function main() {
     
     allDone = false;
 
-    //deleteOldData(adapter.config.UseNewDataset);
+    deleteOldData(adapter.config.UseNewDataset);
 
     if (adapter.config.UseNewDataset) {
         adapter.log.debug('using new datastructure');
@@ -1165,7 +1165,7 @@ function processTasks(tasks) {
                 setImmediate(processTasks, tasks);
             });
         } else if (task.name === 'delete') {
-            DeleteState(task.key, function () {
+            DeleteChannel(task.key, function () {
                 setImmediate(processTasks, tasks);
             });
         } else {
@@ -1194,6 +1194,12 @@ function updateExtendObject(key, value, callback) {
     adapter.setState(key, {ack: true, val: value}, callback);
 }
 
+function DeleteIntoList(key) {
+    tasks.push({
+        name: "delete",
+        key: key
+    });
+}
 
 // Delete all states from array (one after each other)
 /*
@@ -1218,6 +1224,14 @@ function deleteStates(states, callback) {
 }
 */
 
+function DeleteChannel(channel, callback) {
+
+    adapter.delObject(channel, function (err) {
+        adapter.deleteChannel(channel, callback);
+    });
+
+}
+
 function DeleteState(state, callback) {
 
     adapter.delObject(state, function (err) {
@@ -1232,11 +1246,18 @@ https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation
 function DeleteObject(key, callback) {
 
     // Get all IDs of this adapter
+    //daswetter.0.NextDaysDetailed.Location_1
+                  
 
-    var sKeyArr = key.split(".");
-    adapter.log.debug("*********" + JSON.stringify(sKeyArr));
+    
 
-    adapter.getChannelsOf(sKeyArr[0], function (err, channels) {
+/*
+
+    //var sKeyArr = key.split(".");
+    //adapter.log.debug("********* " + JSON.stringify(sKeyArr) + " ****");
+
+    adapter.log.debug("**** check device: " + key);
+    adapter.getChannelsOf(key, function (err, channels) {
         if (err) {
             adapter.log.error("error in  DeleteObject " + sKeyArr[0] + " " + err);
         }
@@ -1244,20 +1265,24 @@ function DeleteObject(key, callback) {
 
             adapter.log.debug("got " + channels.length + " channels, objects in list " + Object.keys(tasks).length);
             for (var i = 0; i < channels.length; i++) {
-                //adapter.log.debug("got channel: " + JSON.stringify(channels[i]));
+                var channel = channels[i]._id;
 
-                var channel = channels[i].common.name;
+                adapter.log.debug("check channel: " + channel);
+                //if (i == 0) {
+                //    adapter.log.debug("+++ channel detail: " + JSON.stringify(channels[i]));
+                //}
+                
 
                 adapter.getStatesOf(sKeyArr[0], channel, function (err, states) {
                     if (err) {
                         adapter.log.error("error in  DeleteObject " + channel + " " + err);
                     }
                     else {
-                        adapter.log.debug("got " + states.length + " states in " + channel);
+                        adapter.log.debug("got " + states.length + " states " );
                         for (var j = 0; j < states.length; j++) {
                             //adapter.log.debug("got state " + states[j].native.location + " in " + channel + " " + JSON.stringify(states[j]));
 
-                            //adapter.log.debug("got state " + states[j]._id );
+                            adapter.log.debug("prepare delete state " + states[j]._id );
                             DeleteIntoList(states[j]._id);
                         }
                     }
@@ -1267,7 +1292,7 @@ function DeleteObject(key, callback) {
             }
         }
     });
-
+    */
     /*
     got 8 channels
     got channel: {"type":"channel","common":{"name":"Location 1","type":"string","role":"history","unit":"","read":true,"write":false},"native":{"location":"NextDays.Location_1"},"from":"system.adapter.daswetter.0","ts":1530122433923,"_id":"daswetter.0.NextDays.Location_1","acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
@@ -1725,12 +1750,63 @@ function deleteOldData(bUseNewDataset) {
 
     adapter.log.debug('checking data structures');
 
+    adapter.getChannels(function (err, channels) {
+        if (err) {
+            adapter.log.error("error in  deleteOldData " + key + " " + err);
+        }
+        else {
+            adapter.log.debug("got " + channels.length + " channels");
+            for (var i = 0; i < channels.length; i++) {
+                var channel = channels[i]._id;
+
+                //adapter.log.debug("check channel: " + channel);
+
+                //und jetzt prüfen, welche channels gelöscht werden müssen
+
+                if (bUseNewDataset) {
+                    if (channel.match(/\.NextDays.0d/)
+                        || channel.match(/\.NextDays.1d/)
+                        || channel.match(/\.NextDays.2d/)
+                        || channel.match(/\.NextDays.3d/)
+                        || channel.match(/\.NextDays.4d/)
+                        || channel.match(/\.NextDays.5d/)
+                        || channel.match(/\.NextDays.6d/)
+
+                        || channel.match(/\.NextDaysDetailed.0d/)
+                        || channel.match(/\.NextDaysDetailed.1d/)
+                        || channel.match(/\.NextDaysDetailed.2d/)
+                        || channel.match(/\.NextDaysDetailed.3d/)
+                        || channel.match(/\.NextDaysDetailed.3d/)
+
+                        || channel.match(/\.hourly.0d/)
+                        || channel.match(/\.hourly.1d/)
+
+                    ) {
+                        adapter.log.debug("---delete channel: " + channel);
+                        DeleteIntoList(channel);
+                    }
+                }
+                else {
+                    if (channel.match(/\.NextDays.Location_/)
+                        || channel.match(/\.NextDaysDetailed.Location_/)
+                        || channel.match(/\.NextHours.Location_/)
+                    ) {
+                        adapter.log.debug("+++delete channel: " + channel);
+                        DeleteIntoList(channel);
+                    }
+                }
+            }
+        }
+    });
+
+
     //daswetter.0.NextHours.Location_1
     //daswetter.0.NextHours.Location_1.Day_1.Hour_1
     //daswetter.0.NextHours.Location_1.Day_1.Hour_1.clouds.value
     //DeleteObject("NextHours.Location_1.Day_1.Hour_1", null);
     //DeleteObject("NextDays.Location_1.Day_1.Hour_1", null);
 
+    /*
     if (bUseNewDataset) {
 
         adapter.getObject('NextDays.0d', function (err, obj) {
@@ -1738,14 +1814,14 @@ function deleteOldData(bUseNewDataset) {
                 // do nothing
             } else {
                 if (obj) {
-                    adapter.log.debug('deleting NextDays.xd');
+                    adapter.log.debug('deleting NextDays.xd to do');
                     DeleteObject("NextDays.0d", null);
-                    //DeleteObject("NextDays.1d", null);
-                    //DeleteObject("NextDays.2d", null);
-                    //DeleteObject("NextDays.3d", null);
-                    //DeleteObject("NextDays.4d", null);
-                    //DeleteObject("NextDays.5d", null);
-                    //DeleteObject("NextDays.6d", null);
+                    DeleteObject("NextDays.1d", null);
+                    DeleteObject("NextDays.2d", null);
+                    DeleteObject("NextDays.3d", null);
+                    DeleteObject("NextDays.4d", null);
+                    DeleteObject("NextDays.5d", null);
+                    DeleteObject("NextDays.6d", null);
 
                 }
             }
@@ -1756,12 +1832,13 @@ function deleteOldData(bUseNewDataset) {
                 // do nothing
             } else {
                 if (obj) {
-                    adapter.log.debug('deleting NextDaysDetailed.xd');
-                    //DeleteObject("NextDaysDetailed.0d", null);
-                    //DeleteObject("NextDaysDetailed.1d", null);
-                    //DeleteObject("NextDaysDetailed.2d", null);
-                    //DeleteObject("NextDaysDetailed.3d", null);
-                    //DeleteObject("NextDaysDetailed.4d", null);
+                    adapter.log.debug('deleting NextDaysDetailed.xd to do');
+                    
+                    DeleteObject("NextDaysDetailed.0d", null);
+                    DeleteObject("NextDaysDetailed.1d", null);
+                    DeleteObject("NextDaysDetailed.2d", null);
+                    DeleteObject("NextDaysDetailed.3d", null);
+                    DeleteObject("NextDaysDetailed.4d", null);
 
                 }
             }
@@ -1771,9 +1848,9 @@ function deleteOldData(bUseNewDataset) {
                 // do nothing
             } else {
                 if (obj) {
-                    adapter.log.debug('deleting hourly.xd');
-                    //DeleteObject("hourly.0d", null);
-                    //DeleteObject("hourly.1d", null);
+                    adapter.log.debug('deleting hourly.xd to do');
+                    DeleteObject("hourly.0d", null);
+                    DeleteObject("hourly.1d", null);
                 }
             }
         });
@@ -1810,6 +1887,7 @@ function deleteOldData(bUseNewDataset) {
             }
         });
     }
+    */
 }
 
 function checkWeatherVariablesOld() {
