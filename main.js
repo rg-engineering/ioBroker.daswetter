@@ -711,10 +711,10 @@ function insertIntoList(key, value, unit) {
             obj = {
                 type: 'state',
                 common: {
-                    name: 'Minimal day temperature',
+                    name: 'Maximal day temperature',
                     type: 'number',
-                    role: 'value.temperature.min.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'kk°C'),
+                    role: 'value.temperature.max.forecast.' + d,
+                    unit: (sUnit.length > 0 ? sUnit : '°C'),
                     read: true,
                     write: false
                 }
@@ -723,10 +723,10 @@ function insertIntoList(key, value, unit) {
             obj = {
                 type: 'state',
                 common: {
-                    name: 'Maximal day temperature',
+                    name: 'Minimal day temperature',
                     type: 'number',
-                    role: 'value.temperature.max.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'kk°C'),
+                    role: 'value.temperature.min.forecast.' + d,
+                    unit: (sUnit.length > 0 ? sUnit : '°C'),
                     read: true,
                     write: false
                 }
