@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "news": {
+      "2.1.3": {
+        "en": "typo fixed ",
+        "de": "Tippfehler behoben",
+        "ru": "опечатка фиксированная",
+        "pt": "erro de digitação fixo",
+        "nl": "typo opgelost",
+        "fr": "faute de frappe",
+        "it": "errore di battitura fisso",
+        "es": "error tipográfico",
+        "pl": "poprawiono literówkę"
+      },
       "2.1.2": {
         "en": "Configuration dialog was fixed",
         "de": "Konfigurationsdialog wurde behoben",

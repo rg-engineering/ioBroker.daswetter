@@ -28,6 +28,9 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 
 
 ## Changelog
+### 2.1.3 (2018-08-17)
+* (René) typo fixed
+
 ### 2.1.2 (2018-08-14)
 * (bluefox) Configuration dialog was fixed
 
