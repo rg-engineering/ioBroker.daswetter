@@ -30,6 +30,7 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 ## Changelog
 ### 2.1.3 (2018-08-17)
 * (René) typo fixed
+* (René) missing Icon-URL's added
 
 ### 2.1.2 (2018-08-14)
 * (bluefox) Configuration dialog was fixed
@@ -44,13 +45,12 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 * (bluefox) Added the roles and the names to states
 * (bluefox) Icons moved to admin directory
 
-### 2.0.1
-* (René) deleting of unused date structur to avoid confusion about missing updates
+
 
 ### 2.0.0
 * (René) new datastructure !not compatible to version 1.x!
 now parsing all data from xml and store them in datapoints
-for compatibility: in configuration old data structure can be enabled (default)
+for compatibility: in configuration old data structure can be enabled 
 needs also 2.x of vis-weather-widget
 
 ### 1.0.3
