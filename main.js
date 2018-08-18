@@ -275,6 +275,10 @@ function getForecastData5Days(cb) {
                                 keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.symbol';
                                 getProps(value, keyName);
 
+                                //add url for icon
+                                insertIntoList('NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.iconURL', getIconUrl(value.value));
+
+
                                 value = result.report.location[l].day[d].tempmin[0].$;
                                 keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.tempmin';
                                 getProps(value, keyName);
@@ -286,6 +290,10 @@ function getForecastData5Days(cb) {
                                 value = result.report.location[l].day[d].wind[0].$;
                                 keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.wind';
                                 getProps(value, keyName);
+
+                                //add url for icon
+                                insertIntoList('NextDaysDetailed.Location_' + ll + '.Day_' + dd  + '.windIconURL', getWindIconUrl(value.symbolB));
+
 
                                 value = result.report.location[l].day[d].windgusts[0].$;
                                 keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.windgusts';
@@ -497,6 +505,8 @@ function getForecastDataHourly(cb) {
                                 keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.symbol';
                                 getProps(value, keyName);
 
+                                //add url for icon
+                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd  + '.iconURL', getIconUrl(value.value));
 
                                 value = result.report.location[l].day[d].tempmin[0].$;
                                 keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.tempmin';
@@ -511,6 +521,9 @@ function getForecastDataHourly(cb) {
                                 value = result.report.location[l].day[d].wind[0].$;
                                 keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.wind';
                                 getProps(value, keyName);
+
+                                //add url for icon
+                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd  + '.windIconURL', getWindIconUrl(value.symbolB));
 
 
                                 value = result.report.location[l].day[d].windgusts[0].$;
