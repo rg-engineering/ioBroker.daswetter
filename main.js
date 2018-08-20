@@ -45,7 +45,10 @@ function main() {
     
     allDone = false;
 
-    deleteOldData(adapter.config.UseNewDataset);
+    if (adapter.config.DeleteUnusedDataset) {
+        adapter.log.debug('deleting unused dataset');
+        deleteOldData(adapter.config.UseNewDataset);
+    }
 
     if (adapter.config.UseNewDataset) {
         adapter.log.debug('using new datastructure');
@@ -1164,8 +1167,12 @@ function processTasks(tasks) {
             updateExtendObject(task.key, task.value, function () {
                 setImmediate(processTasks, tasks);
             });
-        } else if (task.name === 'delete') {
+        } else if (task.name === 'delete_channel') {
             DeleteChannel(task.key, function () {
+                setImmediate(processTasks, tasks);
+            });
+        } else if (task.name === 'delete_state') {
+            DeleteState(task.key, function () {
                 setImmediate(processTasks, tasks);
             });
         } else {
@@ -1194,9 +1201,17 @@ function updateExtendObject(key, value, callback) {
     adapter.setState(key, {ack: true, val: value}, callback);
 }
 
-function DeleteIntoList(key) {
+function DeleteIntoList(type, key) {
+
+    var name = "";
+    if (type == "channel") {
+        name = "delete_channel";
+    } else if (type == "state") {
+        name = "delete_state";
+    }
+
     tasks.push({
-        name: "delete",
+        name: name,
         key: key
     });
 }
@@ -1225,20 +1240,27 @@ function deleteStates(states, callback) {
 */
 
 function DeleteChannel(channel, callback) {
-
+    adapter.log.debug("try deleting channel " + channel);
+    //just do nothing at the moment
+    //if (callback) callback();
+    
     adapter.delObject(channel, function (err) {
         adapter.deleteChannel(channel, callback);
     });
+    
 
 }
 
 function DeleteState(state, callback) {
-
+    adapter.log.debug("try deleting state " + state);
+    //just do nothing at the moment
+    //if (callback) callback();
+    
     adapter.delObject(state, function (err) {
         // Delete state
         adapter.delState(state, callback);
     });
-
+    
 }
 /*
 https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation
@@ -1750,6 +1772,61 @@ function deleteOldData(bUseNewDataset) {
 
     adapter.log.debug('checking data structures');
 
+    //erst alle states 
+    adapter.getStatesOf( function (err, states) {
+        if (err) {
+            adapter.log.error("error in  deleteOldData " + err);
+        }
+        else {
+            adapter.log.debug("got " + states.length + " states ");
+
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i]._id;
+
+                //adapter.log.debug("check state: " + state);
+
+                //und jetzt prüfen, welche states gelöscht werden müssen
+
+                if (bUseNewDataset) {
+                    if (state.match(/\.NextDays.0d/)
+                        || state.match(/\.NextDays.1d/)
+                        || state.match(/\.NextDays.2d/)
+                        || state.match(/\.NextDays.3d/)
+                        || state.match(/\.NextDays.4d/)
+                        || state.match(/\.NextDays.5d/)
+                        || state.match(/\.NextDays.6d/)
+
+                        || state.match(/\.NextDaysDetailed.0d/)
+                        || state.match(/\.NextDaysDetailed.1d/)
+                        || state.match(/\.NextDaysDetailed.2d/)
+                        || state.match(/\.NextDaysDetailed.3d/)
+                        || state.match(/\.NextDaysDetailed.3d/)
+                        || state.match(/\.NextDaysDetailed.4d/)
+
+                        || state.match(/\.hourly.0d/)
+                        || state.match(/\.hourly.1d/)
+
+                    ) {
+                        //adapter.log.debug("---delete state: " + state);
+                        DeleteIntoList("state",state);
+                    }
+                }
+                else {
+                    if (state.match(/\.NextDays.Location_/)
+                        || state.match(/\.NextDaysDetailed.Location_/)
+                        || state.match(/\.NextHours.Location_/)
+                    ) {
+                        //adapter.log.debug("+++delete state: " + state);
+                        DeleteIntoList("state",state);
+                    }
+                }
+
+            }
+        }
+
+    });
+    
+    //dann noch die channels
     adapter.getChannels(function (err, channels) {
         if (err) {
             adapter.log.error("error in  deleteOldData " + key + " " + err);
@@ -1777,13 +1854,14 @@ function deleteOldData(bUseNewDataset) {
                         || channel.match(/\.NextDaysDetailed.2d/)
                         || channel.match(/\.NextDaysDetailed.3d/)
                         || channel.match(/\.NextDaysDetailed.3d/)
+                        || channel.match(/\.NextDaysDetailed.4d/)
 
                         || channel.match(/\.hourly.0d/)
                         || channel.match(/\.hourly.1d/)
 
                     ) {
-                        adapter.log.debug("---delete channel: " + channel);
-                        DeleteIntoList(channel);
+                        //adapter.log.debug("---delete channel: " + channel);
+                        DeleteIntoList("channel", channel);
                     }
                 }
                 else {
@@ -1791,14 +1869,14 @@ function deleteOldData(bUseNewDataset) {
                         || channel.match(/\.NextDaysDetailed.Location_/)
                         || channel.match(/\.NextHours.Location_/)
                     ) {
-                        adapter.log.debug("+++delete channel: " + channel);
-                        DeleteIntoList(channel);
+                        //adapter.log.debug("+++delete channel: " + channel);
+                        DeleteIntoList("channel",channel);
                     }
                 }
             }
         }
     });
-
+    
 
     //daswetter.0.NextHours.Location_1
     //daswetter.0.NextHours.Location_1.Day_1.Hour_1

@@ -125,6 +125,28 @@ systemDictionary = {
         "it": "scarica e analizza il timeout [secondi]",
         "es": "descargar y analizar el tiempo de espera [segundos]",
         "pl": "pobierz i przeanalizuj limit czasu [sekundy]"
+    },
+    "delete_unused_dataset": {
+        "en": "delete unused data structure",
+        "de": "Löschen Sie nicht verwendete Datenstruktur",
+        "ru": "удалить неиспользуемую структуру данных",
+        "pt": "excluir estrutura de dados não utilizada",
+        "nl": "verwijder ongebruikte gegevensstructuur",
+        "fr": "supprimer la structure de données inutilisée",
+        "it": "elimina la struttura dati inutilizzata",
+        "es": "eliminar la estructura de datos no utilizados",
+        "pl": "usuń nieużywaną strukturę danych"
+    },
+    "delete_unused_dataset_hint": {
+        "en": "you can delete data structure of adapter version 1.x or 2.x depending your choice above. If you uncheck that option unused data structure will remain but not updated.",
+        "de": "Sie können die Datenstruktur der Adapterversion 1.x oder 2.x je nach Ihrer Auswahl löschen. Wenn Sie diese Option deaktivieren, wird die nicht verwendete Datenstruktur beibehalten, aber nicht aktualisiert.",
+        "ru": "вы можете удалить структуру данных адаптера версии 1.x или 2.x в зависимости от вашего выбора выше. Если вы снимете эту опцию, неиспользуемая структура данных останется, но не будет обновлена.",
+        "pt": "você pode excluir a estrutura de dados da versão 1.x ou 2.x do adaptador, dependendo da sua opção acima. Se você desmarcar essa opção, a estrutura de dados não utilizada permanecerá, mas não será atualizada.",
+        "nl": "u kunt de datastructuur van adapterversie 1.x of 2.x verwijderen, afhankelijk van uw keuze hierboven. Als u de selectie van die optie ongedaan maakt, blijft de ongebruikte gegevensstructuur behouden, maar niet bijgewerkt.",
+        "fr": "Vous pouvez supprimer la structure de données de l'adaptateur version 1.x ou 2.x en fonction de votre choix ci-dessus. Si vous décochez cette option, la structure de données inutilisée restera, mais pas mise à jour.",
+        "it": "puoi cancellare la struttura dati della versione 1.x o 2.x dell'adattatore in base alla tua scelta sopra. Se deselezioni quell'opzione, la struttura di dati inutilizzata rimarrà ma non aggiornata.",
+        "es": "puede eliminar la estructura de datos del adaptador versión 1.xo 2.x dependiendo de su elección anterior. Si desmarca esa opción, la estructura de datos no utilizados permanecerá pero no se actualizará.",
+        "pl": "można usunąć strukturę danych adaptera w wersji 1.x lub 2.x w zależności od powyższego wyboru. Jeśli odznaczysz tę opcję, nieużywana struktura danych pozostanie, ale nie zostanie zaktualizowana."
     }
 
 };

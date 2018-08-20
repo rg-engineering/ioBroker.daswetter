@@ -180,6 +180,7 @@
     "HourlyForecast": "",
     "UseNewDataset": true,
     "iconSet": 6,
-    "parseTimeout": 60
+    "parseTimeout": 60,
+    "DeleteUnusedDataset" :  true
   }
 }
