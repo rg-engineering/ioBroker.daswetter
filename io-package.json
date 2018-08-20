@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.1.3",
+    "version": "2.2.0",
     "news": {
+      "2.2.0": {
+        "en": "delete unused data structure",
+        "de": "Löschen der nicht verwendete Datenstruktur",
+        "ru": "удалить неиспользуемую структуру данных",
+        "pt": "excluir estrutura de dados não utilizada",
+        "nl": "verwijder ongebruikte gegevensstructuur",
+        "fr": "supprimer la structure de données inutilisée",
+        "it": "elimina la struttura dati inutilizzata",
+        "es": "eliminar la estructura de datos no utilizados",
+        "pl": "usuń nieużywaną strukturę danych"
+      },
       "2.1.3": {
         "en": "typo fixed ",
         "de": "Tippfehler behoben",

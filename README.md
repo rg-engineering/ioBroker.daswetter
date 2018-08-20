@@ -28,6 +28,10 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 
 
 ## Changelog
+
+### 2.2.0 (2018-08-20)
+* (René) delete unused data structure
+
 ### 2.1.3 (2018-08-17)
 * (René) typo fixed
 * (René) missing Icon-URL's added
