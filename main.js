@@ -47,6 +47,11 @@ function main() {
 
     //deleteOldData(adapter.config.UseNewDataset);
 
+    if (adapter.config.UseNewDataset == false && adapter.config.HourlyForecastJSON) {
+        adapter.log.error('path 4 will not be parsed with old data structure! Please use new data structure!');
+    }
+
+
     if (adapter.config.UseNewDataset) {
         adapter.log.debug('using new datastructure');
         getForecastData7Days();
@@ -673,7 +678,7 @@ function getForecastDataHourlyJSON(cb) {
 
                     const result = JSON.parse(body);
 
-                    adapter.log.debug("got " + JSON.stringify(result));
+                    //adapter.log.debug("got " + JSON.stringify(result));
 
                     const numOfLocations = 1; //seems here we get only one location
 
@@ -704,6 +709,7 @@ function getForecastDataHourlyJSON(cb) {
                         const numOfDays = result.day.length;
 
                         adapter.log.debug('got ' + numOfDays + ' days');
+
                         for (let d = 0; d < numOfDays; d++) {
 
                             let keyName = '';
@@ -730,6 +736,14 @@ function getForecastDataHourlyJSON(cb) {
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + ".day";
                             insertIntoList(keyName, value);
 
+                            let unit_temp = result.day[d].units.temp;
+                            let unit_wind = result.day[d].units.wind;
+                            let unit_rain = result.day[d].units.rain;
+                            let unit_pressure = result.day[d].units.pressure;
+                            let unit_snowline = result.day[d].units.snowline;
+
+                            adapter.log.debug("got units " + unit_temp + " " + unit_wind + " " + unit_rain + " " + unit_wind + " " + unit_pressure + " " + unit_snowline);
+
                             value = result.day[d].symbol_value;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.symbol';
                             insertIntoList(keyName, value);
@@ -751,15 +765,15 @@ function getForecastDataHourlyJSON(cb) {
 
                             value = result.day[d].tempmin;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.tempmin';
-                            insertIntoList(keyName, value);
+                            insertIntoList(keyName, value, unit_temp);
 
                             value = result.day[d].tempmax;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.tempmax';
-                            insertIntoList(keyName, value);
+                            insertIntoList(keyName, value, unit_temp);
 
                             value = result.day[d].wind.speed;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.wind_speed';
-                            insertIntoList(keyName, value);
+                            insertIntoList(keyName, value, unit_wind);
 
                             value = result.day[d].wind.symbol;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.wind_symbol';
@@ -779,7 +793,7 @@ function getForecastDataHourlyJSON(cb) {
 
                             value = result.day[d].rain;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.rain';
-                            insertIntoList(keyName, value);
+                            insertIntoList(keyName, value, unit_rain);
 
                             value = result.day[d].humidity;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.humidity';
@@ -787,11 +801,11 @@ function getForecastDataHourlyJSON(cb) {
 
                             value = result.day[d].pressure;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.pressure';
-                            insertIntoList(keyName, value);
+                            insertIntoList(keyName, value, unit_pressure);
 
                             value = result.day[d].snowline;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.snowline';
-                            insertIntoList(keyName, value);
+                            insertIntoList(keyName, value, unit_snowline);
 
                             value = result.day[d].sun.in;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.sun_in';
@@ -861,7 +875,7 @@ function getForecastDataHourlyJSON(cb) {
 
                                 value = result.day[d].hour[h].temp;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".temp";
-                                insertIntoList(keyName, value);
+                                insertIntoList(keyName, value, unit_temp);
 
                                 value = result.day[d].hour[h].symbol_value;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".symbol";
@@ -884,7 +898,7 @@ function getForecastDataHourlyJSON(cb) {
 
                                 value = result.day[d].hour[h].wind.speed;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_speed";
-                                insertIntoList(keyName, value);
+                                insertIntoList(keyName, value, unit_wind);
 
                                 value = result.day[d].hour[h].wind.dir;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_dir";
@@ -907,7 +921,7 @@ function getForecastDataHourlyJSON(cb) {
 
                                 value = result.day[d].hour[h].rain;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".rain";
-                                insertIntoList(keyName, value);
+                                insertIntoList(keyName, value, unit_rain);
 
                                 value = result.day[d].hour[h].humidity;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".humidity";
@@ -915,7 +929,7 @@ function getForecastDataHourlyJSON(cb) {
 
                                 value = result.day[d].hour[h].pressure;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".pressure";
-                                insertIntoList(keyName, value);
+                                insertIntoList(keyName, value, unit_pressure);
 
                                 value = result.day[d].hour[h].clouds;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".clouds";
@@ -923,7 +937,7 @@ function getForecastDataHourlyJSON(cb) {
 
                                 value = result.day[d].hour[h].snowline;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".snowline";
-                                insertIntoList(keyName, value);
+                                insertIntoList(keyName, value, unit_snowline);
 
                                 value = result.day[d].hour[h].windchill;
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".windchill";
@@ -932,7 +946,7 @@ function getForecastDataHourlyJSON(cb) {
 
 
                         }
-
+                        
                     }
 
 
@@ -993,7 +1007,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/)) {
+        } if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1005,7 +1019,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/)) {
+        } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/) || key.match(/\.tempmin/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1040,7 +1054,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.symbol_value2/) || key.match(/\.Wetter_Symbol_value/) || key.match(/\.symbol_value/)) {
+        } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.symbol_value2/) || key.match(/\.Wetter_Symbol_value/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1098,7 +1112,7 @@ function insertIntoList(key, value, unit) {
                 }
             };
 
-        } else if (key.match(/\.day_name/)) {
+        } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1110,7 +1124,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.hour_value/)) {
+        } else if (key.match(/\.hour_value/) || key.match(/\.hour/)) {
                 obj = {
                     type: 'state',
                     common: {
@@ -1134,7 +1148,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.clouds_value/)) {
+        } else if (key.match(/\.clouds_value/) || key.match(/\.clouds/)) {
 
             //sometimes % comes with value
             value = value.replace(/%/g, '');
@@ -1150,7 +1164,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.humidity_value/)) {
+        } else if (key.match(/\.humidity_value/) || key.match(/\.humidity/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1162,7 +1176,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.pressure_value/)) {
+        } else if (key.match(/\.pressure_value/) || key.match(/\.pressure/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1174,7 +1188,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.rain_value/)) {
+        } else if (key.match(/\.rain_value/) ||  key.match(/\.rain/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1186,7 +1200,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.snowline_value/)) {
+        } else if (key.match(/\.snowline_value/) || key.match(/\.snowline/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1210,7 +1224,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.temp_value/)) {
+        } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1246,7 +1260,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.wind_value/)) {
+        } else if (key.match(/\.wind_value/) || key.match(/\.wind_speed/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1258,7 +1272,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.windchill_value/)) {
+        } else if (key.match(/\.windchill_value/) || key.match(/\.windchill/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1270,7 +1284,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.windgusts_value/)) {
+        } else if (key.match(/\.windgusts_value/) || key.match(/\.wind_gusts/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1282,7 +1296,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.local_info_local_time/)) {
+        } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
             obj = {
                 type: 'state',
                 common: {
@@ -1294,7 +1308,7 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
-        } else if (key.match(/\.local_info_offset/)) {
+        } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
             obj = {
                 type: 'state',
                 common: {
