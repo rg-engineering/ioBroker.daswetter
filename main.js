@@ -1939,6 +1939,7 @@ function deleteOldData(bUseNewDataset) {
                     if (state.match(/\.NextDays.Location_/)
                         || state.match(/\.NextDaysDetailed.Location_/)
                         || state.match(/\.NextHours.Location_/)
+                        || state.match(/\.NextHours2.Location_/)
                     ) {
                         //adapter.log.debug("+++delete state: " + state);
                         DeleteIntoList("state",state);

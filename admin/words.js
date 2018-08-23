@@ -128,7 +128,7 @@ systemDictionary = {
     },
     "delete_unused_dataset": {
         "en": "delete unused data structure",
-        "de": "Löschen Sie nicht verwendete Datenstruktur",
+        "de": "nicht verwendete Datenstruktur löschen",
         "ru": "удалить неиспользуемую структуру данных",
         "pt": "excluir estrutura de dados não utilizada",
         "nl": "verwijder ongebruikte gegevensstructuur",

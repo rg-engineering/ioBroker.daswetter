@@ -29,6 +29,9 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 
 ## Changelog
 
+### 2.3.0 (2018-08-23)
+* (René) support of 4. path (json)
+
 ### 2.2.0 (2018-08-20)
 * (René) delete unused data structure
 

@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "news": {
+      "2.3.0": {
+        "en": "support of 4. path (json)",
+        "de": "Unterstützung von 4. Pfad (JSON)",
+        "ru": "поддержка 4. path (json)",
+        "pt": "suporte de 4. caminho (json)",
+        "nl": "ondersteuning van 4. path (json)",
+        "fr": "support de 4. path (json)",
+        "it": "supporto di 4. path (json)",
+        "es": "soporte de 4. ruta (json)",
+        "pl": "wsparcie 4. ścieżki (json)"
+      },
       "2.2.0": {
         "en": "delete unused data structure",
         "de": "Löschen der nicht verwendete Datenstruktur",
