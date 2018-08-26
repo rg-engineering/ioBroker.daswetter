@@ -752,6 +752,11 @@ function getForecastDataHourlyJSON(cb) {
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + ".day";
                             insertIntoList(keyName, value);
 
+                            value = result.day[d].date;
+                            keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + ".date";
+                            insertIntoList(keyName, value);
+
+
                             let unit_temp = result.day[d].units.temp;
                             let unit_wind = result.day[d].units.wind;
                             let unit_rain = result.day[d].units.rain;
