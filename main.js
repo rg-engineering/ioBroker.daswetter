@@ -201,7 +201,7 @@ function getForecastData7Days(cb) {
                 }
             } else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
                 getForecastData5Days(cb);
             }
         });
@@ -425,7 +425,7 @@ function getForecastData5Days(cb) {
                 }
             } else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
                 getForecastDataHourly(cb);
             }
         });
@@ -670,7 +670,7 @@ function getForecastDataHourly(cb) {
                 }
             } else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
                 getForecastDataHourlyJSON(cb);
             }
         });
@@ -977,7 +977,7 @@ function getForecastDataHourlyJSON(cb) {
                 }
             } else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
                 
             }
 
@@ -1625,7 +1625,7 @@ function getForecastData7DaysOld(cb) {
             }
             else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
             }
         });
     }
@@ -1751,7 +1751,7 @@ function getForecastData5DaysOld(cb) {
             }
             else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
             }
         });
     }
@@ -1881,7 +1881,7 @@ function getForecastDataHourlyOld(cb) {
             }
             else {
                 // ERROR
-                adapter.log.error('DasWetter.com reported an error: ' + error);
+                adapter.log.error('DasWetter.com reported an error: ' + error + " or response " + response.statusCode);
             }
         });
     }
