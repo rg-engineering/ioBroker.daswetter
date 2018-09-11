@@ -5,7 +5,7 @@ ioBroker.DasWetter.
 [![NPM version](https://img.shields.io/npm/v/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
 [![Tests](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)](https://travis-ci.org/rg-engineering/ioBroker.daswetter)
-[![Build Status](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)](https://travis-ci.org/rg-engineering/ioBroker.daswetter)
+
 [![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)](https://nodei.co/npm/iobroker.daswetter/)
 
 
