@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "news": {
+      "2.3.1": {
+        "en": "code clean up",
+        "de": "Code aufräumen",
+        "ru": "очистка кода",
+        "pt": "código de limpeza",
+        "nl": "code opruimen",
+        "fr": "nettoyage du code",
+        "it": "codice ripulire",
+        "es": "código de limpieza",
+        "pl": "oczyść kod"
+      },
       "2.3.0": {
         "en": "support of 4. path (json)",
         "de": "Unterstützung von 4. Pfad (JSON)",
