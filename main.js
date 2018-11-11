@@ -479,6 +479,9 @@ function getForecastDataHourly(cb) {
 
                             const numOfDays = result.report.location[l].day.length;
 
+                            var CurrentDate = new Date();
+                            var CurrentHour = CurrentDate.getHours();
+
                             for (let d = 0; d < numOfDays; d++) {
 
                                 let keyName = '';
@@ -586,6 +589,8 @@ function getForecastDataHourly(cb) {
                                 var nSunHours = 0;
                                 var nOldTime4Sun = -1;
 
+                               
+
                                 for (let h = 0; h < numOfHours; h++) {
 
                                     //adapter.log.debug('location: ' + l + ' day: ' + d + ' hour ' + h);
@@ -603,6 +608,22 @@ function getForecastDataHourly(cb) {
                                         }
                                     });
 
+                                    if (dd == 1) {
+                                        tasks.push({
+                                            name: 'add',
+                                            key: 'NextHours.Location_' + ll + '.Day_' + dd + '.current',
+                                            obj: {
+                                                type: 'channel',
+                                                common: {
+                                                    name: 'current ',
+                                                    role: 'weather'
+                                                }
+                                            }
+                                        });
+
+                                    }
+
+
                                     value = result.report.location[l].day[d].hour[h].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".hour";
                                     getProps(value, keyName);
@@ -610,6 +631,12 @@ function getForecastDataHourly(cb) {
                                     var Hour4SunTimeArr = sHour4SunTime.split(":");
                                     var Hour4SunTime = Hour4SunTimeArr[0];
                                     //adapter.log.debug("+++ " + sHour4SunTime + " " + Hour4SunTimeArr + " " + Hour4SunTime);
+
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.hour';
+                                        getProps(value, keyName);
+                                    }
+
 
                                     value = result.report.location[l].day[d].hour[h].temp[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.temp';

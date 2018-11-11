@@ -14,23 +14,36 @@ This adapter reads weather forecast data from DasWetter.com.
 You need an account on DasWetter.com. Register at https://www.daswetter.com/api/#/login
 The account is for free under certain conditions.
 
-In your account you will find three URL for three different data models:
+In your account you will find three URL for four different data models:
 * 7 days forecast and general overview
 * 5 days forecast and detailed 3 hours overview
 * hourly forecast
+* 5 days forecast in json format
 
-All three models are implemented and one should be used at least.
+All four models are implemented and one should be used at least.
 In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
 
-Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
+** Hints for icons used in vis:**
+* Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
 
+** Hints for "current" in NextHours_Day1:**
+* DasWetter.com does not deliver real current weather values
+* but sometimes it's helpfull to have the forecast of current hour available
+* so we added "current" which is just a copy of related forecast hour values
+* please make sure you call the adapter at least one time per hour to make sure "current" is updated well
+* see also github feature request [issue24](https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
-
+** Hints json-datapath:**
+* at the moment DasWetter.com sends data which are different to their own specification
+* this is the reoson why those data can not be parsed right now
+* as soon as we know how the jason path will look like we will implement it
 
 ## Changelog
 
 ### 2.4.0 (2018-11-11)
 * (René) sunshine duration added
+* (René) current in NextHours_Day1 added
+
 
 ### 2.3.1 (2018-11-04)
 * (René) clean up code
