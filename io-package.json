@@ -1,8 +1,13 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.3.1",
+    "version": "2.4.0",
     "news": {
+      "2.4.0": {
+        "en": "sunshine duration added"
+      },
+      "2.3.2": {
+      },
       "2.3.1": {
         "en": "code clean up",
         "de": "Code aufräumen",
@@ -225,6 +230,6 @@
     "UseNewDataset": true,
     "iconSet": 6,
     "parseTimeout": 60,
-    "DeleteUnusedDataset" :  true
+    "DeleteUnusedDataset": true
   }
 }

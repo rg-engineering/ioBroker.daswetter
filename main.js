@@ -564,6 +564,13 @@ function getForecastDataHourly(cb) {
                                 getProps(value, keyName);
 
 
+                                var sSunInTime = result.report.location[l].day[d].sun[0].$.in;
+                                var SunInTimeArr = sSunInTime.split(":");
+                                var SunInHour = SunInTimeArr[0];
+                                var sSunOutTime = result.report.location[l].day[d].sun[0].$.out;
+                                var SunOutTimeArr = sSunOutTime.split(":");
+                                var SunOutHour = SunOutTimeArr[0];
+
                                 value = result.report.location[l].day[d].moon[0].$;
                                 keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.moon';
                                 getProps(value, keyName);
@@ -575,6 +582,9 @@ function getForecastDataHourly(cb) {
 
 
                                 const numOfHours = result.report.location[l].day[d].hour.length;
+
+                                var nSunHours = 0;
+                                var nOldTime4Sun = -1;
 
                                 for (let h = 0; h < numOfHours; h++) {
 
@@ -596,7 +606,10 @@ function getForecastDataHourly(cb) {
                                     value = result.report.location[l].day[d].hour[h].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".hour";
                                     getProps(value, keyName);
-
+                                    var sHour4SunTime = result.report.location[l].day[d].hour[h].$.value;
+                                    var Hour4SunTimeArr = sHour4SunTime.split(":");
+                                    var Hour4SunTime = Hour4SunTimeArr[0];
+                                    //adapter.log.debug("+++ " + sHour4SunTime + " " + Hour4SunTimeArr + " " + Hour4SunTime);
 
                                     value = result.report.location[l].day[d].hour[h].temp[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.temp';
@@ -630,6 +643,7 @@ function getForecastDataHourly(cb) {
                                     value = result.report.location[l].day[d].hour[h].humidity[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.humidity';
                                     getProps(value, keyName);
+                                    
 
 
                                     value = result.report.location[l].day[d].hour[h].pressure[0].$;
@@ -641,7 +655,22 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.clouds';
                                     getProps(value, keyName);
 
-
+                                    var CloudTime = parseInt(result.report.location[l].day[d].hour[h].clouds[0].$.value);
+                                    var SunTime = 100 - CloudTime;
+                                    if (SunTime > 0 && Hour4SunTime >= SunInHour && Hour4SunTime <= SunOutHour) {
+                                        var diff = 1;
+                                        if (nOldTime4Sun > -1) {
+                                            diff = Hour4SunTime - nOldTime4Sun;
+                                        }
+                                        else {
+                                            diff = Hour4SunTime;
+                                        }
+                                        var SunHours = diff * SunTime / 100.0;
+                                        nSunHours += SunHours;
+                                    }
+                                    nOldTime4Sun = Hour4SunTime;
+                                    //adapter.log.debug("### " + SunTime + "% = " + nSunHours + "SunIn " + SunInHour + " SunOut " + SunOutHour);
+                                    
                                     value = result.report.location[l].day[d].hour[h].snowline[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.snowline';
                                     getProps(value, keyName);
@@ -652,6 +681,9 @@ function getForecastDataHourly(cb) {
                                     getProps(value, keyName);
 
                                 }
+
+                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.sunshineDuration', nSunHours);
+                                //adapter.log.debug("### next day");
                             }
                         }
 
@@ -722,7 +754,12 @@ function getForecastDataHourlyJSON(cb) {
                             }
                         });
 
+
+                        adapter.log.debug("got " + JSON.stringify(result.day));
+
+                        // entspricht nicht der doku!!
                         const numOfDays = result.day.length;
+                        //const numOfDays = 5;
 
                         adapter.log.debug('got ' + numOfDays + ' days');
 
@@ -1132,6 +1169,20 @@ function insertIntoList(key, value, unit) {
                     write: false
                 }
             };
+        } else if (key.match(/\.sunshineDuration/)) {
+            obj = {
+                type: 'state',
+                common: {
+                    name: 'Sunshine Duration',
+                    type: 'string',
+                    role: 'weather.sunshineduration.' + d,
+                    unit: ('h'),
+                    read: true,
+                    write: false
+                }
+            };
+          
+
 
         } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
             obj = {

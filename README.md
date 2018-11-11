@@ -29,6 +29,9 @@ Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria
 
 ## Changelog
 
+### 2.4.0 (2018-11-11)
+* (René) sunshine duration added
+
 ### 2.3.1 (2018-11-04)
 * (René) clean up code
 
