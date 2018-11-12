@@ -462,7 +462,7 @@ function getForecastDataHourly(cb) {
                                 location = location.substring(0, pos).trim();
                             }
 
-                            insertIntoList('NextHours.Location_' + ll +  '.Location', location);
+                            insertIntoList('NextHours.Location_' + ll + '.Location', location);
 
                             tasks.push({
                                 name: 'add',
@@ -485,7 +485,7 @@ function getForecastDataHourly(cb) {
                             for (let d = 0; d < numOfDays; d++) {
 
                                 let keyName = '';
-                                
+
                                 const dd = d + 1;
 
                                 tasks.push({
@@ -501,7 +501,7 @@ function getForecastDataHourly(cb) {
                                 });
 
 
-                                
+
 
 
                                 //adapter.log.debug('loc: ' + l + ' day: ' + d + ' = ' + JSON.stringify(result.report.location[l].day[d]));
@@ -517,7 +517,7 @@ function getForecastDataHourly(cb) {
                                 getProps(value, keyName);
 
                                 //add url for icon
-                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd  + '.iconURL', getIconUrl(value.value));
+                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.iconURL', getIconUrl(value.value));
 
                                 value = result.report.location[l].day[d].tempmin[0].$;
                                 keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.tempmin';
@@ -534,7 +534,7 @@ function getForecastDataHourly(cb) {
                                 getProps(value, keyName);
 
                                 //add url for icon
-                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd  + '.windIconURL', getWindIconUrl(value.symbolB));
+                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.windIconURL', getWindIconUrl(value.symbolB));
 
 
                                 value = result.report.location[l].day[d].windgusts[0].$;
@@ -589,7 +589,7 @@ function getForecastDataHourly(cb) {
                                 var nSunHours = 0;
                                 var nOldTime4Sun = -1;
 
-                               
+
 
                                 for (let h = 0; h < numOfHours; h++) {
 
@@ -642,45 +642,96 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.temp';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.temp';
+                                        getProps(value, keyName);
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].symbol[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.symbol';
+                                        getProps(value, keyName);
+                                    }
+
                                     //add url for icon
                                     insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.iconURL', getIconUrl(value.value));
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.current.iconURL', getIconUrl(value.value));
+
+                                    }
+
 
                                     value = result.report.location[l].day[d].hour[h].wind[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.wind';
+                                        getProps(value, keyName);
+
+                                    }
+
                                     //add url for icon
                                     insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windIconURL', getWindIconUrl(value.symbolB));
+
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.current.windIconURL', getWindIconUrl(value.symbolB));
+
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].windgusts[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windgusts';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.windgusts';
+                                        getProps(value, keyName);
+
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].rain[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.rain';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.rain';
+                                        getProps(value, keyName);
+
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].humidity[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.humidity';
                                     getProps(value, keyName);
-                                    
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.humidity';
+                                        getProps(value, keyName);
+
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].pressure[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.pressure';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.pressure';
+                                        getProps(value, keyName);
+
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].clouds[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.clouds';
                                     getProps(value, keyName);
+
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.clouds';
+                                        getProps(value, keyName);
+
+                                    }
+
 
                                     var CloudTime = parseInt(result.report.location[l].day[d].hour[h].clouds[0].$.value);
                                     var SunTime = 100 - CloudTime;
@@ -697,16 +748,25 @@ function getForecastDataHourly(cb) {
                                     }
                                     nOldTime4Sun = Hour4SunTime;
                                     //adapter.log.debug("### " + SunTime + "% = " + nSunHours + "SunIn " + SunInHour + " SunOut " + SunOutHour);
-                                    
+
                                     value = result.report.location[l].day[d].hour[h].snowline[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.snowline';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.snowline';
+                                        getProps(value, keyName);
+
+                                    }
 
                                     value = result.report.location[l].day[d].hour[h].windchill[0].$;
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windchill';
                                     getProps(value, keyName);
 
+                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                        keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.windchill';
+                                        getProps(value, keyName);
+                                    }
                                 }
 
                                 insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.sunshineDuration', nSunHours);
