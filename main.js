@@ -842,13 +842,23 @@ function getForecastDataHourlyJSON(cb) {
                         });
 
 
-                        adapter.log.debug("got " + JSON.stringify(result.day));
+
 
                         // entspricht nicht der doku!!
                         const numOfDays = result.day.length;
                         //const numOfDays = 5;
 
-                        adapter.log.debug('got ' + numOfDays + ' days');
+
+                        if (typeof (numOfDays) == 'undefined') {
+                            adapter.log.error('got no data! check data structure...');
+                            adapter.log.debug("got " + JSON.stringify(result.day));
+                        }
+                        else {
+                            adapter.log.debug('got ' + numOfDays + ' days');
+                        }
+
+                        var CurrentDate = new Date();
+                        var CurrentHour = CurrentDate.getHours();
 
                         for (let d = 0; d < numOfDays; d++) {
 
@@ -894,12 +904,12 @@ function getForecastDataHourlyJSON(cb) {
                             insertIntoList(keyName, value);
 
                             //add url for icon
-                            insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd  + '.iconURL', getIconUrl(value));
+                            insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.iconURL', getIconUrl(value));
 
                             value = result.day[d].symbol_description;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.symbol_desc';
                             insertIntoList(keyName, value);
-                           
+
                             value = result.day[d].symbol_value2;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.symbol2';
                             insertIntoList(keyName, value);
@@ -995,6 +1005,9 @@ function getForecastDataHourlyJSON(cb) {
                             const numOfHours = result.day[d].hour.length;
                             adapter.log.debug('got ' + numOfHours + ' hours');
 
+                            var nSunHours = 0;
+                            var nOldTime4Sun = -1;
+
                             for (let h = 0; h < numOfHours; h++) {
 
                                 //adapter.log.debug('location: ' + l + ' day: ' + d + ' hour ' + h);
@@ -1012,86 +1025,217 @@ function getForecastDataHourlyJSON(cb) {
                                     }
                                 });
 
+                                if (dd == 1) {
+                                    tasks.push({
+                                        name: 'add',
+                                        key: 'NextHours2.Location_' + ll + '.Day_' + dd + '.current',
+                                        obj: {
+                                            type: 'channel',
+                                            common: {
+                                                name: 'current ',
+                                                role: 'weather'
+                                            }
+                                        }
+                                    });
+
+                                }
+
                                 value = result.day[d].hour[h].interval;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".hour";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.hour';
                                 insertIntoList(keyName, value);
 
-  
+                                var sHour4SunTime = result.day[d].hour[h].interval.value;
+                                var Hour4SunTimeArr = sHour4SunTime.split(":");
+                                var Hour4SunTime = Hour4SunTimeArr[0];
+
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.hour';
+                                    insertIntoList(keyName, value);
+                                }
 
                                 value = result.day[d].hour[h].temp;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".temp";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.temp';
                                 insertIntoList(keyName, value, unit_temp);
 
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.temp';
+                                    insertIntoList(keyName, value, unit_temp);
+                                }
+
                                 value = result.day[d].hour[h].symbol_value;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".symbol";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                 insertIntoList(keyName, value);
 
                                 //add url for icon
-                                insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh  + '.iconURL', getIconUrl(value));
+                                insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.iconURL', getIconUrl(value));
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol';
+                                    insertIntoList(keyName, value);
+
+                                    //add url for icon
+                                    insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.current.iconURL', getIconUrl(value));
+                                }
 
                                 value = result.day[d].hour[h].symbol_description;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".symbol_desc";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol_desc';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol_desc';
+                                    insertIntoList(keyName, value);
+                                }
+
 
                                 value = result.day[d].hour[h].symbol_value2;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".symbol";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol';
+                                    insertIntoList(keyName, value);
+                                }
 
                                 value = result.day[d].hour[h].symbol_description2;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".symbol_desc2";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol_desc2';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol_desc2';
+                                    insertIntoList(keyName, value);
+                                }
 
                                 value = result.day[d].hour[h].wind.speed;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_speed";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_speed';
                                 insertIntoList(keyName, value, unit_wind);
 
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_speed';
+                                    insertIntoList(keyName, value, unit_wind);
+                                }
+
                                 value = result.day[d].hour[h].wind.dir;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_dir";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_dir';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_dir';
+                                    insertIntoList(keyName, value);
+                                }
 
                                 value = result.day[d].hour[h].wind.symbol;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_symbol";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_symbol';
                                 insertIntoList(keyName, value);
 
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_symbol';
+                                    insertIntoList(keyName, value);
+                                }
+
                                 value = result.day[d].hour[h].wind.symbolB;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_symbolB";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_symbolB';
                                 insertIntoList(keyName, value);
 
                                 //add url for icon
                                 insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windIconURL', getWindIconUrl(value));
 
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_symbolB';
+                                    insertIntoList(keyName, value);
+
+                                    //add url for icon
+                                    insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.current.windIconURL', getWindIconUrl(value));
+
+                                }
+
                                 value = result.day[d].hour[h].wind.gusts;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".wind_gusts";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_gusts';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_gusts';
+                                    insertIntoList(keyName, value);
+                                }
 
                                 value = result.day[d].hour[h].rain;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".rain";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.rain';
                                 insertIntoList(keyName, value, unit_rain);
 
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.rain';
+                                    insertIntoList(keyName, value, unit_rain);
+                                }
+
                                 value = result.day[d].hour[h].humidity;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".humidity";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.humidity';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.humidity';
+                                    insertIntoList(keyName, value);
+
+                                }
 
                                 value = result.day[d].hour[h].pressure;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".pressure";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.pressure';
                                 insertIntoList(keyName, value, unit_pressure);
 
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.pressure';
+                                    insertIntoList(keyName, value, unit_pressure);
+                                }
+
                                 value = result.day[d].hour[h].clouds;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".clouds";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.clouds';
                                 insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.clouds';
+                                    insertIntoList(keyName, value);
+                                }
+
+                                var CloudTime = parseInt(result.report.location[l].day[d].hour[h].clouds[0].$.value);
+                                var SunTime = 100 - CloudTime;
+                                if (SunTime > 0 && Hour4SunTime >= SunInHour && Hour4SunTime <= SunOutHour) {
+                                    var diff = 1;
+                                    if (nOldTime4Sun > -1) {
+                                        diff = Hour4SunTime - nOldTime4Sun;
+                                    }
+                                    else {
+                                        diff = Hour4SunTime;
+                                    }
+                                    var SunHours = diff * SunTime / 100.0;
+                                    nSunHours += SunHours;
+                                }
+                                nOldTime4Sun = Hour4SunTime;
+                                //adapter.log.debug("### " + SunTime + "% = " + nSunHours + "SunIn " + SunInHour + " SunOut " + SunOutHour);
+
+
 
                                 value = result.day[d].hour[h].snowline;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".snowline";
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.snowline';
                                 insertIntoList(keyName, value, unit_snowline);
 
-                                value = result.day[d].hour[h].windchill;
-                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + ".windchill";
-                                insertIntoList(keyName, value);
-                            }
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.snowline';
+                                    insertIntoList(keyName, value, unit_snowline);
+                                }
 
+                                value = result.day[d].hour[h].windchill;
+                                keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windchill';
+                                insertIntoList(keyName, value);
+
+                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.windchill';
+                                    insertIntoList(keyName, value);
+                                }
+                            }
+                            insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.sunshineDuration', nSunHours);
+                            //adapter.log.debug("### next day");
 
                         }
-                        
+
                     }
 
 
