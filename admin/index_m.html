@@ -16,6 +16,25 @@
 
     <script type="text/javascript">
 
+        var timeout;
+        var Path2Delete = true;
+
+        //prepared for later use...
+        function showHideSettings() {
+
+            if (Path2Delete) {
+                $('.col-delete-unused-ds').show();
+                $('.col-delete-unused-ds-descr').show();
+            }
+            else {
+                $('.col-delete-unused-ds').hide();
+                $('.col-delete-unused-ds-descr').hide();
+            }
+        }
+
+        
+
+
         function showIconSet() {
             var text = [];
             var url = '';
@@ -66,6 +85,19 @@
             // Signal to admin, that no changes yet
             onChange(false);
             M.updateTextFields();
+
+            getAdapterInstances('daswetter', function (arr) {
+                for (var i = 0; i < arr.length; i++) {
+
+                    var _id = arr[i]._id.replace('system.adapter.', '');
+
+                    console.log('got instance ' + _id);
+
+                    showHideSettings();
+                }
+            });
+
+
         }
 
         function save(callback) {
@@ -126,11 +158,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 col-delete-unused-ds">
                         <input type="checkbox" id="DeleteUnusedDataset" class="value" />
                         <label for="DeleteUnusedDataset" class="translate">delete_unused_dataset</label>
                     </div>
-                    <div class="col s6">
+                    <div class="col s6 col-delete-unused-ds-descr">
                         <span class="translate">delete_unused_dataset_hint</span>
                     </div>
                 </div>

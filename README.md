@@ -41,9 +41,10 @@ As soon as we know how the json path will look like we will (re)implement it
 
 ## Changelog
 
-### 2.4.0 (2018-11-11)
+### 2.4.0 (2018-11-26)
 * (René) sunshine duration added
-* (René) current in NextHours_Day1 added
+* (René) current in NextHours_Day1 and NextHours2_Day1 added
+* (René) option "delete unused data" should be off after using
 
 ### 2.3.1 (2018-11-04)
 * (René) clean up code

@@ -26,6 +26,7 @@ const parseString = require('xml2js').parseString;
 let dbRunning = false;
 let allDone = false;
 
+
 // is called when databases are connected and adapter received configuration.
 // start here!
 adapter.on('ready', main);
@@ -48,6 +49,8 @@ function main() {
     if (adapter.config.DeleteUnusedDataset) {
         adapter.log.debug('deleting unused dataset');
         deleteOldData(adapter.config.UseNewDataset);
+        //should be done only once
+        adapter.config.DeleteUnusedDataset = false;
     }
 
     if (adapter.config.UseNewDataset == false && adapter.config.HourlyForecastJSON) {
@@ -1274,160 +1277,162 @@ const tasks = [];
 
 function insertIntoList(key, value, unit) {
 
-    var sUnit = "";
-    if (unit !== undefined) {
-        sUnit = unit;
-    }
+    try {
 
-    //adapter.log.debug('insert ' + key + ' with ' + value + ' ' + sUnit );
+        var sUnit = "";
+        if (unit !== undefined) {
+            sUnit = unit;
+        }
 
-    let obj;
-    let d = key.match(/Day_(\d)\./);
-    if (d) {
-        d = parseInt(d[1], 10) - 1;
-        if (key.match(/\.Location$/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Location',
-                    type: 'string',
-                    role: 'location',
-                    read: true,
-                    write: false
-                }
-            };
-        } if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Maximal day temperature',
-                    type: 'number',
-                    role: 'value.temperature.max.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : '°C'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/) || key.match(/\.tempmin/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Minimal day temperature',
-                    type: 'number',
-                    role: 'value.temperature.min.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : '°C'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.Tag_value/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Day name',
-                    type: 'string',
-                    role: 'dayofweek.forecast.' + d,
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.Wetter_Symbol_id/) || key.match(/\.Wetter_Symbol_id2/) ) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Weather icon name',
-                    type: 'string',
-                    role: 'weather.icon.name.forecast.' + d,
-                    
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.symbol_value2/) || key.match(/\.Wetter_Symbol_value/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Weather state URL',
-                    type: 'string',
-                    role: 'weather.title.forecast.' + d,
-                    
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.Wetterbedingungen_value/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Weather description',
-                    type: 'string',
-                    role: 'weather.state.forecast.' + d,
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.Wind_valueB/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Wind description',
-                    type: 'string',
-                    role: 'weather.direction.wind.forecast.' + d,
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.iconURL/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Weather icon URL',
-                    type: 'string',
-                    role: 'weather.icon.forecast.' + d,
-                    
-                    read: true,
-                    write: false
-                }
-            };
-        }  else if (key.match(/\.windIconURL/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Wind icon URL',
-                    type: 'string',
-                    role: 'weather.icon.wind.forecast.' + d,
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.sunshineDuration/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Sunshine Duration',
-                    type: 'string',
-                    role: 'weather.sunshineduration.' + d,
-                    unit: ('h'),
-                    read: true,
-                    write: false
-                }
-            };
-          
+        //adapter.log.debug('insert ' + key + ' with ' + value + ' ' + sUnit );
+
+        let obj;
+        let d = key.match(/Day_(\d)\./);
+        if (d) {
+            d = parseInt(d[1], 10) - 1;
+            if (key.match(/\.Location$/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Location',
+                        type: 'string',
+                        role: 'location',
+                        read: true,
+                        write: false
+                    }
+                };
+            } if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Maximal day temperature',
+                        type: 'number',
+                        role: 'value.temperature.max.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : '°C'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/) || key.match(/\.tempmin/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Minimal day temperature',
+                        type: 'number',
+                        role: 'value.temperature.min.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : '°C'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.Tag_value/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Day name',
+                        type: 'string',
+                        role: 'dayofweek.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.Wetter_Symbol_id/) || key.match(/\.Wetter_Symbol_id2/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather icon name',
+                        type: 'string',
+                        role: 'weather.icon.name.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.symbol_value2/) || key.match(/\.Wetter_Symbol_value/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather state URL',
+                        type: 'string',
+                        role: 'weather.title.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.Wetterbedingungen_value/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather description',
+                        type: 'string',
+                        role: 'weather.state.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.Wind_valueB/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Wind description',
+                        type: 'string',
+                        role: 'weather.direction.wind.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.iconURL/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather icon URL',
+                        type: 'string',
+                        role: 'weather.icon.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.windIconURL/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Wind icon URL',
+                        type: 'string',
+                        role: 'weather.icon.wind.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.sunshineDuration/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Sunshine Duration',
+                        type: 'string',
+                        role: 'weather.sunshineduration.' + d,
+                        unit: ('h'),
+                        read: true,
+                        write: false
+                    }
+                };
 
 
-        } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'day name',
-                    type: 'string',
-                    role: 'weather.day.name' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.hour_value/) || key.match(/\.hour/)) {
+            } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'day name',
+                        type: 'string',
+                        role: 'weather.day.name' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.hour_value/) || key.match(/\.hour/)) {
                 obj = {
                     type: 'state',
                     common: {
@@ -1438,308 +1443,314 @@ function insertIntoList(key, value, unit) {
                         read: true,
                         write: false
                     }
-            };
-        } else if (key.match(/\.day_value/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'day value',
-                    type: 'string',
-                    role: 'weather.day.value' + d,
+                };
+            } else if (key.match(/\.day_value/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'day value',
+                        type: 'string',
+                        role: 'weather.day.value' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.clouds_value/) || key.match(/\.clouds/)) {
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.clouds_value/) || key.match(/\.clouds/)) {
 
-            //sometimes % comes with value
-            value = value.replace(/%/g, '');
+                //sometimes % comes with value
+                value = value.replace(/%/g, '');
 
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'clouds',
-                    type: 'string',
-                    role: 'weather.clouds.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : '%'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.humidity_value/) || key.match(/\.humidity/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'humidity',
-                    type: 'string',
-                    role: 'weather.humidity.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : '%'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.pressure_value/) || key.match(/\.pressure/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'pressure',
-                    type: 'string',
-                    role: 'weather.pressure.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'mBar'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.rain_value/) ||  key.match(/\.rain/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'rain',
-                    type: 'string',
-                    role: 'weather.rain.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'mm'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.snowline_value/) || key.match(/\.snowline/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'snowline',
-                    type: 'string',
-                    role: 'weather.snowline.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'm'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'Weather state',
-                    type: 'string',
-                    role: 'weather.symbol.desc.forecast.' + d,
-                   
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'temperature',
-                    type: 'string',
-                    role: 'weather.temperature.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : '°C'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.wind_dir/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'wind direction',
-                    type: 'string',
-                    role: 'weather.wind.direction.forecast.' + d,
-                    
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.wind_symbol/) || key.match(/\.wind_symbolB/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'wind symbol',
-                    type: 'string',
-                    role: 'weather.wind.symbol.forecast.' + d,
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'clouds',
+                        type: 'string',
+                        role: 'weather.clouds.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : '%'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.humidity_value/) || key.match(/\.humidity/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'humidity',
+                        type: 'string',
+                        role: 'weather.humidity.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : '%'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.pressure_value/) || key.match(/\.pressure/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'pressure',
+                        type: 'string',
+                        role: 'weather.pressure.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : 'mBar'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.rain_value/) || key.match(/\.rain/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'rain',
+                        type: 'string',
+                        role: 'weather.rain.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : 'mm'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.snowline_value/) || key.match(/\.snowline/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'snowline',
+                        type: 'string',
+                        role: 'weather.snowline.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : 'm'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather state',
+                        type: 'string',
+                        role: 'weather.symbol.desc.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.wind_value/) || key.match(/\.wind_speed/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'wind value',
-                    type: 'string',
-                    role: 'weather.wind.value.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'km/h'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.windchill_value/) || key.match(/\.windchill/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'windchill',
-                    type: 'string',
-                    role: 'weather.wind.windchill.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : '°C'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.windgusts_value/) || key.match(/\.wind_gusts/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'windgusts',
-                    type: 'string',
-                    role: 'weather.wind.windgusts.forecast.' + d,
-                    unit: (sUnit.length > 0 ? sUnit : 'km/h'),
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'local time',
-                    type: 'string',
-                    role: 'weather.locale.info.time.forecast.' + d,
-                   
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'local offset',
-                    type: 'string',
-                    role: 'weather.locale.info.offset.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'temperature',
+                        type: 'string',
+                        role: 'weather.temperature.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : '°C'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.wind_dir/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'wind direction',
+                        type: 'string',
+                        role: 'weather.wind.direction.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.moon_desc/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'moon description',
-                    type: 'string',
-                    role: 'weather.moon.description.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.wind_symbol/) || key.match(/\.wind_symbolB/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'wind symbol',
+                        type: 'string',
+                        role: 'weather.wind.symbol.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.moon_in/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'moon raise',
-                    type: 'string',
-                    role: 'weather.moon.in.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.wind_value/) || key.match(/\.wind_speed/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'wind value',
+                        type: 'string',
+                        role: 'weather.wind.value.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : 'km/h'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.windchill_value/) || key.match(/\.windchill/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'windchill',
+                        type: 'string',
+                        role: 'weather.wind.windchill.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : '°C'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.windgusts_value/) || key.match(/\.wind_gusts/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'windgusts',
+                        type: 'string',
+                        role: 'weather.wind.windgusts.forecast.' + d,
+                        unit: (sUnit.length > 0 ? sUnit : 'km/h'),
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'local time',
+                        type: 'string',
+                        role: 'weather.locale.info.time.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.moon_lumi/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'moon lumi',
-                    type: 'string',
-                    role: 'weather.moon.lumi.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'local offset',
+                        type: 'string',
+                        role: 'weather.locale.info.offset.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.moon_out/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'moon set',
-                    type: 'string',
-                    role: 'weather.moon.out.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.moon_desc/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'moon description',
+                        type: 'string',
+                        role: 'weather.moon.description.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.moon_symbol/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'moon symbol',
-                    type: 'string',
-                    role: 'weather.moon.symbol.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.moon_in/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'moon raise',
+                        type: 'string',
+                        role: 'weather.moon.in.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.sun_in/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'sun raise',
-                    type: 'string',
-                    role: 'weather.sun.in.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.moon_lumi/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'moon lumi',
+                        type: 'string',
+                        role: 'weather.moon.lumi.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.sun_mid/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'sun mid',
-                    type: 'string',
-                    role: 'weather.sun.mid.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.moon_out/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'moon set',
+                        type: 'string',
+                        role: 'weather.moon.out.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        } else if (key.match(/\.sun_out/)) {
-            obj = {
-                type: 'state',
-                common: {
-                    name: 'sun set',
-                    type: 'string',
-                    role: 'weather.sun.out.forecast.' + d,
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.moon_symbol/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'moon symbol',
+                        type: 'string',
+                        role: 'weather.moon.symbol.forecast.' + d,
 
-                    read: true,
-                    write: false
-                }
-            };
-        }              
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.sun_in/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'sun raise',
+                        type: 'string',
+                        role: 'weather.sun.in.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.sun_mid/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'sun mid',
+                        type: 'string',
+                        role: 'weather.sun.mid.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.sun_out/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'sun set',
+                        type: 'string',
+                        role: 'weather.sun.out.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+            }
+        }
+
+        obj = obj || {
+            type: 'state',
+            common: {
+                name: 'data',
+                type: 'string',
+                role: 'state',
+                unit: '',
+                read: true,
+                write: false
+            }
+        };
+
+        tasks.push({
+            name: 'add',
+            key: key,
+            obj: obj,
+            value: value
+        });
+
     }
 
-    obj = obj || {
-        type: 'state',
-        common: {
-            name: 'data',
-            type: 'string',
-            role: 'state',
-            unit: '',
-            read: true,
-            write: false
-        }
-    };
-
-    tasks.push({
-        name: 'add',
-        key: key,
-        obj: obj,
-        value: value
-    });
+    catch (e) {
+        adapter.log.error('exception in insertIntoList [' + e + ']');
+    }
 }
 
 function startDbUpdate() {
@@ -1782,63 +1793,87 @@ function processTasks(tasks) {
 }
 
 function createExtendObject(key, objData, value, callback) {
-    adapter.getObject(key, (err, obj) => {
-        if (!obj) {
-            if (value !== undefined) {
-                adapter.log.debug('back to list: ' + key + ' ' + value);
-                insertIntoList(key, value);
+
+    try {
+        adapter.getObject(key, (err, obj) => {
+            if (!obj) {
+                if (value !== undefined) {
+                    adapter.log.debug('back to list: ' + key + ' ' + value);
+                    insertIntoList(key, value);
+                }
+                adapter.setObjectNotExists(key, objData, callback);
+            } else if (value !== undefined) {
+                adapter.setState(key, { ack: true, val: value }, callback);
+            } else if (callback) {
+                callback();
             }
-            adapter.setObjectNotExists(key, objData, callback);
-        } else if (value !== undefined) {
-            adapter.setState(key, {ack: true, val: value}, callback);
-        } else if (callback) {
-            callback();
-        }
-    });
+        });
+    }
+    catch (e) {
+        adapter.log.error('exception in createExtendObject [' + e + ']');
+    }
 }
 
 function updateExtendObject(key, value, callback) {
-    adapter.setState(key, {ack: true, val: value}, callback);
+    try {
+        adapter.setState(key, { ack: true, val: value }, callback);
+    }
+    catch (e) {
+        adapter.log.error('exception in updateExtendObject [' + e + ']');
+    }
 }
 
 function DeleteIntoList(type, key) {
+    try {
+        var name = "";
+        if (type == "channel") {
+            name = "delete_channel";
+        } else if (type == "state") {
+            name = "delete_state";
+        }
 
-    var name = "";
-    if (type == "channel") {
-        name = "delete_channel";
-    } else if (type == "state") {
-        name = "delete_state";
+        tasks.push({
+            name: name,
+            key: key
+        });
     }
-
-    tasks.push({
-        name: name,
-        key: key
-    });
+    catch (e) {
+        adapter.log.error('exception in DeleteIntoList [' + e + ']');
+    }
 }
 
 
 function DeleteChannel(channel, callback) {
-    adapter.log.debug("try deleting channel " + channel);
-    //just do nothing at the moment
-    //if (callback) callback();
-    
-    adapter.delObject(channel, function (err) {
-        adapter.deleteChannel(channel, callback);
-    });
-    
 
+    try {
+        adapter.log.debug("try deleting channel " + channel);
+        //just do nothing at the moment
+        //if (callback) callback();
+
+        adapter.delObject(channel, function (err) {
+            adapter.deleteChannel(channel, callback);
+        });
+
+    }
+    catch (e) {
+        adapter.log.error('exception in DeleteChannel [' + e + ']');
+    }
 }
 
 function DeleteState(state, callback) {
-    adapter.log.debug("try deleting state " + state);
-    //just do nothing at the moment
-    //if (callback) callback();
-    
-    adapter.delObject(state, function (err) {
-        // Delete state
-        adapter.delState(state, callback);
-    });
-    
+    try {
+        adapter.log.debug("try deleting state " + state);
+        //just do nothing at the moment
+        //if (callback) callback();
+
+        adapter.delObject(state, function (err) {
+            // Delete state
+            adapter.delState(state, callback);
+        });
+    }
+    catch (e) {
+        adapter.log.error('exception in DeleteState [' + e + ']');
+    }
 }
 
 
@@ -2300,8 +2335,8 @@ function checkWeatherVariablesOld() {
         adapter.setObjectNotExists('NextDays', {
             type: 'channel',
             role: 'weather',
-            common: {name: '7 days forecast'},
-            native: {location: adapter.config.location}
+            common: { name: '7 days forecast' },
+            native: { location: adapter.config.location }
         });
         // all states for all 7 days...
         for (let d = 0; d < 7; d++) {
@@ -2309,8 +2344,8 @@ function checkWeatherVariablesOld() {
             adapter.setObjectNotExists('NextDays.' + d + 'd', {
                 type: 'channel',
                 role: 'forecast',
-                common: {name: 'in ' + d + ' days'},
-                native: {location: adapter.config.location}
+                common: { name: 'in ' + d + ' days' },
+                native: { location: adapter.config.location }
             });
             adapter.setObjectNotExists(id + 'Temperature_Min', {
                 type: 'state',
@@ -2322,7 +2357,7 @@ function checkWeatherVariablesOld() {
                     read: true,
                     write: false
                 },
-                native: {id: id + 'Temperature_Min'}
+                native: { id: id + 'Temperature_Min' }
             });
             adapter.setObjectNotExists(id + 'Temperature_Max', {
                 type: 'state',
@@ -2334,60 +2369,60 @@ function checkWeatherVariablesOld() {
                     read: true,
                     write: false
                 },
-                native: {id: id + 'Temperature_Max'}
+                native: { id: id + 'Temperature_Max' }
             });
             adapter.setObjectNotExists(id + 'WindID', {
                 type: 'state',
-                common: {name: 'WindID', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'Wind_ID'}
+                common: { name: 'WindID', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'Wind_ID' }
             });
             adapter.setObjectNotExists(id + 'WindIDB', {
                 type: 'state',
-                common: {name: 'WindIDB', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'Wind_IDB'}
+                common: { name: 'WindIDB', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'Wind_IDB' }
             });
 
             adapter.setObjectNotExists(id + 'Wind', {
                 type: 'state',
-                common: {name: 'Wind', type: 'string', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'Wind'}
+                common: { name: 'Wind', type: 'string', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'Wind' }
             });
             adapter.setObjectNotExists(id + 'WindB', {
                 type: 'state',
-                common: {name: 'WindB', type: 'string', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'WindB'}
+                common: { name: 'WindB', type: 'string', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'WindB' }
             });
             adapter.setObjectNotExists(id + 'ConditionID', {
                 type: 'state',
-                common: {name: 'ConditionID', type: 'number', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'ConditionID'}
+                common: { name: 'ConditionID', type: 'number', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'ConditionID' }
             });
             adapter.setObjectNotExists(id + 'Condition', {
                 type: 'state',
-                common: {name: 'Condition', type: 'string', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'Condition'}
+                common: { name: 'Condition', type: 'string', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'Condition' }
             });
 
             adapter.setObjectNotExists(id + 'ConditionID2', {
                 type: 'state',
-                common: {name: 'ConditionID2', type: 'number', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'ConditionID2'}
+                common: { name: 'ConditionID2', type: 'number', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'ConditionID2' }
             });
             adapter.setObjectNotExists(id + 'Condition2', {
                 type: 'state',
-                common: {name: 'Condition2', type: 'string', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'Condition2'}
+                common: { name: 'Condition2', type: 'string', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'Condition2' }
             });
 
             adapter.setObjectNotExists(id + 'day', {
                 type: 'state',
-                common: {name: 'day', type: 'string', role: 'day', unit: '', read: true, write: false},
-                native: {id: id + 'day'}
+                common: { name: 'day', type: 'string', role: 'day', unit: '', read: true, write: false },
+                native: { id: id + 'day' }
             });
             adapter.setObjectNotExists(id + 'atmosphere', {
                 type: 'state',
-                common: {name: 'atmosphere', type: 'string', role: 'atmosphere', unit: '', read: true, write: false},
-                native: {id: id + 'atmosphere'}
+                common: { name: 'atmosphere', type: 'string', role: 'atmosphere', unit: '', read: true, write: false },
+                native: { id: id + 'atmosphere' }
             });
         }
     }
@@ -2396,8 +2431,8 @@ function checkWeatherVariablesOld() {
         adapter.setObjectNotExists('NextDaysDetailed', {
             type: 'channel',
             role: 'weather',
-            common: {name: '5 days detailed forecast'},
-            native: {location: adapter.config.location}
+            common: { name: '5 days detailed forecast' },
+            native: { location: adapter.config.location }
         });
         // all states for all 5 days...
         for (let d = 0; d < 5; d++) {
@@ -2405,40 +2440,40 @@ function checkWeatherVariablesOld() {
             adapter.setObjectNotExists('NextDaysDetailed.' + d + 'd', {
                 type: 'channel',
                 role: 'forecast',
-                common: {name: 'in ' + d + ' days'},
-                native: {location: adapter.config.location}
+                common: { name: 'in ' + d + ' days' },
+                native: { location: adapter.config.location }
             });
 
             adapter.setObjectNotExists(id + 'Weekday', {
                 type: 'state',
-                common: {name: 'Weekday', type: 'string', role: 'day', unit: '', read: true, write: false},
-                native: {id: id + 'Weekday'}
+                common: { name: 'Weekday', type: 'string', role: 'day', unit: '', read: true, write: false },
+                native: { id: id + 'Weekday' }
             });
             adapter.setObjectNotExists(id + 'date', {
                 type: 'state',
-                common: {name: 'date', type: 'string', role: 'day', unit: '', read: true, write: false},
-                native: {id: id + 'date'}
+                common: { name: 'date', type: 'string', role: 'day', unit: '', read: true, write: false },
+                native: { id: id + 'date' }
             });
             adapter.setObjectNotExists(id + 'SymbolID', {
                 type: 'state',
-                common: {name: 'SymbolID', type: 'number', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'SymbolID'}
+                common: { name: 'SymbolID', type: 'number', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'SymbolID' }
             });
             adapter.setObjectNotExists(id + 'Symbol', {
                 type: 'state',
-                common: {name: 'Symbol', type: 'string', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'Symbol'}
+                common: { name: 'Symbol', type: 'string', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'Symbol' }
             });
 
             adapter.setObjectNotExists(id + 'SymbolID2', {
                 type: 'state',
-                common: {name: 'SymbolID2', type: 'number', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'SymbolID2'}
+                common: { name: 'SymbolID2', type: 'number', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'SymbolID2' }
             });
             adapter.setObjectNotExists(id + 'Symbol2', {
                 type: 'state',
-                common: {name: 'Symbol2', type: 'string', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'Symbol2'}
+                common: { name: 'Symbol2', type: 'string', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'Symbol2' }
             });
 
             adapter.setObjectNotExists(id + 'Temperature_Min', {
@@ -2451,7 +2486,7 @@ function checkWeatherVariablesOld() {
                     read: true,
                     write: false
                 },
-                native: {id: id + 'Temperature_Min'}
+                native: { id: id + 'Temperature_Min' }
             });
             adapter.setObjectNotExists(id + 'Temperature_Max', {
                 type: 'state',
@@ -2463,49 +2498,49 @@ function checkWeatherVariablesOld() {
                     read: true,
                     write: false
                 },
-                native: {id: id + 'Temperature_Max'}
+                native: { id: id + 'Temperature_Max' }
             });
 
             adapter.setObjectNotExists(id + 'Wind_Max', {
                 type: 'state',
-                common: {name: 'Wind_Max', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                native: {id: id + 'Wind_Max'}
+                common: { name: 'Wind_Max', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                native: { id: id + 'Wind_Max' }
             });
             adapter.setObjectNotExists(id + 'WindSymbol', {
                 type: 'state',
-                common: {name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'WindSymbol'}
+                common: { name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'WindSymbol' }
             });
             adapter.setObjectNotExists(id + 'WindSymbolB', {
                 type: 'state',
-                common: {name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'WindSymbolB'}
+                common: { name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'WindSymbolB' }
             });
             adapter.setObjectNotExists(id + 'WindGusts', {
                 type: 'state',
-                common: {name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                native: {id: id + 'WindGusts'}
+                common: { name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                native: { id: id + 'WindGusts' }
             });
             adapter.setObjectNotExists(id + 'Rain', {
                 type: 'state',
-                common: {name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false},
-                native: {id: id + 'Rain'}
+                common: { name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false },
+                native: { id: id + 'Rain' }
             });
             adapter.setObjectNotExists(id + 'Humidity', {
                 type: 'state',
-                common: {name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false},
-                native: {id: id + 'Humidity'}
+                common: { name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false },
+                native: { id: id + 'Humidity' }
             });
 
             adapter.setObjectNotExists(id + 'Pressure', {
                 type: 'state',
-                common: {name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false},
-                native: {id: id + 'Pressure'}
+                common: { name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false },
+                native: { id: id + 'Pressure' }
             });
             adapter.setObjectNotExists(id + 'Snowline', {
                 type: 'state',
-                common: {name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false},
-                native: {id: id + 'Snowline'}
+                common: { name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false },
+                native: { id: id + 'Snowline' }
             });
 
             for (let h = 0; h < 8; h++) {
@@ -2513,14 +2548,14 @@ function checkWeatherVariablesOld() {
                 adapter.setObjectNotExists('NextDaysDetailed.' + d + 'd.' + h + 'h', {
                     type: 'channel',
                     role: 'forecast',
-                    common: {name: h + ' period'},
-                    native: {location: adapter.config.location}
+                    common: { name: h + ' period' },
+                    native: { location: adapter.config.location }
                 });
 
                 adapter.setObjectNotExists(id1 + 'hour', {
                     type: 'state',
-                    common: {name: 'hour', type: 'number', role: 'hour', unit: '', read: true, write: false},
-                    native: {id: id1 + 'hour'}
+                    common: { name: 'hour', type: 'number', role: 'hour', unit: '', read: true, write: false },
+                    native: { id: id1 + 'hour' }
                 });
                 adapter.setObjectNotExists(id1 + 'Temperature', {
                     type: 'state',
@@ -2532,81 +2567,81 @@ function checkWeatherVariablesOld() {
                         read: true,
                         write: false
                     },
-                    native: {id: id1 + 'Temperature'}
+                    native: { id: id1 + 'Temperature' }
                 });
                 adapter.setObjectNotExists(id1 + 'SymbolID', {
                     type: 'state',
-                    common: {name: 'SymbolID', type: 'number', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'SymbolID'}
+                    common: { name: 'SymbolID', type: 'number', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'SymbolID' }
                 });
                 adapter.setObjectNotExists(id1 + 'Symbol', {
                     type: 'state',
-                    common: {name: 'Symbol', type: 'string', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'Symbol'}
+                    common: { name: 'Symbol', type: 'string', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'Symbol' }
                 });
 
                 adapter.setObjectNotExists(id1 + 'SymbolID2', {
                     type: 'state',
-                    common: {name: 'SymbolID2', type: 'number', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'SymbolID2'}
+                    common: { name: 'SymbolID2', type: 'number', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'SymbolID2' }
                 });
                 adapter.setObjectNotExists(id1 + 'Symbol2', {
                     type: 'state',
-                    common: {name: 'Symbol2', type: 'string', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'Symbol2'}
+                    common: { name: 'Symbol2', type: 'string', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'Symbol2' }
                 });
 
 
                 adapter.setObjectNotExists(id1 + 'Wind', {
                     type: 'state',
-                    common: {name: 'Wind', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                    native: {id: id1 + 'Wind'}
+                    common: { name: 'Wind', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                    native: { id: id1 + 'Wind' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindDir', {
                     type: 'state',
-                    common: {name: 'WindDir', type: 'string', role: 'wind', unit: '', read: true, write: false},
-                    native: {id: id1 + 'WindDir'}
+                    common: { name: 'WindDir', type: 'string', role: 'wind', unit: '', read: true, write: false },
+                    native: { id: id1 + 'WindDir' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindSymbol', {
                     type: 'state',
-                    common: {name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                    native: {id: id1 + 'WindSymbol'}
+                    common: { name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                    native: { id: id1 + 'WindSymbol' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindSymbolB', {
                     type: 'state',
-                    common: {name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                    native: {id: id1 + 'WindSymbolB'}
+                    common: { name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                    native: { id: id1 + 'WindSymbolB' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindGusts', {
                     type: 'state',
-                    common: {name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                    native: {id: id1 + 'WindGusts'}
+                    common: { name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                    native: { id: id1 + 'WindGusts' }
                 });
                 adapter.setObjectNotExists(id1 + 'Rain', {
                     type: 'state',
-                    common: {name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false},
-                    native: {id: id1 + 'Rain'}
+                    common: { name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false },
+                    native: { id: id1 + 'Rain' }
                 });
                 adapter.setObjectNotExists(id1 + 'Humidity', {
                     type: 'state',
-                    common: {name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false},
-                    native: {id: id1 + 'Humidity'}
+                    common: { name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false },
+                    native: { id: id1 + 'Humidity' }
                 });
 
                 adapter.setObjectNotExists(id1 + 'Pressure', {
                     type: 'state',
-                    common: {name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false},
-                    native: {id: id1 + 'Pressure'}
+                    common: { name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false },
+                    native: { id: id1 + 'Pressure' }
                 });
                 adapter.setObjectNotExists(id1 + 'Snowline', {
                     type: 'state',
-                    common: {name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false},
-                    native: {id: id1 + 'Snowline'}
+                    common: { name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false },
+                    native: { id: id1 + 'Snowline' }
                 });
                 adapter.setObjectNotExists(id1 + 'Clouds', {
                     type: 'state',
-                    common: {name: 'Clouds', type: 'number', role: 'clouds', unit: '', read: true, write: false},
-                    native: {id: id1 + 'Clouds'}
+                    common: { name: 'Clouds', type: 'number', role: 'clouds', unit: '', read: true, write: false },
+                    native: { id: id1 + 'Clouds' }
                 });
                 adapter.setObjectNotExists(id1 + 'Windchill', {
                     type: 'state',
@@ -2618,7 +2653,7 @@ function checkWeatherVariablesOld() {
                         read: true,
                         write: false
                     },
-                    native: {id: id1 + 'Windchill'}
+                    native: { id: id1 + 'Windchill' }
                 });
             }
 
@@ -2630,8 +2665,8 @@ function checkWeatherVariablesOld() {
         adapter.setObjectNotExists('hourly', {
             type: 'channel',
             role: 'weather',
-            common: {name: 'hourly detailed forecast'},
-            native: {location: adapter.config.location}
+            common: { name: 'hourly detailed forecast' },
+            native: { location: adapter.config.location }
         });
         // all states for all hours... (2 days only...)
         for (let d = 0; d < 2; d++) {
@@ -2639,40 +2674,40 @@ function checkWeatherVariablesOld() {
             adapter.setObjectNotExists('hourly.' + d + 'd', {
                 type: 'channel',
                 role: 'forecast',
-                common: {name: 'in ' + d + ' days'},
-                native: {location: adapter.config.location}
+                common: { name: 'in ' + d + ' days' },
+                native: { location: adapter.config.location }
             });
 
             adapter.setObjectNotExists(id + 'Weekday', {
                 type: 'state',
-                common: {name: 'Weekday', type: 'string', role: 'day', unit: '', read: true, write: false},
-                native: {id: id + 'Weekday'}
+                common: { name: 'Weekday', type: 'string', role: 'day', unit: '', read: true, write: false },
+                native: { id: id + 'Weekday' }
             });
             adapter.setObjectNotExists(id + 'date', {
                 type: 'state',
-                common: {name: 'date', type: 'string', role: 'day', unit: '', read: true, write: false},
-                native: {id: id + 'date'}
+                common: { name: 'date', type: 'string', role: 'day', unit: '', read: true, write: false },
+                native: { id: id + 'date' }
             });
             adapter.setObjectNotExists(id + 'SymbolID', {
                 type: 'state',
-                common: {name: 'SymbolID', type: 'number', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'SymbolID'}
+                common: { name: 'SymbolID', type: 'number', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'SymbolID' }
             });
             adapter.setObjectNotExists(id + 'Symbol', {
                 type: 'state',
-                common: {name: 'Symbol', type: 'string', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'Symbol'}
+                common: { name: 'Symbol', type: 'string', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'Symbol' }
             });
 
             adapter.setObjectNotExists(id + 'SymbolID2', {
                 type: 'state',
-                common: {name: 'SymbolID2', type: 'number', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'SymbolID2'}
+                common: { name: 'SymbolID2', type: 'number', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'SymbolID2' }
             });
             adapter.setObjectNotExists(id + 'Symbol2', {
                 type: 'state',
-                common: {name: 'Symbol2', type: 'string', role: 'condition', unit: '', read: true, write: false},
-                native: {id: id + 'Symbol2'}
+                common: { name: 'Symbol2', type: 'string', role: 'condition', unit: '', read: true, write: false },
+                native: { id: id + 'Symbol2' }
             });
 
             adapter.setObjectNotExists(id + 'Temperature_Min', {
@@ -2685,7 +2720,7 @@ function checkWeatherVariablesOld() {
                     read: true,
                     write: false
                 },
-                native: {id: id + 'Temperature_Min'}
+                native: { id: id + 'Temperature_Min' }
             });
             adapter.setObjectNotExists(id + 'Temperature_Max', {
                 type: 'state',
@@ -2697,49 +2732,49 @@ function checkWeatherVariablesOld() {
                     read: true,
                     write: false
                 },
-                native: {id: id + 'Temperature_Max'}
+                native: { id: id + 'Temperature_Max' }
             });
 
             adapter.setObjectNotExists(id + 'Wind_Max', {
                 type: 'state',
-                common: {name: 'Wind_Max', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                native: {id: id + 'Wind_Max'}
+                common: { name: 'Wind_Max', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                native: { id: id + 'Wind_Max' }
             });
             adapter.setObjectNotExists(id + 'WindSymbol', {
                 type: 'state',
-                common: {name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'WindSymbol'}
+                common: { name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'WindSymbol' }
             });
             adapter.setObjectNotExists(id + 'WindSymbolB', {
                 type: 'state',
-                common: {name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                native: {id: id + 'WindSymbolB'}
+                common: { name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                native: { id: id + 'WindSymbolB' }
             });
             adapter.setObjectNotExists(id + 'WindGusts', {
                 type: 'state',
-                common: {name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                native: {id: id + 'WindGusts'}
+                common: { name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                native: { id: id + 'WindGusts' }
             });
             adapter.setObjectNotExists(id + 'Rain', {
                 type: 'state',
-                common: {name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false},
-                native: {id: id + 'Rain'}
+                common: { name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false },
+                native: { id: id + 'Rain' }
             });
             adapter.setObjectNotExists(id + 'Humidity', {
                 type: 'state',
-                common: {name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false},
-                native: {id: id + 'Humidity'}
+                common: { name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false },
+                native: { id: id + 'Humidity' }
             });
 
             adapter.setObjectNotExists(id + 'Pressure', {
                 type: 'state',
-                common: {name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false},
-                native: {id: id + 'Pressure'}
+                common: { name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false },
+                native: { id: id + 'Pressure' }
             });
             adapter.setObjectNotExists(id + 'Snowline', {
                 type: 'state',
-                common: {name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false},
-                native: {id: id + 'Snowline'}
+                common: { name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false },
+                native: { id: id + 'Snowline' }
             });
 
             for (let h = 0; h < 24; h++) {
@@ -2747,14 +2782,14 @@ function checkWeatherVariablesOld() {
                 adapter.setObjectNotExists('hourly.' + d + 'd.' + h + 'h', {
                     type: 'channel',
                     role: 'forecast',
-                    common: {name: h + ' period'},
-                    native: {location: adapter.config.location}
+                    common: { name: h + ' period' },
+                    native: { location: adapter.config.location }
                 });
 
                 adapter.setObjectNotExists(id1 + 'hour', {
                     type: 'state',
-                    common: {name: 'hour', type: 'number', role: 'hour', unit: '', read: true, write: false},
-                    native: {id: id1 + 'hour'}
+                    common: { name: 'hour', type: 'number', role: 'hour', unit: '', read: true, write: false },
+                    native: { id: id1 + 'hour' }
                 });
                 adapter.setObjectNotExists(id1 + 'Temperature', {
                     type: 'state',
@@ -2766,81 +2801,81 @@ function checkWeatherVariablesOld() {
                         read: true,
                         write: false
                     },
-                    native: {id: id1 + 'Temperature'}
+                    native: { id: id1 + 'Temperature' }
                 });
                 adapter.setObjectNotExists(id1 + 'SymbolID', {
                     type: 'state',
-                    common: {name: 'SymbolID', type: 'number', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'SymbolID'}
+                    common: { name: 'SymbolID', type: 'number', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'SymbolID' }
                 });
                 adapter.setObjectNotExists(id1 + 'Symbol', {
                     type: 'state',
-                    common: {name: 'Symbol', type: 'string', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'Symbol'}
+                    common: { name: 'Symbol', type: 'string', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'Symbol' }
                 });
 
                 adapter.setObjectNotExists(id1 + 'SymbolID2', {
                     type: 'state',
-                    common: {name: 'SymbolID2', type: 'number', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'SymbolID2'}
+                    common: { name: 'SymbolID2', type: 'number', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'SymbolID2' }
                 });
                 adapter.setObjectNotExists(id1 + 'Symbol2', {
                     type: 'state',
-                    common: {name: 'Symbol2', type: 'string', role: 'symbol', unit: '', read: true, write: false},
-                    native: {id: id1 + 'Symbol2'}
+                    common: { name: 'Symbol2', type: 'string', role: 'symbol', unit: '', read: true, write: false },
+                    native: { id: id1 + 'Symbol2' }
                 });
 
 
                 adapter.setObjectNotExists(id1 + 'Wind', {
                     type: 'state',
-                    common: {name: 'Wind', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                    native: {id: id1 + 'Wind'}
+                    common: { name: 'Wind', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                    native: { id: id1 + 'Wind' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindDir', {
                     type: 'state',
-                    common: {name: 'WindDir', type: 'string', role: 'wind', unit: '', read: true, write: false},
-                    native: {id: id1 + 'WindDir'}
+                    common: { name: 'WindDir', type: 'string', role: 'wind', unit: '', read: true, write: false },
+                    native: { id: id1 + 'WindDir' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindSymbol', {
                     type: 'state',
-                    common: {name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                    native: {id: id1 + 'WindSymbol'}
+                    common: { name: 'WindSymbol', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                    native: { id: id1 + 'WindSymbol' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindSymbolB', {
                     type: 'state',
-                    common: {name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false},
-                    native: {id: id1 + 'WindSymbolB'}
+                    common: { name: 'WindSymbolB', type: 'number', role: 'wind', unit: '', read: true, write: false },
+                    native: { id: id1 + 'WindSymbolB' }
                 });
                 adapter.setObjectNotExists(id1 + 'WindGusts', {
                     type: 'state',
-                    common: {name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false},
-                    native: {id: id1 + 'WindGusts'}
+                    common: { name: 'WindGusts', type: 'number', role: 'wind', unit: 'kph', read: true, write: false },
+                    native: { id: id1 + 'WindGusts' }
                 });
                 adapter.setObjectNotExists(id1 + 'Rain', {
                     type: 'state',
-                    common: {name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false},
-                    native: {id: id1 + 'Rain'}
+                    common: { name: 'Rain', type: 'number', role: 'rain', unit: 'mm', read: true, write: false },
+                    native: { id: id1 + 'Rain' }
                 });
                 adapter.setObjectNotExists(id1 + 'Humidity', {
                     type: 'state',
-                    common: {name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false},
-                    native: {id: id1 + 'Humidity'}
+                    common: { name: 'Humidity', type: 'number', role: 'humidity', unit: '%', read: true, write: false },
+                    native: { id: id1 + 'Humidity' }
                 });
 
                 adapter.setObjectNotExists(id1 + 'Pressure', {
                     type: 'state',
-                    common: {name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false},
-                    native: {id: id1 + 'Pressure'}
+                    common: { name: 'Pressure', type: 'number', role: 'pressure', unit: 'mb', read: true, write: false },
+                    native: { id: id1 + 'Pressure' }
                 });
                 adapter.setObjectNotExists(id1 + 'Snowline', {
                     type: 'state',
-                    common: {name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false},
-                    native: {id: id1 + 'Snowline'}
+                    common: { name: 'Snowline', type: 'number', role: 'snowline', unit: 'm', read: true, write: false },
+                    native: { id: id1 + 'Snowline' }
                 });
                 adapter.setObjectNotExists(id1 + 'Clouds', {
                     type: 'state',
-                    common: {name: 'Clouds', type: 'number', role: 'clouds', unit: '', read: true, write: false},
-                    native: {id: id1 + 'Clouds'}
+                    common: { name: 'Clouds', type: 'number', role: 'clouds', unit: '', read: true, write: false },
+                    native: { id: id1 + 'Clouds' }
                 });
                 adapter.setObjectNotExists(id1 + 'Windchill', {
                     type: 'state',
@@ -2852,7 +2887,7 @@ function checkWeatherVariablesOld() {
                         read: true,
                         write: false
                     },
-                    native: {id: id1 + 'Windchill'}
+                    native: { id: id1 + 'Windchill' }
                 });
             }
         }

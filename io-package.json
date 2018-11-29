@@ -4,9 +4,15 @@
     "version": "2.4.0",
     "news": {
       "2.4.0": {
-        "en": "sunshine duration added"
-      },
-      "2.3.2": {
+        "en": "sunshine duration and current values for NextHours_Day1 and NextHours2_Day1 added",
+        "de": "Sonnenscheindauer und aktuelle Werte für NextHours_Day1 und NextHours2_Day1 hinzugefügt",
+        "ru": "продолжительность солнечного сияния и текущие значения для NextHours_Day1 и NextHours2_Day1",
+        "pt": "duração de sol e valores atuais para NextHours_Day1 e NextHours2_Day1 adicionados",
+        "nl": "zonneschijnduur en huidige waarden voor NextHours_Day1 en NextHours2_Day1 toegevoegd",
+        "fr": "Durée d'ensoleillement et valeurs actuelles pour NextHours_Day1 et NextHours2_Day1 ajoutées",
+        "it": "durata del sole e valori attuali per NextHours_Day1 e NextHours2_Day1 aggiunti",
+        "es": "Duración de la luz del sol y valores actuales para NextHours_Day1 y NextHours2_Day1 agregado",
+        "pl": "dodano czas trwania słońca i bieżące wartości dla NextHours_Day1 i NextHours2_Day1"
       },
       "2.3.1": {
         "en": "code clean up",
