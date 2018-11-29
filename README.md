@@ -14,20 +14,37 @@ This adapter reads weather forecast data from DasWetter.com.
 You need an account on DasWetter.com. Register at https://www.daswetter.com/api/#/login
 The account is for free under certain conditions.
 
-In your account you will find three URL for three different data models:
-* 7 days forecast and general overview
-* 5 days forecast and detailed 3 hours overview
-* hourly forecast
+In your account you will find three URL for four different data models:
+* Forecast for the next 7 days and general information of the day: high and low, wind (symbol and description), Day symbol and weather conditions
+* detailed information for 5 days and every 3 hours: The general daily information is the following: peak, lows, wind, gusts, Precipitation, relative humidity, 
+sea level air pressure, snow line, Sunrise and sunset, dates related to the moon, local time
+* Preview with detailed data every hour (only for the first 2 days, then every 3 hours)
+* Prediction for 5 days and every 3 hours (in JSON format)
 
-All three models are implemented and one should be used at least.
+All four models are implemented and one should be used at least.
 In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
 
-Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
+** Hints for icons used in vis:**
+* Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
 
+** "current" in NextHours_Day1:**
+* DasWetter.com does not deliver real current weather values
+* but sometimes it's helpfull to have the forecast of current hour available
+* so we added "current" which is just a copy of related forecast hour values
+* please make sure you call the adapter at least one time per hour to make sure "current" is updated well
+* see also github feature request [issue24](https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
-
+## known issues
+* at the moment DasWetter.com sends data which are different to their own specification. This is the reason why those data can not be parsed right now
+As soon as we know how the json path will look like we will (re)implement it
+* sometimes when deleting old data structure an out-of-memory exception is thrown
 
 ## Changelog
+
+### 2.4.0 (2018-11-26)
+* (René) sunshine duration added
+* (René) current in NextHours_Day1 and NextHours2_Day1 added
+* (René) option "delete unused data" should be off after using
 
 ### 2.3.1 (2018-11-04)
 * (René) clean up code
