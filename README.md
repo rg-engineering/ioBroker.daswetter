@@ -41,6 +41,9 @@ As soon as we know how the json path will look like we will (re)implement it
 
 ## Changelog
 
+### 2.5.0 (2018-11-30)
+* (René) since app has problems with svg we can use png instead. svg's are converted to png. In admin a new option is available to use original svg's or converted png's 
+
 ### 2.4.0 (2018-11-26)
 * (René) sunshine duration added
 * (René) current in NextHours_Day1 and NextHours2_Day1 added

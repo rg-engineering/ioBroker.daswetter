@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "news": {
+      "2.5.0": {
+        "en": "since vis app has problems with svg we can use png instead",
+        "de": "da vis app probleme mit svg hat, können wir stattdessen png verwenden",
+        "ru": "поскольку у приложения есть проблемы с svg, мы можем использовать png вместо",
+        "pt": "desde app vis tem problemas com svg podemos usar png vez",
+        "nl": "omdat vis app problemen heeft met svg, kunnen we in plaats daarvan png gebruiken",
+        "fr": "puisque vis app a des problèmes avec svg, nous pouvons utiliser le png à la place",
+        "it": "dato che l'app vis ha problemi con svg possiamo invece usare png",
+        "es": "ya que la aplicación vis tiene problemas con svg podemos usar png en su lugar",
+        "pl": "ponieważ aplikacja vis ma problemy z svg, możemy zamiast tego użyć png"
+      },
       "2.4.0": {
         "en": "sunshine duration and current values for NextHours_Day1 and NextHours2_Day1 added",
         "de": "Sonnenscheindauer und aktuelle Werte für NextHours_Day1 und NextHours2_Day1 hinzugefügt",
@@ -236,6 +247,7 @@
     "UseNewDataset": true,
     "iconSet": 6,
     "parseTimeout": 60,
-    "DeleteUnusedDataset": true
+    "DeleteUnusedDataset": true,
+    "UsePNGorOriginalSVG": false
   }
 }

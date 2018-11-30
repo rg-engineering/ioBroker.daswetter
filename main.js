@@ -73,7 +73,7 @@ function main() {
 function getIconUrl(num) {
     const iconSet = adapter.config.iconSet || 6;
     num = parseInt(num, 10) || 0;
-    if (num && iconSet > 4) {
+    if (num && iconSet > 4 && !adapter.config.UsePNGorOriginalSVG) {
         return '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/' + num + '.svg';
     } else if (num) {
         return '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/' + num + '.png';
