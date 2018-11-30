@@ -47,10 +47,12 @@ function main() {
     allDone = false;
 
     if (adapter.config.DeleteUnusedDataset) {
-        adapter.log.debug('deleting unused dataset');
+        
         deleteOldData(adapter.config.UseNewDataset);
         //should be done only once
         adapter.config.DeleteUnusedDataset = false;
+
+        adapter.log.debug('deleting unused dataset, reset to ' + adapter.config.DeleteUnusedDataset);
     }
 
     if (adapter.config.UseNewDataset == false && adapter.config.HourlyForecastJSON) {
