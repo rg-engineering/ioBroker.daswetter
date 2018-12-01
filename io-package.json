@@ -245,9 +245,9 @@
     "Days5Forecast": "",
     "HourlyForecast": "",
     "UseNewDataset": true,
-    "iconSet": 6,
+    "iconSet": 1,
     "parseTimeout": 60,
-    "DeleteUnusedDataset": true,
+    "DeleteUnusedDataset": false,
     "UsePNGorOriginalSVG": false
   }
 }
