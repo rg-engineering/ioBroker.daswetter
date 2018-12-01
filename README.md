@@ -24,10 +24,13 @@ sea level air pressure, snow line, Sunrise and sunset, dates related to the moon
 All four models are implemented and one should be used at least.
 In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
 
-** Hints for icons used in vis:**
-* Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria6/1.svg`.
+## Hints
 
-** "current" in NextHours_Day1:**
+### icons used in vis
+* Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria1/1.png`.
+* in galerie5 and 6 original icons are in svg format. Vis app might have problems to visualize it. So convrted png are available. Just use option "use png"
+
+### "current" in NextHours_Day1:
 * DasWetter.com does not deliver real current weather values
 * but sometimes it's helpfull to have the forecast of current hour available
 * so we added "current" which is just a copy of related forecast hour values
@@ -41,10 +44,13 @@ As soon as we know how the json path will look like we will (re)implement it
 
 ## Changelog
 
+### 2.5.0 (2018-11-30)
+* (René) since app has problems with svg we can use png instead. svg's are converted to png. In admin a new option is available to use original svg's or converted png's 
+* (René) max. 500 datapoints are deleted per call to reduce work load, so it might take a few calls until all old data points are removed
+
 ### 2.4.0 (2018-11-26)
 * (René) sunshine duration added
 * (René) current in NextHours_Day1 and NextHours2_Day1 added
-* (René) option "delete unused data" should be off after using
 
 ### 2.3.1 (2018-11-04)
 * (René) clean up code

@@ -50,7 +50,6 @@ function main() {
         
         deleteOldData(adapter.config.UseNewDataset);
         //should be done only once
-        adapter.config.DeleteUnusedDataset = false;
 
         adapter.log.debug('deleting unused dataset, reset to ' + adapter.config.DeleteUnusedDataset);
     }
@@ -73,7 +72,7 @@ function main() {
 function getIconUrl(num) {
     const iconSet = adapter.config.iconSet || 6;
     num = parseInt(num, 10) || 0;
-    if (num && iconSet > 4) {
+    if (num && iconSet > 4 && !adapter.config.UsePNGorOriginalSVG) {
         return '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/' + num + '.svg';
     } else if (num) {
         return '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/' + num + '.png';
@@ -2228,6 +2227,10 @@ function deleteOldData(bUseNewDataset) {
         else {
             adapter.log.debug("got " + states.length + " states ");
 
+            //we delete max. 500 per call to reduce work load!!
+
+            var Cnt2Delete = 0;
+
             for (var i = 0; i < states.length; i++) {
                 var state = states[i]._id;
 
@@ -2236,7 +2239,7 @@ function deleteOldData(bUseNewDataset) {
                 //und jetzt prüfen, welche states gelöscht werden müssen
 
                 if (bUseNewDataset) {
-                    if (state.match(/\.NextDays.0d/)
+                    if (Cnt2Delete < 500 && (state.match(/\.NextDays.0d/)
                         || state.match(/\.NextDays.1d/)
                         || state.match(/\.NextDays.2d/)
                         || state.match(/\.NextDays.3d/)
@@ -2252,21 +2255,23 @@ function deleteOldData(bUseNewDataset) {
                         || state.match(/\.NextDaysDetailed.4d/)
 
                         || state.match(/\.hourly.0d/)
-                        || state.match(/\.hourly.1d/)
+                        || state.match(/\.hourly.1d/))
 
                     ) {
                         //adapter.log.debug("---delete state: " + state);
-                        DeleteIntoList("state",state);
+                        DeleteIntoList("state", state);
+                        Cnt2Delete++;
                     }
                 }
                 else {
-                    if (state.match(/\.NextDays.Location_/)
+                    if (Cnt2Delete < 500 && (state.match(/\.NextDays.Location_/)
                         || state.match(/\.NextDaysDetailed.Location_/)
                         || state.match(/\.NextHours.Location_/)
-                        || state.match(/\.NextHours2.Location_/)
+                        || state.match(/\.NextHours2.Location_/))
                     ) {
                         //adapter.log.debug("+++delete state: " + state);
-                        DeleteIntoList("state",state);
+                        DeleteIntoList("state", state);
+                        Cnt2Delete++;
                     }
                 }
 

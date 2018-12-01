@@ -30,19 +30,35 @@
                 $('.col-delete-unused-ds').hide();
                 $('.col-delete-unused-ds-descr').hide();
             }
+
+            var name = $('#iconSet').val();
+            name = parseInt(name, 10);
+            if (name < 5) {
+                $('.col-use-png-or-svg').hide();
+                $('.col-use-png-or-svg-descr').hide();
+            }
+            else {
+                $('.col-use-png-or-svg').show();
+                $('.col-use-png-or-svg-descr').show();
+            }
         }
 
         
-
+        
 
         function showIconSet() {
             var text = [];
             var url = '';
             var name = $('#iconSet').val();
+
+            var UsePNG = $('#UsePNGorOriginalSVG').prop('checked');
+            console.log('use png ' + UsePNG);
+
+
             if (name) {
                 name = parseInt(name, 10);
                 url = '/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/';
-                var ext = (name < 5) ? '.png' : '.svg';
+                var ext = (name < 5 || UsePNG) ? '.png' : '.svg';
                 
                 //for (var i = 1; i < (name < 5) ? 21 : 23; i++) {
                 var maxIcons = (name < 5) ? 19 : 22;
@@ -52,9 +68,11 @@
                 }
 
                 text.push('<p>' + maxIcons + ' images </p>');
-                text.push('<p> Access icons like http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/1.svg. </p>');
+                text.push('<p> Access icons like http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/1' + ext + '. </p>');
             }
             $('.icons-show').html(text.join(' '));
+
+            showHideSettings();
         }
 
         function load(settings, onChange) {
@@ -67,6 +85,9 @@
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
                     $value.prop('checked', settings[key]).on('change', function () {
+                        if ($(this).attr('id') === 'UsePNGorOriginalSVG') {
+                            showIconSet();
+                        }
                         onChange();
                     });
                 } else {
@@ -233,7 +254,18 @@
                     </div>
                 </div>
 
-                   
+                <div class="row">
+                    <div class="input-field col s6 col-use-png-or-svg">
+                        <input type="checkbox" id="UsePNGorOriginalSVG" class="value" />
+                        <label for="UsePNGorOriginalSVG" class="translate">use_png_or_svg</label>
+                    </div>
+                    <div class="col s6 col-use-png-or-svg-descr">
+                        <span class="translate">use_png_or_svg_hint</span>
+                    </div>
+                </div>
+
+                
+
             </div>
         </div>
     </div>
