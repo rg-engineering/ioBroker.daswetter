@@ -44,6 +44,9 @@ As soon as we know how the json path will look like we will (re)implement it
 
 ## Changelog
 
+### 2.6.0 (2019-01-05)
+* (René) support of compact mode
+
 ### 2.5.0 (2018-11-30)
 * (René) since app has problems with svg we can use png instead. svg's are converted to png. In admin a new option is available to use original svg's or converted png's 
 * (René) max. 500 datapoints are deleted per call to reduce work load, so it might take a few calls until all old data points are removed
@@ -124,7 +127,7 @@ needs also 2.x of vis-weather-widget
 * (René) initial release
 
 ## License
-Copyright (C) <2017, 2018>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

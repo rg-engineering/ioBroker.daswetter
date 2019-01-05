@@ -4,7 +4,7 @@
  * Created: 21.03.2017 21:31:28
  *  Author: Rene
 
-Copyright(C)[2016, 2017, 2018][René Glaß]
+Copyright(C)[2017 - 2019][René Glaß]
 
 */
 
@@ -14,12 +14,27 @@ Copyright(C)[2016, 2017, 2018][René Glaß]
 'use strict';
 
 // you have to require the utils module and call adapter function
-const utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+//const utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+const utils = require('@iobroker/adapter-core');
 
-// you have to call the adapter function and pass a options object
-// name has to be set and has to be equal to adapters folder name and main file name excluding extension
-// adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.template.0
-const adapter = utils.Adapter('daswetter');
+
+//this is the old version without compact
+//const adapter = utils.Adapter('daswetter');
+
+//new version with compact
+let adapter;
+function startAdapter(options) {
+    options = options || {};
+    Object.assign(options, {
+        name: 'daswetter',
+        ready: function () { main(); }
+          });
+    adapter = new utils.Adapter(options);
+
+    return adapter;
+};
+
+
 const request = require('request');
 const parseString = require('xml2js').parseString;
 
@@ -27,9 +42,7 @@ let dbRunning = false;
 let allDone = false;
 
 
-// is called when databases are connected and adapter received configuration.
-// start here!
-adapter.on('ready', main);
+
 
 function main() {
     // force terminate 
@@ -41,7 +54,8 @@ function main() {
     nParseTimeout = nParseTimeout * 1000;
     setTimeout(() => {
         adapter.log.error('force terminate, objects still in list: ' + Object.keys(tasks).length);
-        process.exit(15);
+        //process.exit(15);
+        adapter.terminate ? adapter.terminate() : process.exit(15);
     }, nParseTimeout);
     
     allDone = false;
@@ -1766,7 +1780,8 @@ function processTasks(tasks) {
 
         if (allDone) {
             adapter.log.debug('exit, all done');
-            process.exit(0);
+            //process.exit(0);
+            adapter.terminate ? adapter.terminate() : process.exit(0);
         }
     } else {
         dbRunning = true;
@@ -2900,3 +2915,14 @@ function checkWeatherVariablesOld() {
         }
     }
 }
+
+
+
+// If started as allInOne/compact mode => return function to create instance
+if (typeof module !== undefined && module.parent) {
+    module.exports = startAdapter;
+} else {
+    // or start the instance directly
+    startAdapter();
+}
+

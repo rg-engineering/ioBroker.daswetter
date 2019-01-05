@@ -1,8 +1,19 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "news": {
+      "2.6.0": {
+        "en": "support of compact adapter",
+        "de": "Unterstützung des Kompaktadapters",
+        "ru": "поддержка компактного адаптера",
+        "pt": "suporte de adaptador compacto",
+        "nl": "ondersteuning voor compacte adapter",
+        "fr": "support de l'adaptateur compact",
+        "it": "supporto di adattatore compatto",
+        "es": "soporte de adaptador compacto",
+        "pl": "obsługa adaptera kompaktowego"
+      },
       "2.5.0": {
         "en": "since vis app has problems with svg we can use png instead",
         "de": "da vis app probleme mit svg hat, können wir stattdessen png verwenden",
@@ -205,15 +216,15 @@
       "pl": "DasWetter.com"
     },
     "desc": {
-      "en": "This adapter reads weather forecast data from DasWetter.com. Three different forecast models are available.",
-      "de": "Dieser Adapter liest Wettervorhersagedaten von DasWetter.com. Drei verschiedene Prognosemodelle stehen zur Verfügung.",
-      "ru": "Этот адаптер считывает данные прогноза погоды с DasWetter.com. Доступны три разные модели прогноза.",
-      "pt": "Este adaptador lê dados de previsão do tempo de DasWetter.com. Três modelos de previsão diferentes estão disponíveis.",
-      "nl": "Deze adapter leest weersvoorspellingsgegevens van DasWetter.com. Er zijn drie verschillende voorspellingsmodellen beschikbaar.",
-      "fr": "Cet adaptateur lit les données de prévisions météorologiques de DasWetter.com. Trois modèles de prévision différents sont disponibles.",
-      "it": "Questo adattatore legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili tre diversi modelli di previsione.",
-      "es": "Este adaptador lee los datos del pronóstico del tiempo de DasWetter.com. Tres diferentes modelos de pronóstico están disponibles.",
-      "pl": "Ten adapter odczytuje dane prognozy pogody z DasWetter.com. Dostępne są trzy różne modele prognozy."
+      "en": "reads weather forecast data from DasWetter.com. Different forecast models are available.",
+      "de": "liest Wettervorhersagedaten von DasWetter.com. Es stehen verschiedene Prognosemodelle zur Verfügung.",
+      "ru": "читает данные прогноза погоды от DasWetter.com. Доступны разные модели прогноза.",
+      "pt": "lê dados de previsão meteorológica do DasWetter.com. Diferentes modelos de previsão estão disponíveis.",
+      "nl": "leest weersvoorspellingsgegevens van DasWetter.com. Verschillende voorspellingsmodellen zijn beschikbaar.",
+      "fr": "lit les données météorologiques de DasWetter.com. Différents modèles de prévision sont disponibles.",
+      "it": "legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili diversi modelli di previsione.",
+      "es": "lee los datos del pronóstico del tiempo de DasWetter.com. Existen diferentes modelos de pronóstico disponibles.",
+      "pl": "czyta prognozy pogody z DasWetter.com. Dostępne są różne modele prognoz."
     },
     "platform": "Javascript/Node.js",
     "mode": "schedule",
@@ -233,6 +244,7 @@
     "type": "weather",
     "license": "MIT",
     "materialize": true,
+    "compact": true,
     "authors": [
       {
         "name": "René G.",
