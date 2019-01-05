@@ -41,6 +41,17 @@
                 $('.col-use-png-or-svg').show();
                 $('.col-use-png-or-svg-descr').show();
             }
+
+            if (name != 5) {
+                $('.col-use-color-or-bw').hide();
+                $('.col-use-color-or-bw-descr').hide();
+            }
+            else {
+                $('.col-use-color-or-bw').show();
+                $('.col-use-color-or-bw-descr').show();
+            }
+
+            
         }
 
         
@@ -54,6 +65,8 @@
             var UsePNG = $('#UsePNGorOriginalSVG').prop('checked');
             console.log('use png ' + UsePNG);
 
+            var UseColor = $('#UseColorOrBW').prop('checked');
+            console.log('use color ' + UseColor);
 
             if (name) {
                 name = parseInt(name, 10);
@@ -62,6 +75,22 @@
                 
                 //for (var i = 1; i < (name < 5) ? 21 : 23; i++) {
                 var maxIcons = (name < 5) ? 19 : 22;
+                if (name == 5) {
+                    if (UsePNG) {
+                        url = url + 'PNG/';
+                    }
+                    else {
+                        url = url + 'SVG/';
+                    }
+
+                    if (UseColor) {
+                        url = url + 'Color/';
+                    }
+                    else {
+                        url = url + 'White/';
+                    }
+                }
+
 
                 for (var i = 1; i <= maxIcons; i++) {
                    text.push('<img src="' + url + i + ext + '" width="50" alt="' + i + '"/>');
@@ -85,7 +114,8 @@
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
                     $value.prop('checked', settings[key]).on('change', function () {
-                        if ($(this).attr('id') === 'UsePNGorOriginalSVG') {
+                        if ($(this).attr('id') === 'UsePNGorOriginalSVG'
+                            || $(this).attr('id') === 'UseColorOrBW') {
                             showIconSet();
                         }
                         onChange();
@@ -264,7 +294,16 @@
                     </div>
                 </div>
 
-                
+                <div class="row">
+                    <div class="input-field col s6 col-use-color-or-bw">
+                        <input type="checkbox" id="UseColorOrBW" class="value" />
+                        <label for="UseColorOrBW" class="translate">use_color_or_bw</label>
+                    </div>
+                    <div class="col s6 col-use-color-or-bw-descr">
+                        <span class="translate">use_color_or_bw_hint</span>
+                    </div>
+                </div>
+
 
             </div>
         </div>

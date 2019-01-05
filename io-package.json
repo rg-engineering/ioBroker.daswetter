@@ -260,6 +260,7 @@
     "iconSet": 1,
     "parseTimeout": 60,
     "DeleteUnusedDataset": false,
-    "UsePNGorOriginalSVG": false
+    "UsePNGorOriginalSVG": false,
+    "UseColorOrBW":  true
   }
 }

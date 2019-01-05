@@ -28,7 +28,8 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 
 ### icons used in vis
 * Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria1/1.png`.
-* in galerie5 and 6 original icons are in svg format. Vis app might have problems to visualize it. So convrted png are available. Just use option "use png"
+* in galerie6 original icons are in svg format. Vis app might have problems to visualize it. So converted png are available. Just use option "use png"
+* in galerie5 original icons are in svg and png format. Beside also color and white versions are available
 
 ### "current" in NextHours_Day1:
 * DasWetter.com does not deliver real current weather values
@@ -46,6 +47,7 @@ As soon as we know how the json path will look like we will (re)implement it
 
 ### 2.6.0 (2019-01-05)
 * (René) support of compact mode
+* (René) new icons for galeria5 (color or white; svg or png) selectable in admin
 
 ### 2.5.0 (2018-11-30)
 * (René) since app has problems with svg we can use png instead. svg's are converted to png. In admin a new option is available to use original svg's or converted png's 
