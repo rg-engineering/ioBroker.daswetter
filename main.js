@@ -89,11 +89,13 @@ function getIconUrl(num) {
     var url = "";
     if (num) {
         url = '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/';
-        var ext = (num < 5 || adapter.config.UsePNGorOriginalSVG) ? '.png' : '.svg';
+        var ext = (iconSet < 5 || adapter.config.UsePNGorOriginalSVG) ? '.png' : '.svg';
 
         //var maxIcons = (num < 5) ? 19 : 22;
 
-        if (num == 5) {
+        //adapter.log.debug('getIconURL ' + num + " " + adapter.config.UsePNGorOriginalSVG + " " + adapter.config.UseColorOrBW);
+
+        if (iconSet == 5) {
             if (adapter.config.UsePNGorOriginalSVG) {
                 url = url + 'PNG/';
             }
