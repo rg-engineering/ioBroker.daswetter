@@ -39,7 +39,7 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 
 ## known issues
 * at the moment DasWetter.com sends data which are different to their own specification. This is the reason why those data can not be parsed right now
-As soon as we know how the json path will look like we will (re)implement it
+As soon as we know how the json path will look like we will (re)implement it -> now we have implemented a "auto-repair" which changes to structure to documented shape.
 * sometimes when deleting old data structure an out-of-memory exception is thrown
 
 ## Changelog
