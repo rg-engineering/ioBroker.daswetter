@@ -1359,7 +1359,7 @@ function getForecastDataHourlyJSON(cb) {
                                     insertIntoList(keyName, value);
                                 }
                             }
-                            insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.sunshineDuration', nSunHours);
+                            insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.sunshineDuration', nSunHours);
                             //adapter.log.debug("### next day");
 
                         }
