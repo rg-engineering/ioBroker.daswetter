@@ -40,14 +40,15 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 
 ## known issues
 * at the moment DasWetter.com sends data which are different to their own specification. This is the reason why those data can not be parsed right now
-As soon as we know how the json path will look like we will (re)implement it
+As soon as we know how the json path will look like we will (re)implement it -> now we have implemented a "auto-repair" which changes to structure to documented shape.
 * sometimes when deleting old data structure an out-of-memory exception is thrown
 
 ## Changelog
 
-### 2.6.0 (2019-01-05)
+### 2.6.0 (2019-01-20)
 * (René) support of compact mode
 * (René) new icons for galeria5 (color or white; svg or png) selectable in admin
+* (René) auto-repair for path4
 
 ### 2.5.0 (2018-11-30)
 * (René) since app has problems with svg we can use png instead. svg's are converted to png. In admin a new option is available to use original svg's or converted png's 
