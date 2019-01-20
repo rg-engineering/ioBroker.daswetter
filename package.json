@@ -1,6 +1,6 @@
 {
   "name": "iobroker.daswetter",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "ioBroker DasWetter.com Adapter",
   "author": {
     "name": "René G.",
@@ -20,12 +20,13 @@
   },
   "dependencies": {
     "request": "^2.88.0",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "@iobroker/adapter-core": "^1.0.2"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "mocha": "^5.2.0",
-    "chai": "^4.1.2"
+    "chai": "^4.2.0"
   },
   "main": "main.js",
   "bugs": {

@@ -169,5 +169,26 @@ systemDictionary = {
         "it": "L'app vis ha un problema noto per mostrare SVG. In questo caso puoi utilizzare PNG convertito anziché SVG originale.",
         "es": "La aplicación vis tiene un problema conocido para mostrar SVG. En este caso, puede usar PNG convertido en lugar de SVG original.",
         "pl": "Aplikacja vis ma znany problem z wyświetlaniem SVG. W takim przypadku można użyć przekonwertowanego pliku PNG zamiast oryginalnego pliku SVG."
-    }
+    },
+    "use_color_or_bw": {
+        "en": "use color images",
+        "de": "Verwenden Sie Farbbilder",
+        "ru": "использовать цветные изображения",
+        "pt": "usar imagens coloridas",
+        "nl": "gebruik kleurenafbeeldingen",
+        "fr": "utiliser des images en couleur",
+        "it": "usa le immagini a colori",
+        "es": "utilizar imágenes en color",
+        "pl": "używaj kolorowych obrazów"
+    },
+    "use_png_or_svg_hint": {
+        "en": "here you can use color or white images.",
+        "de": "Hier können Sie farbige oder weiße Bilder verwenden.",
+        "ru": "Здесь вы можете использовать цветные или белые изображения.",
+        "pt": "aqui você pode usar imagens coloridas ou brancas.",
+        "nl": "hier kunt u kleuren- of witte afbeeldingen gebruiken.",
+        "fr": "Ici, vous pouvez utiliser des images en couleur ou en blanc.",
+        "it": "qui puoi usare immagini a colori o in bianco.",
+        "es": "Aquí puedes usar imágenes en color o blanco.",
+        "pl": "tutaj możesz użyć kolorowych lub białych obrazów."    }
 };
