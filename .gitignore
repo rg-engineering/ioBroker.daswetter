@@ -25,3 +25,5 @@ hs_err_pid*
 /obj/Debug/*
 /main.js.orig
 *_neu.*
+/.project
+/.settings/
