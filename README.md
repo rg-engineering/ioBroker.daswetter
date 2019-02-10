@@ -45,6 +45,9 @@ As soon as we know how the json path will look like we will (re)implement it -> 
 
 ## Changelog
 
+### 2.6.1 (2019-02-10)
+* (René) update dependencies
+
 ### 2.6.0 (2019-01-20)
 * (René) support of compact mode
 * (René) new icons for galeria5 (color or white; svg or png) selectable in admin

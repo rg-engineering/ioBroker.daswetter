@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.6.0",
+    "version": "2.6.1",
     "news": {
+      "2.6.1": {
+        "en": "update dependencies",
+        "de": "Abhängigkeiten aktualisieren",
+        "ru": "обновить зависимости",
+        "pt": "atualizar dependências",
+        "nl": "afhankelijkheden bijwerken",
+        "fr": "mettre à jour les dépendances",
+        "it": "aggiornare le dipendenze",
+        "es": "dependencias de actualización",
+        "pl": "zaktualizuj zależności",
+        "zh-cn": "更新依赖项"
+      },
       "2.6.0": {
         "en": "support of compact adapter",
         "de": "Unterstützung des Kompaktadapters",
@@ -261,6 +273,6 @@
     "parseTimeout": 60,
     "DeleteUnusedDataset": false,
     "UsePNGorOriginalSVG": false,
-    "UseColorOrBW":  true
+    "UseColorOrBW": true
   }
 }
