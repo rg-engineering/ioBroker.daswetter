@@ -165,6 +165,7 @@ function getForecastData7Days(cb) {
 
                             insertIntoList('NextDays.Location_' + ll +  '.Location', location);
 
+                            // sometimes variable has name not const but var
                             const vars = result.report.location[l].const || result.report.location[l].var;
 
 
