@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.6.1",
+    "version": "2.7.0",
     "news": {
+      "2.7.0": {
+        "en": "Serialization of the objects deletion",
+        "de": "Serialisierung der Objekte wird gelöscht",
+        "ru": "Сериализация удаления объектов",
+        "pt": "Serialização da exclusão de objetos",
+        "nl": "Serialisatie van de verwijdering van de objecten",
+        "fr": "Sérialisation de la suppression d'objets",
+        "it": "Serializzazione della cancellazione degli oggetti",
+        "es": "Serialización de la eliminación de objetos.",
+        "pl": "Serializacja usuwania obiektów",
+        "zh-cn": "序列化对象删除"
+      },
       "2.6.1": {
         "en": "update dependencies",
         "de": "Abhängigkeiten aktualisieren",
