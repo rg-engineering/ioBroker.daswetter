@@ -526,7 +526,7 @@ function getForecastDataHourly(cb) {
                                 //adapter.log.debug('loc: ' + l + ' day: ' + d + ' = ' + JSON.stringify(result.report.location[l].day[d]));
 
                                 let value = result.report.location[l].day[d].$;
-                                keyName = 'NextHours.Location_' + ll + '.Day_' + dd + ".day";
+                                keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.day';
                                 //adapter.log.debug(JSON.stringify(result.report.location[l].day[d].$));
                                 getProps(value, keyName);
 
@@ -627,7 +627,7 @@ function getForecastDataHourly(cb) {
                                         }
                                     });
 
-                                    if (dd == 1) {
+                                    if (dd === 1) {
                                         tasks.push({
                                             name: 'add',
                                             key: 'NextHours.Location_' + ll + '.Day_' + dd + '.current',
@@ -648,10 +648,10 @@ function getForecastDataHourly(cb) {
                                     getProps(value, keyName);
                                     const sHour4SunTime = result.report.location[l].day[d].hour[h].$.value;
                                     const Hour4SunTimeArr = sHour4SunTime.split(":");
-                                    const Hour4SunTime = Hour4SunTimeArr[0];
+                                    const Hour4SunTime = parseInt(Hour4SunTimeArr[0], 10);
                                     //adapter.log.debug("+++ " + sHour4SunTime + " " + Hour4SunTimeArr + " " + Hour4SunTime);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd == 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.hour';
                                         getProps(value, keyName);
                                     }
@@ -661,7 +661,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.temp';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.temp';
                                         getProps(value, keyName);
                                     }
@@ -670,14 +670,14 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.symbol';
                                         getProps(value, keyName);
                                     }
 
                                     //add url for icon
                                     insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.iconURL', getIconUrl(value.value));
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.current.iconURL', getIconUrl(value.value));
 
                                     }
@@ -687,7 +687,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.wind';
                                         getProps(value, keyName);
 
@@ -696,7 +696,7 @@ function getForecastDataHourly(cb) {
                                     //add url for icon
                                     insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windIconURL', getWindIconUrl(value.symbolB));
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.current.windIconURL', getWindIconUrl(value.symbolB));
 
                                     }
@@ -705,7 +705,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windgusts';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.windgusts';
                                         getProps(value, keyName);
 
@@ -715,7 +715,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.rain';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.rain';
                                         getProps(value, keyName);
 
@@ -725,7 +725,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.humidity';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.humidity';
                                         getProps(value, keyName);
 
@@ -735,7 +735,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.pressure';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.pressure';
                                         getProps(value, keyName);
 
@@ -745,7 +745,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.clouds';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.clouds';
                                         getProps(value, keyName);
 
@@ -772,7 +772,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.snowline';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.snowline';
                                         getProps(value, keyName);
 
@@ -782,7 +782,7 @@ function getForecastDataHourly(cb) {
                                     keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windchill';
                                     getProps(value, keyName);
 
-                                    if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                    if (dd === 1 && Hour4SunTime === CurrentHour) {
                                         keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.current.windchill';
                                         getProps(value, keyName);
                                     }
@@ -950,7 +950,7 @@ function getForecastDataHourlyJSON(cb) {
                         let numOfDays = result.day.length;
                         //const numOfDays = 5;
 
-                        if (typeof (numOfDays) == 'undefined') {
+                        if (typeof numOfDays === 'undefined') {
                             adapter.log.info('got wrong data structure! trying to repair...');
                             //adapter.log.debug("got " + JSON.stringify(result.day));
 
@@ -969,17 +969,14 @@ function getForecastDataHourlyJSON(cb) {
 
                             result = JSON.parse(stringdata);
 
-                            adapter.log.debug("copied, got " + result.day.length + ' days' );
+                            adapter.log.debug('copied, got ' + result.day.length + ' days' );
 
                             numOfDays = result.day.length;
-                            if (typeof (numOfDays) == 'undefined') {
+                            if (typeof numOfDays === 'undefined') {
                                 adapter.log.error('not repaired...');
 
-
                                 adapter.log.debug("got " + JSON.stringify(result.day));
-
                             }
-
                         }
                         else {
                             adapter.log.debug('got ' + numOfDays + ' days');
@@ -1161,7 +1158,7 @@ function getForecastDataHourlyJSON(cb) {
                                     }
                                 });
 
-                                if (dd == 1) {
+                                if (dd === 1) {
                                     tasks.push({
                                         name: 'add',
                                         key: 'NextHours2.Location_' + ll + '.Day_' + dd + '.current',
@@ -1173,7 +1170,6 @@ function getForecastDataHourlyJSON(cb) {
                                             }
                                         }
                                     });
-
                                 }
 
                                 value = result.day[d].hour[h].interval;
@@ -1184,10 +1180,10 @@ function getForecastDataHourlyJSON(cb) {
 
                                 const sHour4SunTime = result.day[d].hour[h].interval;
                                 const Hour4SunTimeArr = sHour4SunTime.split(":");
-                                const Hour4SunTime = Hour4SunTimeArr[0];
+                                const Hour4SunTime = parseInt(Hour4SunTimeArr[0], 10);
 
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.hour';
                                     insertIntoList(keyName, value);
                                 }
@@ -1196,7 +1192,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.temp';
                                 insertIntoList(keyName, value, unit_temp);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.temp';
                                     insertIntoList(keyName, value, unit_temp);
                                 }
@@ -1208,7 +1204,7 @@ function getForecastDataHourlyJSON(cb) {
                                 //add url for icon
                                 insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.iconURL', getIconUrl(value));
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol';
                                     insertIntoList(keyName, value);
 
@@ -1220,7 +1216,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol_desc';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol_desc';
                                     insertIntoList(keyName, value);
                                 }
@@ -1230,7 +1226,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol';
                                     insertIntoList(keyName, value);
                                 }
@@ -1239,7 +1235,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.symbol_desc2';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.symbol_desc2';
                                     insertIntoList(keyName, value);
                                 }
@@ -1248,7 +1244,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_speed';
                                 insertIntoList(keyName, value, unit_wind);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_speed';
                                     insertIntoList(keyName, value, unit_wind);
                                 }
@@ -1257,7 +1253,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_dir';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_dir';
                                     insertIntoList(keyName, value);
                                 }
@@ -1266,7 +1262,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_symbol';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_symbol';
                                     insertIntoList(keyName, value);
                                 }
@@ -1278,7 +1274,7 @@ function getForecastDataHourlyJSON(cb) {
                                 //add url for icon
                                 insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windIconURL', getWindIconUrl(value));
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_symbolB';
                                     insertIntoList(keyName, value);
 
@@ -1291,7 +1287,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.wind_gusts';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.wind_gusts';
                                     insertIntoList(keyName, value);
                                 }
@@ -1300,7 +1296,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.rain';
                                 insertIntoList(keyName, value, unit_rain);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.rain';
                                     insertIntoList(keyName, value, unit_rain);
                                 }
@@ -1309,7 +1305,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.humidity';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.humidity';
                                     insertIntoList(keyName, value);
 
@@ -1319,7 +1315,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.pressure';
                                 insertIntoList(keyName, value, unit_pressure);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.pressure';
                                     insertIntoList(keyName, value, unit_pressure);
                                 }
@@ -1328,7 +1324,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.clouds';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.clouds';
                                     insertIntoList(keyName, value);
                                 }
@@ -1355,7 +1351,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.snowline';
                                 insertIntoList(keyName, value, unit_snowline);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.snowline';
                                     insertIntoList(keyName, value, unit_snowline);
                                 }
@@ -1364,7 +1360,7 @@ function getForecastDataHourlyJSON(cb) {
                                 keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.Hour_' + hh + '.windchill';
                                 insertIntoList(keyName, value);
 
-                                if (dd == 1 && Hour4SunTime == CurrentHour) {
+                                if (dd === 1 && Hour4SunTime === CurrentHour) {
                                     keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.current.windchill';
                                     insertIntoList(keyName, value);
                                 }
@@ -1915,6 +1911,7 @@ function createExtendObject(key, objData, value, callback) {
                     adapter.log.debug('back to list: ' + key + ' ' + value);
                     insertIntoList(key, value);
                 }
+                objData.native = objData.native || {};
                 adapter.setObject(key, objData, callback);
             } else if (value !== undefined) {
                 if (obj.common.type === 'number') {
@@ -2006,32 +2003,32 @@ function getForecastData7DaysOld(cb) {
                         //adapter.log.debug('parsed7: ' + JSON.stringify(result));
                         for (let d = 0; d < 7; d++) {
                             const id = 'NextDays.' + d + 'd.';
-
-                            insertIntoList(id + 'Temperature_Min', result.report.location[0].const[0].data[0].forecast[d].$.value);
-                            insertIntoList(id + 'Temperature_Max', result.report.location[0].const[1].data[0].forecast[d].$.value);
-                            insertIntoList(id + 'WindID', result.report.location[0].const[2].data[0].forecast[d].$.id);
-                            insertIntoList(id + 'WindIDB', result.report.location[0].const[2].data[0].forecast[d].$.idB);
-                            insertIntoList(id + 'Wind', result.report.location[0].const[2].data[0].forecast[d].$.value);
-                            insertIntoList(id + 'WindB', result.report.location[0].const[2].data[0].forecast[d].$.valueB);
-                            insertIntoList(id + 'ConditionID', result.report.location[0].const[3].data[0].forecast[d].$.id);
-                            insertIntoList(id + 'Condition', result.report.location[0].const[3].data[0].forecast[d].$.value);
-                            insertIntoList(id + 'ConditionID2', result.report.location[0].const[3].data[0].forecast[d].$.id2);
-                            insertIntoList(id + 'Condition2', result.report.location[0].const[3].data[0].forecast[d].$.value2);
-                            insertIntoList(id + 'day', result.report.location[0].const[4].data[0].forecast[d].$.value);
-                            insertIntoList(id + 'atmosphere', result.report.location[0].const[5].data[0].forecast[d].$.value);
+                            const vars = result.report.location[0].const || result.report.location[0].var;
+                            insertIntoList(id + 'Temperature_Min', vars[0].data[0].forecast[d].$.value);
+                            insertIntoList(id + 'Temperature_Max', vars[1].data[0].forecast[d].$.value);
+                            insertIntoList(id + 'WindID', vars[2].data[0].forecast[d].$.id);
+                            insertIntoList(id + 'WindIDB', vars[2].data[0].forecast[d].$.idB);
+                            insertIntoList(id + 'Wind', vars[2].data[0].forecast[d].$.value);
+                            insertIntoList(id + 'WindB', vars[2].data[0].forecast[d].$.valueB);
+                            insertIntoList(id + 'ConditionID', vars[3].data[0].forecast[d].$.id);
+                            insertIntoList(id + 'Condition', vars[3].data[0].forecast[d].$.value);
+                            insertIntoList(id + 'ConditionID2', vars[3].data[0].forecast[d].$.id2);
+                            insertIntoList(id + 'Condition2', vars[3].data[0].forecast[d].$.value2);
+                            insertIntoList(id + 'day', vars[4].data[0].forecast[d].$.value);
+                            insertIntoList(id + 'atmosphere', vars[5].data[0].forecast[d].$.value);
                             /*
-                            adapter.setState(id + 'Temperature_Min', { ack: true, val: result.report.location[0].const[0].data[0].forecast[d].$.value });
-                            adapter.setState(id + 'Temperature_Max', { ack: true, val: result.report.location[0].const[1].data[0].forecast[d].$.value });
-                            adapter.setState(id + 'WindID', { ack: true, val: result.report.location[0].const[2].data[0].forecast[d].$.id });
-                            adapter.setState(id + 'WindIDB', { ack: true, val: result.report.location[0].const[2].data[0].forecast[d].$.idB });
-                            adapter.setState(id + 'Wind', { ack: true, val: result.report.location[0].const[2].data[0].forecast[d].$.value });
-                            adapter.setState(id + 'WindB', { ack: true, val: result.report.location[0].const[2].data[0].forecast[d].$.valueB });
-                            adapter.setState(id + 'ConditionID', { ack: true, val: result.report.location[0].const[3].data[0].forecast[d].$.id });
-                            adapter.setState(id + 'Condition', { ack: true, val: result.report.location[0].const[3].data[0].forecast[d].$.value });
-                            adapter.setState(id + 'ConditionID2', { ack: true, val: result.report.location[0].const[3].data[0].forecast[d].$.id2 });
-                            adapter.setState(id + 'Condition2', { ack: true, val: result.report.location[0].const[3].data[0].forecast[d].$.value2 });
-                            adapter.setState(id + 'day', { ack: true, val: result.report.location[0].const[4].data[0].forecast[d].$.value });
-                            adapter.setState(id + 'atmosphere', { ack: true, val: result.report.location[0].const[5].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'Temperature_Min', { ack: true, val: vars[0].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'Temperature_Max', { ack: true, val: vars[1].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'WindID', { ack: true, val: vars[2].data[0].forecast[d].$.id });
+                            adapter.setState(id + 'WindIDB', { ack: true, val: vars[2].data[0].forecast[d].$.idB });
+                            adapter.setState(id + 'Wind', { ack: true, val: vars[2].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'WindB', { ack: true, val: vars[2].data[0].forecast[d].$.valueB });
+                            adapter.setState(id + 'ConditionID', { ack: true, val: vars[3].data[0].forecast[d].$.id });
+                            adapter.setState(id + 'Condition', { ack: true, val: vars[3].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'ConditionID2', { ack: true, val: vars[3].data[0].forecast[d].$.id2 });
+                            adapter.setState(id + 'Condition2', { ack: true, val: vars[3].data[0].forecast[d].$.value2 });
+                            adapter.setState(id + 'day', { ack: true, val: vars[4].data[0].forecast[d].$.value });
+                            adapter.setState(id + 'atmosphere', { ack: true, val: vars[5].data[0].forecast[d].$.value });
                             */
                         }
                         adapter.log.debug('7 days forecast done, objects in list ' + tasks.length);
@@ -2184,91 +2181,94 @@ function getForecastDataHourlyOld(cb) {
 
                     parseString(body1, (err, result) => {
                         //adapter.log.debug('parsedhourly: ' + JSON.stringify(result));
+                        const dayLength = result.report.location[0].day.length;
 
-
-                        for (let d = 0; d < 2; d++) {
+                        for (let d = 0; d < 2 && d < dayLength; d++) {
 
                             const id = 'hourly.' + d + 'd.';
+                            const day = result.report.location[0].day[d];
 
-                            insertIntoList(id + 'Weekday', result.report.location[0].day[d].$.name);
-                            insertIntoList(id + 'date', result.report.location[0].day[d].$.value);
-                            insertIntoList(id + 'SymbolID', result.report.location[0].day[d].symbol[0].$.value);
-                            insertIntoList(id + 'Symbol', result.report.location[0].day[d].symbol[0].$.desc);
-                            insertIntoList(id + 'SymbolID2', result.report.location[0].day[d].symbol[0].$.value2);
-                            insertIntoList(id + 'Symbol2', result.report.location[0].day[d].symbol[0].$.desc2);
-                            insertIntoList(id + 'Temperature_Min', result.report.location[0].day[d].tempmin[0].$.value);
-                            insertIntoList(id + 'Temperature_Max', result.report.location[0].day[d].tempmax[0].$.value);
-                            insertIntoList(id + 'Wind_Max', result.report.location[0].day[d].wind[0].$.value);
-                            insertIntoList(id + 'WindSymbol', result.report.location[0].day[d].wind[0].$.symbol);
-                            insertIntoList(id + 'WindSymbolB', result.report.location[0].day[d].wind[0].$.symbolB);
-                            insertIntoList(id + 'WindGusts', result.report.location[0].day[d].windgusts[0].$.value);
-                            insertIntoList(id + 'Rain', result.report.location[0].day[d].rain[0].$.value);
-                            insertIntoList(id + 'Humidity', result.report.location[0].day[d].humidity[0].$.value);
-                            insertIntoList(id + 'Pressure', result.report.location[0].day[d].pressure[0].$.value);
-                            insertIntoList(id + 'Snowline', result.report.location[0].day[d].snowline[0].$.value);
+                            insertIntoList(id + 'Weekday', day.$.name);
+                            insertIntoList(id + 'date', day.$.value);
+                            insertIntoList(id + 'SymbolID', day.symbol[0].$.value);
+                            insertIntoList(id + 'Symbol', day.symbol[0].$.desc);
+                            insertIntoList(id + 'SymbolID2', day.symbol[0].$.value2);
+                            insertIntoList(id + 'Symbol2', day.symbol[0].$.desc2);
+                            insertIntoList(id + 'Temperature_Min', day.tempmin[0].$.value);
+                            insertIntoList(id + 'Temperature_Max', day.tempmax[0].$.value);
+                            insertIntoList(id + 'Wind_Max', day.wind[0].$.value);
+                            insertIntoList(id + 'WindSymbol', day.wind[0].$.symbol);
+                            insertIntoList(id + 'WindSymbolB', day.wind[0].$.symbolB);
+                            insertIntoList(id + 'WindGusts', day.windgusts[0].$.value);
+                            insertIntoList(id + 'Rain', day.rain[0].$.value);
+                            insertIntoList(id + 'Humidity', day.humidity[0].$.value);
+                            insertIntoList(id + 'Pressure', day.pressure[0].$.value);
+                            insertIntoList(id + 'Snowline', day.snowline[0].$.value);
 
                             /*
-                            adapter.setState(id + 'Weekday', { ack: true, val: result.report.location[0].day[d].$.name });
-                            adapter.setState(id + 'date', { ack: true, val: result.report.location[0].day[d].$.value });
-                            adapter.setState(id + 'SymbolID', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value });
-                            adapter.setState(id + 'Symbol', { ack: true, val: result.report.location[0].day[d].symbol[0].$.desc });
-                            adapter.setState(id + 'SymbolID2', { ack: true, val: result.report.location[0].day[d].symbol[0].$.value2 });
-                            adapter.setState(id + 'Symbol2', { ack: true, val: result.report.location[0].day[d].symbol[0].$.desc2 });
-                            adapter.setState(id + 'Temperature_Min', { ack: true, val: result.report.location[0].day[d].tempmin[0].$.value });
-                            adapter.setState(id + 'Temperature_Max', { ack: true, val: result.report.location[0].day[d].tempmax[0].$.value });
-                            adapter.setState(id + 'Wind_Max', { ack: true, val: result.report.location[0].day[d].wind[0].$.value });
-                            adapter.setState(id + 'WindSymbol', { ack: true, val: result.report.location[0].day[d].wind[0].$.symbol });
-                            adapter.setState(id + 'WindSymbolB', { ack: true, val: result.report.location[0].day[d].wind[0].$.symbolB });
-                            adapter.setState(id + 'WindGusts', { ack: true, val: result.report.location[0].day[d].windgusts[0].$.value });
-                            adapter.setState(id + 'Rain', { ack: true, val: result.report.location[0].day[d].rain[0].$.value });
-                            adapter.setState(id + 'Humidity', { ack: true, val: result.report.location[0].day[d].humidity[0].$.value });
-                            adapter.setState(id + 'Pressure', { ack: true, val: result.report.location[0].day[d].pressure[0].$.value });
-                            adapter.setState(id + 'Snowline', { ack: true, val: result.report.location[0].day[d].snowline[0].$.value });
+                            adapter.setState(id + 'Weekday', { ack: true, val: day.$.name });
+                            adapter.setState(id + 'date', { ack: true, val: day.$.value });
+                            adapter.setState(id + 'SymbolID', { ack: true, val: day.symbol[0].$.value });
+                            adapter.setState(id + 'Symbol', { ack: true, val: day.symbol[0].$.desc });
+                            adapter.setState(id + 'SymbolID2', { ack: true, val: day.symbol[0].$.value2 });
+                            adapter.setState(id + 'Symbol2', { ack: true, val: day.symbol[0].$.desc2 });
+                            adapter.setState(id + 'Temperature_Min', { ack: true, val: day.tempmin[0].$.value });
+                            adapter.setState(id + 'Temperature_Max', { ack: true, val: day.tempmax[0].$.value });
+                            adapter.setState(id + 'Wind_Max', { ack: true, val: day.wind[0].$.value });
+                            adapter.setState(id + 'WindSymbol', { ack: true, val: day.wind[0].$.symbol });
+                            adapter.setState(id + 'WindSymbolB', { ack: true, val: day.wind[0].$.symbolB });
+                            adapter.setState(id + 'WindGusts', { ack: true, val: day.windgusts[0].$.value });
+                            adapter.setState(id + 'Rain', { ack: true, val: day.rain[0].$.value });
+                            adapter.setState(id + 'Humidity', { ack: true, val: day.humidity[0].$.value });
+                            adapter.setState(id + 'Pressure', { ack: true, val: day.pressure[0].$.value });
+                            adapter.setState(id + 'Snowline', { ack: true, val: day.snowline[0].$.value });
                             */
 
-                            for (let h = 0; h < 24; h++) {
+                            for (let h = 0; h < 24 && h < day.hour.length; h++) {
                                 const id1 = 'hourly.' + d + 'd.' + h + 'h.';
+                                console.log(id1);
+                                const hour = day.hour[h];
 
-                                insertIntoList(id1 + 'hour', result.report.location[0].day[d].hour[h].$.value);
-                                insertIntoList(id1 + 'Temperature', result.report.location[0].day[d].hour[h].temp[0].$.value);
-                                insertIntoList(id1 + 'SymbolID', result.report.location[0].day[d].hour[h].symbol[0].$.value);
-                                insertIntoList(id1 + 'Symbol', result.report.location[0].day[d].hour[h].symbol[0].$.desc);
+                                insertIntoList(id1 + 'hour', hour.$.value);
+                                insertIntoList(id1 + 'Temperature', hour.temp[0].$.value);
+                                insertIntoList(id1 + 'SymbolID', hour.symbol[0].$.value);
+                                insertIntoList(id1 + 'Symbol', hour.symbol[0].$.desc);
 
-                                insertIntoList(id1 + 'SymbolID2', result.report.location[0].day[d].hour[h].symbol[0].$.value2);
-                                insertIntoList(id1 + 'Symbol2', result.report.location[0].day[d].hour[h].symbol[0].$.desc2);
+                                insertIntoList(id1 + 'SymbolID2', hour.symbol[0].$.value2);
+                                insertIntoList(id1 + 'Symbol2', hour.symbol[0].$.desc2);
 
-                                insertIntoList(id1 + 'Wind', result.report.location[0].day[d].hour[h].wind[0].$.value);
-                                insertIntoList(id1 + 'WindDir', result.report.location[0].day[d].hour[h].wind[0].$.dir);
-                                insertIntoList(id1 + 'WindSymbol', result.report.location[0].day[d].hour[h].wind[0].$.symbol);
-                                insertIntoList(id1 + 'WindSymbolB', result.report.location[0].day[d].hour[h].wind[0].$.symbolB);
-                                insertIntoList(id1 + 'WindGusts', result.report.location[0].day[d].hour[h].windgusts[0].$.value);
-                                insertIntoList(id1 + 'Rain', result.report.location[0].day[d].hour[h].rain[0].$.value);
-                                insertIntoList(id1 + 'Humidity', result.report.location[0].day[d].hour[h].humidity[0].$.value);
-                                insertIntoList(id1 + 'Pressure', result.report.location[0].day[d].hour[h].pressure[0].$.value);
-                                insertIntoList(id1 + 'Snowline', result.report.location[0].day[d].hour[h].snowline[0].$.value);
-                                insertIntoList(id1 + 'Clouds', result.report.location[0].day[d].hour[h].clouds[0].$.value);
-                                insertIntoList(id1 + 'Windchill', result.report.location[0].day[d].hour[h].windchill[0].$.value);
+                                insertIntoList(id1 + 'Wind', hour.wind[0].$.value);
+                                insertIntoList(id1 + 'WindDir', hour.wind[0].$.dir);
+                                insertIntoList(id1 + 'WindSymbol', hour.wind[0].$.symbol);
+                                insertIntoList(id1 + 'WindSymbolB', hour.wind[0].$.symbolB);
+                                insertIntoList(id1 + 'WindGusts', hour.windgusts[0].$.value);
+                                insertIntoList(id1 + 'Rain', hour.rain[0].$.value);
+                                insertIntoList(id1 + 'Humidity', hour.humidity[0].$.value);
+                                insertIntoList(id1 + 'Pressure', hour.pressure[0].$.value);
+                                insertIntoList(id1 + 'Snowline', hour.snowline[0].$.value);
+                                insertIntoList(id1 + 'Clouds', hour.clouds[0].$.value);
+                                insertIntoList(id1 + 'Windchill', hour.windchill[0].$.value);
 
                                 /*
-                                adapter.setState(id1 + 'hour', { ack: true, val: result.report.location[0].day[d].hour[h].$.value });
-                                adapter.setState(id1 + 'Temperature', { ack: true, val: result.report.location[0].day[d].hour[h].temp[0].$.value });
-                                adapter.setState(id1 + 'SymbolID', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.value });
-                                adapter.setState(id1 + 'Symbol', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.desc });
+                                adapter.setState(id1 + 'hour', { ack: true, val: hour.$.value });
+                                adapter.setState(id1 + 'Temperature', { ack: true, val: hour.temp[0].$.value });
+                                adapter.setState(id1 + 'SymbolID', { ack: true, val: hour.symbol[0].$.value });
+                                adapter.setState(id1 + 'Symbol', { ack: true, val: hour.symbol[0].$.desc });
 
-                                adapter.setState(id1 + 'SymbolID2', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.value2 });
-                                adapter.setState(id1 + 'Symbol2', { ack: true, val: result.report.location[0].day[d].hour[h].symbol[0].$.desc2 });
+                                adapter.setState(id1 + 'SymbolID2', { ack: true, val: hour.symbol[0].$.value2 });
+                                adapter.setState(id1 + 'Symbol2', { ack: true, val: hour.symbol[0].$.desc2 });
 
-                                adapter.setState(id1 + 'Wind', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.value });
-                                adapter.setState(id1 + 'WindDir', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.dir });
-                                adapter.setState(id1 + 'WindSymbol', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.symbol });
-                                adapter.setState(id1 + 'WindSymbolB', { ack: true, val: result.report.location[0].day[d].hour[h].wind[0].$.symbolB });
-                                adapter.setState(id1 + 'WindGusts', { ack: true, val: result.report.location[0].day[d].hour[h].windgusts[0].$.value });
-                                adapter.setState(id1 + 'Rain', { ack: true, val: result.report.location[0].day[d].hour[h].rain[0].$.value });
-                                adapter.setState(id1 + 'Humidity', { ack: true, val: result.report.location[0].day[d].hour[h].humidity[0].$.value });
-                                adapter.setState(id1 + 'Pressure', { ack: true, val: result.report.location[0].day[d].hour[h].pressure[0].$.value });
-                                adapter.setState(id1 + 'Snowline', { ack: true, val: result.report.location[0].day[d].hour[h].snowline[0].$.value });
-                                adapter.setState(id1 + 'Clouds', { ack: true, val: result.report.location[0].day[d].hour[h].clouds[0].$.value });
-                                adapter.setState(id1 + 'Windchill', { ack: true, val: result.report.location[0].day[d].hour[h].windchill[0].$.value });
+                                adapter.setState(id1 + 'Wind', { ack: true, val: hour.wind[0].$.value });
+                                adapter.setState(id1 + 'WindDir', { ack: true, val: hour.wind[0].$.dir });
+                                adapter.setState(id1 + 'WindSymbol', { ack: true, val: hour.wind[0].$.symbol });
+                                adapter.setState(id1 + 'WindSymbolB', { ack: true, val: hour.wind[0].$.symbolB });
+                                adapter.setState(id1 + 'WindGusts', { ack: true, val: hour.windgusts[0].$.value });
+                                adapter.setState(id1 + 'Rain', { ack: true, val: hour.rain[0].$.value });
+                                adapter.setState(id1 + 'Humidity', { ack: true, val: hour.humidity[0].$.value });
+                                adapter.setState(id1 + 'Pressure', { ack: true, val: hour.pressure[0].$.value });
+                                adapter.setState(id1 + 'Snowline', { ack: true, val: hour.snowline[0].$.value });
+                                adapter.setState(id1 + 'Clouds', { ack: true, val: hour.clouds[0].$.value });
+                                adapter.setState(id1 + 'Windchill', { ack: true, val: hour.windchill[0].$.value });
                                 */
                             }
                         }
