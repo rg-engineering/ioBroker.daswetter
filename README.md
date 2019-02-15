@@ -45,6 +45,9 @@ As soon as we know how the json path will look like we will (re)implement it -> 
 
 ## Changelog
 
+### 2.7.1 (2019-02-14)
+* (bluefox) Serialization of the objects deletion
+
 ### 2.6.1 (2019-02-10)
 * (René) update dependencies
 
