@@ -38,14 +38,16 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 * please make sure you call the adapter at least one time per hour to make sure "current" is updated well
 * see also github feature request [issue24](https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
+### path 4
+* at the moment DasWetter.com sends data which are different to their own specification. 
+Now we have implemented a "auto-repair" which changes to structure to documented shape.
+
 ## known issues
-* at the moment DasWetter.com sends data which are different to their own specification. This is the reason why those data can not be parsed right now
-As soon as we know how the json path will look like we will (re)implement it -> now we have implemented a "auto-repair" which changes to structure to documented shape.
-* sometimes when deleting old data structure an out-of-memory exception is thrown
+see github issue list
 
 ## Changelog
 
-### 2.7.1 (2019-02-14)
+### 2.7.2 (2019-02-14)
 * (bluefox) Serialization of the objects deletion
 
 ### 2.6.1 (2019-02-10)

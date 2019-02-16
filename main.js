@@ -2300,10 +2300,6 @@ function deleteOldData(bUseNewDataset, cb) {
         } else {
             adapter.log.debug("got " + states.length + " states ");
 
-            //we delete max. 500 per call to reduce work load!!
-
-            let cnt2Delete = 0;
-
             for (let i = 0; i < states.length; i++) {
                 const state = states[i]._id;
 
@@ -2312,7 +2308,7 @@ function deleteOldData(bUseNewDataset, cb) {
                 //und jetzt prüfen, welche states gelöscht werden müssen
 
                 if (bUseNewDataset) {
-                    if (cnt2Delete < 500 && (state.match(/\.NextDays.0d/)
+                    if ( state.match(/\.NextDays.0d/)
                         || state.match(/\.NextDays.1d/)
                         || state.match(/\.NextDays.2d/)
                         || state.match(/\.NextDays.3d/)
@@ -2328,23 +2324,23 @@ function deleteOldData(bUseNewDataset, cb) {
                         || state.match(/\.NextDaysDetailed.4d/)
 
                         || state.match(/\.hourly.0d/)
-                        || state.match(/\.hourly.1d/))
+                        || state.match(/\.hourly.1d/)
 
                     ) {
                         //adapter.log.debug("---delete state: " + state);
                         deleteIntoList("state", state);
-                        cnt2Delete++;
+                       
                     }
                 }
                 else {
-                    if (cnt2Delete < 500 && (state.match(/\.NextDays.Location_/)
+                    if (state.match(/\.NextDays.Location_/)
                         || state.match(/\.NextDaysDetailed.Location_/)
                         || state.match(/\.NextHours.Location_/)
-                        || state.match(/\.NextHours2.Location_/))
+                        || state.match(/\.NextHours2.Location_/)
                     ) {
                         //adapter.log.debug("+++delete state: " + state);
                         deleteIntoList("state", state);
-                        cnt2Delete++;
+                        
                     }
                 }
 
@@ -2393,6 +2389,7 @@ function deleteOldData(bUseNewDataset, cb) {
                         if (channel.match(/\.NextDays.Location_/)
                             || channel.match(/\.NextDaysDetailed.Location_/)
                             || channel.match(/\.NextHours.Location_/)
+                            || channel.match(/\.NextHours2.Location_/)
                         ) {
                             //adapter.log.debug("+++delete channel: " + channel);
                             deleteIntoList("channel",channel);

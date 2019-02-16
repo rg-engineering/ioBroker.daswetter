@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.7.1",
+    "version": "2.7.2",
     "news": {
       "2.7.0": {
         "en": "Serialization of the objects deletion",
