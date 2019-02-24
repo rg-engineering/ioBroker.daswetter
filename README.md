@@ -47,6 +47,9 @@ see github issue list
 
 ## Changelog
 
+### 2.7.3 (2019-02-24)
+* (René) bug fix: some values are number instead of string
+
 ### 2.7.2 (2019-02-14)
 * (bluefox) Serialization of the objects deletion
 

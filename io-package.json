@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.7.2",
+    "version": "2.7.3",
     "news": {
+      "2.7.3": {
+        "en": "bug fix: values in number instead of string",
+        "de": "Bugfix: Werte in Anzahl statt Zeichenfolge",
+        "ru": "исправление ошибки: значения в строке вместо строки",
+        "pt": "correção de bug: valores em número em vez de string",
+        "nl": "bug fix: waarden in aantal in plaats van string",
+        "fr": "correction de bug: les valeurs en nombre au lieu de chaîne",
+        "it": "bug fix: valori in numero anziché in stringa",
+        "es": "corrección de errores: valores en número en lugar de cadena",
+        "pl": "bug fix: wartości w liczbie zamiast łańcucha",
+        "zh-cn": "错误修复：数字而不是字符串的值"
+      },
       "2.7.0": {
         "en": "Serialization of the objects deletion",
         "de": "Serialisierung der Objekte wird gelöscht",

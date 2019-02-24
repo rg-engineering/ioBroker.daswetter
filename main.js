@@ -813,94 +813,6 @@ function getForecastDataHourly(cb) {
     }
 }
 
-/*
-daswetter.0 got { 
-"1": { 
-    "date": "20190112", 
-    "name": "Samstag", 
-    "month": '', 
-    "symbol_value": "19", 
-    "symbol_description": "Bedeckt mit Schneeschauern", 
-    "symbol_value2": "22", 
-    "symbol_description2": 
-    "Bedeckt mit Schneeregen", 
-    "tempmin": "0", 
-    "tempmax": "3", 
-    "wind": { 
-        "speed": "24", 
-        "symbol": "14", 
-        "symbolB": "54", 
-        "gusts": "49" 
-    }, 
-    "rain": "4.8", 
-    "humidity": "92", 
-    "pressure": "1016", 
-    "snowline": "500", 
-    "sun": { 
-        "in": "08:07", 
-        "mid": "12:17", 
-        "out": "16:29" 
-    }, 
-    "moon": { 
-        "in": "11:15", 
-        "out": "23:03", 
-        "lumi": "32.59%", 
-        "desc": "zunehm. Mond, 32.59% Beleuchtet", 
-        "symbol": "5" 
-    }, 
-    "units": { 
-        "temp": "°C", 
-        "wind": "km/h", 
-        "rain": "mm", 
-        "pressure": "mb", 
-        "snowline": "m" 
-    }, 
-    "local_time": "13:10", 
-    "local_time_offset": 1, 
-    "hour": [
-        { 
-            "interval": "02:00", 
-            "temp": "1", 
-            "symbol_value": "4", 
-            "symbol_description": "Bedeckt", 
-            "symbol_value2": "4", 
-            "symbol_description2": "Bedeckt", 
-            "wind": { 
-                "speed": "11", 
-                "dir": "W", 
-                "symbol": "15", 
-                "symbolB": "47", 
-                "gusts": "30" 
-            }, 
-            "rain": "0", 
-            "humidity": "99", 
-            "pressure": "1021", 
-            "clouds": "100%", 
-            "snowline": "500", 
-            "windchill": "-3" 
-        }, 
-        { "interval": "05:00", "temp": "1", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "16", "dir": "W", "symbol": "15", "symbolB": "47", "gusts": "34" }, "rain": "0.2", "humidity": "98", "pressure": "1019", "clouds": "100%", "snowline": "700", "windchill": "-2" }, { "interval": "08:00", "temp": "2", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "20", "dir": "W", "symbol": "15", "symbolB": "47", "gusts": "38" }, "rain": "0.6", "humidity": "94", "pressure": "1018", "clouds": "95%", "snowline": "800", "windchill": "-2" }, { "interval": "11:00", "temp": "2", "symbol_value": "6", "symbol_description": "Bewölkt mit leichtem Regen", "symbol_value2": "6", "symbol_description2": "Bewölkt mit leichtem Regen", "wind": { "speed": "21", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "43" }, "rain": "0.1", "humidity": "88", "pressure": "1018", "clouds": "91%", "snowline": "800", "windchill": "-2" }, { "interval": "14:00", "temp": "2", "symbol_value": "4", "symbol_description": "Bedeckt", "symbol_value2": "4", "symbol_description2": "Bedeckt", "wind": { "speed": "21", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "42" }, "rain": "0", "humidity": "89", "pressure": "1015", "clouds": "99%", "snowline": "700", "windchill": "-2" }, { "interval": "17:00", "temp": "2", "symbol_value": "19", "symbol_description": "Bedeckt mit Schneeschauern", "symbol_value2": "22", "symbol_description2": "Bedeckt mit Schneeregen", "wind": { "speed": "24", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "47" }, "rain": "0.9", "humidity": "88", "pressure": "1013", "clouds": "100%", "snowline": "700", "windchill": "-3" }, { "interval": "20:00", "temp": "1", "symbol_value": "19", "symbol_description": "Bedeckt mit Schneeschauern", "symbol_value2": "22", "symbol_description2": "Bedeckt mit Schneeregen", "wind": { "speed": "23", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "49" }, "rain": "1.8", "humidity": "91", "pressure": "1011", "clouds": "97%", "snowline": "700", "windchill": "-3" }, { "interval": "23:00", "temp": "2", "symbol_value": "6", "symbol_description": "Bewölkt mit leichtem Regen", "symbol_value2": "6", "symbol_description2": "Bewölkt mit leichtem Regen", "wind": { "speed": "19", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "45" }, "rain": "1.2", "humidity": "93", "pressure": "1010", "clouds": "93%", "snowline": "700", "windchill": "-3" }] }, 
-"2": { "date": "20190113", "name": "Sonntag", "month": '', "symbol_value": "10", "symbol_description": "Bedeckt mit mäßigem Regen", "symbol_value2": "10", "symbol_description2": "Bedeckt mit mäßigem Regen", "tempmin": "1", "tempmax": "5", "wind": { "speed": "30", "symbol": "23", "symbolB": "71", "gusts": "69" }, "rain": "13", "humidity": "91", "pressure": "1001", "snowline": "700", "sun": { "in": "08:06", "mid": "12:18", "out": "16:30" }, "moon": { "in": "11:35", "out": "--:--", "lumi": "41.98%", "desc": "zunehm. Mond, 41.98% Beleuchtet", "symbol": "6" }, "units": { "temp": "°C", "wind": "km/h", "rain": "mm", "pressure": "mb", "snowline": "m" }, "local_time": "13:10", "local_time_offset": 1, "hour": [{ "interval": "02:00", "temp": "2", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "18", "dir": "W", "symbol": "15", "symbolB": "47", "gusts": "37" }, "rain": "0.9", "humidity": "94", "pressure": "1009", "clouds": "99%", "snowline": "700", "windchill": "-2" }, { "interval": "05:00", "temp": "2", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "19", "dir": "W", "symbol": "15", "symbolB": "47", "gusts": "37" }, "rain": "0.3", "humidity": "92", "pressure": "1008", "clouds": "100%", "snowline": "800", "windchill": "-2" }, { "interval": "08:00", "temp": "2", "symbol_value": "4", "symbol_description": "Bedeckt", "symbol_value2": "4", "symbol_description2": "Bedeckt", "wind": { "speed": "20", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "41" }, "rain": "0", "humidity": "92", "pressure": "1006", "clouds": "100%", "snowline": "800", "windchill": "-2" }, { "interval": "11:00", "temp": "3", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "21", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "44" }, "rain": "1.5", "humidity": "93", "pressure": "1003", "clouds": "100%", "snowline": "1000", "windchill": "-2" }, { "interval": "14:00", "temp": "3", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "22", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "47" }, "rain": "3.3", "humidity": "92", "pressure": "1000", "clouds": "100%", "snowline": "1100", "windchill": "-1" }, { "interval": "17:00", "temp": "4", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "21", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "46" }, "rain": "2.8", "humidity": "89", "pressure": "997", "clouds": "100%", "snowline": "1300", "windchill": "0" }, { "interval": "20:00", "temp": "4", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "26", "dir": "W", "symbol": "23", "symbolB": "63", "gusts": "54" }, "rain": "2.2", "humidity": "88", "pressure": "994", "clouds": "98%", "snowline": "1200", "windchill": "0" }, { "interval": "23:00", "temp": "4", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "30", "dir": "W", "symbol": "23", "symbolB": "71", "gusts": "69" }, "rain": "1.7", "humidity": "89", "pressure": "994", "clouds": "97%", "snowline": "1000", "windchill": "-1" }] }, 
-"3": { "date": "20190114", "name": "Montag", "month": '', "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "tempmin": "-2", "tempmax": "4", "wind": { "speed": "30", "symbol": "24", "symbolB": "72", "gusts": "70" }, "rain": "6.3", "humidity": "85", "pressure": "1005", "snowline": "100", "sun": { "in": "08:05", "mid": "12:18", "out": "16:31" }, "moon": { "in": "11:55", "out": "00:09", "lumi": "51.89%", "desc": "zunehm. Mond, 51.89% Beleuchtet", "symbol": "7" }, "units": { "temp": "°C", "wind": "km/h", "rain": "mm", "pressure": "mb", "snowline": "m" }, "local_time": "13:10", "local_time_offset": 1, "hour": [{ "interval": "01:00", "temp": "2", "symbol_value": "7", "symbol_description": "Bedeckt mit leichtem Regen", "symbol_value2": "7", "symbol_description2": "Bedeckt mit leichtem Regen", "wind": { "speed": "28", "dir": "NW", "symbol": "24", "symbolB": "72", "gusts": "69" }, "rain": "1.5", "humidity": "91", "pressure": "995", "clouds": "99%", "snowline": "800", "windchill": "-3" }, { "interval": "04:00", "temp": "1", "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "wind": { "speed": "30", "dir": "NW", "symbol": "24", "symbolB": "72", "gusts": "69" }, "rain": "1.2", "humidity": "88", "pressure": "999", "clouds": "58%", "snowline": "600", "windchill": "-5" }, { "interval": "07:00", "temp": "0", "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "wind": { "speed": "23", "dir": "NW", "symbol": "24", "symbolB": "72", "gusts": "68" }, "rain": "0.9", "humidity": "85", "pressure": "1003", "clouds": "87%", "snowline": "400", "windchill": "-5" }, { "interval": "10:00", "temp": "0", "symbol_value": "19", "symbol_description": "Bedeckt mit Schneeschauern", "symbol_value2": "19", "symbol_description2": "Bedeckt mit Schneeschauern", "wind": { "speed": "20", "dir": "W", "symbol": "23", "symbolB": "71", "gusts": "62" }, "rain": "0.8", "humidity": "88", "pressure": "1005", "clouds": "97%", "snowline": "400", "windchill": "-5" }, { "interval": "13:00", "temp": "0", "symbol_value": "19", "symbol_description": "Bedeckt mit Schneeschauern", "symbol_value2": "19", "symbol_description2": "Bedeckt mit Schneeschauern", "wind": { "speed": "26", "dir": "NW", "symbol": "24", "symbolB": "72", "gusts": "70" }, "rain": "1.2", "humidity": "85", "pressure": "1007", "clouds": "96%", "snowline": "400", "windchill": "-6" }, { "interval": "16:00", "temp": "-1", "symbol_value": "17", "symbol_description": "Teils bewölkt mit Schnee", "symbol_value2": "17", "symbol_description2": "Teils bewölkt mit Schnee", "wind": { "speed": "19", "dir": "NW", "symbol": "24", "symbolB": "64", "gusts": "57" }, "rain": "0.7", "humidity": "78", "pressure": "1008", "clouds": "14%", "snowline": "300", "windchill": "-6" }, { "interval": "19:00", "temp": "-2", "symbol_value": "2", "symbol_description": "Teils bewölkt", "symbol_value2": "2", "symbol_description2": "Teils bewölkt", "wind": { "speed": "21", "dir": "NW", "symbol": "16", "symbolB": "56", "gusts": "42" }, "rain": "0", "humidity": "85", "pressure": "1011", "clouds": "30%", "snowline": "100", "windchill": "-7" }, { "interval": "22:00", "temp": "-2", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "20", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "43" }, "rain": "0", "humidity": "85", "pressure": "1013", "clouds": "71%", "snowline": "100", "windchill": "-7" }] }, 
-"4": { "date": "20190115", "name": "Dienstag", "month": '', "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "tempmin": "-2", "tempmax": "1", "wind": { "speed": "24", "symbol": "23", "symbolB": "63", "gusts": "52" }, "rain": "4.3", "humidity": "83", "pressure": "1017", "snowline": "100", "sun": { "in": "08:05", "mid": "12:19", "out": "16:33" }, "moon": { "in": "12:18", "out": "01:19", "lumi": "62.02%", "desc": "zunehm. Mond, 62.02% Beleuchtet", "symbol": "8" }, "units": { "temp": "°C", "wind": "km/h", "rain": "mm", "pressure": "mb", "snowline": "m" }, "local_time": "13:10", "local_time_offset": 1, "hour": [{ "interval": "01:00", "temp": "-2", "symbol_value": "19", "symbol_description": "Bedeckt mit Schneeschauern", "symbol_value2": "19", "symbol_description2": "Bedeckt mit Schneeschauern", "wind": { "speed": "22", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "44" }, "rain": "0.3", "humidity": "85", "pressure": "1014", "clouds": "98%", "snowline": "100", "windchill": "-7" }, { "interval": "04:00", "temp": "-2", "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "wind": { "speed": "24", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "49" }, "rain": "0.6", "humidity": "81", "pressure": "1014", "clouds": "93%", "snowline": "200", "windchill": "-8" }, { "interval": "07:00", "temp": "-2", "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "wind": { "speed": "23", "dir": "NW", "symbol": "24", "symbolB": "64", "gusts": "52" }, "rain": "1", "humidity": "83", "pressure": "1016", "clouds": "85%", "snowline": "200", "windchill": "-8" }, { "interval": "10:00", "temp": "-1", "symbol_value": "18", "symbol_description": "Bewölkt mit Schnee", "symbol_value2": "18", "symbol_description2": "Bewölkt mit Schnee", "wind": { "speed": "20", "dir": "NW", "symbol": "16", "symbolB": "56", "gusts": "47" }, "rain": "1.5", "humidity": "87", "pressure": "1018", "clouds": "93%", "snowline": "200", "windchill": "-6" }, { "interval": "13:00", "temp": "1", "symbol_value": "17", "symbol_description": "Teils bewölkt mit Schnee", "symbol_value2": "17", "symbol_description2": "Teils bewölkt mit Schnee", "wind": { "speed": "20", "dir": "NW", "symbol": "16", "symbolB": "56", "gusts": "43" }, "rain": "0.5", "humidity": "78", "pressure": "1019", "clouds": "52%", "snowline": "500", "windchill": "-4" }, { "interval": "16:00", "temp": "0", "symbol_value": "19", "symbol_description": "Bedeckt mit Schneeschauern", "symbol_value2": "19", "symbol_description2": "Bedeckt mit Schneeschauern", "wind": { "speed": "19", "dir": "W", "symbol": "15", "symbolB": "55", "gusts": "40" }, "rain": "0.4", "humidity": "88", "pressure": "1019", "clouds": "96%", "snowline": "500", "windchill": "-4" }, { "interval": "19:00", "temp": "0", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "24", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "46" }, "rain": "0", "humidity": "82", "pressure": "1018", "clouds": "92%", "snowline": "500", "windchill": "-5" }, { "interval": "22:00", "temp": "0", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "23", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "47" }, "rain": "0", "humidity": "84", "pressure": "1018", "clouds": "80%", "snowline": "500", "windchill": "-5" }] }, 
-"5": { "date": "20190116", "name": "Mittwoch", "month": '', "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "tempmin": "-1", "tempmax": "1", "wind": { "speed": "22", "symbol": "14", "symbolB": "54", "gusts": "45" }, "rain": "0", "humidity": "90", "pressure": "1015", "snowline": "300", "sun": { "in": "08:04", "mid": "12:19", "out": "16:34" }, "moon": { "in": "12:44", "out": "02:30", "lumi": "71.97%", "desc": "zunehm. Mond, 71.97% Beleuchtet", "symbol": "9" }, "units": { "temp": "°C", "wind": "km/h", "rain": "mm", "pressure": "mb", "snowline": "m" }, "local_time": "13:10", "local_time_offset": 1, "hour": [{ "interval": "01:00", "temp": "-1", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "22", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "45" }, "rain": "0", "humidity": "91", "pressure": "1018", "clouds": "71%", "snowline": "300", "windchill": "-6" }, { "interval": "04:00", "temp": "-1", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "20", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "43" }, "rain": "0", "humidity": "93", "pressure": "1017", "clouds": "90%", "snowline": "300", "windchill": "-6" }, { "interval": "07:00", "temp": "-1", "symbol_value": "4", "symbol_description": "Bedeckt", "symbol_value2": "4", "symbol_description2": "Bedeckt", "wind": { "speed": "17", "dir": "SW", "symbol": "14", "symbolB": "46", "gusts": "38" }, "rain": "0", "humidity": "94", "pressure": "1016", "clouds": "98%", "snowline": "300", "windchill": "-6" }, { "interval": "10:00", "temp": "-1", "symbol_value": "4", "symbol_description": "Bedeckt", "symbol_value2": "4", "symbol_description2": "Bedeckt", "wind": { "speed": "19", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "39" }, "rain": "0", "humidity": "93", "pressure": "1016", "clouds": "99%", "snowline": "300", "windchill": "-6" }, { "interval": "13:00", "temp": "1", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "21", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "42" }, "rain": "0", "humidity": "86", "pressure": "1015", "clouds": "82%", "snowline": "500", "windchill": "-4" }, { "interval": "16:00", "temp": "0", "symbol_value": "2", "symbol_description": "Teils bewölkt", "symbol_value2": "2", "symbol_description2": "Teils bewölkt", "wind": { "speed": "19", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "41" }, "rain": "0", "humidity": "87", "pressure": "1013", "clouds": "34%", "snowline": "500", "windchill": "-4" }, { "interval": "19:00", "temp": "-1", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "20", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "39" }, "rain": "0", "humidity": "89", "pressure": "1012", "clouds": "88%", "snowline": "600", "windchill": "-6" }, { "interval": "22:00", "temp": "-1", "symbol_value": "3", "symbol_description": "Bewölkt", "symbol_value2": "3", "symbol_description2": "Bewölkt", "wind": { "speed": "22", "dir": "SW", "symbol": "14", "symbolB": "54", "gusts": "42" }, "rain": "0", "humidity": "81", "pressure": "1011", "clouds": "83%", "snowline": "1100", "windchill": "-6" }] } 
-}
-
-*/
-
-/*
-daswetter.0 --- {
-    "status":0,
-    "location":"Rodewisch [Sachsen;Deutschland]",
-    "url":"https://www.daswetter.com/wetter_Rodewisch-Europa-Deutschland-Sachsen--1-27287.html",
-    "day":[
-        {"date":"20190113","name":"Sonntag","month":'',"symbol_value":"10","symbol_description":"Bedeckt mit mäßigem Regen","symbol_value2":"10","symbol_description2":"Bedeckt mit mäßigem Regen","tempmin":"1","tempmax":"6","wind":{"speed":"30","symbol":"24","symbolB":"72","gusts":"69"},"rain":"12","humidity":"92","pressure":"1002","snowline":"600","sun":{"in":"08:06","mid":"12:18","out":"16:30"},"moon":{"in":"11:35","out":"--:--","lumi":"41.98%","desc":"zunehm. Mond, 41.98% Beleuchtet","symbol":"6"},"units":{"temp":"°C","wind":"km/h","rain":"mm","pressure":"mb","snowline":"m"},"local_time":"11:48","local_time_offset":1,"hour":[{"interval":"02:00","temp":"1","symbol_value":"7","symbol_description":"Bedeckt mit leichtem Regen","symbol_value2":"7","symbol_description2":"Bedeckt mit leichtem Regen","wind":{"speed":"17","dir":"W","symbol":"15","symbolB":"47","gusts":"37"},"rain":"0.6","humidity":"98","pressure":"1010","clouds":"100%","snowline":"600","windchill":"-3"},{"interval":"05:00","temp":"2","symbol_value":"7","symbol_description":"Bedeckt mit leichtem Regen","symbol_value2":"7","symbol_description2":"Bedeckt mit leichtem Regen","wind":{"speed":"19","dir":"W","symbol":"15","symbolB":"55","gusts":"39"},"rain":"1.3","humidity":"93","pressure":"1009","clouds":"100%","snowline":"700","windchill":"-3"},{"interval":"08:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"20","dir":"W","symbol":"15","symbolB":"55","gusts":"40"},"rain":"0","humidity":"91","pressure":"1008","clouds":"98%","snowline":"800","windchill":"-2"},{"interval":"11:00","temp":"3","symbol_value":"7","symbol_description":"Bedeckt mit leichtem Regen","symbol_value2":"7","symbol_description2":"Bedeckt mit leichtem Regen","wind":{"speed":"21","dir":"SW","symbol":"14","symbolB":"54","gusts":"43"},"rain":"1.1","humidity":"93","pressure":"1005","clouds":"100%","snowline":"900","windchill":"-2"},{"interval":"14:00","temp":"3","symbol_value":"7","symbol_description":"Bedeckt mit leichtem Regen","symbol_value2":"7","symbol_description2":"Bedeckt mit leichtem Regen","wind":{"speed":"25","dir":"SW","symbol":"22","symbolB":"62","gusts":"51"},"rain":"2.5","humidity":"94","pressure":"1001","clouds":"100%","snowline":"1000","windchill":"-2"},{"interval":"17:00","temp":"4","symbol_value":"7","symbol_description":"Bedeckt mit leichtem Regen","symbol_value2":"7","symbol_description2":"Bedeckt mit leichtem Regen","wind":{"speed":"25","dir":"SW","symbol":"22","symbolB":"62","gusts":"55"},"rain":"2.9","humidity":"90","pressure":"997","clouds":"100%","snowline":"1200","windchill":"-1"},{"interval":"20:00","temp":"5","symbol_value":"7","symbol_description":"Bedeckt mit leichtem Regen","symbol_value2":"7","symbol_description2":"Bedeckt mit leichtem Regen","wind":{"speed":"26","dir":"W","symbol":"23","symbolB":"71","gusts":"63"},"rain":"2.3","humidity":"90","pressure":"994","clouds":"96%","snowline":"1300","windchill":"1"},{"interval":"23:00","temp":"3","symbol_value":"6","symbol_description":"Bewölkt mit leichtem Regen","symbol_value2":"6","symbol_description2":"Bewölkt mit leichtem Regen","wind":{"speed":"30","dir":"NW","symbol":"24","symbolB":"72","gusts":"67"},"rain":"1.5","humidity":"92","pressure":"995","clouds":"91%","snowline":"1000","windchill":"-2"}]},
-        {"date":"20190114","name":"Montag","month":'',"symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"21","symbol_description2":"Bewölkt mit Schneeregen","tempmin":"-2","tempmax":"4","wind":{"speed":"27","symbol":"23","symbolB":"71","gusts":"67"},"rain":"7.2","humidity":"84","pressure":"1006","snowline":"200","sun":{"in":"08:05","mid":"12:18","out":"16:31"},"moon":{"in":"11:55","out":"00:09","lumi":"51.89%","desc":"zunehm. Mond, 51.89% Beleuchtet","symbol":"7"},"units":{"temp":"°C","wind":"km/h","rain":"mm","pressure":"mb","snowline":"m"},"local_time":"11:48","local_time_offset":1,"hour":[{"interval":"02:00","temp":"2","symbol_value":"17","symbol_description":"Teils bewölkt mit Schnee","symbol_value2":"20","symbol_description2":"Teils bewölkt mit Schneeregen","wind":{"speed":"27","dir":"NW","symbol":"24","symbolB":"64","gusts":"61"},"rain":"1.5","humidity":"88","pressure":"997","clouds":"72%","snowline":"800","windchill":"-3"},{"interval":"05:00","temp":"1","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"25","dir":"NW","symbol":"24","symbolB":"72","gusts":"64"},"rain":"0.6","humidity":"84","pressure":"1000","clouds":"46%","snowline":"600","windchill":"-5"},{"interval":"08:00","temp":"0","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"23","dir":"NW","symbol":"24","symbolB":"64","gusts":"55"},"rain":"0.8","humidity":"82","pressure":"1004","clouds":"86%","snowline":"400","windchill":"-6"},{"interval":"11:00","temp":"0","symbol_value":"19","symbol_description":"Bedeckt mit Schneeschauern","symbol_value2":"19","symbol_description2":"Bedeckt mit Schneeschauern","wind":{"speed":"23","dir":"NW","symbol":"24","symbolB":"64","gusts":"60"},"rain":"1.8","humidity":"87","pressure":"1006","clouds":"93%","snowline":"400","windchill":"-6"},{"interval":"14:00","temp":"-1","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"23","dir":"NW","symbol":"24","symbolB":"72","gusts":"64"},"rain":"1.1","humidity":"85","pressure":"1008","clouds":"77%","snowline":"300","windchill":"-6"},{"interval":"17:00","temp":"-1","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"22","dir":"NW","symbol":"24","symbolB":"64","gusts":"61"},"rain":"0.5","humidity":"81","pressure":"1010","clouds":"67%","snowline":"300","windchill":"-7"},{"interval":"20:00","temp":"-2","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"23","dir":"NW","symbol":"16","symbolB":"56","gusts":"48"},"rain":"0.3","humidity":"82","pressure":"1012","clouds":"91%","snowline":"200","windchill":"-7"},{"interval":"23:00","temp":"-2","symbol_value":"19","symbol_description":"Bedeckt mit Schneeschauern","symbol_value2":"19","symbol_description2":"Bedeckt mit Schneeschauern","wind":{"speed":"21","dir":"NW","symbol":"16","symbolB":"56","gusts":"46"},"rain":"0.6","humidity":"86","pressure":"1013","clouds":"98%","snowline":"200","windchill":"-7"}]},
-        {"date":"20190115","name":"Dienstag","month":'',"symbol_value":"19","symbol_description":"Bedeckt mit Schneeschauern","symbol_value2":"19","symbol_description2":"Bedeckt mit Schneeschauern","tempmin":"-2","tempmax":"2","wind":{"speed":"27","symbol":"22","symbolB":"62","gusts":"55"},"rain":"2.3","humidity":"85","pressure":"1016","snowline":"200","sun":{"in":"08:05","mid":"12:19","out":"16:33"},"moon":{"in":"12:18","out":"01:19","lumi":"62.02%","desc":"zunehm. Mond, 62.02% Beleuchtet","symbol":"8"},"units":{"temp":"°C","wind":"km/h","rain":"mm","pressure":"mb","snowline":"m"},"local_time":"11:48","local_time_offset":1,"hour":[{"interval":"01:00","temp":"-2","symbol_value":"19","symbol_description":"Bedeckt mit Schneeschauern","symbol_value2":"19","symbol_description2":"Bedeckt mit Schneeschauern","wind":{"speed":"20","dir":"W","symbol":"15","symbolB":"55","gusts":"43"},"rain":"0.8","humidity":"88","pressure":"1014","clouds":"100%","snowline":"200","windchill":"-7"},{"interval":"04:00","temp":"-1","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"25","dir":"W","symbol":"15","symbolB":"63","gusts":"50"},"rain":"0.6","humidity":"83","pressure":"1015","clouds":"96%","snowline":"200","windchill":"-7"},{"interval":"07:00","temp":"-1","symbol_value":"18","symbol_description":"Bewölkt mit Schnee","symbol_value2":"18","symbol_description2":"Bewölkt mit Schnee","wind":{"speed":"21","dir":"NW","symbol":"16","symbolB":"56","gusts":"49"},"rain":"0.7","humidity":"87","pressure":"1017","clouds":"83%","snowline":"200","windchill":"-7"},{"interval":"10:00","temp":"-1","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"19","dir":"W","symbol":"15","symbolB":"55","gusts":"42"},"rain":"0","humidity":"85","pressure":"1018","clouds":"100%","snowline":"300","windchill":"-6"},{"interval":"13:00","temp":"1","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"23","dir":"SW","symbol":"14","symbolB":"54","gusts":"46"},"rain":"0","humidity":"82","pressure":"1017","clouds":"99%","snowline":"500","windchill":"-4"},{"interval":"16:00","temp":"1","symbol_value":"19","symbol_description":"Bedeckt mit Schneeschauern","symbol_value2":"19","symbol_description2":"Bedeckt mit Schneeschauern","wind":{"speed":"26","dir":"SW","symbol":"22","symbolB":"62","gusts":"51"},"rain":"0.2","humidity":"82","pressure":"1015","clouds":"99%","snowline":"600","windchill":"-4"},{"interval":"19:00","temp":"1","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"27","dir":"SW","symbol":"22","symbolB":"62","gusts":"55"},"rain":"0","humidity":"89","pressure":"1014","clouds":"99%","snowline":"700","windchill":"-4"},{"interval":"22:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"25","dir":"SW","symbol":"22","symbolB":"62","gusts":"53"},"rain":"0","humidity":"91","pressure":"1014","clouds":"98%","snowline":"800","windchill":"-3"}]},
-        {"date":"20190116","name":"Mittwoch","month":'',"symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","tempmin":"0","tempmax":"3","wind":{"speed":"22","symbol":"23","symbolB":"63","gusts":"50"},"rain":"0","humidity":"92","pressure":"1014","snowline":"700","sun":{"in":"08:04","mid":"12:19","out":"16:34"},"moon":{"in":"12:44","out":"02:30","lumi":"71.97%","desc":"zunehm. Mond, 71.97% Beleuchtet","symbol":"9"},"units":{"temp":"°C","wind":"km/h","rain":"mm","pressure":"mb","snowline":"m"},"local_time":"11:48","local_time_offset":1,"hour":[{"interval":"01:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"22","dir":"W","symbol":"23","symbolB":"63","gusts":"50"},"rain":"0","humidity":"94","pressure":"1014","clouds":"99%","snowline":"800","windchill":"-2"},{"interval":"04:00","temp":"2","symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","wind":{"speed":"21","dir":"SW","symbol":"14","symbolB":"54","gusts":"43"},"rain":"0","humidity":"94","pressure":"1014","clouds":"96%","snowline":"800","windchill":"-2"},{"interval":"07:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"19","dir":"SW","symbol":"14","symbolB":"54","gusts":"42"},"rain":"0","humidity":"95","pressure":"1014","clouds":"98%","snowline":"700","windchill":"-2"},{"interval":"10:00","temp":"2","symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","wind":{"speed":"17","dir":"SW","symbol":"14","symbolB":"46","gusts":"37"},"rain":"0","humidity":"95","pressure":"1015","clouds":"93%","snowline":"700","windchill":"-2"},{"interval":"13:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"16","dir":"SW","symbol":"14","symbolB":"46","gusts":"38"},"rain":"0","humidity":"91","pressure":"1014","clouds":"100%","snowline":"800","windchill":"-1"},{"interval":"16:00","temp":"3","symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","wind":{"speed":"18","dir":"SW","symbol":"14","symbolB":"46","gusts":"36"},"rain":"0","humidity":"90","pressure":"1013","clouds":"74%","snowline":"1100","windchill":"-1"},{"interval":"19:00","temp":"1","symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","wind":{"speed":"18","dir":"SW","symbol":"14","symbolB":"46","gusts":"35"},"rain":"0","humidity":"89","pressure":"1012","clouds":"81%","snowline":"1200","windchill":"-3"},{"interval":"22:00","temp":"1","symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","wind":{"speed":"18","dir":"S","symbol":"13","symbolB":"45","gusts":"35"},"rain":"0","humidity":"91","pressure":"1012","clouds":"61%","snowline":"1100","windchill":"-4"}]},
-        {"date":"20190117","name":"Donnerstag","month":'',"symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","tempmin":"-1","tempmax":"3","wind":{"speed":"24","symbol":"14","symbolB":"62","gusts":"50"},"rain":"0","humidity":"87","pressure":"1010","snowline":"600","sun":{"in":"08:03","mid":"12:19","out":"16:36"},"moon":{"in":"13:16","out":"03:44","lumi":"81.26%","desc":"zunehm. Mond, 81.26% Beleuchtet","symbol":"10"},"units":{"temp":"°C","wind":"km/h","rain":"mm","pressure":"mb","snowline":"m"},"local_time":"11:48","local_time_offset":1,"hour":[{"interval":"01:00","temp":"0","symbol_value":"2","symbol_description":"Teils bewölkt","symbol_value2":"2","symbol_description2":"Teils bewölkt","wind":{"speed":"22","dir":"S","symbol":"13","symbolB":"53","gusts":"43"},"rain":"0","humidity":"82","pressure":"1010","clouds":"55%","snowline":"2000","windchill":"-5"},{"interval":"04:00","temp":"0","symbol_value":"2","symbol_description":"Teils bewölkt","symbol_value2":"2","symbol_description2":"Teils bewölkt","wind":{"speed":"22","dir":"SW","symbol":"14","symbolB":"54","gusts":"43"},"rain":"0","humidity":"82","pressure":"1009","clouds":"39%","snowline":"1800","windchill":"-5"},{"interval":"07:00","temp":"0","symbol_value":"2","symbol_description":"Teils bewölkt","symbol_value2":"2","symbol_description2":"Teils bewölkt","wind":{"speed":"23","dir":"SW","symbol":"14","symbolB":"54","gusts":"46"},"rain":"0","humidity":"84","pressure":"1009","clouds":"44%","snowline":"1500","windchill":"-5"},{"interval":"10:00","temp":"1","symbol_value":"3","symbol_description":"Bewölkt","symbol_value2":"3","symbol_description2":"Bewölkt","wind":{"speed":"24","dir":"SW","symbol":"14","symbolB":"54","gusts":"49"},"rain":"0","humidity":"88","pressure":"1010","clouds":"80%","snowline":"700","windchill":"-4"},{"interval":"13:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"21","dir":"SW","symbol":"14","symbolB":"62","gusts":"50"},"rain":"0","humidity":"89","pressure":"1009","clouds":"97%","snowline":"800","windchill":"-2"},{"interval":"16:00","temp":"3","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"18","dir":"SW","symbol":"14","symbolB":"54","gusts":"47"},"rain":"0","humidity":"87","pressure":"1010","clouds":"100%","snowline":"800","windchill":"-1"},{"interval":"19:00","temp":"3","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"16","dir":"SW","symbol":"14","symbolB":"46","gusts":"36"},"rain":"0","humidity":"91","pressure":"1012","clouds":"100%","snowline":"900","windchill":"-1"},{"interval":"22:00","temp":"2","symbol_value":"4","symbol_description":"Bedeckt","symbol_value2":"4","symbol_description2":"Bedeckt","wind":{"speed":"9","dir":"W","symbol":"15","symbolB":"47","gusts":"31"},"rain":"0","humidity":"94","pressure":"1013","clouds":"100%","snowline":"800","windchill":"0"}]}
-        ]}
-*/
 
 
 
@@ -1459,7 +1371,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'Weather icon name',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.icon.name.forecast.' + d,
 
                         read: true,
@@ -1471,7 +1383,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'Weather state URL',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.title.forecast.' + d,
 
                         read: true,
@@ -1494,7 +1406,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'Wind description',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.direction.wind.forecast.' + d,
                         read: true,
                         write: false
@@ -1528,7 +1440,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'Sunshine Duration',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.sunshineduration.' + d,
                         unit: ('h'),
                         read: true,
@@ -1583,7 +1495,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'clouds',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.clouds.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : '%'),
                         read: true,
@@ -1595,7 +1507,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'humidity',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.humidity.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : '%'),
                         read: true,
@@ -1607,7 +1519,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'pressure',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.pressure.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : 'mBar'),
                         read: true,
@@ -1619,7 +1531,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'rain',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.rain.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : 'mm'),
                         read: true,
@@ -1631,7 +1543,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'snowline',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.snowline.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : 'm'),
                         read: true,
@@ -1655,7 +1567,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'temperature',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.temperature.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : '°C'),
                         read: true,
@@ -1679,7 +1591,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'wind symbol',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.wind.symbol.forecast.' + d,
 
                         read: true,
@@ -1691,7 +1603,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'wind value',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.wind.value.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : 'km/h'),
                         read: true,
@@ -1703,7 +1615,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'windchill',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.wind.windchill.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : '°C'),
                         read: true,
@@ -1715,7 +1627,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'windgusts',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.wind.windgusts.forecast.' + d,
                         unit: (sUnit.length > 0 ? sUnit : 'km/h'),
                         read: true,
@@ -1799,7 +1711,7 @@ function insertIntoList(key, value, unit) {
                     type: 'state',
                     common: {
                         name: 'moon symbol',
-                        type: 'string',
+                        type: 'number',
                         role: 'weather.moon.symbol.forecast.' + d,
 
                         read: true,
