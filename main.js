@@ -1378,6 +1378,21 @@ function insertIntoList(key, value, unit) {
                         write: false
                     }
                 };
+
+            } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather state',
+                        type: 'string',
+                        role: 'weather.symbol.desc.forecast.' + d,
+
+                        read: true,
+                        write: false
+                    }
+                };
+
+
             } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.symbol_value2/) || key.match(/\.Wetter_Symbol_value/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
                 obj = {
                     type: 'state',
@@ -1550,18 +1565,7 @@ function insertIntoList(key, value, unit) {
                         write: false
                     }
                 };
-            } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
-                obj = {
-                    type: 'state',
-                    common: {
-                        name: 'Weather state',
-                        type: 'string',
-                        role: 'weather.symbol.desc.forecast.' + d,
-
-                        read: true,
-                        write: false
-                    }
-                };
+            
             } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
                 obj = {
                     type: 'state',
