@@ -1,11 +1,10 @@
 ﻿![Logo](admin/daswettercom.png)
-ioBroker.DasWetter.
-===========================
+# ioBroker.DasWetter.
+![Number of Installations](http://iobroker.live/badges/daswetter-installed.svg) ![Number of Installations](http://iobroker.live/badges/daswetter-stable.svg) 
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.daswetter.svg)](https://www.npmjs.com/package/iobroker.daswetter)
 [![Tests](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)](https://travis-ci.org/rg-engineering/ioBroker.daswetter)
-
 [![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)](https://nodei.co/npm/iobroker.daswetter/)
 
 
@@ -25,7 +24,6 @@ All four models are implemented and one should be used at least.
 In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
 
 ## Hints
-![Number of Installations](http://iobroker.live/badges/daswetter-installed.svg) ![Number of Installations](http://iobroker.live/badges/daswetter-stable.svg) 
 ### icons used in vis
 * Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria1/1.png`.
 * in galerie6 original icons are in svg format. Vis app might have problems to visualize it. So converted png are available. Just use option "use png"
