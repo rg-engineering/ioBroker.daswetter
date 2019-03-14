@@ -1800,7 +1800,7 @@ function processTasks(tasks) {
         dbRunning = false;
 
         adapter.log.debug('exit, all done');
-        adapter.terminate ? adapter.terminate(11) : process.exit(11);
+        adapter.terminate ? adapter.terminate(0) : process.exit(0);
     } else {
         dbRunning = true;
         const task = tasks.shift();
