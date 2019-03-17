@@ -19,7 +19,6 @@
         var timeout;
         var Path2Delete = true;
 
-        //prepared for later use...
         function showHideSettings() {
 
             if (Path2Delete) {
@@ -33,33 +32,128 @@
 
             var name = $('#iconSet').val();
             name = parseInt(name, 10);
-            if (name < 5) {
-                $('.col-use-png-or-svg').hide();
-                $('.col-use-png-or-svg-descr').hide();
-            }
-            else {
+            if (name == 5 || name == 6) {
                 $('.col-use-png-or-svg').show();
-                $('.col-use-png-or-svg-descr').show();
-            }
-
-            if (name != 5) {
-                $('.col-use-color-or-bw').hide();
-                $('.col-use-color-or-bw-descr').hide();
             }
             else {
-                $('.col-use-color-or-bw').show();
-                $('.col-use-color-or-bw-descr').show();
+                $('.col-use-png-or-svg').hide(); 
             }
 
-            
+            if (name == 5) {
+                $('.col-use-color-or-bw').show();
+            }
+            else {
+                $('.col-use-color-or-bw').hide();
+            }
+
+            if (name == 7) {
+                $('.col-use-custom-path').show();
+                $('.col-use-custom-path-descr').show();
+                $('.col-use-custom-path-ext').show();
+            }
+            else {
+                $('.col-use-custom-path').hide();
+                $('.col-use-custom-path-descr').hide();
+                $('.col-use-custom-path-ext').hide();
+            }
         }
 
+        function showHideWindSettings() {
+            var name = $('#windiconSet').val();
+
+            console.log('wind icon set ' + name);
+
+            if (name == 'custom') {
+                $('.col-use-wind-custom-path').show();
+                $('.col-use-wind-custom-path-descr').show();
+                $('.col-use-wind-custom-path-ext').show();
+            }
+            else {
+                $('.col-use-wind-custom-path').hide();
+                $('.col-use-wind-custom-path-descr').hide();
+                $('.col-use-wind-custom-path-ext').hide();
+            }
+        }
+
+        function showHideMoonSettings() {
+            var name = $('#mooniconSet').val();
+
+            console.log('moon icon set ' + name);
+
+            if (name == 'custom') {
+                $('.col-use-moon-custom-path').show();
+                $('.col-use-moon-custom-path-descr').show();
+                $('.col-use-moon-custom-path-ext').show();
+            }
+            else {
+                $('.col-use-moon-custom-path').hide();
+                $('.col-use-moon-custom-path-descr').hide();
+                $('.col-use-moon-custom-path-ext').hide();
+            }
+        }
+
+        function showWindIconSet() {
+            var text = [];
+
+            var url = '';
+            var ext = '';
+            const maxIcons = 29;
+
+            var name = $('#windiconSet').val();
+
+            if (name == 'custom') {
+                url = $('#WindCustomPath').val();
+                ext = $('#WindCustomPathExt').val();
+            }
+            else {
+                var url = '/adapter/daswetter/icons/viento-wind/'+name+'/';
+                var ext = '.png';
+            }
+
+
+            for (var i = 1; i <= maxIcons; i++) {
+                text.push('<img src="' + url + i + ext + '" width="50" alt="' + i + '"/>');
+            }
+            text.push('<p> ' + url + '1' + ext + ' </p>');
+
+            $('.windicons-show').html(text.join(' '));
+            showHideSettings();
+            showHideWindSettings();
+            showHideMoonSettings();
+        }
         
-        
+        function showMoonIconSet() {
+            var text = [];
+            var url = '';
+            var ext = '';
+            const maxIcons = 29;
+
+            var name = $('#mooniconSet').val();
+
+            if (name == 'custom') {
+                url = $('#MoonCustomPath').val();
+                ext = $('#MoonCustomPathExt').val();
+            }
+            else {
+                url = '/adapter/daswetter/icons/luna-moon/';
+                ext = '.png';
+            }
+
+            for (var i = 1; i <= maxIcons; i++) {
+                text.push('<img src="' + url + i + ext + '" width="50" alt="' + i + '"/>');
+            }
+            text.push('<p> ' + url + '1' + ext + ' </p>');
+
+            $('.moonicons-show').html(text.join(' '));
+            showHideSettings();
+            showHideWindSettings();
+            showHideMoonSettings();
+        }
 
         function showIconSet() {
             var text = [];
             var url = '';
+            var ext = '';
             var name = $('#iconSet').val();
 
             var UsePNG = $('#UsePNGorOriginalSVG').prop('checked');
@@ -69,10 +163,16 @@
             console.log('use color ' + UseColor);
 
             if (name) {
-                name = parseInt(name, 10);
-                url = '/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/';
-                var ext = (name < 5 || UsePNG) ? '.png' : '.svg';
-                
+
+                if (name < 7) {
+                    name = parseInt(name, 10);
+                    url = '/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/';
+                    ext = (name < 5 || UsePNG) ? '.png' : '.svg';
+                }
+                else {
+                    url = $('#CustomPath').val();
+                    ext = $('#CustomPathExt').val();
+                }
                 //for (var i = 1; i < (name < 5) ? 21 : 23; i++) {
                 var maxIcons = (name < 5) ? 19 : 22;
                 if (name == 5) {
@@ -97,11 +197,19 @@
                 }
 
                 text.push('<p>' + maxIcons + ' images </p>');
-                text.push('<p> Access icons like http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/1' + ext + '. </p>');
+
+                if (name == 7) {
+                    text.push('<p> ' + url + '1' + ext + ' </p>');
+                }
+                else {
+                    text.push('<p> Access icons like http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria' + name + '/1' + ext + ' </p>');
+                }
             }
             $('.icons-show').html(text.join(' '));
 
             showHideSettings();
+            showHideWindSettings();
+            showHideMoonSettings();
         }
 
         function load(settings, onChange) {
@@ -122,8 +230,24 @@
                     });
                 } else {
                     $value.val(settings[key]).on('change', function () {
-                        if ($(this).attr('id') === 'iconSet') {
+                        console.log('on change');
+                        if ($(this).attr('id') === 'iconSet'
+                            || $(this).attr('id') === 'CustomPath'
+                            || $(this).attr('id') === 'CustomPathExt'
+                            ) {
                             showIconSet();
+                        }
+                        if ($(this).attr('id') === 'windiconSet'
+                            || $(this).attr('id') === 'WindCustomPath'
+                            || $(this).attr('id') === 'WindCustomPathExt'
+                        ) {
+                            showWindIconSet();
+                        }
+                        if ($(this).attr('id') === 'mooniconSet'
+                            || $(this).attr('id') === 'MoonCustomPath'
+                            || $(this).attr('id') === 'MoonCustomPathExt'
+                        ) {
+                            showMoonIconSet();
                         }
                         onChange();
                     }).on('keyup', function () {
@@ -133,6 +257,8 @@
             }
 
             showIconSet(settings.iconSet);
+            showMoonIconSet();
+            showWindIconSet();
             // Signal to admin, that no changes yet
             onChange(false);
             M.updateTextFields();
@@ -144,7 +270,9 @@
 
                     console.log('got instance ' + _id);
 
-                    showHideSettings();
+                    showIconSet(settings.iconSet);
+                    showMoonIconSet();
+                    showWindIconSet();
                 }
             });
 
@@ -181,8 +309,10 @@
 
             <div class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s4"><a href="#tab-main" class="translate active">Main settings</a></li>
-                    <li class="tab col s4"><a href="#tab-icons" class="translate">Icons</a></li>
+                    <li class="tab col s3"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s3"><a href="#tab-icons" class="translate">Icons</a></li>
+                    <li class="tab col s3"><a href="#tab-windicons" class="translate">WindIcons</a></li>
+                    <li class="tab col s3"><a href="#tab-moonicons" class="translate">MoonIcons</a></li>
                 </ul>
             </div>
 
@@ -264,8 +394,6 @@
 
             <!-- icon tab -->
             <div id="tab-icons" class="col s12 page">
-
-
                 <div class="row">
                     <div class="input-field col s12 m4">
                         <select id="iconSet" class="value">
@@ -275,6 +403,7 @@
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
+                            <option value="7">custom</option>
                         </select>
                         <label for="iconSet" class="translate">Icon set</label>
                     </div>
@@ -283,29 +412,106 @@
                     <div class="icons-show col s12">
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="input-field col s6 col-use-png-or-svg">
                         <input type="checkbox" id="UsePNGorOriginalSVG" class="value" />
                         <label for="UsePNGorOriginalSVG" class="translate">use_png_or_svg</label>
                     </div>
-                    <div class="col s6 col-use-png-or-svg-descr">
-                        <span class="translate">use_png_or_svg_hint</span>
-                    </div>
-                </div>
 
+                </div>
                 <div class="row">
                     <div class="input-field col s6 col-use-color-or-bw">
                         <input type="checkbox" id="UseColorOrBW" class="value" />
                         <label for="UseColorOrBW" class="translate">use_color_or_bw</label>
                     </div>
-                    <div class="col s6 col-use-color-or-bw-descr">
-                        <span class="translate">use_color_or_bw_hint</span>
+
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 col-use-custom-path">
+                        <input type="text" id="CustomPath" class="value" />
+                        <label for="CustomPath" class="translate">custom_path</label>
+                    </div>
+                    <div class="col s6 col-use-custom-path-descr">
+                        <span class="translate">custom_path_hint</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 col-use-custom-path-ext">
+                        <input type="text" id="CustomPathExt" class="value" />
+                        <label for="CustomPathExt" class="translate">custom_path_ext</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- wind icon tab -->
+            <div id="tab-windicons" class="col s12 page">
+                <div class="row">
+                    <div class="input-field col s12 m4">
+                        <select id="windiconSet" class="value">
+                            <option value="Beaufort-White">Beaufort-White</option>
+                            <option value="galeria2-Beaufort">galeria2-Beaufort</option>
+                            <option value="galeria1">galeria1</option>
+                            <option value="custom">custom</option>
+                        </select>
+                        <label for="windiconSet" class="translate">Icon set</label>
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="windicons-show col s12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 col-use-wind-custom-path">
+                        <input type="text" id="WindCustomPath" class="value" />
+                        <label for="WindCustomPath" class="translate">custom_path</label>
+                    </div>
+                    <div class="col s6 col-use-wind-custom-path-descr">
+                        <span class="translate">custom_path_hint</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 col-use-wind-custom-path-ext">
+                        <input type="text" id="WindCustomPathExt" class="value" />
+                        <label for="WindCustomPathExt" class="translate">custom_path_ext</label>
+                    </div>
+                </div>
 
             </div>
+
+
+            <!-- moon moon tab -->
+            <div id="tab-moonicons" class="col s12 page">
+                <div class="row">
+                    <div class="input-field col s12 m4">
+                        <select id="mooniconSet" class="value">
+                            <option value="original">original</option>
+                            <option value="custom">custom</option>
+                        </select>
+                        <label for="mooniconSet" class="translate">Icon set</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moonicons-show col s12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 col-use-moon-custom-path">
+                        <input type="text" id="MoonCustomPath" class="value" />
+                        <label for="MoonCustomPath" class="translate">custom_path</label>
+                    </div>
+                    <div class="col s6 col-use-moon-custom-path-descr">
+                        <span class="translate">custom_path_hint</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 col-use-moon-custom-path-ext">
+                        <input type="text" id="MoonCustomPathExt" class="value" />
+                        <label for="MoonCustomPathExt" class="translate">custom_path_ext</label>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>

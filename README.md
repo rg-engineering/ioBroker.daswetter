@@ -46,6 +46,11 @@ see github issue list
 
 ## Changelog
 
+### 2.8.0 (2019-03-19)
+* (René) moon and wind icon set added in admin !!path to wind icons changed!!
+* (René) path to customized icon set added 
+* (René) exit code changed
+
 ### 2.7.3 (2019-02-24)
 * (René) bug fix: some values are number instead of string
 

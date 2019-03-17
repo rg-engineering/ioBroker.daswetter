@@ -79,41 +79,83 @@ function getIconUrl(num) {
     const iconSet = parseInt(adapter.config.iconSet, 10) || 6;
     num = parseInt(num, 10) || 0;
     let url = '';
+    let ext = '';
     if (num) {
-        url = '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/';
-        const ext = (iconSet < 5 || adapter.config.UsePNGorOriginalSVG) ? '.png' : '.svg';
 
-        //const maxIcons = (num < 5) ? 19 : 22;
+        if (iconSet == 7) {//custom 
+            url = adapter.config.CustomPath;
+            ext = adapter.config.CustomPathExt;
+        }
+        else {
+            url = '/adapter/daswetter/icons/tiempo-weather/galeria' + iconSet + '/';
+            ext = (iconSet < 5 || adapter.config.UsePNGorOriginalSVG) ? '.png' : '.svg';
 
-        //adapter.log.debug('getIconURL ' + num + ' ' + adapter.config.UsePNGorOriginalSVG + ' ' + adapter.config.UseColorOrBW);
+            //const maxIcons = (num < 5) ? 19 : 22;
 
-        if (iconSet === 5) {
-            if (adapter.config.UsePNGorOriginalSVG) {
-                url = url + 'PNG/';
-            } else {
-                url = url + 'SVG/';
-            }
+            //adapter.log.debug('getIconURL ' + num + ' ' + adapter.config.UsePNGorOriginalSVG + ' ' + adapter.config.UseColorOrBW);
 
-            if (adapter.config.UseColorOrBW) {
-                url = url + 'Color/';
-            } else {
-                url = url + 'White/';
+            if (iconSet === 5) {
+                if (adapter.config.UsePNGorOriginalSVG) {
+                    url = url + 'PNG/';
+                } else {
+                    url = url + 'SVG/';
+                }
+
+                if (adapter.config.UseColorOrBW) {
+                    url = url + 'Color/';
+                } else {
+                    url = url + 'White/';
+                }
             }
         }
-
         url = url + num + ext;
     }
     return url;
 }
 
 function getWindIconUrl(num) {
+    const iconSet = adapter.config.windiconSet;
+    let url = '';
+    let ext = '';
     num = parseInt(num, 10) || 0;
     if (num) {
-        return '/adapter/daswetter/icons/viento-wind/' + num + '.png';
+        if (iconSet == 'custom') {
+            url = adapter.config.WindCustomPath;
+            ext = adapter.config.WindCustomPathExt;
+        }
+        else {
+            url = '/adapter/daswetter/icons/viento-wind/' + iconSet + '/'
+            ext = '.png';
+        }
+
+        return url + num + ext;
+        //return '/adapter/daswetter/icons/viento-wind/' + num + '.png';
     } else {
         return '';
     }
 }
+
+function getMoonIconUrl(num) {
+    const iconSet = adapter.config.mooniconSet;
+    let url = '';
+    let ext = '';
+    num = parseInt(num, 10) || 0;
+    if (num) {
+        if (iconSet == 'custom') {
+            url = adapter.config.MoonCustomPath;
+            ext = adapter.config.MoonCustomPathExt;
+        }
+        else {
+            url = '/adapter/daswetter/icons/luna-moon/';
+            ext = '.png';
+        }
+
+        return url + num + ext;
+    } else {
+        return '';
+    }
+}
+
 
 function getProps(obj, keyName) {
     //rückwärts parsen, dann kommt unit for dem wert und kann somit in die liste eingetragen werden
@@ -354,6 +396,9 @@ function getForecastData5Days(cb) {
                                 value = result.report.location[l].day[d].moon[0].$;
                                 keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.moon';
                                 getProps(value, keyName);
+
+                                //add url for icon
+                                insertIntoList('NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.moonIconURL', getMoonIconUrl(value.symbol));
 
                                 value = result.report.location[l].day[d].local_info[0].$;
                                 keyName = 'NextDaysDetailed.Location_' + ll + '.Day_' + dd + '.local_info';
@@ -596,6 +641,9 @@ function getForecastDataHourly(cb) {
                                 value = result.report.location[l].day[d].moon[0].$;
                                 keyName = 'NextHours.Location_' + ll + '.Day_' + dd + '.moon';
                                 getProps(value, keyName);
+
+                                //add url for icon
+                                insertIntoList('NextHours.Location_' + ll + '.Day_' + dd + '.moonIconURL', getMoonIconUrl(value.symbol));
 
 
                                 value = result.report.location[l].day[d].local_info[0].$;
@@ -1039,6 +1087,9 @@ function getForecastDataHourlyJSON(cb) {
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.moon_symbol';
                             insertIntoList(keyName, value);
 
+                            //add url for icon
+                            insertIntoList('NextHours2.Location_' + ll + '.Day_' + dd + '.moonIconURL', getMoonIconUrl(value));
+
                             value = result.day[d].local_time;
                             keyName = 'NextHours2.Location_' + ll + '.Day_' + dd + '.local_time';
                             insertIntoList(keyName, value);
@@ -1435,6 +1486,17 @@ function insertIntoList(key, value, unit) {
                         type: 'string',
                         role: 'weather.icon.forecast.' + d,
 
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.moonIconURL/)) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Moon icon URL',
+                        type: 'string',
+                        role: 'weather.icon.moon.forecast.' + d,
                         read: true,
                         write: false
                     }

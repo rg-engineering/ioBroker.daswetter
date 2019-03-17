@@ -1,9 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.7.3",
+    "version": "2.8.0",
     "news": {
-      "2.7.3": {
+      "2.8.0": {
+        "en": "path to customized icon set added",
+        "de": "Pfad zum benutzerdefinierten Symbolsatz hinzugefügt",
+        "ru": "добавлен путь к пользовательскому набору иконок",
+        "pt": "caminho para o conjunto de ícones personalizados adicionado",
+        "nl": "pad naar aangepaste pictogrammenset toegevoegd",
+        "fr": "chemin d'accès au jeu d'icônes personnalisé ajouté",
+        "it": "percorso al set di icone personalizzate aggiunto",
+        "es": "ruta al conjunto de iconos personalizados agregado",
+        "pl": "dodano ścieżkę do niestandardowego zestawu ikon",
+        "zh-cn": "添加了自定义图标集的路径"
+      },
+      "2.7.4": {
         "en": "bug fix: values in number instead of string",
         "de": "Bugfix: Werte in Anzahl statt Zeichenfolge",
         "ru": "исправление ошибки: значения в строке вместо строки",
@@ -71,17 +83,6 @@
         "it": "durata del sole e valori attuali per NextHours_Day1 e NextHours2_Day1 aggiunti",
         "es": "Duración de la luz del sol y valores actuales para NextHours_Day1 y NextHours2_Day1 agregado",
         "pl": "dodano czas trwania słońca i bieżące wartości dla NextHours_Day1 i NextHours2_Day1"
-      },
-      "2.3.1": {
-        "en": "code clean up",
-        "de": "Code aufräumen",
-        "ru": "очистка кода",
-        "pt": "código de limpeza",
-        "nl": "code opruimen",
-        "fr": "nettoyage du code",
-        "it": "codice ripulire",
-        "es": "código de limpieza",
-        "pl": "oczyść kod"
       },
       "2.3.0": {
         "en": "support of 4. path (json)",
@@ -170,73 +171,6 @@
         "it": "analizzando tutti i dati da xml (non più compatibile con la versione 1.x più)",
         "es": "analizar todos los datos de xml (no es compatible con la versión 1.x)",
         "pl": "parsowanie wszystkich danych z xml (nie kompatybilne już z wersją 1.x)"
-      },
-      "1.0.3": {
-        "en": "admin bug fixes",
-        "de": "Admin Fehler behoben",
-        "ru": "Исправлены ошибки администратора",
-        "pt": "correções de erros administrativos",
-        "nl": "bugfixes voor beheerders",
-        "fr": "corrections de bugs d'administration",
-        "it": "correzioni di errori di amministrazione",
-        "es": "correcciones de errores de administrador",
-        "pl": "Naprawiono błędy administratora"
-      },
-      "1.0.2": {
-        "en": "Support of admin3",
-        "de": "Unterstützung von admin3",
-        "ru": "Поддержка admin3",
-        "pt": "Suporte de admin3",
-        "nl": "Ondersteuning van admin3",
-        "fr": "Support de admin3",
-        "it": "Supporto di admin3",
-        "es": "Soporte de admin3"
-      },
-      "1.0.1": {
-        "en": "Support of admin3",
-        "de": "Unterstützung von admin3",
-        "ru": "Поддержка admin3",
-        "pt": "Suporte de admin3",
-        "nl": "Ondersteuning van admin3",
-        "fr": "Support de admin3",
-        "it": "Supporto di admin3",
-        "es": "Soporte de admin3"
-      },
-      "1.0.0": {
-        "en": "first stable version",
-        "de": "erste stabile Version"
-      },
-      "0.1.6": {
-        "en": "bug fixing",
-        "de": "Fehlerbehebung"
-      },
-      "0.1.5": {
-        "en": "testing changed",
-        "de": "test geändert"
-      },
-      "0.1.4": {
-        "en": "license changed",
-        "de": "Lizenz geändert"
-      },
-      "0.1.3": {
-        "en": "external png's corrected",
-        "de": "externe png's korrigiert"
-      },
-      "0.1.2": {
-        "en": "dependencies added",
-        "de": "Abhängigkeiten hinzugefügt"
-      },
-      "0.1.1": {
-        "en": "UTF8 coding",
-        "de": "UTF8 Kodierung"
-      },
-      "0.1.0": {
-        "en": "first release",
-        "de": "erste freigegebene Version"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "erste Version"
       }
     },
     "title": "DasWetter.com",
@@ -297,6 +231,12 @@
     "parseTimeout": 60,
     "DeleteUnusedDataset": false,
     "UsePNGorOriginalSVG": false,
-    "UseColorOrBW": true
+    "UseColorOrBW": true,
+    "CustomPath": "",
+    "CustomPathExt": "png",
+    "WindCustomPath": "",
+    "WindCustomPathExt": "png",
+    "MoonCustomPath": "",
+    "MoonCustomPathExt": "png"
   }
 }

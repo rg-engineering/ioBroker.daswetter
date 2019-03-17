@@ -159,36 +159,53 @@ systemDictionary = {
         "es": "usa PNG en lugar de SVG",
         "pl": "użyj PNG zamiast SVG"
     },
-    "use_png_or_svg_hint": {
-        "en": "The vis app has a known issue to show SVG. In this case you can use converted PNG instead of original SVG.",
-        "de": "Die vis-App hat ein bekanntes Problem, um SVG anzuzeigen. In diesem Fall können Sie konvertierte PNG anstelle der ursprünglichen SVG verwenden.",
-        "ru": "Приложение vis имеет известную проблему для показа SVG. В этом случае вы можете использовать преобразованный PNG вместо исходного SVG.",
-        "pt": "O aplicativo vis tem um problema conhecido para mostrar SVG. Nesse caso, você pode usar o PNG convertido em vez do SVG original.",
-        "nl": "De app vis heeft een bekend probleem om SVG weer te geven. In dit geval kunt u geconverteerde PNG gebruiken in plaats van originele SVG.",
-        "fr": "L'application vis a un problème connu pour montrer SVG. Dans ce cas, vous pouvez utiliser le format PNG converti au lieu du format SVG d'origine.",
-        "it": "L'app vis ha un problema noto per mostrare SVG. In questo caso puoi utilizzare PNG convertito anziché SVG originale.",
-        "es": "La aplicación vis tiene un problema conocido para mostrar SVG. En este caso, puede usar PNG convertido en lugar de SVG original.",
-        "pl": "Aplikacja vis ma znany problem z wyświetlaniem SVG. W takim przypadku można użyć przekonwertowanego pliku PNG zamiast oryginalnego pliku SVG."
-    },
     "use_color_or_bw": {
-        "en": "use color images",
-        "de": "Verwenden Sie Farbbilder",
-        "ru": "использовать цветные изображения",
-        "pt": "usar imagens coloridas",
-        "nl": "gebruik kleurenafbeeldingen",
-        "fr": "utiliser des images en couleur",
-        "it": "usa le immagini a colori",
-        "es": "utilizar imágenes en color",
-        "pl": "używaj kolorowych obrazów"
+        "en": "use colored or white symbols",
+        "de": "farbige oder weiße Symbole verwenden",
+        "ru": "используйте цветные или белые символы",
+        "pt": "usar símbolos coloridos ou brancos",
+        "nl": "gebruik gekleurde of witte symbolen",
+        "fr": "utiliser des symboles colorés ou blancs",
+        "it": "utilizzare simboli colorati o bianchi",
+        "es": "utilizar símbolos de colores o blancos",
+        "pl": "używaj kolorowych lub białych symboli",
+        "zh-cn": "使用彩色或白色符号"
     },
-    "use_png_or_svg_hint": {
-        "en": "here you can use color or white images.",
-        "de": "Hier können Sie farbige oder weiße Bilder verwenden.",
-        "ru": "Здесь вы можете использовать цветные или белые изображения.",
-        "pt": "aqui você pode usar imagens coloridas ou brancas.",
-        "nl": "hier kunt u kleuren- of witte afbeeldingen gebruiken.",
-        "fr": "Ici, vous pouvez utiliser des images en couleur ou en blanc.",
-        "it": "qui puoi usare immagini a colori o in bianco.",
-        "es": "Aquí puedes usar imágenes en color o blanco.",
-        "pl": "tutaj możesz użyć kolorowych lub białych obrazów."    }
+    "custom_path_hint": {
+        "en": "custom path must be in the form \"/adapter/daswetter/icons/tiempo-weather/galeria4/\". The extension must start with a dot (eg .png)",
+        "de": "Der benutzerdefinierte Pfad muss das Format \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\" haben. Die Erweiterung muss mit einem Punkt beginnen (zB .png)",
+        "ru": "Пользовательский путь должен быть в форме \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\". Расширение должно начинаться с точки (например, .png)",
+        "pt": "O caminho personalizado deve estar no formato \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\". A extensão deve começar com um ponto (por exemplo, .png)",
+        "nl": "aangepast pad moet de vorm hebben \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\". De extensie moet beginnen met een punt (bijv. .Png)",
+        "fr": "Le chemin personnalisé doit être sous la forme \"/ adaptateur / daswetter / icônes / tiempo-weather / galeria4 /\". L'extension doit commencer par un point (par exemple .png)",
+        "it": "il percorso personalizzato deve essere nel formato \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\". L'estensione deve iniziare con un punto (ad esempio .png)",
+        "es": "la ruta personalizada debe estar en la forma \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\". La extensión debe comenzar con un punto (por ejemplo, .png)",
+        "pl": "niestandardowa ścieżka musi być w postaci „/ adapter / daswetter / icons / tiempo-weather / galeria4 /”. Rozszerzenie musi zaczynać się kropką (np. .Png)",
+        "zh-cn": "自定义路径必须采用“/ adapter / daswetter / icons / tiempo-weather / galeria4 /”形式。扩展名必须以点开头（例如.png）"
+    },
+    "custom_path": {
+        "en": "customized path",
+        "de": "angepasster Pfad",
+        "ru": "индивидуальный путь",
+        "pt": "caminho personalizado",
+        "nl": "aangepast pad",
+        "fr": "chemin personnalisé",
+        "it": "percorso personalizzato",
+        "es": "camino personalizado",
+        "pl": "niestandardowa ścieżka",
+        "zh-cn": "定制路径"
+    },
+    "custom_path_ext": {
+        "en": "customized file name extension",
+        "de": "Angepasste Dateinamenerweiterung",
+        "ru": "индивидуальное расширение имени файла",
+        "pt": "extensão de nome de arquivo personalizada",
+        "nl": "aangepaste bestandsnaamextensie",
+        "fr": "extension de nom de fichier personnalisée",
+        "it": "estensione del nome file personalizzata",
+        "es": "extensión de nombre de archivo personalizada",
+        "pl": "niestandardowe rozszerzenie nazwy pliku",
+        "zh-cn": "自定义文件扩展名"
+    }
+
 };
