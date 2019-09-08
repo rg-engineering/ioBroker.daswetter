@@ -1443,8 +1443,19 @@ function insertIntoList(key, value, unit) {
                     }
                 };
 
+            } else if (key.match(/\.Wetter_Symbol_value2/)  || key.match(/\.Wetter_Symbol_value/) ) {
+                obj = {
+                    type: 'state',
+                    common: {
+                        name: 'Weather state URL',
+                        type: 'string',
+                        role: 'weather.title.forecast.' + d,
 
-            } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.symbol_value2/) || key.match(/\.Wetter_Symbol_value/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
+                        read: true,
+                        write: false
+                    }
+                };
+            } else if (key.match(/\.symbol_value2/)  || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
                 obj = {
                     type: 'state',
                     common: {
@@ -1467,12 +1478,12 @@ function insertIntoList(key, value, unit) {
                         write: false
                     }
                 };
-            } else if (key.match(/\.Wind_valueB/)) {
+            } else if (key.match(/\.wind_value/) || key.match(/\.Wind_valueB/)) {
                 obj = {
                     type: 'state',
                     common: {
                         name: 'Wind description',
-                        type: 'number',
+                        type: 'string',
                         role: 'weather.direction.wind.forecast.' + d,
                         read: true,
                         write: false
@@ -1664,7 +1675,7 @@ function insertIntoList(key, value, unit) {
                         write: false
                     }
                 };
-            } else if (key.match(/\.wind_value/) || key.match(/\.wind_speed/)) {
+            } else if ( key.match(/\.wind_speed/)) {
                 obj = {
                     type: 'state',
                     common: {

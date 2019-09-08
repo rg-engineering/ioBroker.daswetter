@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "2.8.0",
+    "version": "2.8.1",
     "news": {
+      "2.8.1.": {
+        "en": "bug fix: some datapoints were created as number instead of string",
+        "de": "Fehlerbehebung: Einige Datenpunkte wurden als Zahl anstatt als Zeichenfolge erstellt",
+        "ru": "исправление ошибки: некоторые точки данных были созданы как число вместо строки",
+        "pt": "correção de bug: alguns pontos de dados foram criados como número em vez de string",
+        "nl": "fout gerepareerd: sommige datapunten werden gecreëerd als nummer in plaats van string",
+        "fr": "correction de bogue: certains points de données ont été créés sous forme de nombre au lieu de chaîne",
+        "it": "correzione bug: alcuni punti dati venivano creati come numero anziché come stringa",
+        "es": "corrección de errores: algunos puntos de datos se crearon como número en lugar de cadena",
+        "pl": "naprawa błędu: niektóre punkty danych zostały utworzone jako liczba zamiast ciągu",
+        "zh-cn": "错误修复：一些数据点创建为数字而不是字符串"
+      },
       "2.8.0": {
         "en": "path to customized icon set added",
         "de": "Pfad zum benutzerdefinierten Symbolsatz hinzugefügt",
