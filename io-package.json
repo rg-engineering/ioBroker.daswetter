@@ -3,7 +3,7 @@
     "name": "daswetter",
     "version": "2.8.1",
     "news": {
-      "2.8.1.": {
+      "2.8.1": {
         "en": "bug fix: some datapoints were created as number instead of string",
         "de": "Fehlerbehebung: Einige Datenpunkte wurden als Zahl anstatt als Zeichenfolge erstellt",
         "ru": "исправление ошибки: некоторые точки данных были созданы как число вместо строки",
@@ -161,28 +161,6 @@
         "it": "Aggiunti URL alle icone\nAggiunti i ruoli e i nomi agli stati\nLe icone sono state spostate nella directory di amministrazione",
         "es": "URLs agregadas a los iconos\nSe agregaron los roles y los nombres a los estados\nLos iconos se movieron al directorio de administración",
         "pl": "Dodano adresy URL do ikon\nDodano role i nazwy do stanów\nIkony zostały przeniesione do katalogu administracyjnego"
-      },
-      "2.0.1": {
-        "en": "deleting of unused date structur",
-        "de": "Löschen nicht genutzter Datenstruktur",
-        "ru": "удаление неиспользуемой структуры данных",
-        "pt": "eliminação de estrutura de dados não utilizada",
-        "nl": "schrapping van ongebruikte gegevensstructuur",
-        "fr": "suppression de la structure de données inutilisée",
-        "it": "cancellazione della struttura dati inutilizzata",
-        "es": "eliminación de la estructura de datos no utilizados",
-        "pl": "usunięcie nieużywanej struktury danych"
-      },
-      "2.0.0": {
-        "en": "parsing all data from xml (not compatible to version 1.x anymore)",
-        "de": "Parsen aller Daten von XML (nicht mehr kompatibel zu Version 1.x)",
-        "ru": "синтаксический анализ всех данных из xml (несовместимый с версией 1.x)",
-        "pt": "analisando todos os dados do xml (não compatível com a versão 1.x mais)",
-        "nl": "alle gegevens uit xml parseren (niet meer compatibel met versie 1.x)",
-        "fr": "analyser toutes les données de xml (non compatible avec la version 1.x)",
-        "it": "analizzando tutti i dati da xml (non più compatibile con la versione 1.x più)",
-        "es": "analizar todos los datos de xml (no es compatible con la versión 1.x)",
-        "pl": "parsowanie wszystkich danych z xml (nie kompatybilne już z wersją 1.x)"
       }
     },
     "title": "DasWetter.com",
