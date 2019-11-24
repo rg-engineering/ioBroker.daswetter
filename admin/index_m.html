@@ -234,7 +234,7 @@
                         if ($(this).attr('id') === 'iconSet'
                             || $(this).attr('id') === 'CustomPath'
                             || $(this).attr('id') === 'CustomPathExt'
-                            ) {
+                        ) {
                             showIconSet();
                         }
                         if ($(this).attr('id') === 'windiconSet'
@@ -263,18 +263,19 @@
             onChange(false);
             M.updateTextFields();
 
-            getAdapterInstances('daswetter', function (arr) {
-                for (var i = 0; i < arr.length; i++) {
+            //getAdapterInstances('daswetter', function (arr) {
+            //    for (var i = 0; i < arr.length; i++) {
 
-                    var _id = arr[i]._id.replace('system.adapter.', '');
+            //        var _id = arr[i]._id.replace('system.adapter.', '');
 
-                    console.log('got instance ' + _id);
-
-                    showIconSet(settings.iconSet);
-                    showMoonIconSet();
-                    showWindIconSet();
-                }
-            });
+            //        console.log('got instance ' + _id);
+            var _id = 'daswetter.' + instance;
+            console.log('my instance ' + _id);
+            showIconSet(settings.iconSet);
+            showMoonIconSet();
+            showWindIconSet();
+            //    }
+            //});
 
 
         }
