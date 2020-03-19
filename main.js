@@ -189,12 +189,19 @@ function getForecastData7Days(cb) {
         adapter.log.debug('calling forecast 7 days: ' + url);
 
         request(url, (error, response, body) => {
+            adapter.log.debug("got response");
+
             if (!error && response.statusCode === 200) {
+
+                adapter.log.debug("got data without error, now parsing");
+
                 try {
                     //convert xml to json first
                     parseString(body, (err, result) => {
                         
                         const numOfLocations = result.report.location.length;
+
+                        adapter.log.debug("number of location " + numOfLocations);
 
                         for (let l = 0; l < numOfLocations; l++) {
                             const ll = l + 1;
@@ -226,6 +233,8 @@ function getForecastData7Days(cb) {
                             });
                            
 
+                            adapter.log.debug("number of periods " + numOfPeriods);
+
                             for (let p = 0; p < numOfPeriods; p++) {
                                 const pp = p + 1;
                                 tasks.push({
@@ -244,6 +253,9 @@ function getForecastData7Days(cb) {
                                 
 
                                 const numOfDatapoints = vars.length;
+
+                                adapter.log.debug("number of datapoints " + numOfDatapoints);
+
                                 for (let d = 0; d < numOfDatapoints; d++) {
                                     const datapointName = vars[d].name[0].replace(/\s/g, '_');
                                     const keyName = 'NextDays.Location_' + ll + '.Day_' + pp + '.' + datapointName;
@@ -283,7 +295,11 @@ function getForecastData5Days(cb) {
         adapter.log.debug('calling forecast 5 days: ' + url);
 
         request(url, (error, response, body) => {
+            adapter.log.debug("got response");
+
             if (!error && response.statusCode === 200) {
+
+                adapter.log.debug("got data without error, now parsing");
                 try {
                     //adapter.log.debug('got body: ' + body);
                     const body1 = body.replace(/wind-gusts/g, 'windgusts');
@@ -291,6 +307,8 @@ function getForecastData5Days(cb) {
                     parseString(body1, (err, result) => {
                         
                         const numOfLocations = result.report.location.length;
+
+                        adapter.log.debug("number of locations " + numOfLocations);
 
                         for (let l = 0; l < numOfLocations; l++) {
 
@@ -318,6 +336,8 @@ function getForecastData5Days(cb) {
                             });
 
                             const numOfDays = result.report.location[l].day.length;
+
+                            adapter.log.debug("number of days " + numOfDays);
 
                             for (let d = 0; d < numOfDays; d++) {
 
@@ -405,6 +425,8 @@ function getForecastData5Days(cb) {
                                 getProps(value, keyName);
 
                                 const numOfHours = result.report.location[l].day[d].hour.length;
+
+                                adapter.log.debug("number of hours " + numOfHours);
 
                                 for (let h = 0; h < numOfHours; h++) {
 
@@ -503,18 +525,25 @@ function getForecastDataHourly(cb) {
 
     if (adapter.config.HourlyForecast) {
         const url = adapter.config.HourlyForecast;
-        adapter.log.debug('calling forecast hourly: ' + url);
+        adapter.log.debug("calling forecast hourly: " + url);
 
         request(url, (error, response, body) => {
+
+            adapter.log.debug("got response");
+
             if (!error && response.statusCode === 200) {
+
+                adapter.log.debug("got data without error, now parsing");
 
                 try {
 
-                    const body1 = body.replace(/wind-gusts/g, 'windgusts');
+                    const body1 = body.replace(/wind-gusts/g, "windgusts");
 
                     parseString(body1, (err, result) => {
 
                         const numOfLocations = result.report.location.length;
+
+                        adapter.log.debug("number of locations " + numOfLocations );
 
                         for (let l = 0; l < numOfLocations; l++) {
 
@@ -545,6 +574,8 @@ function getForecastDataHourly(cb) {
 
                             const CurrentDate = new Date();
                             const CurrentHour = CurrentDate.getHours();
+
+                            adapter.log.debug("number of days " + numOfDays);
 
                             for (let d = 0; d < numOfDays; d++) {
 
@@ -656,7 +687,7 @@ function getForecastDataHourly(cb) {
                                 let nSunHours = 0;
                                 let nOldTime4Sun = -1;
 
-
+                                adapter.log.debug("number of hours " + numOfHours);
 
                                 for (let h = 0; h < numOfHours; h++) {
 
@@ -1858,14 +1889,20 @@ function insertIntoList(key, value, unit) {
     }
 }
 
+let LastLogObjects = -1;
+
 function startDbUpdate() {
     if (!dbRunning) {
+
+        LastLogObjects = tasks.length;
         adapter.log.debug('objects in list: ' + tasks.length);
         processTasks(tasks);
     } else {
         adapter.log.debug('update already running');
     }
 }
+
+
 
 function processTasks(tasks) {
     if (!tasks || !tasks.length) {
@@ -1889,6 +1926,12 @@ function processTasks(tasks) {
         } else {
             throw 'Unknown task';
         } 
+
+        if (LastLogObjects - tasks.length > 100) {
+            adapter.log.debug("objects in list: " + tasks.length);
+            LastLogObjects = tasks.length;
+        }
+
     }
 }
 
@@ -1981,10 +2024,15 @@ function deleteState(state, callback) {
 function getForecastData7DaysOld(cb) {
     if (adapter.config.Days7Forecast) {
         const url = adapter.config.Days7Forecast;
-        adapter.log.debug('calling forecast: ' + url);
+        adapter.log.debug('calling forecast 7days: ' + url);
 
         request(url, (error, response, body) => {
+
+            adapter.log.debug("got response");
+
             if (!error && response.statusCode === 200) {
+
+                adapter.log.debug("got data without error, now parsing");
 
                 try {
                     //adapter.log.debug('got body: ' + body);
