@@ -71,28 +71,7 @@ systemDictionary = {
         "pl": "Użyj tylko potrzebnego adresu URL, pozostałe pozostałe pozostaw puste. Użyj arbitralnych minut w ustawieniach cron, ponieważ serwer API reaguje późno na dokładne godziny, pół godziny i tak dalej. (problem z przeciążeniem serwera)."
     },
 
-    "use_new_dataset_hint": {
-        "en": "data structure in version 2.x is different to 1.x. If you still want to stay compatible with 1.x just disable 'use new structure'. In version 2.x there are much more data available.",
-        "de": "Die Datenstruktur in Version 2.x unterscheidet sich von 1.x. Wenn Sie immer noch mit 1.x kompatibel bleiben wollen, deaktivieren Sie einfach \"Neue Struktur verwenden\". In Version 2.x sind wesentlich mehr Daten verfügbar.",
-        "ru": "структура данных в версии 2.x отличается от 1.x. Если вы все еще хотите оставаться совместимыми с 1.x, просто отключите «использовать новую структуру». В версии 2.x доступно гораздо больше данных.",
-        "pt": "estrutura de dados na versão 2.x é diferente para 1.x. Se você ainda quiser permanecer compatível com 1.x, desative apenas 'use new structure'. Na versão 2.x, há muito mais dados disponíveis.",
-        "nl": "datastructuur in versie 2.x is anders dan 1.x. Als je nog steeds compatibel wilt blijven met 1.x, schakel dan gewoon 'gebruik nieuwe structuur' uit. In versie 2.x zijn veel meer gegevens beschikbaar.",
-        "fr": "structure de données dans la version 2.x est différente de 1.x. Si vous voulez rester compatible avec 1.x, désactivez simplement 'Utiliser une nouvelle structure'. Dans la version 2.x, il y a beaucoup plus de données disponibles.",
-        "it": "la struttura dei dati nella versione 2.x è diversa da 1.x. Se vuoi comunque rimanere compatibile con 1.x, disabilita semplicemente \"usa nuova struttura\". Nella versione 2.x ci sono molti più dati disponibili.",
-        "es": "la estructura de datos en la versión 2.x es diferente de 1.x. Si aún desea seguir siendo compatible con 1.x, desactive 'usar nueva estructura'. En la versión 2.x hay muchos más datos disponibles.",
-        "pl": "struktura danych w wersji 2.x różni się od 1.x. Jeśli nadal chcesz być kompatybilny z 1.x, po prostu wyłącz \"użyj nowej struktury\". W wersji 2.x dostępnych jest znacznie więcej danych."
-    },
-    "use_new_dataset": {
-        "en": "use new data structure",
-        "de": "neue Datenstruktur verwenden",
-        "ru": "использовать новую структуру данных",
-        "pt": "usar nova estrutura de dados",
-        "nl": "gebruik nieuwe datastructuur",
-        "fr": "utiliser une nouvelle structure de données",
-        "it": "usa una nuova struttura dati",
-        "es": "usar nueva estructura de datos",
-        "pl": "użyj nowej struktury danych"
-    },
+    
     "Icons": {
         "en": "Icons",
         "de": "Symbole",
@@ -126,28 +105,7 @@ systemDictionary = {
         "es": "descargar y analizar el tiempo de espera [segundos]",
         "pl": "pobierz i przeanalizuj limit czasu [sekundy]"
     },
-    "delete_unused_dataset": {
-        "en": "delete unused data structure",
-        "de": "nicht verwendete Datenstruktur löschen",
-        "ru": "удалить неиспользуемую структуру данных",
-        "pt": "excluir estrutura de dados não utilizada",
-        "nl": "verwijder ongebruikte gegevensstructuur",
-        "fr": "supprimer la structure de données inutilisée",
-        "it": "elimina la struttura dati inutilizzata",
-        "es": "eliminar la estructura de datos no utilizados",
-        "pl": "usuń nieużywaną strukturę danych"
-    },
-    "delete_unused_dataset_hint": {
-        "en": "you can delete data structure of adapter version 1.x or 2.x depending your choice above. If you uncheck that option unused data structure will remain but not updated. !! Please switch off that option if not needed anymore !!",
-        "de": "Sie können die Datenstruktur der Adapterversion 1.x oder 2.x löschen, je nachdem, was Sie zuvor ausgewählt haben. Wenn Sie diese Option deaktivieren, bleibt die nicht verwendete Datenstruktur erhalten, wird aber nicht aktualisiert. !! Bitte schalten Sie diese Option aus, wenn sie nicht mehr benötigt wird !!",
-        "ru": "вы можете удалить структуру данных адаптера версии 1.x или 2.x в зависимости от вашего выбора выше. Если вы снимете эту опцию, неиспользуемая структура данных останется, но не будет обновлена. !! Пожалуйста, выключите эту опцию, если она больше не нужна!",
-        "pt": "você pode excluir a estrutura de dados da versão 1.x ou 2.x do adaptador, dependendo da sua opção acima. Se você desmarcar essa opção, a estrutura de dados não utilizada permanecerá, mas não será atualizada. !! Por favor, desligue essa opção se não for mais necessário !!",
-        "nl": "u kunt de datastructuur van adapterversie 1.x of 2.x verwijderen, afhankelijk van uw keuze hierboven. Als u de selectie van die optie ongedaan maakt, blijft de ongebruikte gegevensstructuur behouden, maar niet bijgewerkt. !! Schakel die optie uit als je hem niet meer nodig hebt !!",
-        "fr": "vous pouvez supprimer la structure de données de l'adaptateur version 1.x ou 2.x selon votre choix ci-dessus. Si vous décochez cette option, la structure de données inutilisée restera mais ne sera pas mise à jour. !! Veuillez désactiver cette option si vous n'en avez plus besoin !!",
-        "it": "puoi cancellare la struttura dati della versione 1.x o 2.x dell'adattatore in base alla tua scelta sopra. Se deselezioni quell'opzione, la struttura di dati inutilizzata rimarrà ma non aggiornata. !! Si prega di spegnere l'opzione se non più necessario !!",
-        "es": "Puede eliminar la estructura de datos de la versión 1.x o 2.x del adaptador según su elección anterior. Si desactiva la opción, la estructura de datos no utilizados permanecerá pero no se actualizará. !! Por favor, apague esa opción si ya no la necesita!",
-        "pl": "można usunąć strukturę danych adaptera w wersji 1.x lub 2.x w zależności od powyższego wyboru. Jeśli odznaczysz tę opcję, nieużywana struktura danych pozostanie, ale nie zostanie zaktualizowana. !! Proszę wyłączyć tę opcję, jeśli nie jest już potrzebna !!"
-    },
+    
     "use_png_or_svg": {
         "en": "use PNG instead of SVG",
         "de": "PNG anstelle von SVG verwenden",
