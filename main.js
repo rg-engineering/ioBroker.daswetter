@@ -174,23 +174,25 @@ function getProps(obj, keyName) {
 
 async function getForecastData7Days() {
     if (adapter.config.Days7Forecast) {
-        const url = adapter.config.Days7Forecast;
-        adapter.log.debug("calling forecast 7 days: " + url);
-
-        const getBuffer = bent("string");
-        const buffer = await getBuffer(url);
-
-        adapter.log.debug("got response " + JSON.stringify(buffer));
-
-
-        //request(url, (error, response, body) => {
-        // adapter.log.debug("got response");
-
-        //if (!error && response.statusCode === 200) {
-
-        // adapter.log.debug("got data without error, now parsing");
 
         try {
+            const url = adapter.config.Days7Forecast;
+            adapter.log.debug("calling forecast 7 days: " + url);
+
+            const getBuffer = bent("string");
+            const buffer = await getBuffer(url);
+
+            adapter.log.debug("got response " + JSON.stringify(buffer));
+
+
+            //request(url, (error, response, body) => {
+            // adapter.log.debug("got response");
+
+            //if (!error && response.statusCode === 200) {
+
+            // adapter.log.debug("got data without error, now parsing");
+
+
             //convert xml to json first
             parseString(buffer, (err, result) => {
 
@@ -284,22 +286,23 @@ async function getForecastData7Days() {
 
 async function getForecastData5Days() {
     if (adapter.config.Days5Forecast) {
-        const url = adapter.config.Days5Forecast;
-        adapter.log.debug("calling forecast 5 days: " + url);
-
-        const getBuffer = bent("string");
-        const buffer = await getBuffer(url);
-
-        adapter.log.debug("got response " + JSON.stringify(buffer));
-
-
-        //request(url, (error, response, body) => {
-        // adapter.log.debug("got response");
-
-        // if (!error && response.statusCode === 200) {
-
-        //   adapter.log.debug("got data without error, now parsing");
         try {
+            const url = adapter.config.Days5Forecast;
+            adapter.log.debug("calling forecast 5 days: " + url);
+
+            const getBuffer = bent("string");
+            const buffer = await getBuffer(url);
+
+            adapter.log.debug("got response " + JSON.stringify(buffer));
+
+
+            //request(url, (error, response, body) => {
+            // adapter.log.debug("got response");
+
+            // if (!error && response.statusCode === 200) {
+
+            //   adapter.log.debug("got data without error, now parsing");
+
             //adapter.log.debug('got body: ' + body);
             const body1 = buffer.replace(/wind-gusts/g, "windgusts");
 
@@ -521,24 +524,26 @@ async function getForecastData5Days() {
 async function getForecastDataHourly() {
 
     if (adapter.config.HourlyForecast) {
-        const url = adapter.config.HourlyForecast;
-        adapter.log.debug("calling forecast hourly: " + url);
-
-        const getBuffer = bent("string");
-        const buffer = await getBuffer(url);
-
-        adapter.log.debug("got response " + JSON.stringify(buffer));
-
-        //const body = "";
-        //request(url, (error, response, body) => {
-
-        // adapter.log.debug("got response");
-
-        // if (!error && response.statusCode === 200) {
-
-        //adapter.log.debug("got data without error, now parsing");
 
         try {
+            const url = adapter.config.HourlyForecast;
+            adapter.log.debug("calling forecast hourly: " + url);
+
+            const getBuffer = bent("string");
+            const buffer = await getBuffer(url);
+
+            adapter.log.debug("got response " + JSON.stringify(buffer));
+
+            //const body = "";
+            //request(url, (error, response, body) => {
+
+            // adapter.log.debug("got response");
+
+            // if (!error && response.statusCode === 200) {
+
+            //adapter.log.debug("got data without error, now parsing");
+
+
 
             const body1 = buffer.replace(/wind-gusts/g, "windgusts");
 
@@ -898,23 +903,23 @@ async function getForecastDataHourly() {
 
 async function getForecastDataHourlyJSON() {
     if (adapter.config.HourlyForecastJSON) {
-
-        const url = adapter.config.HourlyForecastJSON;
-        adapter.log.debug("calling forecast hourly JSON: " + url);
-
-        const getBuffer = bent("json");
-        const buffer = await getBuffer(url);
-
-        adapter.log.debug("got response " + JSON.stringify(buffer));
-
-
-        //request(url, (error, response, body) => {
-        //  if (!error && response.statusCode === 200) {
-
         try {
+            const url = adapter.config.HourlyForecastJSON;
+            adapter.log.debug("calling forecast hourly JSON: " + url);
+
+            const getBuffer = bent("json");
+            let result = await getBuffer(url);
+
+            adapter.log.debug("got response " + JSON.stringify(result));
+
+
+            //request(url, (error, response, body) => {
+            //  if (!error && response.statusCode === 200) {
+
+
 
             //need to be const for repair
-            let result = JSON.parse(buffer);
+            //let result = JSON.parse(buffer);
 
             //adapter.log.debug("got " + JSON.stringify(result));
 
@@ -925,6 +930,10 @@ async function getForecastDataHourlyJSON() {
                 const ll = l + 1;
 
                 let location = result.location;
+
+                adapter.log.debug("location " + location + " " + result.location);
+
+
                 const pos = location.indexOf("[");
                 if (pos !== -1) {
                     location = location.substring(0, pos).trim();
