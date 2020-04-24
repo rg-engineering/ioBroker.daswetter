@@ -22,7 +22,15 @@ function startAdapter(options) {
     options = options || {};
     Object.assign(options, {
         name: "daswetter",
-        ready: () => main()
+        ready: function () {
+            try {
+                //adapter.log.debug('start');
+                main();
+            }
+            catch (e) {
+                adapter.log.error("exception catch after ready [" + e + "]");
+            }
+        }
     });
     
     adapter = new utils.Adapter(options);
