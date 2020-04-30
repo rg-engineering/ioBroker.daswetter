@@ -13,8 +13,7 @@ Copyright(C)[2017 - 2020][René Glaß]
 /* jslint node: true */
 "use strict";
 
-// you have to require the utils module and call adapter function
-//const utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+
 const utils = require("@iobroker/adapter-core");
 
 let adapter;
@@ -38,11 +37,11 @@ function startAdapter(options) {
     return adapter;
 }
 
-//const request = require('request');
+
 const bent = require("bent");
 const parseString = require("xml2js").parseString;
 
-let dbRunning = false;
+//let dbRunning = false;
 
 async function startRead() {
    
@@ -51,7 +50,9 @@ async function startRead() {
     await getForecastDataHourly();
     await getForecastDataHourlyJSON();
 
-    startDbUpdate();
+    //startDbUpdate();
+    adapter.log.debug("exit, all done");
+    adapter.terminate ? adapter.terminate(0) : process.exit(0);
 
 }
 
@@ -64,7 +65,8 @@ async function main() {
     adapter.log.debug("set timeout to " + nParseTimeout + " sec");
     nParseTimeout = nParseTimeout * 1000;
     setTimeout(() => {
-        adapter.log.error("force terminate, objects still in list: " + tasks.length);
+        //adapter.log.error("force terminate, objects still in list: " + tasks.length);
+        adapter.log.error("force terminate");
         adapter.terminate ? adapter.terminate(15) : process.exit(15);
     }, nParseTimeout);
 
@@ -154,7 +156,7 @@ function getMoonIconUrl(num) {
 }
 
 
-function getProps(obj, keyName) {
+async function getProps(obj, keyName) {
     //rückwärts parsen, dann kommt unit for dem wert und kann somit in die liste eingetragen werden
     const arr = [];
     let unit = "";
@@ -224,7 +226,17 @@ async function getForecastData7Days() {
 
 
                     const numOfPeriods = vars[0].data[0].forecast.length;
+                    
+                    const obj = {
+                        type: "device",
+                        common: {
+                            name: result.report.location[l].$.city,
+                            role: "weather"
+                        }
+                    };
+                    insertIntoList("NextDays.Location_" + ll, null, "", obj);
 
+                    /*
                     tasks.push({
                         name: "add",
                         key: "NextDays.Location_" + ll,
@@ -236,12 +248,24 @@ async function getForecastData7Days() {
                             }
                         }
                     });
-
+                    */
 
                     adapter.log.debug("number of periods " + numOfPeriods);
 
                     for (let p = 0; p < numOfPeriods; p++) {
                         const pp = p + 1;
+
+
+                        const obj = {
+                            type: "channel",
+                            common: {
+                                name: "Day " + pp,
+                                role: "weather"
+                            }
+                        };
+
+                        insertIntoList("NextDays.Location_" + ll + ".Day_" + pp, null, "", obj);
+                        /*
                         tasks.push({
                             name: "add",
                             key: "NextDays.Location_" + ll + ".Day_" + pp,
@@ -253,7 +277,7 @@ async function getForecastData7Days() {
                                 }
                             }
                         });
-
+                        */
 
 
 
@@ -275,7 +299,8 @@ async function getForecastData7Days() {
                     }
                 }
 
-                adapter.log.debug("7 days forecast done, objects in list " + tasks.length);
+                //adapter.log.debug("7 days forecast done, objects in list " + tasks.length);
+                adapter.log.debug("7 days forecast done");
 
 
             });
@@ -330,9 +355,21 @@ async function getForecastData5Days() {
                         location = location.substring(0, pos).trim();
                     }
 
+
+
                     insertIntoList("NextDaysDetailed.Location_" + ll + ".Location", location);
 
+                    const obj = {
+                        type: "device",
+                        common: {
+                            name: result.report.location[l].$.city,
+                            role: "weather"
+                        }
+                    };
 
+                    insertIntoList("NextDaysDetailed.Location_" + ll, null, "", obj);
+
+                    /*
                     tasks.push({
                         name: "add",
                         key: "NextDaysDetailed.Location_" + ll,
@@ -344,6 +381,7 @@ async function getForecastData5Days() {
                             }
                         }
                     });
+                    */
 
                     const numOfDays = result.report.location[l].day.length;
 
@@ -355,7 +393,17 @@ async function getForecastData5Days() {
 
                         const dd = d + 1;
 
+                        const obj = {
+                            type: "channel",
+                            common: {
+                                name: "Day " + dd,
+                                role: "weather"
+                            }
+                        };
 
+                        insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd, null, "", obj);
+
+                        /*
                         tasks.push({
                             name: "add",
                             key: "NextDaysDetailed.Location_" + ll + ".Day_" + dd,
@@ -367,7 +415,7 @@ async function getForecastData5Days() {
                                 }
                             }
                         });
-
+                        */
 
 
 
@@ -443,6 +491,19 @@ async function getForecastData5Days() {
                             //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
                             const hh = h + 1;
 
+
+                            const obj = {
+                                type: "channel",
+                                common: {
+                                    common: {
+                                        name: "Hour " + hh,
+                                        role: "weather"
+                                    }
+                                }
+                            };
+
+                            insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
+                            /*
                             tasks.push({
                                 name: "add",
                                 key: "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
@@ -454,7 +515,7 @@ async function getForecastData5Days() {
                                     }
                                 }
                             });
-
+                            */
 
                             value = result.report.location[l].day[d].hour[h].$;
                             keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".hour";
@@ -512,7 +573,8 @@ async function getForecastData5Days() {
                     }
                 }
 
-                adapter.log.debug("5 days forecast done, objects in list " + tasks.length);
+                //adapter.log.debug("5 days forecast done, objects in list " + tasks.length);
+                adapter.log.debug("5 days forecast done");
 
             });
         } catch (e) {
@@ -573,6 +635,16 @@ async function getForecastDataHourly() {
 
                     insertIntoList("NextHours.Location_" + ll + ".Location", location);
 
+                    const obj = {
+                        type: "channel",
+                        common: {
+                            name: result.report.location[l].$.city,
+                            role: "weather"
+                        }
+                    };
+
+                    insertIntoList("NextHours.Location_" + ll, null, "", obj);
+                    /*
                     tasks.push({
                         name: "add",
                         key: "NextHours.Location_" + ll,
@@ -584,7 +656,7 @@ async function getForecastDataHourly() {
                             }
                         }
                     });
-
+                    */
 
                     const numOfDays = result.report.location[l].day.length;
 
@@ -599,6 +671,16 @@ async function getForecastDataHourly() {
 
                         const dd = d + 1;
 
+                        const obj = {
+                            type: "channel",
+                            common: {
+                                name: "Day " + dd,
+                                role: "weather"
+                            }
+                        };
+
+                        insertIntoList("NextHours.Location_" + ll + ".Day_" + dd, null, "", obj);
+                        /*
                         tasks.push({
                             name: "add",
                             key: "NextHours.Location_" + ll + ".Day_" + dd,
@@ -610,7 +692,7 @@ async function getForecastDataHourly() {
                                 }
                             }
                         });
-
+                        */
 
 
 
@@ -710,6 +792,16 @@ async function getForecastDataHourly() {
                             //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
                             const hh = h + 1;
 
+                            const obj = {
+                                type: "channel",
+                                common: {
+                                    name: "Hour " + hh,
+                                    role: "weather"
+                                }
+                            };
+
+                            insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
+                            /*
                             tasks.push({
                                 name: "add",
                                 key: "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
@@ -721,8 +813,19 @@ async function getForecastDataHourly() {
                                     }
                                 }
                             });
-
+                            */
                             if (dd === 1) {
+
+                                const obj = {
+                                    type: "channel",
+                                    common: {
+                                        name: "current ",
+                                        role: "weather"
+                                    }
+                                };
+                                insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current", null, "", obj);
+
+                                /*
                                 tasks.push({
                                     name: "add",
                                     key: "NextHours.Location_" + ll + ".Day_" + dd + ".current",
@@ -734,7 +837,7 @@ async function getForecastDataHourly() {
                                         }
                                     }
                                 });
-
+                                */
                             }
 
 
@@ -888,7 +991,8 @@ async function getForecastDataHourly() {
                     }
                 }
 
-                adapter.log.debug("hourly forecast done, objects in list " + tasks.length);
+                //adapter.log.debug("hourly forecast done, objects in list " + tasks.length);
+                adapter.log.debug("hourly forecast done");
 
 
             });
@@ -949,6 +1053,16 @@ async function getForecastDataHourlyJSON() {
 
                 insertIntoList("NextHours2.Location_" + ll + ".Location", location);
 
+                const obj = {
+                    type: "channel",
+                    common: {
+                        name: result.location,
+                        role: "weather"
+                    }
+                };
+
+                insertIntoList("NextHours2.Location_" + ll, null, "", obj);
+                /*
                 tasks.push({
                     name: "add",
                     key: "NextHours2.Location_" + ll,
@@ -960,6 +1074,7 @@ async function getForecastDataHourlyJSON() {
                         }
                     }
                 });
+                */
 
                 // entspricht nicht der doku!!
                 let numOfDays = result.day.length;
@@ -1006,6 +1121,16 @@ async function getForecastDataHourlyJSON() {
 
                     const dd = d + 1;
 
+                    const obj = {
+                        type: "channel",
+                        common: {
+                            name: "Day " + dd,
+                            role: "weather"
+                        }
+                    };
+                    insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd, null, "", obj);
+
+                    /*
                     tasks.push({
                         name: "add",
                         key: "NextHours2.Location_" + ll + ".Day_" + dd,
@@ -1017,6 +1142,7 @@ async function getForecastDataHourlyJSON() {
                             }
                         }
                     });
+                    */
 
                     /*
                     "units": { "temp": "\u00b0C", "wind": "km\/h", "rain": "mm", "pressure": "mb", "snowline": "m" },
@@ -1164,6 +1290,16 @@ async function getForecastDataHourlyJSON() {
                         //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
                         const hh = h + 1;
 
+                        const obj = {
+                            type: "channel",
+                            common: {
+                                name: "Hour " + hh,
+                                role: "weather"
+                            }
+                        };
+
+                        insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
+                        /*
                         tasks.push({
                             name: "add",
                             key: "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
@@ -1175,9 +1311,22 @@ async function getForecastDataHourlyJSON() {
                                 }
                             }
                         });
+                        */
 
                         if (dd === 1) {
+
+                            const obj = {
+                                type: "channel",
+                                common: {
+                                    name: "current ",
+                                    role: "weather"
+                                }
+                            };
+                            insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current", null, "", obj);
+                            /*
                             tasks.push({
+
+
                                 name: "add",
                                 key: "NextHours2.Location_" + ll + ".Day_" + dd + ".current",
                                 obj: {
@@ -1188,6 +1337,7 @@ async function getForecastDataHourlyJSON() {
                                     }
                                 }
                             });
+                            */
                         }
 
                         value = result.day[d].hour[h].interval;
@@ -1407,9 +1557,9 @@ async function getForecastDataHourlyJSON() {
 }
 
 
-const tasks = [];
+//const tasks = [];
 
-function insertIntoList(key, value, unit) {
+async function insertIntoList(key, value, unit, newObj=null) {
 
     try {
 
@@ -1418,472 +1568,479 @@ function insertIntoList(key, value, unit) {
             sUnit = unit;
         }
 
-        //adapter.log.debug('insert ' + key + ' with ' + value + ' ' + sUnit );
+        adapter.log.debug("insert " + key + " with " + value + " " + sUnit + " " + JSON.stringify(newObj));
 
         let obj;
-        let d = key.match(/Day_(\d)\./);
-        if (d) {
-            d = parseInt(d[1], 10) - 1;
-            if (key.match(/\.Location$/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Location",
-                        type: "string",
-                        role: "location",
-                        read: true,
-                        write: false
-                    }
-                };
-            } if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Maximal day temperature",
-                        type: "number",
-                        role: "value.temperature.max.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "°C"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/) || key.match(/\.tempmin/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Minimal day temperature",
-                        type: "number",
-                        role: "value.temperature.min.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "°C"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.Tag_value/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Day name",
-                        type: "string",
-                        role: "dayofweek.forecast." + d,
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.Wetter_Symbol_id/) || key.match(/\.Wetter_Symbol_id2/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Weather icon name",
-                        type: "number",
-                        role: "weather.icon.name.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
+        if (newObj !== null) {
+            obj = newObj;
+            //adapter.log.debug("using newObj");
+        }
+        else {
+            let d = key.match(/Day_(\d)\./);
+            if (d) {
+                d = parseInt(d[1], 10) - 1;
+                if (key.match(/\.Location$/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Location",
+                            type: "string",
+                            role: "location",
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Maximal day temperature",
+                            type: "number",
+                            role: "value.temperature.max.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "°C"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/) || key.match(/\.tempmin/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Minimal day temperature",
+                            type: "number",
+                            role: "value.temperature.min.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "°C"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.Tag_value/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Day name",
+                            type: "string",
+                            role: "dayofweek.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.Wetter_Symbol_id/) || key.match(/\.Wetter_Symbol_id2/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Weather icon name",
+                            type: "number",
+                            role: "weather.icon.name.forecast." + d,
 
-            } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Weather state",
-                        type: "string",
-                        role: "weather.symbol.desc.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
 
-                        read: true,
-                        write: false
-                    }
-                };
+                } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Weather state",
+                            type: "string",
+                            role: "weather.symbol.desc.forecast." + d,
 
-            } else if (key.match(/\.Wetter_Symbol_value2/)  || key.match(/\.Wetter_Symbol_value/) ) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Weather state URL",
-                        type: "string",
-                        role: "weather.title.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.symbol_value2/)  || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Weather state URL",
-                        type: "number",
-                        role: "weather.title.forecast." + d,
+                } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.Wetter_Symbol_value/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Weather state URL",
+                            type: "string",
+                            role: "weather.title.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.Wetterbedingungen_value/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Weather description",
-                        type: "string",
-                        role: "weather.state.forecast." + d,
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.wind_value/) || key.match(/\.Wind_valueB/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Wind description",
-                        type: "string",
-                        role: "weather.direction.wind.forecast." + d,
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.iconURL/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Weather icon URL",
-                        type: "string",
-                        role: "weather.icon.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.symbol_value2/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Weather state URL",
+                            type: "number",
+                            role: "weather.title.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.moonIconURL/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Moon icon URL",
-                        type: "string",
-                        role: "weather.icon.moon.forecast." + d,
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.windIconURL/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Wind icon URL",
-                        type: "string",
-                        role: "weather.icon.wind.forecast." + d,
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.sunshineDuration/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "Sunshine Duration",
-                        type: "number",
-                        role: "weather.sunshineduration." + d,
-                        unit: ("h"),
-                        read: true,
-                        write: false
-                    }
-                };
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.Wetterbedingungen_value/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Weather description",
+                            type: "string",
+                            role: "weather.state.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_valueB/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Wind description",
+                            type: "string",
+                            role: "weather.direction.wind.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.iconURL/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Weather icon URL",
+                            type: "string",
+                            role: "weather.icon.forecast." + d,
+
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.moonIconURL/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Moon icon URL",
+                            type: "string",
+                            role: "weather.icon.moon.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.windIconURL/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Wind icon URL",
+                            type: "string",
+                            role: "weather.icon.wind.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.sunshineDuration/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Sunshine Duration",
+                            type: "number",
+                            role: "weather.sunshineduration." + d,
+                            unit: ("h"),
+                            read: true,
+                            write: false
+                        }
+                    };
 
 
 
-            } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "day name",
-                        type: "string",
-                        role: "weather.day.name" + d,
+                } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "day name",
+                            type: "string",
+                            role: "weather.day.name" + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.hour_value/) || key.match(/\.hour/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "hour value",
-                        type: "string",
-                        role: "weather.hour.value" + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.hour_value/) || key.match(/\.hour/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "hour value",
+                            type: "string",
+                            role: "weather.hour.value" + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.day_value/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "day value",
-                        type: "string",
-                        role: "weather.day.value" + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.day_value/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "day value",
+                            type: "string",
+                            role: "weather.day.value" + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.clouds_value/) || key.match(/\.clouds/)) {
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.clouds_value/) || key.match(/\.clouds/)) {
 
-                //sometimes % comes with value
-                value = value.replace(/%/g, "");
+                    //sometimes % comes with value
+                    value = value.replace(/%/g, "");
 
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "clouds",
-                        type: "number",
-                        role: "weather.clouds.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "%"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.humidity_value/) || key.match(/\.humidity/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "humidity",
-                        type: "number",
-                        role: "weather.humidity.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "%"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.pressure_value/) || key.match(/\.pressure/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "pressure",
-                        type: "number",
-                        role: "weather.pressure.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "mBar"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.rain_value/) || key.match(/\.rain/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "rain",
-                        type: "number",
-                        role: "weather.rain.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "mm"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.snowline_value/) || key.match(/\.snowline/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "snowline",
-                        type: "number",
-                        role: "weather.snowline.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "m"),
-                        read: true,
-                        write: false
-                    }
-                };
-            
-            } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "temperature",
-                        type: "number",
-                        role: "weather.temperature.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "°C"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.wind_dir/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "wind direction",
-                        type: "string",
-                        role: "weather.wind.direction.forecast." + d,
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "clouds",
+                            type: "number",
+                            role: "weather.clouds.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "%"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.humidity_value/) || key.match(/\.humidity/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "humidity",
+                            type: "number",
+                            role: "weather.humidity.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "%"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.pressure_value/) || key.match(/\.pressure/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "pressure",
+                            type: "number",
+                            role: "weather.pressure.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "mBar"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.rain_value/) || key.match(/\.rain/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "rain",
+                            type: "number",
+                            role: "weather.rain.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "mm"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.snowline_value/) || key.match(/\.snowline/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "snowline",
+                            type: "number",
+                            role: "weather.snowline.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "m"),
+                            read: true,
+                            write: false
+                        }
+                    };
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.wind_symbol/) || key.match(/\.wind_symbolB/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "wind symbol",
-                        type: "number",
-                        role: "weather.wind.symbol.forecast." + d,
+                } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "temperature",
+                            type: "number",
+                            role: "weather.temperature.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "°C"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.wind_dir/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "wind direction",
+                            type: "string",
+                            role: "weather.wind.direction.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if ( key.match(/\.wind_speed/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "wind value",
-                        type: "number",
-                        role: "weather.wind.value.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "km/h"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.windchill_value/) || key.match(/\.windchill/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "windchill",
-                        type: "number",
-                        role: "weather.wind.windchill.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "°C"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.windgusts_value/) || key.match(/\.wind_gusts/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "windgusts",
-                        type: "number",
-                        role: "weather.wind.windgusts.forecast." + d,
-                        unit: (sUnit.length > 0 ? sUnit : "km/h"),
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "local time",
-                        type: "string",
-                        role: "weather.locale.info.time.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.wind_symbol/) || key.match(/\.wind_symbolB/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "wind symbol",
+                            type: "number",
+                            role: "weather.wind.symbol.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "local offset",
-                        type: "string",
-                        role: "weather.locale.info.offset.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.wind_speed/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "wind value",
+                            type: "number",
+                            role: "weather.wind.value.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "km/h"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.windchill_value/) || key.match(/\.windchill/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "windchill",
+                            type: "number",
+                            role: "weather.wind.windchill.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "°C"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.windgusts_value/) || key.match(/\.wind_gusts/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "windgusts",
+                            type: "number",
+                            role: "weather.wind.windgusts.forecast." + d,
+                            unit: (sUnit.length > 0 ? sUnit : "km/h"),
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "local time",
+                            type: "string",
+                            role: "weather.locale.info.time.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.moon_desc/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "moon description",
-                        type: "string",
-                        role: "weather.moon.description.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "local offset",
+                            type: "string",
+                            role: "weather.locale.info.offset.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.moon_in/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "moon raise",
-                        type: "string",
-                        role: "weather.moon.in.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.moon_desc/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "moon description",
+                            type: "string",
+                            role: "weather.moon.description.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.moon_lumi/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "moon lumi",
-                        type: "string",
-                        role: "weather.moon.lumi.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.moon_in/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "moon raise",
+                            type: "string",
+                            role: "weather.moon.in.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.moon_out/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "moon set",
-                        type: "string",
-                        role: "weather.moon.out.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.moon_lumi/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "moon lumi",
+                            type: "string",
+                            role: "weather.moon.lumi.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.moon_symbol/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "moon symbol",
-                        type: "number",
-                        role: "weather.moon.symbol.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.moon_out/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "moon set",
+                            type: "string",
+                            role: "weather.moon.out.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.sun_in/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "sun raise",
-                        type: "string",
-                        role: "weather.sun.in.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.moon_symbol/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "moon symbol",
+                            type: "number",
+                            role: "weather.moon.symbol.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.sun_mid/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "sun mid",
-                        type: "string",
-                        role: "weather.sun.mid.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.sun_in/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "sun raise",
+                            type: "string",
+                            role: "weather.sun.in.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
-            } else if (key.match(/\.sun_out/)) {
-                obj = {
-                    type: "state",
-                    common: {
-                        name: "sun set",
-                        type: "string",
-                        role: "weather.sun.out.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.sun_mid/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "sun mid",
+                            type: "string",
+                            role: "weather.sun.mid.forecast." + d,
 
-                        read: true,
-                        write: false
-                    }
-                };
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.sun_out/)) {
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "sun set",
+                            type: "string",
+                            role: "weather.sun.out.forecast." + d,
+
+                            read: true,
+                            write: false
+                        }
+                    };
+                }
             }
         }
 
@@ -1899,20 +2056,42 @@ function insertIntoList(key, value, unit) {
             }
         };
 
-        tasks.push({
-            name: "add",
-            key: key,
-            obj: obj,
-            value: value
+
+        adapter.setObjectNotExists(key, obj);
+
+        /*
+        await adapter.extendObject(key, {
+            common: {
+                type: "string",
+                role: "value",
+                unit: "hh:mm",
+            }
         });
+        */
+
+        if (value !== null) {
+            adapter.setState(key, value);
+        }
+
+
+        /*
+                tasks.push({
+                    name: "add",
+                    key: key,
+                    obj: obj,
+                    value: value
+                });
+        */
 
     } catch (e) {
         adapter.log.error("exception in insertIntoList [" + e + "]");
     }
 }
 
-let LastLogObjects = -1;
+//let LastLogObjects = -1;
 
+
+/*
 function startDbUpdate() {
     if (!dbRunning) {
 
@@ -1923,9 +2102,9 @@ function startDbUpdate() {
         adapter.log.debug("update already running");
     }
 }
+*/
 
-
-
+/*
 function processTasks(tasks) {
     if (!tasks || !tasks.length) {
         adapter.log.debug("nothing to do");
@@ -1956,6 +2135,9 @@ function processTasks(tasks) {
 
     }
 }
+*/
+
+/*
 
 function createExtendObject(key, objData, value, callback) {
     try {
@@ -1981,7 +2163,9 @@ function createExtendObject(key, objData, value, callback) {
         adapter.log.error("exception in createExtendObject [" + e + "]");
     }
 }
+*/
 
+/*
 function updateExtendObject(key, value, callback) {
     try {
         adapter.setState(key, { ack: true, val: value }, callback);
@@ -1990,6 +2174,8 @@ function updateExtendObject(key, value, callback) {
         adapter.log.error("exception in updateExtendObject [" + e + "]");
     }
 }
+*/
+
 
 /*
 function deleteIntoList(type, key) {
@@ -2011,6 +2197,7 @@ function deleteIntoList(type, key) {
 }
 */
 
+/*
 function deleteChannel(channel, callback) {
 
     try {
@@ -2026,7 +2213,8 @@ function deleteChannel(channel, callback) {
         adapter.log.error("exception in deleteChannel [" + e + "]");
     }
 }
-
+*/
+/*
 function deleteState(state, callback) {
     try {
         adapter.log.debug("try deleting state " + state);
@@ -2041,7 +2229,7 @@ function deleteState(state, callback) {
         adapter.log.error("exception in deleteState [" + e + "]");
     }
 }
-
+*/
 //============================================================================================
 // old functions for compatibility
 
