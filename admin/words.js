@@ -164,6 +164,30 @@ systemDictionary = {
         "es": "extensión de nombre de archivo personalizada",
         "pl": "niestandardowe rozszerzenie nazwy pliku",
         "zh-cn": "自定义文件扩展名"
+    },
+    "createCurrent": {
+        "en": "create copy for current hour",
+        "de": "Kopie für die aktuelle Stunde erstellen",
+        "ru": "создать копию за текущий час",
+        "pt": "criar cópia para a hora atual",
+        "nl": "maak een kopie voor het huidige uur",
+        "fr": "créer une copie pour l'heure actuelle",
+        "it": "crea copia per l'ora corrente",
+        "es": "crear copia para la hora actual",
+        "pl": "utwórz kopię na bieżącą godzinę",
+        "zh-cn": "创建当前时间的副本"
+    },
+    "createInXHour": {
+        "en": "create copy for hour",
+        "de": "Kopie für Stunde erstellen",
+        "ru": "создать копию за час",
+        "pt": "criar cópia por hora",
+        "nl": "maak kopie voor uur",
+        "fr": "créer une copie pour l'heure",
+        "it": "crea copia per ora",
+        "es": "crear copia por hora",
+        "pl": "utwórz kopię na godzinę",
+        "zh-cn": "创建一个小时的副本"
     }
 
 };
