@@ -53,7 +53,7 @@
       "DasWetter"
     ],
     "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
-    "loglevel": "debug",
+    "loglevel": "info",
     "stopBeforeUpdate": true,
     "type": "weather",
     "license": "MIT",

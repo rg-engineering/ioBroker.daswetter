@@ -191,7 +191,7 @@ async function getprops(obj, keyName) {
         if (typeof obj[prop] !== "object" && prop !== "data_sequence") {
             arr.push(prop);
         }
-        
+
     }
 
     //adapter.log.debug("array " + JSON.stringify(arr));
