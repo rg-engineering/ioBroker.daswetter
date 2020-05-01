@@ -21,17 +21,46 @@ function startAdapter(options) {
     options = options || {};
     Object.assign(options, {
         name: "daswetter",
-        ready: function () {
+        ready: async function () {
             try {
-                //adapter.log.debug('start');
-                main();
+                //adapter.log.debug("start");
+                await main();
             }
             catch (e) {
                 adapter.log.error("exception catch after ready [" + e + "]");
             }
-        }
+        },
+        //#######################################
+        //  is called when adapter shuts down
+        unload: function (callback) {
+            try {
+                adapter && adapter.log && adapter.log.info && adapter.log.info("cleaned everything up...");
+                callback();
+            } catch (e) {
+                callback();
+            }
+
+
+
+        },
+        //#######################################
+        //
+        SIGINT: function () {
+            adapter && adapter.log && adapter.log.info && adapter.log.info("cleaned everything up...");
+        },
+        //#######################################
+        //  is called if a subscribed object changes
+        //objectChange: function (id, obj) {
+        //    adapter.log.debug("[OBJECT CHANGE] ==== " + id + " === " + JSON.stringify(obj));
+        //},
+        //#######################################
+        // is called if a subscribed state changes
+        //stateChange: function (id, state) {
+        //adapter.log.debug("[STATE CHANGE] ==== " + id + " === " + JSON.stringify(state));
+        //HandleStateChange(id, state);
+        //}
     });
-    
+
     adapter = new utils.Adapter(options);
 
     return adapter;
@@ -39,10 +68,12 @@ function startAdapter(options) {
 
 
 const bent = require("bent");
-const parseString = require("xml2js").parseString;
+//const parseString = require("xml2js").parseString;
+const xml2js = require("xml2json");
 
 //let dbRunning = false;
 
+/*
 async function startRead() {
    
     await getForecastData7Days();
@@ -55,6 +86,7 @@ async function startRead() {
     adapter.terminate ? adapter.terminate(0) : process.exit(0);
 
 }
+*/
 
 async function main() {
     // force terminate 
@@ -70,8 +102,16 @@ async function main() {
         adapter.terminate ? adapter.terminate(15) : process.exit(15);
     }, nParseTimeout);
 
-    await startRead();
+    //await startRead();
 
+    await getForecastData7Days();
+    await getForecastData5Days();
+    await getForecastDataHourly();
+    await getForecastDataHourlyJSON();
+
+    //startDbUpdate();
+    adapter.log.debug("exit, all done");
+    adapter.terminate ? adapter.terminate(0) : process.exit(0);
 }
 
 function getIconUrl(num) {
@@ -156,15 +196,76 @@ function getMoonIconUrl(num) {
 }
 
 
-async function getProps(obj, keyName) {
+/*
+{
+    "value": "20:00",
+        "temp": [{
+            "value": 8,
+            "unit": "°C"
+        }],
+        "symbol": [{
+            "value": 1,
+            "desc": "Sonne",
+            "value2": 1,
+            "desc2":
+                "Sonne"
+    }],
+        "wind": [{
+            "value": 6, "unit": "km/h", "dir": "NE", "symbol": 10, "symbolB": 34
+    }],
+        "windgusts": [{
+            "value": 26, "unit": "km/h"
+    }],
+        "rain": [{
+            "value": 0, "unit": "mm"
+    }],
+        "humidity": [{
+            "value": 63
+    }],
+        "pressure": [{
+            "value": 1020, "unit": "mb"
+    }],
+        "clouds": [{
+            "value": "0%"
+    }],
+        "snowline": [{
+            "value": 1500, "unit": "m"
+    }],
+        "windchill": [{
+            "value": 7, "unit": "°C"
+    }],
+        "uv_index": [{ "value": 0 }]
+}
+*/
+
+
+
+
+
+async function getprops(obj, keyName) {
     //rückwärts parsen, dann kommt unit for dem wert und kann somit in die liste eingetragen werden
+
+    //adapter.log.debug("getprops " + JSON.stringify(obj) + " ### " + keyName);
+
     const arr = [];
     let unit = "";
     for (const prop in obj) {
+
+        //adapter.log.debug("#### " + prop + " " + typeof obj[prop] + " " + JSON.stringify(obj[prop]));
+
+        if (typeof obj[prop] !== "object" && prop !== "data_sequence") {
+            arr.push(prop);
+        }
+        /*
         if (obj.hasOwnProperty(prop)) {
             arr.push(prop);
         }
+        */
     }
+
+    //adapter.log.debug("array " + JSON.stringify(arr));
+
+
     for (let i = arr.length - 1; i >= 0; i--) {
         const dataValue = obj[arr[i]];
         if (arr[i] === "unit") {
@@ -173,9 +274,9 @@ async function getProps(obj, keyName) {
 
             //adapter.log.debug('got unit '  + dataValue);
         }
-        else if (arr[i] !== "data_sequence") {
+        else {
             const keyNameLong = keyName + "_" + arr[i].replace(/\s/g, "_");
-            insertIntoList(keyNameLong, dataValue, unit);
+            await insertIntoList(keyNameLong, dataValue, unit);
             unit = "";
         }
     }
@@ -194,116 +295,124 @@ async function getForecastData7Days() {
 
             adapter.log.debug("got response " + JSON.stringify(buffer));
 
-
-            //request(url, (error, response, body) => {
-            // adapter.log.debug("got response");
-
-            //if (!error && response.statusCode === 200) {
-
-            // adapter.log.debug("got data without error, now parsing");
-
-
             //convert xml to json first
-            parseString(buffer, (err, result) => {
+            const options = {
+                object: true,
+                reversible: false,
+                coerce: true,
+                sanitize: true,
+                trim: true,
+                arrayNotation: true,
+                alternateTextNode: false
+            };
 
-                const numOfLocations = result.report.location.length;
+            const result = xml2js.toJson(buffer, options);
 
-                adapter.log.debug("number of location " + numOfLocations);
+            adapter.log.debug("result " + JSON.stringify(result));
 
-                for (let l = 0; l < numOfLocations; l++) {
-                    const ll = l + 1;
+            //xml2js.parseStringPromise(buffer /*, options */).then(function (result) {
+            //parseString(buffer, (err, result) => {
 
-                    let location = result.report.location[l].$.city;
-                    const pos = location.indexOf("[");
-                    if (pos !== -1) {
-                        location = location.substring(0, pos).trim();
+            
+            adapter.log.debug("location " + JSON.stringify(result.report[0].location));
+            const numOfLocations = result.report[0].location.length;
+
+            adapter.log.debug("number of location " + numOfLocations);
+
+            for (let l = 0; l < numOfLocations; l++) {
+                const ll = l + 1;
+
+                let location = result.report[0].location[l].city;
+                const pos = location.indexOf("[");
+                if (pos !== -1) {
+                    location = location.substring(0, pos).trim();
+                }
+
+                await insertIntoList("NextDays.Location_" + ll + ".Location", location);
+
+                // sometimes variable has name not const but var
+                const vars = result.report[0].location[l].const || result.report[0].location[l].var;
+
+
+                const numOfPeriods = vars[0].data[0].forecast.length;
+
+                const obj = {
+                    type: "device",
+                    common: {
+                        name: result.report[0].location[l].city,
+                        role: "weather"
                     }
+                };
+                await insertIntoList("NextDays.Location_" + ll, null, "", obj);
 
-                    insertIntoList("NextDays.Location_" + ll + ".Location", location);
-
-                    // sometimes variable has name not const but var
-                    const vars = result.report.location[l].const || result.report.location[l].var;
-
-
-                    const numOfPeriods = vars[0].data[0].forecast.length;
-                    
-                    const obj = {
+                /*
+                tasks.push({
+                    name: "add",
+                    key: "NextDays.Location_" + ll,
+                    obj: {
                         type: "device",
                         common: {
-                            name: result.report.location[l].$.city,
+                            name: result.report[0].location[l].city,
+                            role: "weather"
+                        }
+                    }
+                });
+                */
+
+                adapter.log.debug("number of periods " + numOfPeriods);
+
+                for (let p = 0; p < numOfPeriods; p++) {
+                    const pp = p + 1;
+
+
+                    const obj = {
+                        type: "channel",
+                        common: {
+                            name: "Day " + pp,
                             role: "weather"
                         }
                     };
-                    insertIntoList("NextDays.Location_" + ll, null, "", obj);
 
+                    await insertIntoList("NextDays.Location_" + ll + ".Day_" + pp, null, "", obj);
                     /*
                     tasks.push({
                         name: "add",
-                        key: "NextDays.Location_" + ll,
+                        key: "NextDays.Location_" + ll + ".Day_" + pp,
                         obj: {
-                            type: "device",
+                            type: "channel",
                             common: {
-                                name: result.report.location[l].$.city,
+                                name: "Day " + pp,
                                 role: "weather"
                             }
                         }
                     });
                     */
 
-                    adapter.log.debug("number of periods " + numOfPeriods);
-
-                    for (let p = 0; p < numOfPeriods; p++) {
-                        const pp = p + 1;
 
 
-                        const obj = {
-                            type: "channel",
-                            common: {
-                                name: "Day " + pp,
-                                role: "weather"
-                            }
-                        };
+                    const numOfDatapoints = vars.length;
 
-                        insertIntoList("NextDays.Location_" + ll + ".Day_" + pp, null, "", obj);
-                        /*
-                        tasks.push({
-                            name: "add",
-                            key: "NextDays.Location_" + ll + ".Day_" + pp,
-                            obj: {
-                                type: "channel",
-                                common: {
-                                    name: "Day " + pp,
-                                    role: "weather"
-                                }
-                            }
-                        });
-                        */
+                    adapter.log.debug("number of datapoints " + numOfDatapoints);
 
-
-
-                        const numOfDatapoints = vars.length;
-
-                        adapter.log.debug("number of datapoints " + numOfDatapoints);
-
-                        for (let d = 0; d < numOfDatapoints; d++) {
-                            const datapointName = vars[d].name[0].replace(/\s/g, "_");
-                            const keyName = "NextDays.Location_" + ll + ".Day_" + pp + "." + datapointName;
-                            const value = vars[d].data[0].forecast[p].$;
-                            getProps(value, keyName);
-                            if (datapointName === "Wetter_Symbol" && value.id2) {
-                                insertIntoList("NextDays.Location_" + ll + ".Day_" + pp + ".iconURL", getIconUrl(value.id2));
-                            } else if (datapointName === "Wind" && value.idB) {
-                                insertIntoList("NextDays.Location_" + ll + ".Day_" + pp + ".windIconURL", getWindIconUrl(value.idB));
-                            }
+                    for (let d = 0; d < numOfDatapoints; d++) {
+                        const datapointName = vars[d].name[0].replace(/\s/g, "_");
+                        const keyName = "NextDays.Location_" + ll + ".Day_" + pp + "." + datapointName;
+                        const value = vars[d].data[0].forecast[p];
+                        await getprops(value, keyName);
+                        if (datapointName === "Wetter_Symbol" && value.id2) {
+                            await insertIntoList("NextDays.Location_" + ll + ".Day_" + pp + ".iconURL", getIconUrl(value.id2));
+                        } else if (datapointName === "Wind" && value.idB) {
+                            await insertIntoList("NextDays.Location_" + ll + ".Day_" + pp + ".windIconURL", getWindIconUrl(value.idB));
                         }
                     }
                 }
+            }
 
-                //adapter.log.debug("7 days forecast done, objects in list " + tasks.length);
-                adapter.log.debug("7 days forecast done");
+            //adapter.log.debug("7 days forecast done, objects in list " + tasks.length);
+            adapter.log.debug("7 days forecast done");
 
 
-            });
+            //});
         } catch (e) {
             adapter.log.error("exception in 7DaysForecast [" + e + "]");
 
@@ -339,244 +448,261 @@ async function getForecastData5Days() {
             //adapter.log.debug('got body: ' + body);
             const body1 = buffer.replace(/wind-gusts/g, "windgusts");
 
-            parseString(body1, (err, result) => {
+            const options = {
+                object: true,
+                reversible: false,
+                coerce: true,
+                sanitize: true,
+                trim: true,
+                arrayNotation: true,
+                alternateTextNode: false
+            };
 
-                const numOfLocations = result.report.location.length;
+            const result = xml2js.toJson(body1, options);
 
-                adapter.log.debug("number of locations " + numOfLocations);
+            adapter.log.debug("result " + JSON.stringify(result));
 
-                for (let l = 0; l < numOfLocations; l++) {
 
-                    const ll = l + 1;
 
-                    let location = result.report.location[l].$.city;
-                    const pos = location.indexOf("[");
-                    if (pos !== -1) {
-                        location = location.substring(0, pos).trim();
+            //xml2js.parseStringPromise(body1 /*, options */).then(function (result) {
+            //parseString(body1, (err, result) => {
+
+            const numOfLocations = result.report[0].location.length;
+
+            adapter.log.debug("number of locations " + numOfLocations);
+
+            for (let l = 0; l < numOfLocations; l++) {
+
+                const ll = l + 1;
+
+                let location = result.report[0].location[l].city;
+                const pos = location.indexOf("[");
+                if (pos !== -1) {
+                    location = location.substring(0, pos).trim();
+                }
+
+
+
+                await insertIntoList("NextDaysDetailed.Location_" + ll + ".Location", location);
+
+                const obj = {
+                    type: "device",
+                    common: {
+                        name: result.report[0].location[l].city,
+                        role: "weather"
                     }
+                };
 
+                await insertIntoList("NextDaysDetailed.Location_" + ll, null, "", obj);
 
-
-                    insertIntoList("NextDaysDetailed.Location_" + ll + ".Location", location);
-
-                    const obj = {
+                /*
+                tasks.push({
+                    name: "add",
+                    key: "NextDaysDetailed.Location_" + ll,
+                    obj: {
                         type: "device",
                         common: {
-                            name: result.report.location[l].$.city,
+                            name: result.report[0].location[l].city,
+                            role: "weather"
+                        }
+                    }
+                });
+                */
+
+                const numOfDays = result.report[0].location[l].day.length;
+
+                adapter.log.debug("number of days " + numOfDays);
+
+                for (let d = 0; d < numOfDays; d++) {
+
+                    let keyName = "";
+
+                    const dd = d + 1;
+
+                    const obj = {
+                        type: "channel",
+                        common: {
+                            name: "Day " + dd,
                             role: "weather"
                         }
                     };
 
-                    insertIntoList("NextDaysDetailed.Location_" + ll, null, "", obj);
+                    await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd, null, "", obj);
 
                     /*
                     tasks.push({
                         name: "add",
-                        key: "NextDaysDetailed.Location_" + ll,
+                        key: "NextDaysDetailed.Location_" + ll + ".Day_" + dd,
                         obj: {
-                            type: "device",
+                            type: "channel",
                             common: {
-                                name: result.report.location[l].$.city,
+                                name: "Day " + dd,
                                 role: "weather"
                             }
                         }
                     });
                     */
 
-                    const numOfDays = result.report.location[l].day.length;
 
-                    adapter.log.debug("number of days " + numOfDays);
 
-                    for (let d = 0; d < numOfDays; d++) {
+                    let value = result.report[0].location[l].day[d];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".day";
+                    await getprops(value, keyName);
 
-                        let keyName = "";
+                    value = result.report[0].location[l].day[d].symbol[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".symbol";
+                    await getprops(value, keyName);
 
-                        const dd = d + 1;
+                    //add url for icon
+                    await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".iconURL", getIconUrl(value.value));
+
+
+                    value = result.report[0].location[l].day[d].tempmin[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".tempmin";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].tempmax[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".tempmax";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].wind[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".wind";
+                    await getprops(value, keyName);
+
+                    //add url for icon
+                    await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".windIconURL", getWindIconUrl(value.symbolB));
+
+
+                    value = result.report[0].location[l].day[d].windgusts[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".windgusts";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].rain[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".rain";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].humidity[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".humidity";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].pressure[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".pressure";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].snowline[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".snowline";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].sun[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".sun";
+                    await getprops(value, keyName);
+
+                    value = result.report[0].location[l].day[d].moon[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moon";
+                    await getprops(value, keyName);
+
+                    //add url for icon
+                    await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
+
+                    value = result.report[0].location[l].day[d].local_info[0];
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".local_info";
+                    await getprops(value, keyName);
+
+                    const numOfHours = result.report[0].location[l].day[d].hour.length;
+
+                    adapter.log.debug("number of hours " + numOfHours);
+
+                    for (let h = 0; h < numOfHours; h++) {
+
+                        //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
+                        const hh = h + 1;
+
 
                         const obj = {
                             type: "channel",
                             common: {
-                                name: "Day " + dd,
-                                role: "weather"
+                                common: {
+                                    name: "Hour " + hh,
+                                    role: "weather"
+                                }
                             }
                         };
 
-                        insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd, null, "", obj);
-
+                        await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
                         /*
                         tasks.push({
                             name: "add",
-                            key: "NextDaysDetailed.Location_" + ll + ".Day_" + dd,
+                            key: "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
                             obj: {
                                 type: "channel",
                                 common: {
-                                    name: "Day " + dd,
+                                    name: "Hour " + hh,
                                     role: "weather"
                                 }
                             }
                         });
                         */
 
+                        value = result.report[0].location[l].day[d].hour[h];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".hour";
+                        await getprops(value, keyName);
 
+                        value = result.report[0].location[l].day[d].hour[h].temp[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
+                        await getprops(value, keyName);
 
-                        let value = result.report.location[l].day[d].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".day";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].symbol[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".symbol";
-                        getProps(value, keyName);
-
-                        //add url for icon
-                        insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".iconURL", getIconUrl(value.value));
-
-
-                        value = result.report.location[l].day[d].tempmin[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".tempmin";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].tempmax[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".tempmax";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].wind[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".wind";
-                        getProps(value, keyName);
+                        value = result.report[0].location[l].day[d].hour[h].symbol[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
+                        await getprops(value, keyName);
 
                         //add url for icon
-                        insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".windIconURL", getWindIconUrl(value.symbolB));
+                        await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".iconURL", getIconUrl(value.value));
 
 
-                        value = result.report.location[l].day[d].windgusts[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".windgusts";
-                        getProps(value, keyName);
 
-                        value = result.report.location[l].day[d].rain[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".rain";
-                        getProps(value, keyName);
 
-                        value = result.report.location[l].day[d].humidity[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".humidity";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].pressure[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".pressure";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].snowline[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".snowline";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].sun[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".sun";
-                        getProps(value, keyName);
-
-                        value = result.report.location[l].day[d].moon[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moon";
-                        getProps(value, keyName);
+                        value = result.report[0].location[l].day[d].hour[h].wind[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind";
+                        await getprops(value, keyName);
 
                         //add url for icon
-                        insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
+                        await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windIconURL", getWindIconUrl(value.symbolB));
 
-                        value = result.report.location[l].day[d].local_info[0].$;
-                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".local_info";
-                        getProps(value, keyName);
+                        value = result.report[0].location[l].day[d].hour[h].windgusts[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windgusts";
+                        await getprops(value, keyName);
 
-                        const numOfHours = result.report.location[l].day[d].hour.length;
+                        value = result.report[0].location[l].day[d].hour[h].rain[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
+                        await getprops(value, keyName);
 
-                        adapter.log.debug("number of hours " + numOfHours);
+                        value = result.report[0].location[l].day[d].hour[h].humidity[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
+                        await getprops(value, keyName);
 
-                        for (let h = 0; h < numOfHours; h++) {
+                        value = result.report[0].location[l].day[d].hour[h].pressure[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
+                        await getprops(value, keyName);
 
-                            //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
-                            const hh = h + 1;
+                        value = result.report[0].location[l].day[d].hour[h].clouds[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
+                        await getprops(value, keyName);
 
+                        value = result.report[0].location[l].day[d].hour[h].snowline[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
+                        await getprops(value, keyName);
 
-                            const obj = {
-                                type: "channel",
-                                common: {
-                                    common: {
-                                        name: "Hour " + hh,
-                                        role: "weather"
-                                    }
-                                }
-                            };
-
-                            insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
-                            /*
-                            tasks.push({
-                                name: "add",
-                                key: "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
-                                obj: {
-                                    type: "channel",
-                                    common: {
-                                        name: "Hour " + hh,
-                                        role: "weather"
-                                    }
-                                }
-                            });
-                            */
-
-                            value = result.report.location[l].day[d].hour[h].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".hour";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].temp[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].symbol[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
-                            getProps(value, keyName);
-
-                            //add url for icon
-                            insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".iconURL", getIconUrl(value.value));
-
-
-
-
-                            value = result.report.location[l].day[d].hour[h].wind[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind";
-                            getProps(value, keyName);
-
-                            //add url for icon
-                            insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windIconURL", getWindIconUrl(value.symbolB));
-
-                            value = result.report.location[l].day[d].hour[h].windgusts[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windgusts";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].rain[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].humidity[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].pressure[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].clouds[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].snowline[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
-                            getProps(value, keyName);
-
-                            value = result.report.location[l].day[d].hour[h].windchill[0].$;
-                            keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
-                            getProps(value, keyName);
-                        }
+                        value = result.report[0].location[l].day[d].hour[h].windchill[0];
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
+                        await getprops(value, keyName);
                     }
                 }
+            }
 
-                //adapter.log.debug("5 days forecast done, objects in list " + tasks.length);
-                adapter.log.debug("5 days forecast done");
+            //adapter.log.debug("5 days forecast done, objects in list " + tasks.length);
+            adapter.log.debug("5 days forecast done");
 
-            });
+            //});
         } catch (e) {
             adapter.log.error("exception in 5DaysForecast [" + e + "]");
 
@@ -617,385 +743,402 @@ async function getForecastDataHourly() {
 
             const body1 = buffer.replace(/wind-gusts/g, "windgusts");
 
-            parseString(body1, (err, result) => {
+            const options = {
+                object: true,
+                reversible: false,
+                coerce: true,
+                sanitize: true,
+                trim: true,
+                arrayNotation: true,
+                alternateTextNode: false
+            };
 
-                const numOfLocations = result.report.location.length;
+            const result = xml2js.toJson(body1, options);
 
-                adapter.log.debug("number of locations " + numOfLocations);
+            adapter.log.debug("result " + JSON.stringify(result));
 
-                for (let l = 0; l < numOfLocations; l++) {
 
-                    const ll = l + 1;
 
-                    let location = result.report.location[l].$.city;
-                    const pos = location.indexOf("[");
-                    if (pos !== -1) {
-                        location = location.substring(0, pos).trim();
+            //xml2js.parseStringPromise(body1 /*, options */).then(function (result) {
+            //parseString(body1, (err, result) => {
+
+            const numOfLocations = result.report[0].location.length;
+
+            adapter.log.debug("number of locations " + numOfLocations);
+
+            for (let l = 0; l < numOfLocations; l++) {
+
+                const ll = l + 1;
+
+                let location = result.report[0].location[l].city;
+                const pos = location.indexOf("[");
+                if (pos !== -1) {
+                    location = location.substring(0, pos).trim();
+                }
+
+                await insertIntoList("NextHours.Location_" + ll + ".Location", location);
+
+                const obj = {
+                    type: "channel",
+                    common: {
+                        name: result.report[0].location[l].city,
+                        role: "weather"
                     }
+                };
 
-                    insertIntoList("NextHours.Location_" + ll + ".Location", location);
+                await insertIntoList("NextHours.Location_" + ll, null, "", obj);
+                /*
+                tasks.push({
+                    name: "add",
+                    key: "NextHours.Location_" + ll,
+                    obj: {
+                        type: "device",
+                        common: {
+                            name: result.report[0].location[l].city,
+                            role: "weather"
+                        }
+                    }
+                });
+                */
+
+                const numOfDays = result.report[0].location[l].day.length;
+
+                const CurrentDate = new Date();
+                const CurrentHour = CurrentDate.getHours();
+
+                adapter.log.debug("number of days " + numOfDays);
+
+                for (let d = 0; d < numOfDays; d++) {
+
+                    let keyName = "";
+
+                    const dd = d + 1;
 
                     const obj = {
                         type: "channel",
                         common: {
-                            name: result.report.location[l].$.city,
+                            name: "Day " + dd,
                             role: "weather"
                         }
                     };
 
-                    insertIntoList("NextHours.Location_" + ll, null, "", obj);
+                    await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd, null, "", obj);
                     /*
                     tasks.push({
                         name: "add",
-                        key: "NextHours.Location_" + ll,
+                        key: "NextHours.Location_" + ll + ".Day_" + dd,
                         obj: {
-                            type: "device",
+                            type: "channel",
                             common: {
-                                name: result.report.location[l].$.city,
+                                name: "Day " + dd,
                                 role: "weather"
                             }
                         }
                     });
                     */
 
-                    const numOfDays = result.report.location[l].day.length;
 
-                    const CurrentDate = new Date();
-                    const CurrentHour = CurrentDate.getHours();
 
-                    adapter.log.debug("number of days " + numOfDays);
 
-                    for (let d = 0; d < numOfDays; d++) {
+                    //adapter.log.debug('loc: ' + l + ' day: ' + d + ' = ' + JSON.stringify(result.report[0].location[l].day[d]));
 
-                        let keyName = "";
+                    let value = result.report[0].location[l].day[d];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".day";
+                    //adapter.log.debug(JSON.stringify(result.report[0].location[l].day[d]));
+                    await getprops(value, keyName);
 
-                        const dd = d + 1;
+
+                    value = result.report[0].location[l].day[d].symbol[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".symbol";
+                    await getprops(value, keyName);
+
+                    //add url for icon
+                    await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".iconURL", getIconUrl(value.value));
+
+                    value = result.report[0].location[l].day[d].tempmin[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".tempmin";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].tempmax[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".tempmax";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].wind[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".wind";
+                    await getprops(value, keyName);
+
+                    //add url for icon
+                    await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".windIconURL", getWindIconUrl(value.symbolB));
+
+
+                    value = result.report[0].location[l].day[d].windgusts[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".windgusts";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].rain[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".rain";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].humidity[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".humidity";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].pressure[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".pressure";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].snowline[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".snowline";
+                    await getprops(value, keyName);
+
+
+                    value = result.report[0].location[l].day[d].sun[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".sun";
+                    await getprops(value, keyName);
+
+
+                    const sSunInTime = result.report[0].location[l].day[d].sun[0].in;
+                    const SunInTimeArr = sSunInTime.split(":");
+                    const SunInHour = SunInTimeArr[0];
+                    const sSunOutTime = result.report[0].location[l].day[d].sun[0].out;
+                    const SunOutTimeArr = sSunOutTime.split(":");
+                    const SunOutHour = SunOutTimeArr[0];
+
+                    value = result.report[0].location[l].day[d].moon[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".moon";
+                    await getprops(value, keyName);
+
+                    //add url for icon
+                    await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
+
+
+                    value = result.report[0].location[l].day[d].local_info[0];
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".local_info";
+                    await getprops(value, keyName);
+
+
+                    const numOfHours = result.report[0].location[l].day[d].hour.length;
+
+                    let nSunHours = 0;
+                    let nOldTime4Sun = -1;
+
+                    adapter.log.debug("number of hours " + numOfHours);
+
+                    for (let h = 0; h < numOfHours; h++) {
+
+                        //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
+                        const hh = h + 1;
 
                         const obj = {
                             type: "channel",
                             common: {
-                                name: "Day " + dd,
+                                name: "Hour " + hh,
                                 role: "weather"
                             }
                         };
 
-                        insertIntoList("NextHours.Location_" + ll + ".Day_" + dd, null, "", obj);
+                        await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
                         /*
                         tasks.push({
                             name: "add",
-                            key: "NextHours.Location_" + ll + ".Day_" + dd,
+                            key: "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
                             obj: {
-                                type: "channel",
-                                common: {
-                                    name: "Day " + dd,
-                                    role: "weather"
-                                }
-                            }
-                        });
-                        */
-
-
-
-
-                        //adapter.log.debug('loc: ' + l + ' day: ' + d + ' = ' + JSON.stringify(result.report.location[l].day[d]));
-
-                        let value = result.report.location[l].day[d].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".day";
-                        //adapter.log.debug(JSON.stringify(result.report.location[l].day[d].$));
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].symbol[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".symbol";
-                        getProps(value, keyName);
-
-                        //add url for icon
-                        insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".iconURL", getIconUrl(value.value));
-
-                        value = result.report.location[l].day[d].tempmin[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".tempmin";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].tempmax[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".tempmax";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].wind[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".wind";
-                        getProps(value, keyName);
-
-                        //add url for icon
-                        insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".windIconURL", getWindIconUrl(value.symbolB));
-
-
-                        value = result.report.location[l].day[d].windgusts[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".windgusts";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].rain[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".rain";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].humidity[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".humidity";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].pressure[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".pressure";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].snowline[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".snowline";
-                        getProps(value, keyName);
-
-
-                        value = result.report.location[l].day[d].sun[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".sun";
-                        getProps(value, keyName);
-
-
-                        const sSunInTime = result.report.location[l].day[d].sun[0].$.in;
-                        const SunInTimeArr = sSunInTime.split(":");
-                        const SunInHour = SunInTimeArr[0];
-                        const sSunOutTime = result.report.location[l].day[d].sun[0].$.out;
-                        const SunOutTimeArr = sSunOutTime.split(":");
-                        const SunOutHour = SunOutTimeArr[0];
-
-                        value = result.report.location[l].day[d].moon[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".moon";
-                        getProps(value, keyName);
-
-                        //add url for icon
-                        insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
-
-
-                        value = result.report.location[l].day[d].local_info[0].$;
-                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".local_info";
-                        getProps(value, keyName);
-
-
-                        const numOfHours = result.report.location[l].day[d].hour.length;
-
-                        let nSunHours = 0;
-                        let nOldTime4Sun = -1;
-
-                        adapter.log.debug("number of hours " + numOfHours);
-
-                        for (let h = 0; h < numOfHours; h++) {
-
-                            //adapter.log.debug("location: " + l + " day: " + d + " hour " + h);
-                            const hh = h + 1;
-
-                            const obj = {
                                 type: "channel",
                                 common: {
                                     name: "Hour " + hh,
                                     role: "weather"
                                 }
-                            };
+                            }
+                        });
+                        */
+                        if (dd === 1) {
 
-                            insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
+                            const obj = {
+                                type: "channel",
+                                common: {
+                                    name: "current ",
+                                    role: "weather"
+                                }
+                            };
+                            await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current", null, "", obj);
+
                             /*
                             tasks.push({
                                 name: "add",
-                                key: "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh,
+                                key: "NextHours.Location_" + ll + ".Day_" + dd + ".current",
                                 obj: {
-                                    type: "channel",
-                                    common: {
-                                        name: "Hour " + hh,
-                                        role: "weather"
-                                    }
-                                }
-                            });
-                            */
-                            if (dd === 1) {
-
-                                const obj = {
                                     type: "channel",
                                     common: {
                                         name: "current ",
                                         role: "weather"
                                     }
-                                };
-                                insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current", null, "", obj);
-
-                                /*
-                                tasks.push({
-                                    name: "add",
-                                    key: "NextHours.Location_" + ll + ".Day_" + dd + ".current",
-                                    obj: {
-                                        type: "channel",
-                                        common: {
-                                            name: "current ",
-                                            role: "weather"
-                                        }
-                                    }
-                                });
-                                */
-                            }
-
-
-                            value = result.report.location[l].day[d].hour[h].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".hour";
-                            getProps(value, keyName);
-                            const sHour4SunTime = result.report.location[l].day[d].hour[h].$.value;
-                            const Hour4SunTimeArr = sHour4SunTime.split(":");
-                            const Hour4SunTime = parseInt(Hour4SunTimeArr[0], 10);
-                            //adapter.log.debug("+++ " + sHour4SunTime + " " + Hour4SunTimeArr + " " + Hour4SunTime);
-
-                            if (dd == 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.hour";
-                                getProps(value, keyName);
-                            }
-
-
-                            value = result.report.location[l].day[d].hour[h].temp[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.temp";
-                                getProps(value, keyName);
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].symbol[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.symbol";
-                                getProps(value, keyName);
-                            }
-
-                            //add url for icon
-                            insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".iconURL", getIconUrl(value.value));
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current.iconURL", getIconUrl(value.value));
-
-                            }
-
-
-                            value = result.report.location[l].day[d].hour[h].wind[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.wind";
-                                getProps(value, keyName);
-
-                            }
-
-                            //add url for icon
-                            insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windIconURL", getWindIconUrl(value.symbolB));
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current.windIconURL", getWindIconUrl(value.symbolB));
-
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].windgusts[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windgusts";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.windgusts";
-                                getProps(value, keyName);
-
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].rain[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.rain";
-                                getProps(value, keyName);
-
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].humidity[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.humidity";
-                                getProps(value, keyName);
-
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].pressure[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.pressure";
-                                getProps(value, keyName);
-
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].clouds[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.clouds";
-                                getProps(value, keyName);
-
-                            }
-
-
-                            const CloudTime = parseInt(result.report.location[l].day[d].hour[h].clouds[0].$.value);
-                            const SunTime = 100 - CloudTime;
-                            if (SunTime > 0 && Hour4SunTime >= SunInHour && Hour4SunTime <= SunOutHour) {
-                                let diff = 1;
-                                if (nOldTime4Sun > -1) {
-                                    diff = Hour4SunTime - nOldTime4Sun;
                                 }
-                                else {
-                                    diff = Hour4SunTime;
-                                }
-                                const SunHours = diff * SunTime / 100.0;
-                                nSunHours += SunHours;
-                            }
-                            nOldTime4Sun = Hour4SunTime;
-                            //adapter.log.debug("### " + SunTime + "% = " + nSunHours + "SunIn " + SunInHour + " SunOut " + SunOutHour);
-
-                            value = result.report.location[l].day[d].hour[h].snowline[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.snowline";
-                                getProps(value, keyName);
-
-                            }
-
-                            value = result.report.location[l].day[d].hour[h].windchill[0].$;
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
-                            getProps(value, keyName);
-
-                            if (dd === 1 && Hour4SunTime === CurrentHour) {
-                                keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.windchill";
-                                getProps(value, keyName);
-                            }
+                            });
+                            */
                         }
 
-                        insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".sunshineDuration", nSunHours);
-                        //adapter.log.debug("### next day");
+
+                        value = result.report[0].location[l].day[d].hour[h];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".hour";
+                        await getprops(value, keyName);
+                        const sHour4SunTime = result.report[0].location[l].day[d].hour[h].value;
+                        const Hour4SunTimeArr = sHour4SunTime.split(":");
+                        const Hour4SunTime = parseInt(Hour4SunTimeArr[0], 10);
+                        //adapter.log.debug("+++ " + sHour4SunTime + " " + Hour4SunTimeArr + " " + Hour4SunTime);
+
+                        if (dd == 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.hour";
+                            await getprops(value, keyName);
+                        }
+
+
+                        value = result.report[0].location[l].day[d].hour[h].temp[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.temp";
+                            await getprops(value, keyName);
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].symbol[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.symbol";
+                            await getprops(value, keyName);
+                        }
+
+                        //add url for icon
+                        await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".iconURL", getIconUrl(value.value));
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current.iconURL", getIconUrl(value.value));
+
+                        }
+
+
+                        value = result.report[0].location[l].day[d].hour[h].wind[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.wind";
+                            await getprops(value, keyName);
+
+                        }
+
+                        //add url for icon
+                        await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windIconURL", getWindIconUrl(value.symbolB));
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current.windIconURL", getWindIconUrl(value.symbolB));
+
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].windgusts[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windgusts";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.windgusts";
+                            await getprops(value, keyName);
+
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].rain[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.rain";
+                            await getprops(value, keyName);
+
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].humidity[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.humidity";
+                            await getprops(value, keyName);
+
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].pressure[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.pressure";
+                            await getprops(value, keyName);
+
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].clouds[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.clouds";
+                            await getprops(value, keyName);
+
+                        }
+
+
+                        const CloudTime = parseInt(result.report[0].location[l].day[d].hour[h].clouds[0].value);
+                        const SunTime = 100 - CloudTime;
+                        if (SunTime > 0 && Hour4SunTime >= SunInHour && Hour4SunTime <= SunOutHour) {
+                            let diff = 1;
+                            if (nOldTime4Sun > -1) {
+                                diff = Hour4SunTime - nOldTime4Sun;
+                            }
+                            else {
+                                diff = Hour4SunTime;
+                            }
+                            const SunHours = diff * SunTime / 100.0;
+                            nSunHours += SunHours;
+                        }
+                        nOldTime4Sun = Hour4SunTime;
+                        //adapter.log.debug("### " + SunTime + "% = " + nSunHours + "SunIn " + SunInHour + " SunOut " + SunOutHour);
+
+                        value = result.report[0].location[l].day[d].hour[h].snowline[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.snowline";
+                            await getprops(value, keyName);
+
+                        }
+
+                        value = result.report[0].location[l].day[d].hour[h].windchill[0];
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
+                        await getprops(value, keyName);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.windchill";
+                            await getprops(value, keyName);
+                        }
                     }
+
+                    await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".sunshineDuration", nSunHours);
+                    //adapter.log.debug("### next day");
                 }
+            }
 
-                //adapter.log.debug("hourly forecast done, objects in list " + tasks.length);
-                adapter.log.debug("hourly forecast done");
+            //adapter.log.debug("hourly forecast done, objects in list " + tasks.length);
+            adapter.log.debug("hourly forecast done");
 
 
-            });
+            //});
         } catch (e) {
             adapter.log.error("exception in HourlyForecast [" + e + "]");
 
@@ -1051,7 +1194,7 @@ async function getForecastDataHourlyJSON() {
                     location = location.substring(0, pos).trim();
                 }
 
-                insertIntoList("NextHours2.Location_" + ll + ".Location", location);
+                await insertIntoList("NextHours2.Location_" + ll + ".Location", location);
 
                 const obj = {
                     type: "channel",
@@ -1061,7 +1204,7 @@ async function getForecastDataHourlyJSON() {
                     }
                 };
 
-                insertIntoList("NextHours2.Location_" + ll, null, "", obj);
+                await insertIntoList("NextHours2.Location_" + ll, null, "", obj);
                 /*
                 tasks.push({
                     name: "add",
@@ -1128,7 +1271,7 @@ async function getForecastDataHourlyJSON() {
                             role: "weather"
                         }
                     };
-                    insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd, null, "", obj);
+                    await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd, null, "", obj);
 
                     /*
                     tasks.push({
@@ -1150,11 +1293,11 @@ async function getForecastDataHourlyJSON() {
 
                     let value = result.day[d].name;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".day";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].date;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".date";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
 
                     const unit_temp = result.day[d].units.temp;
@@ -1167,78 +1310,78 @@ async function getForecastDataHourlyJSON() {
 
                     value = result.day[d].symbol_value;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".symbol";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     //add url for icon
-                    insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".iconURL", getIconUrl(value));
+                    await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".iconURL", getIconUrl(value));
 
                     value = result.day[d].symbol_description;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".symbol_desc";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].symbol_value2;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".symbol2";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].symbol_description2;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".symbol_desc2";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].tempmin;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".tempmin";
-                    insertIntoList(keyName, value, unit_temp);
+                    await insertIntoList(keyName, value, unit_temp);
 
                     value = result.day[d].tempmax;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".tempmax";
-                    insertIntoList(keyName, value, unit_temp);
+                    await insertIntoList(keyName, value, unit_temp);
 
                     value = result.day[d].wind.speed;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".wind_speed";
-                    insertIntoList(keyName, value, unit_wind);
+                    await insertIntoList(keyName, value, unit_wind);
 
                     value = result.day[d].wind.symbol;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".wind_symbol";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].wind.symbolB;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".wind_symbolB";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     //add url for icon
-                    insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".windIconURL", getWindIconUrl(value));
+                    await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".windIconURL", getWindIconUrl(value));
 
 
                     value = result.day[d].wind.gusts;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".wind_gusts";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].rain;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".rain";
-                    insertIntoList(keyName, value, unit_rain);
+                    await insertIntoList(keyName, value, unit_rain);
 
                     value = result.day[d].humidity;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".humidity";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].pressure;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".pressure";
-                    insertIntoList(keyName, value, unit_pressure);
+                    await insertIntoList(keyName, value, unit_pressure);
 
                     value = result.day[d].snowline;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".snowline";
-                    insertIntoList(keyName, value, unit_snowline);
+                    await insertIntoList(keyName, value, unit_snowline);
 
                     value = result.day[d].sun.in;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".sun_in";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].sun.mid;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".sun_mid";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].sun.out;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".sun_out";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     const sSunInTime = result.day[d].sun.in;
                     const SunInTimeArr = sSunInTime.split(":");
@@ -1250,34 +1393,34 @@ async function getForecastDataHourlyJSON() {
 
                     value = result.day[d].moon.in;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".moon_in";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].moon.out;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".moon_out";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].moon.lumi;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".moon_lumi";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].moon.desc;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".moon_desc";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].moon.symbol;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".moon_symbol";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     //add url for icon
-                    insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value));
+                    await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value));
 
                     value = result.day[d].local_time;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".local_time";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].local_time_offset;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".local_time_offset";
-                    insertIntoList(keyName, value);
+                    await insertIntoList(keyName, value);
 
                     const numOfHours = result.day[d].hour.length;
                     adapter.log.debug("got " + numOfHours + " hours");
@@ -1298,7 +1441,7 @@ async function getForecastDataHourlyJSON() {
                             }
                         };
 
-                        insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
+                        await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh, null, "", obj);
                         /*
                         tasks.push({
                             name: "add",
@@ -1322,7 +1465,7 @@ async function getForecastDataHourlyJSON() {
                                     role: "weather"
                                 }
                             };
-                            insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current", null, "", obj);
+                            await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current", null, "", obj);
                             /*
                             tasks.push({
 
@@ -1342,7 +1485,7 @@ async function getForecastDataHourlyJSON() {
 
                         value = result.day[d].hour[h].interval;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".hour";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         //adapter.log.debug("+++ " + result.day[d].hour[h].interval );
 
@@ -1353,148 +1496,148 @@ async function getForecastDataHourlyJSON() {
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.hour";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         value = result.day[d].hour[h].temp;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".temp";
-                        insertIntoList(keyName, value, unit_temp);
+                        await insertIntoList(keyName, value, unit_temp);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.temp";
-                            insertIntoList(keyName, value, unit_temp);
+                            await insertIntoList(keyName, value, unit_temp);
                         }
 
                         value = result.day[d].hour[h].symbol_value;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         //add url for icon
-                        insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".iconURL", getIconUrl(value));
+                        await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".iconURL", getIconUrl(value));
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.symbol";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
 
                             //add url for icon
-                            insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current.iconURL", getIconUrl(value));
+                            await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current.iconURL", getIconUrl(value));
                         }
 
                         value = result.day[d].hour[h].symbol_description;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol_desc";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.symbol_desc";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
 
                         value = result.day[d].hour[h].symbol_value2;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.symbol";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         value = result.day[d].hour[h].symbol_description2;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".symbol_desc2";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.symbol_desc2";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         value = result.day[d].hour[h].wind.speed;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind_speed";
-                        insertIntoList(keyName, value, unit_wind);
+                        await insertIntoList(keyName, value, unit_wind);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.wind_speed";
-                            insertIntoList(keyName, value, unit_wind);
+                            await insertIntoList(keyName, value, unit_wind);
                         }
 
                         value = result.day[d].hour[h].wind.dir;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind_dir";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.wind_dir";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         value = result.day[d].hour[h].wind.symbol;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind_symbol";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.wind_symbol";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         value = result.day[d].hour[h].wind.symbolB;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind_symbolB";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         //add url for icon
-                        insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windIconURL", getWindIconUrl(value));
+                        await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windIconURL", getWindIconUrl(value));
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.wind_symbolB";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
 
                             //add url for icon
-                            insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current.windIconURL", getWindIconUrl(value));
+                            await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".current.windIconURL", getWindIconUrl(value));
 
                         }
 
                         value = result.day[d].hour[h].wind.gusts;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".wind_gusts";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.wind_gusts";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         value = result.day[d].hour[h].rain;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".rain";
-                        insertIntoList(keyName, value, unit_rain);
+                        await insertIntoList(keyName, value, unit_rain);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.rain";
-                            insertIntoList(keyName, value, unit_rain);
+                            await insertIntoList(keyName, value, unit_rain);
                         }
 
                         value = result.day[d].hour[h].humidity;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".humidity";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.humidity";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
 
                         }
 
                         value = result.day[d].hour[h].pressure;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".pressure";
-                        insertIntoList(keyName, value, unit_pressure);
+                        await insertIntoList(keyName, value, unit_pressure);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.pressure";
-                            insertIntoList(keyName, value, unit_pressure);
+                            await insertIntoList(keyName, value, unit_pressure);
                         }
 
                         value = result.day[d].hour[h].clouds;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".clouds";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.clouds";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
 
                         const CloudTime = parseInt(result.day[d].hour[h].clouds);
@@ -1517,23 +1660,23 @@ async function getForecastDataHourlyJSON() {
 
                         value = result.day[d].hour[h].snowline;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".snowline";
-                        insertIntoList(keyName, value, unit_snowline);
+                        await insertIntoList(keyName, value, unit_snowline);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.snowline";
-                            insertIntoList(keyName, value, unit_snowline);
+                            await insertIntoList(keyName, value, unit_snowline);
                         }
 
                         value = result.day[d].hour[h].windchill;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
-                        insertIntoList(keyName, value);
+                        await insertIntoList(keyName, value);
 
                         if (dd === 1 && Hour4SunTime === CurrentHour) {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.windchill";
-                            insertIntoList(keyName, value);
+                            await insertIntoList(keyName, value);
                         }
                     }
-                    insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".sunshineDuration", nSunHours);
+                    await insertIntoList("NextHours2.Location_" + ll + ".Day_" + dd + ".sunshineDuration", nSunHours);
                     //adapter.log.debug("### next day");
 
                 }
@@ -1559,6 +1702,7 @@ async function getForecastDataHourlyJSON() {
 
 //const tasks = [];
 
+
 async function insertIntoList(key, value, unit, newObj=null) {
 
     try {
@@ -1568,8 +1712,12 @@ async function insertIntoList(key, value, unit, newObj=null) {
             sUnit = unit;
         }
 
-        adapter.log.debug("insert " + key + " with " + value + " " + sUnit + " " + JSON.stringify(newObj));
-
+        if (typeof value === "object" && value !== null) {
+            adapter.log.error("insert " + key + " with " + JSON.stringify(value) + " " + sUnit + " " + JSON.stringify(newObj));
+        }
+        else {
+            adapter.log.debug("insert " + key + " with " + value + " " + sUnit + " " + JSON.stringify(newObj));
+        }
         let obj;
 
         if (newObj !== null) {
@@ -2057,7 +2205,7 @@ async function insertIntoList(key, value, unit, newObj=null) {
         };
 
 
-        adapter.setObjectNotExists(key, obj);
+        await adapter.setObjectNotExistsAsync(key, obj);
 
         /*
         await adapter.extendObject(key, {
@@ -2069,8 +2217,8 @@ async function insertIntoList(key, value, unit, newObj=null) {
         });
         */
 
-        if (value !== null) {
-            adapter.setState(key, value);
+        if (typeof value !== "object" && value !== null) {
+            await adapter.setStateAsync(key, { ack: true, val: value });
         }
 
 
@@ -2084,7 +2232,7 @@ async function insertIntoList(key, value, unit, newObj=null) {
         */
 
     } catch (e) {
-        adapter.log.error("exception in insertIntoList [" + e + "]");
+        adapter.log.error("exception in await insertIntoList [" + e + "]");
     }
 }
 
@@ -2145,7 +2293,7 @@ function createExtendObject(key, objData, value, callback) {
             if (!obj) {
                 if (value !== undefined) {
                     adapter.log.debug("back to list: " + key + " " + value);
-                    insertIntoList(key, value);
+                    await insertIntoList(key, value);
                 }
                 objData.native = objData.native || {};
                 adapter.setObject(key, objData, callback);
