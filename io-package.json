@@ -79,6 +79,8 @@
     "WindCustomPath": "",
     "WindCustomPathExt": "png",
     "MoonCustomPath": "",
-    "MoonCustomPathExt": "png"
+    "MoonCustomPathExt": "png",
+    "createCurrent": true,
+    "createInXHour":  0
   }
 }

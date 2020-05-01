@@ -330,8 +330,8 @@
                         <span class="translate">use_only_the_URL_you_need</span>
                     </div>
                 </div>
-                
-                
+
+
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -367,7 +367,28 @@
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s3">
+                        <input type="checkbox" id="createCurrent" class="value" />
+                        <label for="createCurrent" class="translate">createCurrent</label>
+                    </div>
+
+                    <div class="input-field col s3">
+                        <select id="createInXHour" class="value">
+                            <option value="0">none</option>
+                            <option value="1">in 1 hour</option>
+                            <option value="2">in 2 hours</option>
+                            <option value="3">in 3 hours</option>
+                            <option value="4">in 6 hous</option>
+                        </select>
+                        <label for="createInXHour" class="translate">createInXHour</label>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+                    <div class="input-field col s3">
                         <input class="value number" id="parseTimeout" size="3" maxlength="3" type="number" />
                         <label for="parseTimeout" class="translate">parse_timeout</label>
 
