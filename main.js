@@ -752,7 +752,7 @@ async function getForecastDataHourly() {
                                         role: "weather"
                                     }
                                 };
-                                await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours", null, "", obj);
+                                await insertIntoList("NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours", null, "", obj);
                             }
                         }
 
@@ -769,7 +769,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.hour";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.hour";
                             await getprops(value, keyName);
                         }
 
@@ -782,7 +782,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.temp";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.temp";
                             await getprops(value, keyName);
                         }
 
@@ -796,7 +796,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.symbol";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.symbol";
                             await getprops(value, keyName);
                         }
 
@@ -806,7 +806,7 @@ async function getForecastDataHourly() {
                             await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current.iconURL", getIconUrl(value.value));
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.iconURL", getIconUrl(value.value));
+                            await insertIntoList("NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.iconURL", getIconUrl(value.value));
                         }
 
                         value = result.report.location.day[d].hour[h].wind;
@@ -818,7 +818,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.wind";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.wind";
                             await getprops(value, keyName);
                         }
 
@@ -829,7 +829,7 @@ async function getForecastDataHourly() {
                             await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".current.windIconURL", getWindIconUrl(value.symbolB));
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            await insertIntoList("NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.windIconURL", getWindIconUrl(value.symbolB));
+                            await insertIntoList("NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.windIconURL", getWindIconUrl(value.symbolB));
                         }
 
                         value = result.report.location.day[d].hour[h].windgusts;
@@ -841,7 +841,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.windgusts";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.windgusts";
                             await getprops(value, keyName);
                         }
 
@@ -854,7 +854,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.rains";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.rains";
                             await getprops(value, keyName);
                         }
 
@@ -867,7 +867,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.humidity";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.humidity";
                             await getprops(value, keyName);
                         }
 
@@ -880,7 +880,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.pressure";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.pressure";
                             await getprops(value, keyName);
                         }
 
@@ -893,7 +893,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.clouds";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.clouds";
                             await getprops(value, keyName);
                         }
 
@@ -922,7 +922,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.snowline";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.snowline";
                             await getprops(value, keyName);
                         }
 
@@ -935,7 +935,7 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
                         if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
-                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".in" + inXhours + "hours.windchill";
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.windchill";
                             await getprops(value, keyName);
                         }
                     }
