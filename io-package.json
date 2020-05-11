@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "news": {
-      "3.0.0": {
+      "3.0.1": {
         "en": "replaced 'REQUEST' by 'BENT'",
         "de": "'REQUEST' durch 'BENT' ersetzt",
         "ru": "заменил «ЗАПРОС» на «Согнут»",
