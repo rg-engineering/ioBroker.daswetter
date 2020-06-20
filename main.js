@@ -70,7 +70,7 @@ function startAdapter(options) {
 const bent = require("bent");
 const xml2js = require("xml2json-light");
 
-
+let killTimer;
 
 async function main() {
     // force terminate 
@@ -80,7 +80,7 @@ async function main() {
     }
     adapter.log.debug("set timeout to " + nParseTimeout + " sec");
     nParseTimeout = nParseTimeout * 1000;
-    setTimeout(() => {
+    killTimer = setTimeout(function () {
         //adapter.log.error("force terminate, objects still in list: " + tasks.length);
         adapter.log.error("force terminate");
         adapter.terminate ? adapter.terminate(15) : process.exit(15);
@@ -95,6 +95,11 @@ async function main() {
 
    
     adapter.log.debug("exit, all done");
+
+    if (killTimer) {
+        clearTimeout(killTimer);
+        adapter.log.debug("timer killed");
+    }
     adapter.terminate ? adapter.terminate(0) : process.exit(0);
 }
 
