@@ -21,7 +21,7 @@ hs_err_pid*
 
 /bin/*
 /.idea
-/package-lock.json
+
 /obj/Debug/*
 /main.js.orig
 *_neu.*
