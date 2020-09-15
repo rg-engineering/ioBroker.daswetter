@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "news": {
+      "3.0.2": {
+        "en": "parse numbers added",
+        "de": "Analysierenummern hinzugefügt",
+        "ru": "числа синтаксического анализа добавлены",
+        "pt": "números de análise adicionados",
+        "nl": "ontleden nummers toegevoegd",
+        "fr": "numéros d'analyse ajoutés",
+        "it": "analizzare i numeri aggiunti",
+        "es": "analizar números agregados",
+        "pl": "dodano parsowanie numerów",
+        "zh-cn": "解析添加的数字"
+      },
       "3.0.1": {
         "en": "replaced 'REQUEST' by 'BENT'",
         "de": "'REQUEST' durch 'BENT' ersetzt",

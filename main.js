@@ -185,7 +185,7 @@ function getMoonIconUrl(num) {
 async function getprops(obj, keyName) {
     //rückwärts parsen, dann kommt unit for dem wert und kann somit in die liste eingetragen werden
 
-   //adapter.log.debug("getprops " + JSON.stringify(obj) + " ### " + keyName);
+    //adapter.log.debug("getprops " + JSON.stringify(obj) + " ### " + keyName);
 
     const arr = [];
     let unit = "";
@@ -1428,6 +1428,8 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
     try {
 
+        let valueType = "unknown";
+
         let sUnit = "";
         if (unit !== undefined) {
             sUnit = unit;
@@ -1449,18 +1451,8 @@ async function insertIntoList(key, value, unit, newObj = null) {
             let d = key.match(/Day_(\d)\./);
             if (d) {
                 d = parseInt(d[1], 10) - 1;
-                if (key.match(/\.Location$/)) {
-                    obj = {
-                        type: "state",
-                        common: {
-                            name: "Location",
-                            type: "string",
-                            role: "location",
-                            read: true,
-                            write: false
-                        }
-                    };
-                } else if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
+                if (key.match(/\.Maximale_Temperatur_value$/) || key.match(/\.tempmax_value$/) || key.match(/\.tempmax/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1473,6 +1465,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.Minimale_Temperatur_value$/) || key.match(/\.tempmin_value$/) || key.match(/\.tempmin/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1485,6 +1478,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.Tag_value/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1496,6 +1490,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.Wetter_Symbol_id/) || key.match(/\.Wetter_Symbol_id2/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1509,6 +1504,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                     };
 
                 } else if (key.match(/\.symbol_desc/) || key.match(/\.symbol_desc2/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1522,6 +1518,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                     };
 
                 } else if (key.match(/\.Wetter_Symbol_value2/) || key.match(/\.Wetter_Symbol_value/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1534,6 +1531,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.symbol_value2/) || key.match(/\.symbol_value/) || key.match(/\.symbol/) || key.match(/\.symbol2/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1546,6 +1544,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.Wetterbedingungen_value/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1556,7 +1555,8 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_valueB/)) {
+                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_value/) || key.match(/\.Wind_valueB/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1567,7 +1567,20 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
+                } else if (key.match(/\.Wind_idB/) || key.match(/\.Wind_id/) ) {
+                    valueType = "string";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "Wind id",
+                            type: "string",
+                            role: "weather.direction.wind.forecast." + d,
+                            read: true,
+                            write: false
+                        }
+                    };
                 } else if (key.match(/\.iconURL/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1580,6 +1593,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.moonIconURL/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1591,6 +1605,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.windIconURL/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1602,6 +1617,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.sunshineDuration/)) {
+                    valueType = "float";
                     obj = {
                         type: "state",
                         common: {
@@ -1617,6 +1633,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
 
                 } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1629,6 +1646,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.hour_value/) || key.match(/\.hour/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1641,6 +1659,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.day_value/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1656,7 +1675,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
                     //sometimes % comes with value
                     value = value.replace(/%/g, "");
-
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1669,6 +1688,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.humidity_value/) || key.match(/\.humidity/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1681,6 +1701,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.pressure_value/) || key.match(/\.pressure/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1693,6 +1714,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.rain_value/) || key.match(/\.rain/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1705,6 +1727,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.snowline_value/) || key.match(/\.snowline/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1718,6 +1741,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                     };
 
                 } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1730,6 +1754,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.wind_dir/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1742,6 +1767,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.wind_symbol/) || key.match(/\.wind_symbolB/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1754,6 +1780,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.wind_speed/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1766,6 +1793,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.windchill_value/) || key.match(/\.windchill/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1778,6 +1806,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.windgusts_value/) || key.match(/\.wind_gusts/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1790,6 +1819,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1802,6 +1832,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1814,6 +1845,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.moon_desc/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1826,6 +1858,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.moon_in/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1838,6 +1871,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.moon_lumi/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1850,6 +1884,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.moon_out/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1862,6 +1897,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.moon_symbol/)) {
+                    valueType = "int";
                     obj = {
                         type: "state",
                         common: {
@@ -1874,6 +1910,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.sun_in/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1886,6 +1923,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.sun_mid/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1898,6 +1936,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.sun_out/)) {
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
@@ -1911,6 +1950,20 @@ async function insertIntoList(key, value, unit, newObj = null) {
                     };
                 }
             }
+
+            else if (key.match(/\.Location$/)) {
+                valueType = "string";
+                obj = {
+                    type: "state",
+                    common: {
+                        name: "Location",
+                        type: "string",
+                        role: "location",
+                        read: true,
+                        write: false
+                    }
+                };
+            } 
         }
 
         obj = obj || {
@@ -1928,7 +1981,25 @@ async function insertIntoList(key, value, unit, newObj = null) {
         await adapter.setObjectNotExistsAsync(key, obj);
 
         if (typeof value !== "object" && value !== null) {
-            await adapter.setStateAsync(key, { ack: true, val: value });
+
+            let val;
+
+            if (valueType == "string") {
+                val = value;
+            }
+            else if (valueType == "int") {
+                val = parseInt(value);
+            }
+            else if (valueType == "float") {
+                val = parseFloat(value);
+            }
+            else {
+                val = value;
+                adapter.log.error("unkown type " + valueType +" for " + key );
+            }
+
+
+            await adapter.setStateAsync(key, { ack: true, val: val });
         }
 
 
