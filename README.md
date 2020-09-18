@@ -52,7 +52,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.0.2 (2020-09-15)
+### 3.0.3 (2020-09-19)
 * (René) see issue #66: parse numbers added 
 
 

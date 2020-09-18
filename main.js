@@ -1555,7 +1555,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_value/) || key.match(/\.Wind_valueB/)) {
+                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_value/) || key.match(/\.Wind_dir/) || key.match(/\.wind_dir/) || key.match(/\.Wind_valueB/)) {
                     valueType = "string";
                     obj = {
                         type: "state",
@@ -1630,7 +1630,19 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
 
+                } else if (key.match(/\.date/) ) {
+                    valueType = "string";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "day",
+                            type: "string",
+                            role: "weather.day.name" + d,
 
+                            read: true,
+                            write: false
+                        }
+                    };
 
                 } else if (key.match(/\.day_name/) || key.match(/\.day/)) {
                     valueType = "string";
