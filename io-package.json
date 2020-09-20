@@ -70,29 +70,33 @@
     "type": "weather",
     "license": "MIT",
     "materialize": true,
-    "compact": true,
-    "authors": [
-      {
-        "name": "René G.",
-        "email": "info@rg-engineering.eu"
-      }
-    ]
-  },
-  "native": {
-    "Days7Forecast": "",
-    "Days5Forecast": "",
-    "HourlyForecast": "",
-    "iconSet": 1,
-    "parseTimeout": 60,
-    "UsePNGorOriginalSVG": false,
-    "UseColorOrBW": true,
-    "CustomPath": "",
-    "CustomPathExt": "png",
-    "WindCustomPath": "",
-    "WindCustomPathExt": "png",
-    "MoonCustomPath": "",
-    "MoonCustomPathExt": "png",
-    "createCurrent": true,
-    "createInXHour":  0
+    "plugins": {
+      "sentry": {
+        "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
+      },
+      "compact": true,
+      "authors": [
+        {
+          "name": "René G.",
+          "email": "info@rg-engineering.eu"
+        }
+      ]
+    },
+    "native": {
+      "Days7Forecast": "",
+      "Days5Forecast": "",
+      "HourlyForecast": "",
+      "iconSet": 1,
+      "parseTimeout": 60,
+      "UsePNGorOriginalSVG": false,
+      "UseColorOrBW": true,
+      "CustomPath": "",
+      "CustomPathExt": "png",
+      "WindCustomPath": "",
+      "WindCustomPathExt": "png",
+      "MoonCustomPath": "",
+      "MoonCustomPathExt": "png",
+      "createCurrent": true,
+      "createInXHour": 0
+    }
   }
-}
