@@ -19,7 +19,7 @@
     "url": "https://github.com/rg-engineering/ioBroker.daswetter"
   },
   "dependencies": {
-    "bent": "^7.3.0",
+    "bent": "^7.3.11",
     "xml2json-light": "^1.0.6",
     "@iobroker/adapter-core": "^2.2.1",
     "@sentry/node": "^5.23.0"
