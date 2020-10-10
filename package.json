@@ -22,7 +22,7 @@
     "bent": "7.3.11",
     "xml2json-light": "1.0.6",
     "@iobroker/adapter-core": "2.4.0",
-    "@sentry/node": "5.24.0"
+    "@sentry/node": "^5.25.0"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.2.0",
