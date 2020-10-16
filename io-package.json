@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "news": {
+      "3.0.4": {
+        "en": "rain values as float-value instead integer parsed",
+        "de": "Regenwerte als Float-Wert statt Ganzzahl analysiert",
+        "ru": "значения дождя как значение с плавающей запятой вместо целочисленного анализируются",
+        "pt": "valores de chuva como valor flutuante em vez de inteiro analisado",
+        "nl": "rain-waarden als float-waarde in plaats van integer geparseerd",
+        "fr": "valeurs de pluie en tant que valeur flottante au lieu d'un entier analysé",
+        "it": "valori di pioggia come valore float invece di interi analizzati",
+        "es": "valores de lluvia como valor flotante en lugar de un entero analizado",
+        "pl": "wartości deszczu jako wartość zmiennoprzecinkowa zamiast analizowanych liczb całkowitych",
+        "zh-cn": "下雨值作为浮点值，而不是整数解析"
+      },
       "3.0.3": {
         "en": "parse numbers added",
         "de": "Analysierenummern hinzugefügt",

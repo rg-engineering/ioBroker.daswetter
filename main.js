@@ -1726,7 +1726,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.rain_value/) || key.match(/\.rain/)) {
-                    valueType = "int";
+                    valueType = "float";
                     obj = {
                         type: "state",
                         common: {
