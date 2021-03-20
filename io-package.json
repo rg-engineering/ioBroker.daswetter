@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "news": {
+      "3.0.5": {
+        "en": "dependencies updated",
+        "de": "Abhängigkeiten aktualisiert",
+        "ru": "зависимости обновлены",
+        "pt": "dependências atualizadas",
+        "nl": "afhankelijkheden bijgewerkt",
+        "fr": "dépendances mises à jour",
+        "it": "dipendenze aggiornate",
+        "es": "dependencias actualizadas",
+        "pl": "zaktualizowane zależności",
+        "zh-cn": "依赖关系已更新"
+      },
       "3.0.4": {
         "en": "rain values as float-value instead integer parsed",
         "de": "Regenwerte als Float-Wert statt Ganzzahl analysiert",
@@ -97,21 +109,21 @@
     "connectionType": "local",
     "dataSource": "push"
   },
-    "native": {
-      "Days7Forecast": "",
-      "Days5Forecast": "",
-      "HourlyForecast": "",
-      "iconSet": 1,
-      "parseTimeout": 60,
-      "UsePNGorOriginalSVG": false,
-      "UseColorOrBW": true,
-      "CustomPath": "",
-      "CustomPathExt": "png",
-      "WindCustomPath": "",
-      "WindCustomPathExt": "png",
-      "MoonCustomPath": "",
-      "MoonCustomPathExt": "png",
-      "createCurrent": true,
-      "createInXHour": 0
-    }
+  "native": {
+    "Days7Forecast": "",
+    "Days5Forecast": "",
+    "HourlyForecast": "",
+    "iconSet": 1,
+    "parseTimeout": 60,
+    "UsePNGorOriginalSVG": false,
+    "UseColorOrBW": true,
+    "CustomPath": "",
+    "CustomPathExt": "png",
+    "WindCustomPath": "",
+    "WindCustomPathExt": "png",
+    "MoonCustomPath": "",
+    "MoonCustomPathExt": "png",
+    "createCurrent": true,
+    "createInXHour": 0
   }
+}

@@ -55,6 +55,9 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+### 3.0.5 (2021-03-21)
+* (René) dependencies updated
+
 ### 3.0.4 (2020-10-16)
 * (René) see issue #76: parse rain values as float instead integer 
 
