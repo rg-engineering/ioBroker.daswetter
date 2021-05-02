@@ -1,0 +1,18 @@
+{
+    "DasWetter.com_adapter_settings": "DasWetter.com适配器设置",
+    "Icon set": "图标集",
+    "Icons": "图示",
+    "URL_5_days_forecast": "路径2：每5小时提供5天天气预报和详细信息的XML文件",
+    "URL_7_days_forecast": "路径1：具有7天天气预报和常规日概述的XML文件",
+    "URL_hourly_forecast": "路径3：带有未来5天天气预报和每小时信息的XML文件",
+    "URL_hourly_forecast_JSON": "路径4：带有未来5天天气预报和每小时信息的JSON文件",
+    "createCurrent": "创建当前时间的副本",
+    "createInXHour": "创建一个小时的副本",
+    "custom_path": "定制路径",
+    "custom_path_ext": "自定义文件扩展名",
+    "custom_path_hint": "自定义路径必须采用“/ adapter / daswetter / icons / tiempo-weather / galeria4 /”形式。扩展名必须以点开头（例如.png）",
+    "parse_timeout": "下载和解析超时[秒]",
+    "use_color_or_bw": "使用彩色或白色符号",
+    "use_only_the_URL_you_need": "仅使用您需要的网址，其他网址留空。",
+    "use_png_or_svg": "使用PNG而不是SVG"
+}

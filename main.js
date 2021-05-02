@@ -1006,7 +1006,7 @@ async function getForecastDataHourlyJSON() {
                 //const numOfDays = 5;
 
                 if (typeof numOfDays === "undefined") {
-                    adapter.log.info("got wrong data structure! trying to repair...");
+                    adapter.log.info("still wrong data structure from server received! repaired...");
                     //adapter.log.debug("got " + JSON.stringify(result.day));
 
                     //try to repair structure
@@ -1436,10 +1436,10 @@ async function insertIntoList(key, value, unit, newObj = null) {
         }
 
         if (typeof value === "object" && value !== null) {
-            adapter.log.error("insert " + key + " with " + JSON.stringify(value) + " " + sUnit + " " + JSON.stringify(newObj));
+            adapter.log.error("insert " + key + " with " + JSON.stringify(value) + " " + sUnit + " " + (newObj != null ? JSON.stringify(newObj) : ""));
         }
         else {
-            adapter.log.debug("insert " + key + " with " + value + " " + sUnit + " " + JSON.stringify(newObj));
+            adapter.log.debug("insert " + key + " with " + value + " " + sUnit + " " + (newObj != null ? JSON.stringify(newObj) : ""));
         }
         let obj;
 
@@ -1567,7 +1567,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-                } else if (key.match(/\.Wind_idB/) || key.match(/\.Wind_id/) ) {
+                } else if (key.match(/\.Wind_idB/) || key.match(/\.Wind_id/)) {
                     valueType = "string";
                     obj = {
                         type: "state",
@@ -1630,7 +1630,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
 
-                } else if (key.match(/\.date/) ) {
+                } else if (key.match(/\.date/)) {
                     valueType = "string";
                     obj = {
                         type: "state",
@@ -1830,6 +1830,33 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
+                } else if (key.match(/\.local_time_offset/)) {
+                    valueType = "int";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "local time offset",
+                            type: "number",
+                            role: "weather.locale.offset.forecast." + d,
+
+                            read: true,
+                            write: false
+                        }
+                    };
+                }
+                else if (key.match(/\.local_info_offset/)) {
+                    valueType = "int";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "local info offset",
+                            type: "number",
+                            role: "weather.locale.offset.forecast." + d,
+
+                            read: true,
+                            write: false
+                        }
+                    };
                 } else if (key.match(/\.local_info_local_time/) || key.match(/\.local_time/)) {
                     valueType = "string";
                     obj = {
@@ -1837,25 +1864,13 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         common: {
                             name: "local time",
                             type: "string",
-                            role: "weather.locale.info.time.forecast." + d,
+                            role: "weather.locale.time.forecast." + d,
 
                             read: true,
                             write: false
                         }
                     };
-                } else if (key.match(/\.local_info_offset/) || key.match(/\.local_time_offset/)) {
-                    valueType = "string";
-                    obj = {
-                        type: "state",
-                        common: {
-                            name: "local offset",
-                            type: "string",
-                            role: "weather.locale.info.offset.forecast." + d,
 
-                            read: true,
-                            write: false
-                        }
-                    };
                 } else if (key.match(/\.moon_desc/)) {
                     valueType = "string";
                     obj = {
@@ -1975,7 +1990,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         write: false
                     }
                 };
-            } 
+            }
         }
 
         obj = obj || {
@@ -1992,6 +2007,37 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
         await adapter.setObjectNotExistsAsync(key, obj);
 
+        const obj_new = await adapter.getObjectAsync(key);
+        //adapter.log.warn("got object " + JSON.stringify(obj_new));
+
+
+        if (obj_new != null) {
+
+            if (obj_new.common.role != obj.common.role
+                || obj_new.common.type != obj.common.type
+                || obj_new.common.unit != obj.common.unit
+                || obj_new.common.read != obj.common.read
+                || obj_new.common.write != obj.common.write
+                || obj_new.common.name != obj.common.name
+            ) {
+                adapter.log.warn("change object " + JSON.stringify(obj));
+                await adapter.extendObject(key, {
+                    common: {
+                        name: obj.common.name,
+                        role: obj.common.role,
+                        type: obj.common.type,
+                        unit: obj.common.unit,
+                        read: obj.common.read,
+                        write: obj.common.write
+                    }
+                });
+            }
+        }
+
+
+
+
+
         if (typeof value !== "object" && value !== null) {
 
             let val;
@@ -2007,7 +2053,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
             }
             else {
                 val = value;
-                adapter.log.error("unkown type " + valueType +" for " + key );
+                adapter.log.error("unkown type " + valueType + " for " + key);
             }
 
 

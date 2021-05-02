@@ -1,30 +1,27 @@
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
+.git
+.idea
+*.code-workspace
 node_modules
-/node_modules
-admin/i18n
-*.njsproj
-/typings
-*.txt
-test.js
-test2.js
+nbproject
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# npm package files
+iobroker.*.tgz
 
-/bin/*
-/.idea
+Thumbs.db
 
-/obj/Debug/*
-/main.js.orig
-*_neu.*
+/iob_npm.done
+
+/*.njsproj
+/todo.txt
+/typings/
+/todo1.txt
 /.project
 /.settings/
-/package.json.orig
+/log.txt
+/main_old.js
+/obj/Debug/
+*.orig
+/readme.txt
+/test.js
+/test2.js
+/main_neu.js

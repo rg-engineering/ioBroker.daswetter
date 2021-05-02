@@ -1,0 +1,18 @@
+{
+    "DasWetter.com_adapter_settings": "Configurações do adaptador DasWetter.com",
+    "Icon set": "Conjunto de ícones",
+    "Icons": "Ícones",
+    "URL_5_days_forecast": "caminho 2: arquivo XML com previsão de 5 dias e informações detalhadas para cada 3 horas",
+    "URL_7_days_forecast": "caminho 1: arquivo XML com previsão de tempo de 7 dias e visão geral geral do dia",
+    "URL_hourly_forecast": "caminho 3: arquivo XML com previsão do tempo para os próximos 5 dias e informações por hora",
+    "URL_hourly_forecast_JSON": "caminho 4: arquivo JSON com previsão do tempo para os próximos 5 dias e informações por hora",
+    "createCurrent": "criar cópia para a hora atual",
+    "createInXHour": "criar cópia por hora",
+    "custom_path": "caminho personalizado",
+    "custom_path_ext": "extensão de nome de arquivo personalizada",
+    "custom_path_hint": "O caminho personalizado deve estar no formato \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\". A extensão deve começar com um ponto (por exemplo, .png)",
+    "parse_timeout": "baixar e analisar o tempo limite [segundos]",
+    "use_color_or_bw": "usar símbolos coloridos ou brancos",
+    "use_only_the_URL_you_need": "Use apenas o URL que você precisa, deixe os outros em branco. Use minutos arbitrários nas configurações do cron porque o servidor da API responde atrasado em horas exatas, meia hora e assim por diante. (problema de sobrecarga do servidor).",
+    "use_png_or_svg": "usar PNG em vez de SVG"
+}
