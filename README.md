@@ -55,7 +55,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.0.6 (2021-05-01)
+### 3.0.7 (2021-05-03)
 * (René) issue #91: remove warnings with js-controller 3.3.
 
 ### 3.0.5 (2021-03-21)

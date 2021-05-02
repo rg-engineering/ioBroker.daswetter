@@ -2020,7 +2020,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                 || obj_new.common.write != obj.common.write
                 || obj_new.common.name != obj.common.name
             ) {
-                adapter.log.warn("change object " + JSON.stringify(obj));
+                adapter.log.warn("change object " + JSON.stringify(obj) + " " + JSON.stringify(obj_new));
                 await adapter.extendObject(key, {
                     common: {
                         name: obj.common.name,

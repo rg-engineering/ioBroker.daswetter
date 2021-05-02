@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.0.6",
+        "version": "3.0.7",
         "news": {
-            "3.0.6": {
+            "3.0.7": {
                 "en": "warnings removed for js-controller V3.3",
                 "de": "Warnungen für js-controller V3.3 entfernt",
                 "ru": "предупреждения удалены для js-controller V3.3",
