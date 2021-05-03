@@ -2015,7 +2015,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
             if (obj_new.common.role != obj.common.role
                 || obj_new.common.type != obj.common.type
-                || obj_new.common.unit != obj.common.unit
+                || (obj_new.common.unit != obj.common.unit && obj.common.unit != null) 
                 || obj_new.common.read != obj.common.read
                 || obj_new.common.write != obj.common.write
                 || obj_new.common.name != obj.common.name
