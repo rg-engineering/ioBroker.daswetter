@@ -1,127 +1,129 @@
 {
-    "common": {
-        "name": "daswetter",
-        "version": "3.0.7",
-        "news": {
-            "3.0.7": {
-                "en": "warnings removed for js-controller V3.3",
-                "de": "Warnungen für js-controller V3.3 entfernt",
-                "ru": "предупреждения удалены для js-controller V3.3",
-                "pt": "avisos removidos para js-controller V3.3",
-                "nl": "waarschuwingen verwijderd voor js-controller V3.3",
-                "fr": "avertissements supprimés pour js-controller V3.3",
-                "it": "avvisi rimossi per js-controller V3.3",
-                "es": "advertencias eliminadas para js-controller V3.3",
-                "pl": "ostrzeżenia usunięte dla js-controller V3.3",
-                "zh-cn": "针对js-controller V3.3的警告已删除"
-            },
-            "3.0.5": {
-                "en": "dependencies updated",
-                "de": "Abhängigkeiten aktualisiert",
-                "ru": "зависимости обновлены",
-                "pt": "dependências atualizadas",
-                "nl": "afhankelijkheden bijgewerkt",
-                "fr": "dépendances mises à jour",
-                "it": "dipendenze aggiornate",
-                "es": "dependencias actualizadas",
-                "pl": "zaktualizowane zależności",
-                "zh-cn": "依赖关系已更新"
-            },
-            "3.0.4": {
-                "en": "rain values as float-value instead integer parsed",
-                "de": "Regenwerte als Float-Wert statt Ganzzahl analysiert",
-                "ru": "значения дождя как значение с плавающей запятой вместо целочисленного анализируются",
-                "pt": "valores de chuva como valor flutuante em vez de inteiro analisado",
-                "nl": "rain-waarden als float-waarde in plaats van integer geparseerd",
-                "fr": "valeurs de pluie en tant que valeur flottante au lieu d'un entier analysé",
-                "it": "valori di pioggia come valore float invece di interi analizzati",
-                "es": "valores de lluvia como valor flotante en lugar de un entero analizado",
-                "pl": "wartości deszczu jako wartość zmiennoprzecinkowa zamiast analizowanych liczb całkowitych",
-                "zh-cn": "下雨值作为浮点值，而不是整数解析"
-            },
-            "3.0.3": {
-                "en": "parse numbers added",
-                "de": "Analysierenummern hinzugefügt",
-                "ru": "числа синтаксического анализа добавлены",
-                "pt": "números de análise adicionados",
-                "nl": "ontleden nummers toegevoegd",
-                "fr": "numéros d'analyse ajoutés",
-                "it": "analizzare i numeri aggiunti",
-                "es": "analizar números agregados",
-                "pl": "dodano parsowanie numerów",
-                "zh-cn": "解析添加的数字"
-            },
-            "3.0.1": {
-                "en": "replaced 'REQUEST' by 'BENT'",
-                "de": "'REQUEST' durch 'BENT' ersetzt",
-                "ru": "заменил «ЗАПРОС» на «Согнут»",
-                "pt": "substituído \"PEDIDO\" por \"BENT\"",
-                "nl": "vervangen 'VERZOEK' door 'BENT'",
-                "fr": "remplacé «DEMANDE» par «BENT»",
-                "it": "sostituito da \"RICHIESTA\" con \"BENT\"",
-                "es": "reemplazado 'SOLICITUD' por 'BENT'",
-                "pl": "zastąpiono „ZAPYTANIE” na „WYGIĘTA”",
-                "zh-cn": "用“ BENT”代替“ REQUEST”"
-            }
-        },
-        "title": "DasWetter.com",
-        "titleLang": {
-            "en": "DasWetter.com",
-            "de": "DasWetter.com",
-            "ru": "DasWetter.com",
-            "pt": "DasWetter.com",
-            "nl": "DasWetter.com",
-            "fr": "DasWetter.com",
-            "it": "DasWetter.com",
-            "es": "DasWetter.com",
-            "pl": "DasWetter.com",
-            "zh-cn": "DasWetter.com"
-        },
-        "desc": {
-            "en": "reads weather forecast data from DasWetter.com. Different forecast models are available.",
-            "de": "liest Wettervorhersagedaten von DasWetter.com. Es stehen verschiedene Prognosemodelle zur Verfügung.",
-            "ru": "читает данные прогноза погоды от DasWetter.com. Доступны разные модели прогноза.",
-            "pt": "lê dados de previsão meteorológica do DasWetter.com. Diferentes modelos de previsão estão disponíveis.",
-            "nl": "leest weersvoorspellingsgegevens van DasWetter.com. Verschillende voorspellingsmodellen zijn beschikbaar.",
-            "fr": "lit les données météorologiques de DasWetter.com. Différents modèles de prévision sont disponibles.",
-            "it": "legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili diversi modelli di previsione.",
-            "es": "lee los datos del pronóstico del tiempo de DasWetter.com. Existen diferentes modelos de pronóstico disponibles.",
-            "pl": "czyta prognozy pogody z DasWetter.com. Dostępne są różne modele prognoz.",
-            "zh-cn": "从DasWetter.com读取天气预报数据。"
-        },
-        "platform": "Javascript/Node.js",
-        "mode": "schedule",
-        "schedule": "*/15 * * * *",
-        "icon": "daswettercom.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
-        "keywords": [
-            "iobroker",
-            "weather",
-            "forecast",
-            "DasWetter"
-        ],
-        "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
-        "loglevel": "info",
-        "stopBeforeUpdate": true,
-        "type": "weather",
-        "license": "MIT",
-        "materialize": true,
-        "plugins": {
-            "sentry": {
-                "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
-            }
-        },
-        "compact": true,
-        "authors": [
-            {
-                "name": "René G.",
-                "email": "info@rg-engineering.eu"
-            }
-        ],
-        "connectionType": "local",
-        "dataSource": "push"
+  "common": {
+    "name": "daswetter",
+    "version": "3.0.7",
+    "news": {
+      "3.0.7": {
+        "en": "warnings removed for js-controller V3.3",
+        "de": "Warnungen für js-controller V3.3 entfernt",
+        "ru": "предупреждения удалены для js-controller V3.3",
+        "pt": "avisos removidos para js-controller V3.3",
+        "nl": "waarschuwingen verwijderd voor js-controller V3.3",
+        "fr": "avertissements supprimés pour js-controller V3.3",
+        "it": "avvisi rimossi per js-controller V3.3",
+        "es": "advertencias eliminadas para js-controller V3.3",
+        "pl": "ostrzeżenia usunięte dla js-controller V3.3",
+        "zh-cn": "针对js-controller V3.3的警告已删除"
+      },
+      "3.0.5": {
+        "en": "dependencies updated",
+        "de": "Abhängigkeiten aktualisiert",
+        "ru": "зависимости обновлены",
+        "pt": "dependências atualizadas",
+        "nl": "afhankelijkheden bijgewerkt",
+        "fr": "dépendances mises à jour",
+        "it": "dipendenze aggiornate",
+        "es": "dependencias actualizadas",
+        "pl": "zaktualizowane zależności",
+        "zh-cn": "依赖关系已更新"
+      },
+      "3.0.4": {
+        "en": "rain values as float-value instead integer parsed",
+        "de": "Regenwerte als Float-Wert statt Ganzzahl analysiert",
+        "ru": "значения дождя как значение с плавающей запятой вместо целочисленного анализируются",
+        "pt": "valores de chuva como valor flutuante em vez de inteiro analisado",
+        "nl": "rain-waarden als float-waarde in plaats van integer geparseerd",
+        "fr": "valeurs de pluie en tant que valeur flottante au lieu d'un entier analysé",
+        "it": "valori di pioggia come valore float invece di interi analizzati",
+        "es": "valores de lluvia como valor flotante en lugar de un entero analizado",
+        "pl": "wartości deszczu jako wartość zmiennoprzecinkowa zamiast analizowanych liczb całkowitych",
+        "zh-cn": "下雨值作为浮点值，而不是整数解析"
+      },
+      "3.0.3": {
+        "en": "parse numbers added",
+        "de": "Analysierenummern hinzugefügt",
+        "ru": "числа синтаксического анализа добавлены",
+        "pt": "números de análise adicionados",
+        "nl": "ontleden nummers toegevoegd",
+        "fr": "numéros d'analyse ajoutés",
+        "it": "analizzare i numeri aggiunti",
+        "es": "analizar números agregados",
+        "pl": "dodano parsowanie numerów",
+        "zh-cn": "解析添加的数字"
+      },
+      "3.0.1": {
+        "en": "replaced 'REQUEST' by 'BENT'",
+        "de": "'REQUEST' durch 'BENT' ersetzt",
+        "ru": "заменил «ЗАПРОС» на «Согнут»",
+        "pt": "substituído \"PEDIDO\" por \"BENT\"",
+        "nl": "vervangen 'VERZOEK' door 'BENT'",
+        "fr": "remplacé «DEMANDE» par «BENT»",
+        "it": "sostituito da \"RICHIESTA\" con \"BENT\"",
+        "es": "reemplazado 'SOLICITUD' por 'BENT'",
+        "pl": "zastąpiono „ZAPYTANIE” na „WYGIĘTA”",
+        "zh-cn": "用“ BENT”代替“ REQUEST”"
+      }
     },
+    "title": "DasWetter.com",
+    "titleLang": {
+      "en": "DasWetter.com",
+      "de": "DasWetter.com",
+      "ru": "DasWetter.com",
+      "pt": "DasWetter.com",
+      "nl": "DasWetter.com",
+      "fr": "DasWetter.com",
+      "it": "DasWetter.com",
+      "es": "DasWetter.com",
+      "pl": "DasWetter.com",
+      "zh-cn": "DasWetter.com"
+    },
+    "desc": {
+      "en": "reads weather forecast data from DasWetter.com. Different forecast models are available.",
+      "de": "liest Wettervorhersagedaten von DasWetter.com. Es stehen verschiedene Prognosemodelle zur Verfügung.",
+      "ru": "читает данные прогноза погоды от DasWetter.com. Доступны разные модели прогноза.",
+      "pt": "lê dados de previsão meteorológica do DasWetter.com. Diferentes modelos de previsão estão disponíveis.",
+      "nl": "leest weersvoorspellingsgegevens van DasWetter.com. Verschillende voorspellingsmodellen zijn beschikbaar.",
+      "fr": "lit les données météorologiques de DasWetter.com. Différents modèles de prévision sont disponibles.",
+      "it": "legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili diversi modelli di previsione.",
+      "es": "lee los datos del pronóstico del tiempo de DasWetter.com. Existen diferentes modelos de pronóstico disponibles.",
+      "pl": "czyta prognozy pogody z DasWetter.com. Dostępne są różne modele prognoz.",
+      "zh-cn": "从DasWetter.com读取天气预报数据。"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "schedule",
+    "schedule": "*/15 * * * *",
+    "icon": "daswettercom.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
+    "keywords": [
+      "iobroker",
+      "weather",
+      "forecast",
+      "DasWetter"
+    ],
+    "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
+    "loglevel": "info",
+    "stopBeforeUpdate": true,
+    "type": "weather",
+    "license": "MIT",
+    "materialize": true,
+    "plugins": {
+      "sentry": {
+        "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
+      }
+    },
+    "compact": true,
+    "authors": [
+      {
+        "name": "René G.",
+        "email": "info@rg-engineering.eu"
+      }
+    ],
+    "connectionType": "local",
+    "dataSource": "push",
+    "jsonCustom": false,
+    "jsonConfig": false
+  },
     "native": {
         "Days7Forecast": "",
         "Days5Forecast": "",

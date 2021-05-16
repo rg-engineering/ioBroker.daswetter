@@ -1,0 +1,239 @@
+{
+  "type": "tabs",
+  "i18n": true,
+  "items": {
+    "MainSettings": {
+      "type": "panel",
+      "label": "Main settings",
+      "items": {
+        "Days7Forecast": {
+          "newLine": true,
+          "type": "text",
+          "label": "URL_7_days_forecast",
+          "sm": 12,
+          "md": 4
+        },
+        "Days5Forecast": {
+          "newLine": true,
+          "type": "text",
+          "label": "URL_5_days_forecast",
+          "sm": 12,
+          "md": 4
+        },
+        "HourlyForecast": {
+          "newLine": true,
+          "type": "text",
+          "label": "URL_hourly_forecast",
+          "sm": 12,
+          "md": 4
+        },
+        "HourlyForecastJSON": {
+          "newLine": true,
+          "type": "text",
+          "label": "URL_hourly_forecast_JSON",
+          "sm": 12,
+          "md": 4
+        },
+        "createCurrent": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "createCurrent",
+          "sm": 12,
+          "md": 4
+        },
+        "createInXHour": {
+          "newLine": false,
+          "type": "select",
+          "label": "createInXHour",
+          "options": [
+            {
+              "label": { "en": "none" },
+              "value": 0
+            },
+            {
+              "label": { "en": "in 1 hour" },
+              "value": 1
+            },
+            {
+              "label": { "en": "in 2 hour" },
+              "value": 2
+            },
+            {
+              "label": { "en": "in 3 hour" },
+              "value": 3
+            },
+            {
+              "label": { "en": "in 6 hour" },
+              "value": 4
+            }
+          ],
+          "sm": 12,
+          "md": 4
+        },
+        "parseTimeout": {
+          "newLine": true,
+          "type": "number",
+          "label": "parse_timeout",
+          "sm": 12,
+          "md": 4
+        }
+      }
+    },
+    "Symbols": {
+      "type": "panel",
+      "label": "Icons",
+      "items": {
+        "iconSet": {
+          "newLine": true,
+          "type": "select",
+          "label": "Icon set",
+          "options": [
+            {
+              "label": { "en": "1" },
+              "value": 1
+            },
+            {
+              "label": { "en": "2" },
+              "value": 2
+            },
+            {
+              "label": { "en": "3" },
+              "value": 3
+            },
+            {
+              "label": { "en": "4" },
+              "value": 4
+            },
+            {
+              "label": { "en": "5" },
+              "value": 5
+            },
+            {
+              "label": { "en": "6" },
+              "value": 6
+            },
+            {
+              "label": { "en": "custum" },
+              "value": 7
+            }
+          ],
+          "sm": 12,
+          "md": 4
+        },
+        "UsePNGorOriginalSVG": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "use_png_or_svg",
+          "sm": 12,
+          "md": 4
+        },
+        "UseColorOrBW": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "use_color_or_bw",
+          "sm": 12,
+          "md": 4
+        },
+        "CustomPath": {
+          "newLine": true,
+          "type": "text",
+          "label": "custom_path",
+          "sm": 12,
+          "md": 4
+        },
+        "CustomPathExt": {
+          "newLine": false,
+          "type": "text",
+          "label": "custom_path_ext",
+          "sm": 12,
+          "md": 4
+        }
+      }
+    },
+    "WindIcons": {
+      "type": "panel",
+      "label": "WindIcons",
+      "items": {
+        "windiconSet": {
+          "newLine": true,
+          "type": "select",
+          "label": "Icon set",
+          "options": [
+            {
+              "label": { "en": "Beaufort-White" },
+              "value": "Beaufort-White"
+            },
+            {
+              "label": { "en": "galeria2-Beaufort" },
+              "value": "galeria2-Beaufort"
+            },
+            {
+              "label": { "en": "galeria1" },
+              "value": "galeria1"
+            },
+            {
+              "label": { "en": "custum" },
+              "value": "custom"
+            }
+          ],
+          "sm": 12,
+          "md": 4
+        },
+
+        "WindCustomPath": {
+          "newLine": true,
+          "type": "text",
+          "label": "custom_path",
+          "sm": 12,
+          "md": 4
+        },
+        "WindCustomPathExt": {
+          "newLine": false,
+          "type": "text",
+          "label": "custom_path_ext",
+          "sm": 12,
+          "md": 4
+        }
+      }
+    },
+    "MoonIcons": {
+      "type": "panel",
+      "label": "MoonIcons",
+      "items": {
+        "mooniconSet": {
+          "newLine": true,
+          "type": "select",
+          "label": "Icon set",
+          "options": [
+            {
+              "label": { "en": "original" },
+              "value": "original"
+            },
+            {
+              "label": { "en": "custum" },
+              "value": "custom"
+            }
+          ],
+          "sm": 12,
+          "md": 4
+        },
+        "MoonCustomPath": {
+          "newLine": true,
+          "type": "text",
+          "label": "custom_path",
+          "sm": 12,
+          "md": 4
+        },
+        "MoonCustomPathExt": {
+          "newLine": false,
+          "type": "text",
+          "label": "custom_path_ext",
+          "sm": 12,
+          "md": 4
+        }
+      }
+    }
+
+
+  }
+}
