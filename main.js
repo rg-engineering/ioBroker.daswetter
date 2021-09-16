@@ -100,7 +100,7 @@ async function main() {
         clearTimeout(killTimer);
         adapter.log.debug("timer killed");
     }
-    adapter.terminate ? adapter.terminate(0) : process.exit(0);
+    adapter.terminate ? adapter.terminate('All data handled, adapter stopped until next scheduled moment') : process.exit(0);
 }
 
 function getIconUrl(num) {
