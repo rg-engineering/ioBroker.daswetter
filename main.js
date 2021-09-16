@@ -73,7 +73,7 @@ const xml2js = require("xml2json-light");
 let killTimer;
 
 async function main() {
-    // force terminate 
+    // force terminate
     let nParseTimeout = 60;
     if (adapter.config.parseTimeout > 0) {
         nParseTimeout = adapter.config.parseTimeout;
@@ -86,14 +86,14 @@ async function main() {
         adapter.terminate ? adapter.terminate(15) : process.exit(15);
     }, nParseTimeout);
 
-    
+
 
     await getForecastData7Days();
     await getForecastData5Days();
     await getForecastDataHourly();
     await getForecastDataHourlyJSON();
 
-   
+
     adapter.log.debug("exit, all done");
 
     if (killTimer) {
@@ -110,7 +110,7 @@ function getIconUrl(num) {
     let ext = "";
     if (num) {
 
-        if (iconSet == 7) {//custom 
+        if (iconSet == 7) {//custom
             url = adapter.config.CustomPath;
             ext = adapter.config.CustomPathExt;
         }
@@ -281,7 +281,7 @@ async function getForecastData7Days() {
                     };
 
                     await insertIntoList("NextDays.Location_" + ll + ".Day_" + pp, null, "", obj);
-                    
+
                     const numOfDatapoints = vars.length;
 
                     adapter.log.debug("number of datapoints " + numOfDatapoints);
@@ -307,7 +307,7 @@ async function getForecastData7Days() {
             adapter.log.error("exception in 7DaysForecast [" + e + "]");
 
         }
-       
+
     }
 }
 
@@ -323,10 +323,10 @@ async function getForecastData5Days() {
             adapter.log.debug("got response " + JSON.stringify(buffer));
 
 
-            
+
             //adapter.log.debug('got body: ' + body);
             const body1 = buffer.replace(/wind-gusts/g, "windgusts");
-            
+
             const result = xml2js.xml2json(body1);
 
             adapter.log.debug("result " + JSON.stringify(result));
@@ -2013,12 +2013,13 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
         if (obj_new != null) {
 
-            if (obj_new.common.role != obj.common.role
+            if ((obj_new.common.role != obj.common.role
                 || obj_new.common.type != obj.common.type
-                || (obj_new.common.unit != obj.common.unit && obj.common.unit != null) 
+                || (obj_new.common.unit != obj.common.unit && obj.common.unit != null)
                 || obj_new.common.read != obj.common.read
                 || obj_new.common.write != obj.common.write
-                || obj_new.common.name != obj.common.name
+                || obj_new.common.name != obj.common.name)
+                && obj.type === "state"
             ) {
                 adapter.log.warn("change object " + JSON.stringify(obj) + " " + JSON.stringify(obj_new));
                 await adapter.extendObject(key, {
@@ -2072,5 +2073,5 @@ if (module && module.parent) {
 } else {
     // or start the instance directly
     startAdapter();
-} 
+}
 
