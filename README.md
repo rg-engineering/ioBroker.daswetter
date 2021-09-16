@@ -57,6 +57,11 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (DutchmanNL) Warn messages for channels solved
+* (DutchmanNL) Optimize log message at adapter termination
+* (DutchmanNL) Ensure adapter will always handle data at start
+
 ### 3.0.7 (2021-05-03)
 * (René) issue #91: remove warnings with js-controller 3.3.
 
