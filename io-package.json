@@ -94,6 +94,7 @@
         "schedule": "*/15 * * * *",
         "icon": "daswettercom.png",
         "enabled": true,
+    "allowInit": true,
         "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
         "keywords": [
             "iobroker",
