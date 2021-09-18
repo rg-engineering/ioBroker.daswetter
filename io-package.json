@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.0.7",
+        "version": "3.0.8",
         "news": {
+            "3.0.8": {
+                "en": "Warn messages for channels removed",
+                "de": "Warnmeldungen für entfernte Kanäle",
+                "ru": "Предупреждать об удаленных каналах",
+                "pt": "Avisar mensagens para canais removidos",
+                "nl": "Waarschuwingsberichten voor verwijderde kanalen",
+                "fr": "Messages d'avertissement pour les chaînes supprimées",
+                "it": "Messaggi di avviso per i canali rimossi",
+                "es": "Mensajes de advertencia para canales eliminados",
+                "pl": "Ostrzegaj o usuniętych kanałach",
+                "zh-cn": "已删除频道的警告消息"
+            },
             "3.0.7": {
                 "en": "warnings removed for js-controller V3.3",
                 "de": "Warnungen für js-controller V3.3 entfernt",
@@ -94,7 +106,7 @@
         "schedule": "*/15 * * * *",
         "icon": "daswettercom.png",
         "enabled": true,
-    "allowInit": true,
+        "allowInit": true,
         "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
         "keywords": [
             "iobroker",
