@@ -10,3 +10,10 @@ lib/i18n/*/flat.txt
 /*.njsproj
 /.project
 /.settings/
+*.orig
+/log.txt
+/main_neu.js
+/readme.txt
+/test.js
+/test2.js
+/typings/
