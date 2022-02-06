@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "2.5.1",
-    "@sentry/node": "6.17.3",
+    "@sentry/node": "6.17.4",
     "bent": "7.3.12",
     "xml2json-light": "1.0.6"
   },
