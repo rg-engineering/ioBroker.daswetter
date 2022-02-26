@@ -232,10 +232,10 @@ async function getForecastData7Days() {
 
             const buffer = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(buffer));
+            adapter.log.debug("got response " + buffer.data);
 
             //convert xml to json first
-            const result = xml2js.xml2json(buffer);
+            const result = xml2js.xml2json(buffer.data);
             //adapter.log.debug("result " + JSON.stringify(res));
 
             adapter.log.debug("result " + JSON.stringify(result));
@@ -324,12 +324,12 @@ async function getForecastData5Days() {
             //const buffer = await getBuffer(url);
             const buffer = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(buffer));
+            adapter.log.debug("got response " + buffer.data);
 
 
 
             //adapter.log.debug('got body: ' + body);
-            const body1 = buffer.replace(/wind-gusts/g, "windgusts");
+            const body1 = buffer.data.replace(/wind-gusts/g, "windgusts");
 
             const result = xml2js.xml2json(body1);
 
@@ -540,9 +540,9 @@ async function getForecastDataHourly() {
             //const buffer = await getBuffer(url);
             const buffer = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(buffer));
+            adapter.log.debug("got response " + buffer.data);
 
-            const body1 = buffer.replace(/wind-gusts/g, "windgusts");
+            const body1 = buffer.data.replace(/wind-gusts/g, "windgusts");
 
             const result = xml2js.xml2json(body1);
 
@@ -975,9 +975,11 @@ async function getForecastDataHourlyJSON() {
 
             //const getBuffer = bent("json");
             //let result = await getBuffer(url);
-            const result = await axios.get(url);
+            const res = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(result));
+            const result = res.data;
+
+            adapter.log.debug("got response " + result);
 
             const numOfLocations = 1; //seems here we get only one location
 
