@@ -67,7 +67,8 @@ function startAdapter(options) {
 }
 
 
-const bent = require("bent");
+//const bent = require("bent");
+const axios = require('axios');
 const xml2js = require("xml2json-light");
 
 let killTimer;
@@ -226,8 +227,10 @@ async function getForecastData7Days() {
             const url = adapter.config.Days7Forecast;
             adapter.log.debug("calling forecast 7 days: " + url);
 
-            const getBuffer = bent("string");
-            const buffer = await getBuffer(url);
+            //const getBuffer = bent("string");
+            //const buffer = await getBuffer(url);
+
+            const buffer = await axios.get(url);
 
             adapter.log.debug("got response " + JSON.stringify(buffer));
 
@@ -317,8 +320,9 @@ async function getForecastData5Days() {
             const url = adapter.config.Days5Forecast;
             adapter.log.debug("calling forecast 5 days: " + url);
 
-            const getBuffer = bent("string");
-            const buffer = await getBuffer(url);
+            //const getBuffer = bent("string");
+            //const buffer = await getBuffer(url);
+            const buffer = await axios.get(url);
 
             adapter.log.debug("got response " + JSON.stringify(buffer));
 
@@ -532,8 +536,9 @@ async function getForecastDataHourly() {
             const url = adapter.config.HourlyForecast;
             adapter.log.debug("calling forecast hourly: " + url);
 
-            const getBuffer = bent("string");
-            const buffer = await getBuffer(url);
+            //const getBuffer = bent("string");
+            //const buffer = await getBuffer(url);
+            const buffer = await axios.get(url);
 
             adapter.log.debug("got response " + JSON.stringify(buffer));
 
@@ -968,8 +973,9 @@ async function getForecastDataHourlyJSON() {
             const url = adapter.config.HourlyForecastJSON;
             adapter.log.debug("calling forecast hourly JSON: " + url);
 
-            const getBuffer = bent("json");
-            let result = await getBuffer(url);
+            //const getBuffer = bent("json");
+            //let result = await getBuffer(url);
+            const result = await axios.get(url);
 
             adapter.log.debug("got response " + JSON.stringify(result));
 
