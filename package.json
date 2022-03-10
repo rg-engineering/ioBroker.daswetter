@@ -21,7 +21,7 @@
   "dependencies": {
     "@iobroker/adapter-core": "2.6.0",
     "@sentry/node": "6.18.0",
-    "axios": "0.26.0",
+    "axios": "0.26.1",
     "xml2json-light": "1.0.6"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "@types/request-promise-native": "1.0.18",
     "@types/sinon": "10.0.11",
     "@types/sinon-chai": "3.2.8",
-    "axios": "0.26.0",
+    "axios": "0.26.1",
     "chai": "4.3.6",
     "chai-as-promised": "7.1.1",
     "eslint": "8.9.0",
