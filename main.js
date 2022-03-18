@@ -436,6 +436,10 @@ async function getForecastData5Days() {
                     keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moon";
                     await getprops(value, keyName);
 
+                    value = result.report.location.day[d].uv_index_max;
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".uv_index_max";
+                    await getprops(value, keyName);
+
                     //add url for icon
                     await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
 
@@ -513,6 +517,10 @@ async function getForecastData5Days() {
 
                         value = result.report.location.day[d].hour[h].windchill;
                         keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
+                        await getprops(value, keyName);
+
+                        value = result.report.location.day[d].hour[h].uv_index;
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".uv_index";
                         await getprops(value, keyName);
                     }
                 }
@@ -695,6 +703,10 @@ async function getForecastDataHourly() {
 
                     value = result.report.location.day[d].snowline;
                     keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".snowline";
+                    await getprops(value, keyName);
+
+                    value = result.report.location.day[d].uv_index_max;
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".uv_index_max";
                     await getprops(value, keyName);
 
                     value = result.report.location.day[d].sun;
@@ -936,6 +948,20 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
 
+                        value = result.report.location.day[d].hour[h].uv_index;
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".uv_index";
+                        await getprops(value, keyName);
+
+                        if (adapter.config.createCurrent && dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.uv_index";
+                            await getprops(value, keyName);
+                        }
+                        if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.uv_index";
+                            await getprops(value, keyName);
+                        }
+
+
                         value = result.report.location.day[d].hour[h].windchill;
                         keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
                         await getprops(value, keyName);
@@ -1141,6 +1167,10 @@ async function getForecastDataHourlyJSON() {
                     value = result.day[d].snowline;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".snowline";
                     await insertIntoList(keyName, value, unit_snowline);
+
+                    value = result.day[d].uv_index_max;
+                    keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".uv_index_max";
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].sun.in;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".sun_in";
@@ -1407,6 +1437,17 @@ async function getForecastDataHourlyJSON() {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.snowline";
                             await insertIntoList(keyName, value, unit_snowline);
                         }
+
+
+                        value = result.day[d].hour[h].uv_index;
+                        keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".uv_index";
+                        await insertIntoList(keyName, value);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.uv_index";
+                            await insertIntoList(keyName, value);
+                        }
+
 
                         value = result.day[d].hour[h].windchill;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
