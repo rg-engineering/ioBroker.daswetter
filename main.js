@@ -1800,7 +1800,32 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-
+                } else if (key.match(/\.uv_index_max_value/) || key.match(/\.uv_index_max/)) {
+                    valueType = "int";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "max UV index",
+                            type: "number",
+                            role: "weather.uv_index_max.forecast." + d,
+                            unit: "",
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.uv_index_value/) || key.match(/\.uv_index/)) {
+                    valueType = "int";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "UV index",
+                            type: "number",
+                            role: "weather.uv_index.forecast." + d,
+                            unit: "",
+                            read: true,
+                            write: false
+                        }
+                    };
                 } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
                     valueType = "int";
                     obj = {
