@@ -1003,7 +1003,7 @@ async function getForecastDataHourlyJSON() {
             //let result = await getBuffer(url);
             const res = await axios.get(url);
 
-            const result = res.data;
+            let result = res.data;
 
             adapter.log.debug("got response " + result);
 
