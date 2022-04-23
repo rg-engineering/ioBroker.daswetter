@@ -56,6 +56,18 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.daswetter/issues) if you find bugs or whish new features
 
 ## Changelog
+
+### 3.1.2 (2022-03-20)
+* (René) see issue #130: bug fix json data
+
+### 3.1.1 (2022-03-19)
+* (René) bug fix UV index
+
+### 3.1.0 (2022-03-19)
+* (René) replace bent by axios
+* (René) dependencies updated
+* (René) see issue #128: add UV index
+
 ### 3.0.9 (2021-11-09)
 * (René) dependencies updated
 * (René) see issue #114: "connectionType" and "dataSource" fixed
@@ -155,7 +167,7 @@ needs also 2.x of vis-weather-widget
 
 
 ## License
-Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2022>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

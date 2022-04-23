@@ -1,19 +1,31 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.0.9",
+        "version": "3.1.2",
         "news": {
-            "3.0.9": {
-                "en": "dependencies updated",
-                "de": "Abhängigkeiten aktualisiert",
-                "ru": "зависимости обновлены",
-                "pt": "dependências atualizadas",
-                "nl": "afhankelijkheden bijgewerkt",
-                "fr": "dépendances mises à jour",
-                "it": "dipendenze aggiornate",
-                "es": "dependencias actualizadas",
-                "pl": "zaktualizowano zależności",
-                "zh-cn": "依赖项已更新"
+            "3.1.2": {
+                "en": "some bug fixes",
+                "de": "einige Fehlerbehebungen",
+                "ru": "некоторые исправления ошибок",
+                "pt": "algumas correções de bugs",
+                "nl": "enkele bugfixes",
+                "fr": "quelques corrections de bugs",
+                "it": "alcune correzioni di bug",
+                "es": "algunas correcciones de errores",
+                "pl": "kilka poprawek błędów",
+                "zh-cn": "一些错误修复"
+            },
+            "3.1.0": {
+                "en": "'bent' replaced by 'axios'",
+                "de": "'bent' ersetzt durch 'axios'",
+                "ru": "«согнутый» заменен на «аксиос»",
+                "pt": "'curvado' substituído por 'axios'",
+                "nl": "'gebogen' vervangen door 'axios'",
+                "fr": "'plié' remplacé par 'axios'",
+                "it": "'piegato' sostituito da 'assios'",
+                "es": "'doblado' reemplazado por 'axios'",
+                "pl": "„wygięty” zastąpiony przez „axios”",
+                "zh-cn": "'bent' 替换为 'axios'"
             },
             "3.0.8": {
                 "en": "Warn messages for channels removed",

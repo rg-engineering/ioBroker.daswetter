@@ -67,7 +67,8 @@ function startAdapter(options) {
 }
 
 
-const bent = require("bent");
+//const bent = require("bent");
+const axios = require('axios');
 const xml2js = require("xml2json-light");
 
 let killTimer;
@@ -226,13 +227,15 @@ async function getForecastData7Days() {
             const url = adapter.config.Days7Forecast;
             adapter.log.debug("calling forecast 7 days: " + url);
 
-            const getBuffer = bent("string");
-            const buffer = await getBuffer(url);
+            //const getBuffer = bent("string");
+            //const buffer = await getBuffer(url);
 
-            adapter.log.debug("got response " + JSON.stringify(buffer));
+            const buffer = await axios.get(url);
+
+            adapter.log.debug("got response " + buffer.data);
 
             //convert xml to json first
-            const result = xml2js.xml2json(buffer);
+            const result = xml2js.xml2json(buffer.data);
             //adapter.log.debug("result " + JSON.stringify(res));
 
             adapter.log.debug("result " + JSON.stringify(result));
@@ -317,15 +320,16 @@ async function getForecastData5Days() {
             const url = adapter.config.Days5Forecast;
             adapter.log.debug("calling forecast 5 days: " + url);
 
-            const getBuffer = bent("string");
-            const buffer = await getBuffer(url);
+            //const getBuffer = bent("string");
+            //const buffer = await getBuffer(url);
+            const buffer = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(buffer));
+            adapter.log.debug("got response " + buffer.data);
 
 
 
             //adapter.log.debug('got body: ' + body);
-            const body1 = buffer.replace(/wind-gusts/g, "windgusts");
+            const body1 = buffer.data.replace(/wind-gusts/g, "windgusts");
 
             const result = xml2js.xml2json(body1);
 
@@ -432,6 +436,10 @@ async function getForecastData5Days() {
                     keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moon";
                     await getprops(value, keyName);
 
+                    value = result.report.location.day[d].uv_index_max;
+                    keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".uv_index_max";
+                    await getprops(value, keyName);
+
                     //add url for icon
                     await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
 
@@ -510,6 +518,10 @@ async function getForecastData5Days() {
                         value = result.report.location.day[d].hour[h].windchill;
                         keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
                         await getprops(value, keyName);
+
+                        value = result.report.location.day[d].hour[h].uv_index;
+                        keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".uv_index";
+                        await getprops(value, keyName);
                     }
                 }
             }
@@ -532,12 +544,13 @@ async function getForecastDataHourly() {
             const url = adapter.config.HourlyForecast;
             adapter.log.debug("calling forecast hourly: " + url);
 
-            const getBuffer = bent("string");
-            const buffer = await getBuffer(url);
+            //const getBuffer = bent("string");
+            //const buffer = await getBuffer(url);
+            const buffer = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(buffer));
+            adapter.log.debug("got response " + buffer.data);
 
-            const body1 = buffer.replace(/wind-gusts/g, "windgusts");
+            const body1 = buffer.data.replace(/wind-gusts/g, "windgusts");
 
             const result = xml2js.xml2json(body1);
 
@@ -690,6 +703,10 @@ async function getForecastDataHourly() {
 
                     value = result.report.location.day[d].snowline;
                     keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".snowline";
+                    await getprops(value, keyName);
+
+                    value = result.report.location.day[d].uv_index_max;
+                    keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".uv_index_max";
                     await getprops(value, keyName);
 
                     value = result.report.location.day[d].sun;
@@ -931,6 +948,20 @@ async function getForecastDataHourly() {
                             await getprops(value, keyName);
                         }
 
+                        value = result.report.location.day[d].hour[h].uv_index;
+                        keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".uv_index";
+                        await getprops(value, keyName);
+
+                        if (adapter.config.createCurrent && dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".current.uv_index";
+                            await getprops(value, keyName);
+                        }
+                        if (parseInt(adapter.config.createInXHour) > 0 && Hour4SunTime == inXhours2Check && dd == inXdays2Check) {
+                            keyName = "NextHours.Location_" + ll + ".Day_1.in" + inXhours + "hours.uv_index";
+                            await getprops(value, keyName);
+                        }
+
+
                         value = result.report.location.day[d].hour[h].windchill;
                         keyName = "NextHours.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
                         await getprops(value, keyName);
@@ -968,10 +999,13 @@ async function getForecastDataHourlyJSON() {
             const url = adapter.config.HourlyForecastJSON;
             adapter.log.debug("calling forecast hourly JSON: " + url);
 
-            const getBuffer = bent("json");
-            let result = await getBuffer(url);
+            //const getBuffer = bent("json");
+            //let result = await getBuffer(url);
+            const res = await axios.get(url);
 
-            adapter.log.debug("got response " + JSON.stringify(result));
+            let result = res.data;
+
+            adapter.log.debug("got response " + result);
 
             const numOfLocations = 1; //seems here we get only one location
 
@@ -1133,6 +1167,10 @@ async function getForecastDataHourlyJSON() {
                     value = result.day[d].snowline;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".snowline";
                     await insertIntoList(keyName, value, unit_snowline);
+
+                    value = result.day[d].uv_index_max;
+                    keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".uv_index_max";
+                    await insertIntoList(keyName, value);
 
                     value = result.day[d].sun.in;
                     keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".sun_in";
@@ -1399,6 +1437,17 @@ async function getForecastDataHourlyJSON() {
                             keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.snowline";
                             await insertIntoList(keyName, value, unit_snowline);
                         }
+
+
+                        value = result.day[d].hour[h].uv_index;
+                        keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".uv_index";
+                        await insertIntoList(keyName, value);
+
+                        if (dd === 1 && Hour4SunTime === CurrentHour) {
+                            keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".current.uv_index";
+                            await insertIntoList(keyName, value);
+                        }
+
 
                         value = result.day[d].hour[h].windchill;
                         keyName = "NextHours2.Location_" + ll + ".Day_" + dd + ".Hour_" + hh + ".windchill";
@@ -1751,7 +1800,32 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-
+                } else if (key.match(/\.uv_index_max_value/) || key.match(/\.uv_index_max/)) {
+                    valueType = "int";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "max UV index",
+                            type: "number",
+                            role: "weather.uv_index_max.forecast." + d,
+                            unit: "",
+                            read: true,
+                            write: false
+                        }
+                    };
+                } else if (key.match(/\.uv_index_value/) || key.match(/\.uv_index/)) {
+                    valueType = "int";
+                    obj = {
+                        type: "state",
+                        common: {
+                            name: "UV index",
+                            type: "number",
+                            role: "weather.uv_index.forecast." + d,
+                            unit: "",
+                            read: true,
+                            write: false
+                        }
+                    };
                 } else if (key.match(/\.temp_value/) || key.match(/\.temp/)) {
                     valueType = "int";
                     obj = {
