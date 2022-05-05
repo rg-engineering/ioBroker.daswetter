@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.1.2",
+        "version": "3.1.3",
         "news": {
+            "3.1.3": {
+                "en": "bug fix moon icon",
+                "de": "Bugfix-Mond-Symbol",
+                "ru": "исправление ошибки значок луны",
+                "pt": "ícone de lua de correção de bug",
+                "nl": "bug fix maan icoon",
+                "fr": "icône de lune de correction de bogue",
+                "it": "icona della luna di correzione bug",
+                "es": "icono de luna de corrección de errores",
+                "pl": "Naprawa błędów ikona księżyca",
+                "zh-cn": "错误修复月亮图标"
+            },
             "3.1.2": {
                 "en": "some bug fixes",
                 "de": "einige Fehlerbehebungen",

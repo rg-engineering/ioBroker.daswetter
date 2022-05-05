@@ -435,13 +435,13 @@ async function getForecastData5Days() {
                     value = result.report.location.day[d].moon;
                     keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moon";
                     await getprops(value, keyName);
+                    //add url for icon
+                    await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
 
                     value = result.report.location.day[d].uv_index_max;
                     keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".uv_index_max";
                     await getprops(value, keyName);
 
-                    //add url for icon
-                    await insertIntoList("NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".moonIconURL", getMoonIconUrl(value.symbol));
 
                     value = result.report.location.day[d].local_info;
                     keyName = "NextDaysDetailed.Location_" + ll + ".Day_" + dd + ".local_info";
