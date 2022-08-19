@@ -45,9 +45,9 @@ function startAdapter(options) {
         },
         //#######################################
         //
-        SIGINT: function () {
-            adapter && adapter.log && adapter.log.info && adapter.log.info("cleaned everything up...");
-        },
+        //SIGINT: function () {
+        //    adapter && adapter.log && adapter.log.info && adapter.log.info("cleaned everything up...");
+        //},
         //#######################################
         //  is called if a subscribed object changes
         //objectChange: function (id, obj) {

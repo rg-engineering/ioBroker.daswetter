@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.1.3",
+        "version": "3.1.4",
         "news": {
+            "3.1.4": {
+                "en": "update dependencies",
+                "de": "Abhängigkeiten aktualisieren",
+                "ru": "обновить зависимости",
+                "pt": "atualizar dependências",
+                "nl": "update afhankelijkheden",
+                "fr": "mettre à jour les dépendances",
+                "it": "aggiornare le dipendenze",
+                "es": "actualizar dependencias",
+                "pl": "zaktualizuj zależności",
+                "zh-cn": "更新依赖"
+            },
             "3.1.3": {
                 "en": "bug fix moon icon",
                 "de": "Bugfix-Mond-Symbol",
