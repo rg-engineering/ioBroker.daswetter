@@ -13,7 +13,8 @@
                 "it": "aggiornare le dipendenze",
                 "es": "actualizar dependencias",
                 "pl": "zaktualizuj zależności",
-                "zh-cn": "更新依赖"
+                "zh-cn": "更新依赖",
+                "uk": "оновити залежності"
             },
             "3.1.3": {
                 "en": "bug fix moon icon",
@@ -25,7 +26,8 @@
                 "it": "icona della luna di correzione bug",
                 "es": "icono de luna de corrección de errores",
                 "pl": "Naprawa błędów ikona księżyca",
-                "zh-cn": "错误修复月亮图标"
+                "zh-cn": "错误修复月亮图标",
+                "uk": "піктограма місяця виправлення помилок"
             },
             "3.1.2": {
                 "en": "some bug fixes",
@@ -37,7 +39,8 @@
                 "it": "alcune correzioni di bug",
                 "es": "algunas correcciones de errores",
                 "pl": "kilka poprawek błędów",
-                "zh-cn": "一些错误修复"
+                "zh-cn": "一些错误修复",
+                "uk": "деякі виправлення помилок"
             },
             "3.1.0": {
                 "en": "'bent' replaced by 'axios'",
@@ -49,7 +52,8 @@
                 "it": "'piegato' sostituito da 'assios'",
                 "es": "'doblado' reemplazado por 'axios'",
                 "pl": "„wygięty” zastąpiony przez „axios”",
-                "zh-cn": "'bent' 替换为 'axios'"
+                "zh-cn": "'bent' 替换为 'axios'",
+                "uk": "\"bent\" замінено на \"axios\""
             },
             "3.0.8": {
                 "en": "Warn messages for channels removed",
@@ -61,7 +65,8 @@
                 "it": "Messaggi di avviso per i canali rimossi",
                 "es": "Mensajes de advertencia para canales eliminados",
                 "pl": "Ostrzegaj o usuniętych kanałach",
-                "zh-cn": "已删除频道的警告消息"
+                "zh-cn": "已删除频道的警告消息",
+                "uk": "Попередження про видалені канали"
             },
             "3.0.7": {
                 "en": "warnings removed for js-controller V3.3",
@@ -73,7 +78,8 @@
                 "it": "avvisi rimossi per js-controller V3.3",
                 "es": "advertencias eliminadas para js-controller V3.3",
                 "pl": "ostrzeżenia usunięte dla js-controller V3.3",
-                "zh-cn": "针对js-controller V3.3的警告已删除"
+                "zh-cn": "针对js-controller V3.3的警告已删除",
+                "uk": "видалено попередження для js-контролера V3.3"
             },
             "3.0.5": {
                 "en": "dependencies updated",
@@ -85,7 +91,8 @@
                 "it": "dipendenze aggiornate",
                 "es": "dependencias actualizadas",
                 "pl": "zaktualizowane zależności",
-                "zh-cn": "依赖关系已更新"
+                "zh-cn": "依赖关系已更新",
+                "uk": "залежності оновлено"
             },
             "3.0.4": {
                 "en": "rain values as float-value instead integer parsed",
@@ -97,7 +104,8 @@
                 "it": "valori di pioggia come valore float invece di interi analizzati",
                 "es": "valores de lluvia como valor flotante en lugar de un entero analizado",
                 "pl": "wartości deszczu jako wartość zmiennoprzecinkowa zamiast analizowanych liczb całkowitych",
-                "zh-cn": "下雨值作为浮点值，而不是整数解析"
+                "zh-cn": "下雨值作为浮点值，而不是整数解析",
+                "uk": "значення дощу як значення з плаваючою речовиною замість цілого аналізу"
             },
             "3.0.3": {
                 "en": "parse numbers added",
@@ -109,7 +117,8 @@
                 "it": "analizzare i numeri aggiunti",
                 "es": "analizar números agregados",
                 "pl": "dodano parsowanie numerów",
-                "zh-cn": "解析添加的数字"
+                "zh-cn": "解析添加的数字",
+                "uk": "розібрати додані числа"
             },
             "3.0.1": {
                 "en": "replaced 'REQUEST' by 'BENT'",
@@ -121,10 +130,10 @@
                 "it": "sostituito da \"RICHIESTA\" con \"BENT\"",
                 "es": "reemplazado 'SOLICITUD' por 'BENT'",
                 "pl": "zastąpiono „ZAPYTANIE” na „WYGIĘTA”",
-                "zh-cn": "用“ BENT”代替“ REQUEST”"
+                "zh-cn": "用“ BENT”代替“ REQUEST”",
+                "uk": "замінено \"REQUEST\" на \"BENT\""
             }
         },
-        "title": "DasWetter.com",
         "titleLang": {
             "en": "DasWetter.com",
             "de": "DasWetter.com",
@@ -135,7 +144,8 @@
             "it": "DasWetter.com",
             "es": "DasWetter.com",
             "pl": "DasWetter.com",
-            "zh-cn": "DasWetter.com"
+            "zh-cn": "DasWetter.com",
+            "uk": "DasWetter.com"
         },
         "desc": {
             "en": "reads weather forecast data from DasWetter.com. Different forecast models are available.",
@@ -147,7 +157,8 @@
             "it": "legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili diversi modelli di previsione.",
             "es": "lee los datos del pronóstico del tiempo de DasWetter.com. Existen diferentes modelos de pronóstico disponibles.",
             "pl": "czyta prognozy pogody z DasWetter.com. Dostępne są różne modele prognoz.",
-            "zh-cn": "从DasWetter.com读取天气预报数据。"
+            "zh-cn": "从DasWetter.com读取天气预报数据。",
+            "uk": "читає дані прогнозу погоди з DasWetter.com. Доступні різні моделі прогнозу."
         },
         "platform": "Javascript/Node.js",
         "mode": "schedule",
@@ -157,7 +168,6 @@
         "allowInit": true,
         "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
         "keywords": [
-            "iobroker",
             "weather",
             "forecast",
             "DasWetter"
