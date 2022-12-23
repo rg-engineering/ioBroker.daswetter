@@ -57,7 +57,10 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.1.5 (in progress)
+### 3.1.6 (2022-12-23)
+* (René) see issue #153: package Axios downgraded
+
+### 3.1.5 (2022-12-04)
 * (René) update dependencies
 
 ### 3.1.4 (2022-08-19)

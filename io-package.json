@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.1.5",
+        "version": "3.1.6",
         "news": {
+            "3.1.6": {
+                "en": "package Axios downgraded",
+                "de": "Paket Axios herabgestuft",
+                "ru": "пакет Axios понижен",
+                "pt": "pacote Axios rebaixado",
+                "nl": "pakket Axios gedowngraded",
+                "fr": "package Axios rétrogradé",
+                "it": "pacchetto Axios declassato",
+                "es": "paquete Axios degradado",
+                "pl": "obniżona wersja pakietu Axios",
+                "uk": "пакет Axios знижено",
+                "zh-cn": "软件包 Axios 降级"
+            },
             "3.1.5": {
                 "en": "update dependencies",
                 "de": "Abhängigkeiten aktualisieren",
