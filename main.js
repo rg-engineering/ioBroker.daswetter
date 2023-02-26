@@ -1039,7 +1039,7 @@ async function getForecastDataHourlyJSON() {
                 let numOfDays = result.day.length;
                 //const numOfDays = 5;
 
-                if (typeof numOfDays === "undefined") {
+                if (numOfDays === undefined) {
                     adapter.log.info("still wrong data structure from server received! repaired...");
                     //adapter.log.debug("got " + JSON.stringify(result.day));
 
@@ -1061,7 +1061,7 @@ async function getForecastDataHourlyJSON() {
                     adapter.log.debug("copied, got " + result.day.length + " days");
 
                     numOfDays = result.day.length;
-                    if (typeof numOfDays === "undefined") {
+                    if (numOfDays === undefined) {
                         adapter.log.error("not repaired...");
 
                         adapter.log.debug("got " + JSON.stringify(result.day));
