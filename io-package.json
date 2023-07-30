@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.1.8",
+        "version": "3.1.9",
         "news": {
-            "3.1.8": {
+            "3.1.9": {
                 "en": "dependencies updated",
                 "de": "Abhängigkeiten aktualisiert",
                 "ru": "зависимости обновлены",
@@ -80,9 +80,9 @@
             }
         ],
         "plugins": {
-          "sentry": {
-            "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
-          }
+            "sentry": {
+                "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
+            }
         },
         "compact": true,
         "authors": [
