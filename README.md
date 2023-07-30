@@ -57,7 +57,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.1.9 (2023-07-30)
+### 3.1.10 (2023-07-30)
 * (René) update dependencies
 
 ### 3.1.8 (2023-04-07)

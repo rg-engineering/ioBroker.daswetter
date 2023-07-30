@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "daswetter",
-        "version": "3.1.9",
+        "version": "3.1.10",
         "news": {
-            "3.1.9": {
+            "3.1.10": {
                 "en": "dependencies updated",
                 "de": "Abhängigkeiten aktualisiert",
                 "ru": "зависимости обновлены",
