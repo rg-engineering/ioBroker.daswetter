@@ -57,6 +57,11 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+<!--
+  Placeholder for the next version (at the beginning of the line):
+  ### **WORK IN PROGRESS**
+-->
+
 ### 3.1.10 (2023-07-30)
 * (René) update dependencies
 
