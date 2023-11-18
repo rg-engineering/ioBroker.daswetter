@@ -62,6 +62,9 @@ Now we have implemented a "auto-repair" which changes to structure to documented
   ### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+* (René) update dependencies
+
 ### 3.1.10 (2023-07-30)
 * (René) update dependencies
 
