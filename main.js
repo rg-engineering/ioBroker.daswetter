@@ -68,7 +68,7 @@ function startAdapter(options) {
 
 
 //const bent = require("bent");
-const axios = require('axios');
+const axios = require("axios");
 const xml2js = require("xml2json-light");
 
 let killTimer;
@@ -101,7 +101,7 @@ async function main() {
         clearTimeout(killTimer);
         adapter.log.debug("timer killed");
     }
-    adapter.terminate ? adapter.terminate('All data handled, adapter stopped until next scheduled moment') : process.exit(0);
+    adapter.terminate ? adapter.terminate("All data handled, adapter stopped until next scheduled moment") : process.exit(0);
 }
 
 function getIconUrl(num) {
