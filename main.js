@@ -223,6 +223,7 @@ async function getprops(obj, keyName) {
 async function getForecastData7Days() {
     if (adapter.config.Days7Forecast) {
 
+        let buffer = null;
         try {
             const url = adapter.config.Days7Forecast;
             adapter.log.debug("calling forecast 7 days: " + url);
@@ -230,7 +231,7 @@ async function getForecastData7Days() {
             //const getBuffer = bent("string");
             //const buffer = await getBuffer(url);
 
-            const buffer = await axios.get(url);
+            buffer = await axios.get(url);
 
             adapter.log.debug("got response " + buffer.data);
 
@@ -307,8 +308,7 @@ async function getForecastData7Days() {
             adapter.log.debug("7 days forecast done");
 
         } catch (e) {
-            adapter.log.error("exception in 7DaysForecast [" + e + "]");
-
+            adapter.log.error("exception in 7DaysForecast [" + e + "] got " + buffer.data);
         }
 
     }
@@ -316,13 +316,14 @@ async function getForecastData7Days() {
 
 async function getForecastData5Days() {
     if (adapter.config.Days5Forecast) {
+        let buffer = null;
         try {
             const url = adapter.config.Days5Forecast;
             adapter.log.debug("calling forecast 5 days: " + url);
 
             //const getBuffer = bent("string");
             //const buffer = await getBuffer(url);
-            const buffer = await axios.get(url);
+            buffer = await axios.get(url);
 
             adapter.log.debug("got response " + buffer.data);
 
@@ -530,8 +531,7 @@ async function getForecastData5Days() {
             adapter.log.debug("5 days forecast done");
 
         } catch (e) {
-            adapter.log.error("exception in 5DaysForecast [" + e + "]");
-
+            adapter.log.error("exception in 5DaysForecast [" + e + "] got " + buffer.data);
         }
     }
 }
@@ -540,13 +540,14 @@ async function getForecastDataHourly() {
 
     if (adapter.config.HourlyForecast) {
 
+        let buffer = null;
         try {
             const url = adapter.config.HourlyForecast;
             adapter.log.debug("calling forecast hourly: " + url);
 
             //const getBuffer = bent("string");
             //const buffer = await getBuffer(url);
-            const buffer = await axios.get(url);
+            buffer = await axios.get(url);
 
             adapter.log.debug("got response " + buffer.data);
 
@@ -984,8 +985,7 @@ async function getForecastDataHourly() {
             adapter.log.debug("hourly forecast done");
 
         } catch (e) {
-            adapter.log.error("exception in HourlyForecast [" + e + "]");
-
+            adapter.log.error("exception in HourlyForecast [" + e + "] got " + buffer.data);
         }
     }
 }
@@ -995,13 +995,14 @@ async function getForecastDataHourly() {
 
 async function getForecastDataHourlyJSON() {
     if (adapter.config.HourlyForecastJSON) {
+        let res = null;
         try {
             const url = adapter.config.HourlyForecastJSON;
             adapter.log.debug("calling forecast hourly JSON: " + url);
 
             //const getBuffer = bent("json");
             //let result = await getBuffer(url);
-            const res = await axios.get(url);
+            res = await axios.get(url);
 
             let result = res.data;
 
@@ -1467,8 +1468,7 @@ async function getForecastDataHourlyJSON() {
 
 
         } catch (e) {
-            adapter.log.error("exception in getForecastDataHourlyJSON [" + e + "]");
-
+            adapter.log.error("exception in getForecastDataHourlyJSON [" + e + "] got " + res.data );
         }
     }
 }
