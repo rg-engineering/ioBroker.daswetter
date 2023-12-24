@@ -1,119 +1,132 @@
 {
-    "common": {
-        "name": "daswetter",
-        "version": "3.1.11",
-        "news": {
-            "3.1.11": {
-                "en": "dependencies updated",
-                "de": "Abhängigkeiten aktualisiert",
-                "ru": "зависимости обновлены",
-                "pt": "dependências atualizadas",
-                "nl": "afhankelijkheden bijgewerkt",
-                "fr": "dépendances mises à jour",
-                "it": "dipendenze aggiornate",
-                "es": "dependencias actualizadas",
-                "pl": "zaktualizowane zależności",
-                "uk": "залежності оновлено",
-                "zh-cn": "依赖更新"
-            },
-            "3.1.6": {
-                "en": "package Axios downgraded",
-                "de": "Paket Axios herabgestuft",
-                "ru": "пакет Axios понижен",
-                "pt": "pacote Axios rebaixado",
-                "nl": "pakket Axios gedowngraded",
-                "fr": "package Axios rétrogradé",
-                "it": "pacchetto Axios declassato",
-                "es": "paquete Axios degradado",
-                "pl": "obniżona wersja pakietu Axios",
-                "uk": "пакет Axios знижено",
-                "zh-cn": "软件包 Axios 降级"
-            }
-        },
-        "titleLang": {
-            "en": "DasWetter.com",
-            "de": "DasWetter.com",
-            "ru": "DasWetter.com",
-            "pt": "DasWetter.com",
-            "nl": "DasWetter.com",
-            "fr": "DasWetter.com",
-            "it": "DasWetter.com",
-            "es": "DasWetter.com",
-            "pl": "DasWetter.com",
-            "zh-cn": "DasWetter.com",
-            "uk": "DasWetter.com"
-        },
-        "desc": {
-            "en": "reads weather forecast data from DasWetter.com. Different forecast models are available.",
-            "de": "liest Wettervorhersagedaten von DasWetter.com. Es stehen verschiedene Prognosemodelle zur Verfügung.",
-            "ru": "читает данные прогноза погоды от DasWetter.com. Доступны разные модели прогноза.",
-            "pt": "lê dados de previsão meteorológica do DasWetter.com. Diferentes modelos de previsão estão disponíveis.",
-            "nl": "leest weersvoorspellingsgegevens van DasWetter.com. Verschillende voorspellingsmodellen zijn beschikbaar.",
-            "fr": "lit les données météorologiques de DasWetter.com. Différents modèles de prévision sont disponibles.",
-            "it": "legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili diversi modelli di previsione.",
-            "es": "lee los datos del pronóstico del tiempo de DasWetter.com. Existen diferentes modelos de pronóstico disponibles.",
-            "pl": "czyta prognozy pogody z DasWetter.com. Dostępne są różne modele prognoz.",
-            "zh-cn": "从DasWetter.com读取天气预报数据。",
-            "uk": "читає дані прогнозу погоди з DasWetter.com. Доступні різні моделі прогнозу."
-        },
-        "platform": "Javascript/Node.js",
-        "mode": "schedule",
-        "schedule": "*/15 * * * *",
-        "icon": "daswettercom.png",
-        "enabled": true,
-        "allowInit": true,
-        "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
-        "keywords": [
-            "weather",
-            "forecast",
-            "DasWetter"
-        ],
-        "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
-        "loglevel": "info",
-        "stopBeforeUpdate": true,
-        "type": "weather",
-        "license": "MIT",
-        "materialize": true,
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
-            }
-        },
-        "compact": true,
-        "authors": [
-            {
-                "name": "René G.",
-                "email": "info@rg-engineering.eu"
-            }
-        ],
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "jsonCustom": false,
-        "jsonConfig": false,
-        "adminUI": {
-            "config": "materialize"
-        }
+  "common": {
+    "name": "daswetter",
+    "version": "3.1.12",
+    "news": {
+      "3.1.12": {
+        "en": "(René) see issue #217: additional log added to understand root cause, please copy&past log output into github issue",
+        "de": "(René) siehe Ausgabe #217: zusätzliches Log hinzugefügt, um die Ursache der Wurzel zu verstehen, bitte kopieren Sie die log Ausgabe in github Ausgabe",
+        "ru": "(René) см. в выпуске #217: дополнительный лог добавлен, чтобы понять корневую причину, пожалуйста, скопируйте и отправьте выход в github вопрос",
+        "pt": "(René) veja a edição #217: log adicional adicionado para entender a causa raiz, por favor copiar &past log saída em github questão",
+        "nl": "Vertaling:",
+        "fr": "(René) voir le numéro #217: log supplémentaire ajouté pour comprendre la cause racine, s'il vous plaît copier la sortie du journal dans la question github",
+        "it": "(René) vedi numero #217: log aggiuntivo aggiunto per capire la causa principale, si prega di copiare / copiare l'output di log in github",
+        "es": "(René) ver el número #217: log añadido adicional para entender la causa raíz, por favor copiar la salida del registro de curvapast en github edición",
+        "pl": "(René) widzą kwestię #217: dodatkowy log dodaje się do zrozumienia przyczyn korzeniowych, proszę kopię i wyjście z github",
+        "uk": "(René) див. питання #217: додатковий журнал додано для розуміння першопричини, будь ласка, скопіюйте іpast log вихід в питання github",
+        "zh-cn": "(René) 见问题编号217:为了解根源而增添的更多逻辑,请将图书和图书产出翻译成Tithub问题"
+      },
+      "3.1.11": {
+        "en": "dependencies updated",
+        "de": "Abhängigkeiten aktualisiert",
+        "ru": "зависимости обновлены",
+        "pt": "dependências atualizadas",
+        "nl": "afhankelijkheden bijgewerkt",
+        "fr": "dépendances mises à jour",
+        "it": "dipendenze aggiornate",
+        "es": "dependencias actualizadas",
+        "pl": "zaktualizowane zależności",
+        "uk": "залежності оновлено",
+        "zh-cn": "依赖更新"
+      },
+      "3.1.6": {
+        "en": "package Axios downgraded",
+        "de": "Paket Axios herabgestuft",
+        "ru": "пакет Axios понижен",
+        "pt": "pacote Axios rebaixado",
+        "nl": "pakket Axios gedowngraded",
+        "fr": "package Axios rétrogradé",
+        "it": "pacchetto Axios declassato",
+        "es": "paquete Axios degradado",
+        "pl": "obniżona wersja pakietu Axios",
+        "uk": "пакет Axios знижено",
+        "zh-cn": "软件包 Axios 降级"
+      }
     },
-    "native": {
-        "Days7Forecast": "",
-        "Days5Forecast": "",
-        "HourlyForecast": "",
-        "iconSet": 1,
-        "parseTimeout": 60,
-        "UsePNGorOriginalSVG": false,
-        "UseColorOrBW": true,
-        "CustomPath": "",
-        "CustomPathExt": "png",
-        "WindCustomPath": "",
-        "WindCustomPathExt": "png",
-        "MoonCustomPath": "",
-        "MoonCustomPathExt": "png",
-        "createCurrent": true,
-        "createInXHour": 0
+    "titleLang": {
+      "en": "DasWetter.com",
+      "de": "DasWetter.com",
+      "ru": "DasWetter.com",
+      "pt": "DasWetter.com",
+      "nl": "DasWetter.com",
+      "fr": "DasWetter.com",
+      "it": "DasWetter.com",
+      "es": "DasWetter.com",
+      "pl": "DasWetter.com",
+      "zh-cn": "DasWetter.com",
+      "uk": "DasWetter.com"
+    },
+    "desc": {
+      "en": "reads weather forecast data from DasWetter.com. Different forecast models are available.",
+      "de": "liest Wettervorhersagedaten von DasWetter.com. Es stehen verschiedene Prognosemodelle zur Verfügung.",
+      "ru": "читает данные прогноза погоды от DasWetter.com. Доступны разные модели прогноза.",
+      "pt": "lê dados de previsão meteorológica do DasWetter.com. Diferentes modelos de previsão estão disponíveis.",
+      "nl": "leest weersvoorspellingsgegevens van DasWetter.com. Verschillende voorspellingsmodellen zijn beschikbaar.",
+      "fr": "lit les données météorologiques de DasWetter.com. Différents modèles de prévision sont disponibles.",
+      "it": "legge i dati delle previsioni del tempo da DasWetter.com. Sono disponibili diversi modelli di previsione.",
+      "es": "lee los datos del pronóstico del tiempo de DasWetter.com. Existen diferentes modelos de pronóstico disponibles.",
+      "pl": "czyta prognozy pogody z DasWetter.com. Dostępne są różne modele prognoz.",
+      "zh-cn": "从DasWetter.com读取天气预报数据。",
+      "uk": "читає дані прогнозу погоди з DasWetter.com. Доступні різні моделі прогнозу."
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "schedule",
+    "schedule": "*/15 * * * *",
+    "icon": "daswettercom.png",
+    "enabled": true,
+    "allowInit": true,
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
+    "keywords": [
+      "weather",
+      "forecast",
+      "DasWetter"
+    ],
+    "readme": "https://github.com/rg-engineering/ioBroker.daswetter/blob/master/README.md",
+    "loglevel": "info",
+    "stopBeforeUpdate": true,
+    "type": "weather",
+    "license": "MIT",
+    "materialize": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://43cffc00abc44320960f9b7c237a7fbb@o390433.ingest.sentry.io/5434782"
+      }
+    },
+    "compact": true,
+    "authors": [
+      {
+        "name": "René G.",
+        "email": "info@rg-engineering.eu"
+      }
+    ],
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "jsonCustom": false,
+    "jsonConfig": false,
+    "adminUI": {
+      "config": "materialize"
     }
+  },
+  "native": {
+    "Days7Forecast": "",
+    "Days5Forecast": "",
+    "HourlyForecast": "",
+    "iconSet": 1,
+    "parseTimeout": 60,
+    "UsePNGorOriginalSVG": false,
+    "UseColorOrBW": true,
+    "CustomPath": "",
+    "CustomPathExt": "png",
+    "WindCustomPath": "",
+    "WindCustomPathExt": "png",
+    "MoonCustomPath": "",
+    "MoonCustomPathExt": "png",
+    "createCurrent": true,
+    "createInXHour": 0
+  }
 }
