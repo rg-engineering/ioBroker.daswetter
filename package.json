@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "3.0.4",
-    "axios": "1.6.2",
+    "axios": "1.6.3",
     "xml2json-light": "1.0.6"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "@types/request-promise-native": "1.0.21",
     "@types/sinon": "17.0.2",
     "@types/sinon-chai": "3.2.12",
-    "axios": "1.6.2",
+    "axios": "1.6.3",
     "chai": "4.3.10",
     "chai-as-promised": "7.1.1",
     "eslint": "8.56.0",
