@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.1.12",
+    "version": "3.1.13",
     "news": {
+      "3.1.13": {
+        "en": "(René) update dependencies",
+        "de": "(René) aktualisieren Abhängigkeiten",
+        "ru": "(René) обновление зависимостей",
+        "pt": "(René) atualizar dependências",
+        "nl": "(René) update afhankelijkheden",
+        "fr": "(René) mettre à jour les dépendances",
+        "it": "(René) aggiornamento dipendenze",
+        "es": "(René) dependencias de actualización",
+        "pl": "(René) uaktualnianie zależności",
+        "uk": "(René) оновлення залежностей",
+        "zh-cn": "(René) 更新依赖关系"
+      },
       "3.1.12": {
         "en": "(René) see issue #217: additional log added to understand root cause, please copy&past log output into github issue",
         "de": "(René) siehe Ausgabe #217: zusätzliches Log hinzugefügt, um die Ursache der Wurzel zu verstehen, bitte kopieren Sie die log Ausgabe in github Ausgabe",
