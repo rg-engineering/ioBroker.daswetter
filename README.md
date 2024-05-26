@@ -71,6 +71,9 @@ Now we have implemented a "auto-repair" which changes to structure to documented
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (René) see issue #354: change of dependencies
+
 ### 3.1.13 (2024-01-12)
 * (René) update dependencies
 
