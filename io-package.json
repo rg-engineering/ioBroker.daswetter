@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.1.13",
+    "version": "3.1.14",
     "news": {
+      "3.1.14": {
+        "en": "(René) see issue #354: change of dependencies",
+        "de": "(René) siehe Ausgabe #354: Änderung der Abhängigkeiten",
+        "ru": "(René) см. вопрос #354: изменение зависимостей",
+        "pt": "(René) veja a edição #354: mudança de dependências",
+        "nl": "(René) zie nummer #354: verandering van afhankelijkheden",
+        "fr": "(René) voir le numéro 354 : changement de dépendance",
+        "it": "(René) vedi numero 354: cambiamento delle dipendenze",
+        "es": "(René) ver la cuestión #354: cambio de dependencia",
+        "pl": "(René) zob. numer # 354: zmiana zależności",
+        "uk": "(René) див. питання #354: зміна залежностей",
+        "zh-cn": "(René)参见第354期:属地变更"
+      },
       "3.1.13": {
         "en": "(René) update dependencies",
         "de": "(René) aktualisieren Abhängigkeiten",
