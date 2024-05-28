@@ -111,7 +111,11 @@
     "loglevel": "info",
     "stopBeforeUpdate": true,
     "type": "weather",
-    "license": "MIT",
+    "tier": 3,
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "materialize": true,
     "dependencies": [
       {
@@ -132,8 +136,6 @@
     ],
     "connectionType": "cloud",
     "dataSource": "poll",
-    "jsonCustom": false,
-    "jsonConfig": false,
     "adminUI": {
       "config": "materialize"
     }
