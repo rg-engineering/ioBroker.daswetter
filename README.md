@@ -74,7 +74,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ### **WORK IN PROGRESS**
 * (René) update dependencies
-
+* (René) bug fixes based on adapter checker recommendation
 
 ### 3.1.15 (2024-05-28)
 * (René) see issue #354: change of dependencies
