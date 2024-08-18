@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.1.15",
+    "version": "3.1.16",
     "news": {
+      "3.1.16": {
+        "en": "(René) update dependencies\n(René) bug fixes based on adapter checker recommendation",
+        "de": "(René) aktualisieren Abhängigkeiten\n(René) Fehlerbehebungen basierend auf Adapter-Checker Empfehlung",
+        "ru": "(René) обновление зависимостей\n(René) исправления ошибок на основе рекомендации адаптера",
+        "pt": "(René) atualizar dependências\n(René) correções de bugs com base na recomendação do verificador do adaptador",
+        "nl": "(René) update afhankelijkheden\n(René) bug fixes gebaseerd op adaptercontrole aanbeveling",
+        "fr": "(René) mettre à jour les dépendances\nCorrections de bugs (René) basées sur la recommandation de l'adaptateur checker",
+        "it": "(René) aggiornamento dipendenze\n(René) correzioni di bug in base alla raccomandazione dell'adattatore checker",
+        "es": "(René) dependencias de actualización\n(René) correcciones de errores basadas en la recomendación de control de adaptador",
+        "pl": "(René) uaktualnianie zależności\n(René) poprawki błędów oparte na rekomendacji sprawdzania adaptera",
+        "uk": "(René) оновлення залежностей\n(René) Виправлення помилок на основі рекомендації адаптера",
+        "zh-cn": "(René) 更新依赖关系\n(René) 根据适配器检查器建议修复错误"
+      },
       "3.1.15": {
         "en": "(René) see issue #354: change of dependencies",
         "de": "(René) siehe Ausgabe #354: Änderung der Abhängigkeiten",
@@ -129,7 +142,6 @@
       "license": "MIT",
       "type": "free"
     },
-
     "dependencies": [
       {
         "js-controller": ">=5.0.19"
