@@ -24,3 +24,5 @@ test*.js
 *.orig
 *.done
 
+/docs/iconos.zip
+/docs/iconos/

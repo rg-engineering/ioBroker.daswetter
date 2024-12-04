@@ -1,48 +1,117 @@
 {
   "type": "tabs",
   "i18n": true,
+  "tabsStyle": {
+    "width": "calc(100% - 100px)"
+  },
   "items": {
     "MainSettings": {
       "type": "panel",
       "label": "Main settings",
       "items": {
+
+
+        "icontest": {
+          "type": "staticImage",
+          "src": "daswettercom.png",
+          "newLine": true,
+          "xs": 7,
+          "sm": 3,
+          "md": 3,
+          "lg": 1.2,
+          "xl": 1.2
+
+        },
+
+
+        "alive": {
+          "type": "alive",
+          "label": "Alive",
+          "instance": 0, //check if the instance is alive. If not defined, it will be used current instance. You can use ${data.number} pattern in the text.
+          "textAlive": "Instance (%&s) is alive", // default text is Instance %s is alive, where %s will be replaced by ADAPTER.0.
+          "textNotAlive": "Instance (%s) is not alive", // default text is Instance %s is not alive, where %s will be replaced by ADAPTER.0.
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+
+
+        "dividerHdr1": {
+          "newLine": true,
+          "type": "header",
+          "text": "path configuration",
+          "size": 2
+        },
+
+
+
+
+
+
+
         "Days7Forecast": {
           "newLine": true,
           "type": "text",
           "label": "URL_7_days_forecast",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "Days5Forecast": {
           "newLine": true,
           "type": "text",
           "label": "URL_5_days_forecast",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "HourlyForecast": {
           "newLine": true,
           "type": "text",
           "label": "URL_hourly_forecast",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "HourlyForecastJSON": {
           "newLine": true,
           "type": "text",
           "label": "URL_hourly_forecast_JSON",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
+
+        "dividerHdr2": {
+          "newLine": true,
+          "type": "header",
+          "text": "settings",
+          "size": 2
+        },
+
         "createCurrent": {
           "newLine": true,
           "type": "checkbox",
           "label": "createCurrent",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "createInXHour": {
-          "newLine": false,
+          "newLine": true,
           "type": "select",
           "label": "createInXHour",
           "options": [
@@ -67,15 +136,21 @@
               "value": 4
             }
           ],
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "parseTimeout": {
           "newLine": true,
           "type": "number",
           "label": "parse_timeout",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         }
       }
     },
@@ -86,30 +161,30 @@
         "iconSet": {
           "newLine": true,
           "type": "select",
-          "label": "Icon set",
+          "label": "Icon set to select",
           "options": [
             {
-              "label": { "en": "1" },
+              "label": { "en": "galeria1" },
               "value": 1
             },
             {
-              "label": { "en": "2" },
+              "label": { "en": "galeria2" },
               "value": 2
             },
             {
-              "label": { "en": "3" },
+              "label": { "en": "galeria3" },
               "value": 3
             },
             {
-              "label": { "en": "4" },
+              "label": { "en": "galeria4" },
               "value": 4
             },
             {
-              "label": { "en": "5" },
+              "label": { "en": "galeria5" },
               "value": 5
             },
             {
-              "label": { "en": "6" },
+              "label": { "en": "galeria6" },
               "value": 6
             },
             {
@@ -117,36 +192,55 @@
               "value": 7
             }
           ],
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
+
         "UsePNGorOriginalSVG": {
           "newLine": true,
           "type": "checkbox",
           "label": "use_png_or_svg",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
+
         "UseColorOrBW": {
           "newLine": true,
           "type": "checkbox",
           "label": "use_color_or_bw",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "CustomPath": {
           "newLine": true,
           "type": "text",
           "label": "custom_path",
+          "hidden": "if (data.iconSet != 'custom') return true;",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "CustomPathExt": {
-          "newLine": false,
+          "newLine": true,
           "type": "text",
           "label": "custom_path_ext",
+          "hidden": "if (data.iconSet != 'custom') return true;",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         }
       }
     },
@@ -176,21 +270,29 @@
               "value": "custom"
             }
           ],
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
 
         "WindCustomPath": {
           "newLine": true,
           "type": "text",
           "label": "custom_path",
+          "hidden" : "if (data.windiconSet != 'custom') return true;",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "WindCustomPathExt": {
-          "newLine": false,
+          "newLine": true,
           "type": "text",
           "label": "custom_path_ext",
+          "hidden": "if (data.windiconSet != 'custom') return true;",
           "sm": 12,
           "md": 4
         }
@@ -214,22 +316,33 @@
               "value": "custom"
             }
           ],
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "MoonCustomPath": {
           "newLine": true,
           "type": "text",
           "label": "custom_path",
+          "hidden": "if (data.mooniconSet != 'custom') return true;",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         },
         "MoonCustomPathExt": {
-          "newLine": false,
+          "newLine": true,
           "type": "text",
           "label": "custom_path_ext",
+          "hidden": "if (data.mooniconSet != 'custom') return true;",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         }
       }
     }
