@@ -26,3 +26,6 @@ test*.js
 
 /docs/iconos.zip
 /docs/iconos/
+/.vscode/launch.json
+/MIGRATED_PROJECT.esproj
+/nuget.config
