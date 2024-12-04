@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.1.16",
+    "version": "3.2.0",
     "news": {
+      "3.2.0": {
+        "en": "see issue #406: test with nodejs@22\nupdate dependencies\nmigration to admin 5 UI (jsonConfig)",
+        "de": "siehe ausgabe #406: test mit nodejs@22\naktualisierung der abhängigkeiten\nmigration zu admin 5 UI (jsonConfig)",
+        "ru": "#406: тест с nodejs@22\nобновление зависимостей\nadmin 5 UI (jsonConfig)",
+        "pt": "veja a edição #406: teste com nodejs@22\ndependências\nmigração para administrador 5 UI (jsonConfig)",
+        "nl": "zie nummer 406: test met nodejs@22\nafhankelijkheden bijwerken\nmigratie naar admin 5 UI (jsonConfig)",
+        "fr": "voir le numéro 406: test avec nodejs@22\nmettre à jour les dépendances\nmigration vers admin 5 UI (jsonConfig)",
+        "it": "vedi numero 406: prova con nodejs@22\naggiornamento dipendenze\nmigrazione a admin 5 UI (jsonConfig)",
+        "es": "ver número #406: prueba con nodejs@22\ndependencias de actualización\nmigración a admin 5 UI (jsonConfig)",
+        "pl": "zobacz numer # 406: test z nodejs @ 22\naktualizacji zależności\nmigracja do admin 5 UI (jsonConfig)",
+        "uk": "переглянути номер #406: тест з nodejs@22\nоновлення залежності\nміграція до адмін 5 UI (jsonConfig)",
+        "zh-cn": "参见第406期:带节点的测试@22\n更新依赖关系\n迁移到管理员 5 UI (jsonConfig)"
+      },
       "3.1.16": {
         "en": "(René) update dependencies\n(René) bug fixes based on adapter checker recommendation",
         "de": "(René) aktualisieren Abhängigkeiten\n(René) Fehlerbehebungen basierend auf Adapter-Checker Empfehlung",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności",
         "uk": "залежності оновлено",
         "zh-cn": "依赖更新"
-      },
-      "3.1.6": {
-        "en": "package Axios downgraded",
-        "de": "Paket Axios herabgestuft",
-        "ru": "пакет Axios понижен",
-        "pt": "pacote Axios rebaixado",
-        "nl": "pakket Axios gedowngraded",
-        "fr": "package Axios rétrogradé",
-        "it": "pacchetto Axios declassato",
-        "es": "paquete Axios degradado",
-        "pl": "obniżona wersja pakietu Axios",
-        "uk": "пакет Axios знижено",
-        "zh-cn": "软件包 Axios 降级"
       }
     },
     "titleLang": {
