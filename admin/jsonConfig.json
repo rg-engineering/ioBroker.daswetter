@@ -24,19 +24,7 @@
         },
 
 
-        "alive": {
-          "type": "alive",
-          "label": "Alive",
-          "instance": 0, //check if the instance is alive. If not defined, it will be used current instance. You can use ${data.number} pattern in the text.
-          "textAlive": "Instance (%&s) is alive", // default text is Instance %s is alive, where %s will be replaced by ADAPTER.0.
-          "textNotAlive": "Instance (%s) is not alive", // default text is Instance %s is not alive, where %s will be replaced by ADAPTER.0.
-          "newLine": true,
-          "xs": 12,
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
-        },
+
 
 
         "dividerHdr1": {
