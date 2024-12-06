@@ -71,8 +71,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 3.2.1 (2024-12-06)
 * (René) see issue #411: jsonConfig fixed
 
 ### 3.2.0 (2024-12-04)

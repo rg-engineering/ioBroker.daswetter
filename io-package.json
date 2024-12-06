@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.0",
+    "version": "3.2.1",
     "news": {
+      "3.2.1": {
+        "en": "see issue #411: jsonConfig fixed",
+        "de": "siehe Ausgabe #411: jsonConfig behoben",
+        "ru": "#411: jsonConfig",
+        "pt": "veja a questão #411: jsonConfig corrigido",
+        "nl": "zie nummer #411: jsonConfig vast",
+        "fr": "voir le numéro #411: jsonConfig corrigé",
+        "it": "vedi numero #411: jsonConfig fisso",
+        "es": "ver número #411: jsonConfig fijo",
+        "pl": "zobacz numer # 411: jsonConfig stały",
+        "uk": "переглянути номер #411: jsonConfig фіксований",
+        "zh-cn": "参见第411期:jsonConfig 已修复"
+      },
       "3.2.0": {
         "en": "see issue #406: test with nodejs@22\nupdate dependencies\nmigration to admin 5 UI (jsonConfig)",
         "de": "siehe ausgabe #406: test mit nodejs@22\naktualisierung der abhängigkeiten\nmigration zu admin 5 UI (jsonConfig)",
@@ -80,19 +93,6 @@
         "pl": "(René) widzą kwestię #217: dodatkowy log dodaje się do zrozumienia przyczyn korzeniowych, proszę kopię i wyjście z github",
         "uk": "(René) див. питання #217: додатковий журнал додано для розуміння першопричини, будь ласка, скопіюйте іpast log вихід в питання github",
         "zh-cn": "(René) 见问题编号217:为了解根源而增添的更多逻辑,请将图书和图书产出翻译成Tithub问题"
-      },
-      "3.1.11": {
-        "en": "dependencies updated",
-        "de": "Abhängigkeiten aktualisiert",
-        "ru": "зависимости обновлены",
-        "pt": "dependências atualizadas",
-        "nl": "afhankelijkheden bijgewerkt",
-        "fr": "dépendances mises à jour",
-        "it": "dipendenze aggiornate",
-        "es": "dependencias actualizadas",
-        "pl": "zaktualizowane zależności",
-        "uk": "залежності оновлено",
-        "zh-cn": "依赖更新"
       }
     },
     "titleLang": {
