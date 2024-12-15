@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.1",
+    "version": "3.2.2",
     "news": {
+      "3.2.2": {
+        "en": "translations\n",
+        "de": "übersetzungen\n",
+        "ru": "перевод\n",
+        "pt": "traduções\n",
+        "nl": "vertalingen\n",
+        "fr": "traductions\n",
+        "it": "traduzioni\n",
+        "es": "traducciones\n",
+        "pl": "tłumaczenia\n",
+        "uk": "переклади\n",
+        "zh-cn": "翻译\n"
+      },
       "3.2.1": {
         "en": "see issue #411: jsonConfig fixed",
         "de": "siehe Ausgabe #411: jsonConfig behoben",
@@ -80,19 +93,6 @@
         "pl": "(René) uaktualnianie zależności",
         "uk": "(René) оновлення залежностей",
         "zh-cn": "(René) 更新依赖关系"
-      },
-      "3.1.12": {
-        "en": "(René) see issue #217: additional log added to understand root cause, please copy&past log output into github issue",
-        "de": "(René) siehe Ausgabe #217: zusätzliches Log hinzugefügt, um die Ursache der Wurzel zu verstehen, bitte kopieren Sie die log Ausgabe in github Ausgabe",
-        "ru": "(René) см. в выпуске #217: дополнительный лог добавлен, чтобы понять корневую причину, пожалуйста, скопируйте и отправьте выход в github вопрос",
-        "pt": "(René) veja a edição #217: log adicional adicionado para entender a causa raiz, por favor copiar &past log saída em github questão",
-        "nl": "Vertaling:",
-        "fr": "(René) voir le numéro #217: log supplémentaire ajouté pour comprendre la cause racine, s'il vous plaît copier la sortie du journal dans la question github",
-        "it": "(René) vedi numero #217: log aggiuntivo aggiunto per capire la causa principale, si prega di copiare / copiare l'output di log in github",
-        "es": "(René) ver el número #217: log añadido adicional para entender la causa raíz, por favor copiar la salida del registro de curvapast en github edición",
-        "pl": "(René) widzą kwestię #217: dodatkowy log dodaje się do zrozumienia przyczyn korzeniowych, proszę kopię i wyjście z github",
-        "uk": "(René) див. питання #217: додатковий журнал додано для розуміння першопричини, будь ласка, скопіюйте іpast log вихід в питання github",
-        "zh-cn": "(René) 见问题编号217:为了解根源而增添的更多逻辑,请将图书和图书产出翻译成Tithub问题"
       }
     },
     "titleLang": {
