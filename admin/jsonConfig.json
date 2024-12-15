@@ -9,8 +9,6 @@
       "type": "panel",
       "label": "Main settings",
       "items": {
-
-
         "icontest": {
           "type": "staticImage",
           "src": "daswettercom.png",
@@ -20,13 +18,7 @@
           "md": 3,
           "lg": 1.2,
           "xl": 1.2
-
         },
-
-
-
-
-
         "dividerHdr1": {
           "newLine": true,
           "type": "header",
@@ -34,16 +26,23 @@
           "size": 2
         },
 
+        "pathhint": {
+          "type": "staticText",
+          "text": "hint_path",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
 
-
-
-
-
+        },
 
         "Days7Forecast": {
           "newLine": true,
           "type": "text",
           "label": "URL_7_days_forecast",
+          "help": "XML file with the 7-day weather forecast and general daily overview",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -54,6 +53,7 @@
           "newLine": true,
           "type": "text",
           "label": "URL_5_days_forecast",
+          "help": "XML file with 5-day weather forecast and detailed information for every 3 hours",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -64,6 +64,7 @@
           "newLine": true,
           "type": "text",
           "label": "URL_hourly_forecast",
+          "help": "XML file with weather forecasts for the next 5 days and hourly information",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -74,6 +75,7 @@
           "newLine": true,
           "type": "text",
           "label": "URL_hourly_forecast_JSON",
+          "help": "JSON file with 5-day weather forecast and detailed information for every 3 hours",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -186,7 +188,6 @@
           "lg": 4,
           "xl": 4
         },
-
         "UsePNGorOriginalSVG": {
           "newLine": true,
           "type": "checkbox",
@@ -197,7 +198,6 @@
           "lg": 4,
           "xl": 4
         },
-
         "UseColorOrBW": {
           "newLine": true,
           "type": "checkbox",
@@ -212,7 +212,7 @@
           "newLine": true,
           "type": "text",
           "label": "custom_path",
-          "hidden": "if (data.iconSet != 'custom') return true;",
+          "hidden": "if (data.iconSet != 7) return true;",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -223,7 +223,7 @@
           "newLine": true,
           "type": "text",
           "label": "custom_path_ext",
-          "hidden": "if (data.iconSet != 'custom') return true;",
+          "hidden": "if (data.iconSet != 7) return true;",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -334,7 +334,5 @@
         }
       }
     }
-
-
   }
 }
