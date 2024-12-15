@@ -13,7 +13,7 @@
           "type": "staticImage",
           "src": "daswettercom.png",
           "newLine": true,
-          "xs": 7,
+          "xs": 12,
           "sm": 3,
           "md": 3,
           "lg": 1.2,
@@ -25,7 +25,6 @@
           "text": "path configuration",
           "size": 2
         },
-
         "pathhint": {
           "type": "staticText",
           "text": "hint_path",
@@ -35,9 +34,7 @@
           "md": 12,
           "lg": 12,
           "xl": 12
-
         },
-
         "Days7Forecast": {
           "newLine": true,
           "type": "text",
@@ -82,14 +79,12 @@
           "lg": 4,
           "xl": 4
         },
-
         "dividerHdr2": {
           "newLine": true,
           "type": "header",
           "text": "settings",
           "size": 2
         },
-
         "createCurrent": {
           "newLine": true,
           "type": "checkbox",
@@ -208,6 +203,17 @@
           "lg": 4,
           "xl": 4
         },
+        "custom_path_hint": {
+          "type": "staticText",
+          "text": "custom_path_hint",
+          "hidden": "if (data.iconSet != 7) return true;",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
         "CustomPath": {
           "newLine": true,
           "type": "text",
@@ -264,12 +270,22 @@
           "lg": 4,
           "xl": 4
         },
-
+        "windcustom_path_hint": {
+          "type": "staticText",
+          "text": "custom_path_hint",
+          "hidden": "if (data.windiconSet != 'custom') return true;",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
         "WindCustomPath": {
           "newLine": true,
           "type": "text",
           "label": "custom_path",
-          "hidden" : "if (data.windiconSet != 'custom') return true;",
+          "hidden": "if (data.windiconSet != 'custom') return true;",
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -281,8 +297,11 @@
           "type": "text",
           "label": "custom_path_ext",
           "hidden": "if (data.windiconSet != 'custom') return true;",
+          "xs": 12,
           "sm": 12,
-          "md": 4
+          "md": 4,
+          "lg": 4,
+          "xl": 4
         }
       }
     },
@@ -309,6 +328,17 @@
           "md": 4,
           "lg": 4,
           "xl": 4
+        },
+        "mooncustom_path_hint": {
+          "type": "staticText",
+          "text": "custom_path_hint",
+          "hidden": "if (data.mooniconSet != 'custom') return true;",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "MoonCustomPath": {
           "newLine": true,
