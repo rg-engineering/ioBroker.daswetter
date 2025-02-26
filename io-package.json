@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.2",
+    "version": "3.2.3",
     "news": {
+      "3.2.3": {
+        "en": "changes requested by adapter checker\ndependencies updated",
+        "de": "änderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
+        "ru": "изменения, запрошенные adapter checker\nобновленные зависимости",
+        "pt": "alterações solicitadas pelo verificador do adaptador\ndependências atualizadas",
+        "nl": "wijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
+        "fr": "modifications demandées par l'adaptateur checker\ndépendances mises à jour",
+        "it": "modifiche richieste da adattatore checker\ndipendenze aggiornate",
+        "es": "cambios solicitados por el adaptador\ndependencias actualizadas",
+        "pl": "zmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
+        "uk": "зміни, які вимагаються перевіркою адаптера\nоновлені залежності",
+        "zh-cn": "适配器检查器要求的更改\n更新依赖关系"
+      },
       "3.2.2": {
         "en": "translations\n",
         "de": "übersetzungen\n",
@@ -80,19 +93,6 @@
         "pl": "(René) zob. numer # 354: zmiana zależności",
         "uk": "(René) див. питання #354: зміна залежностей",
         "zh-cn": "(René)参见第354期:属地变更"
-      },
-      "3.1.13": {
-        "en": "(René) update dependencies",
-        "de": "(René) aktualisieren Abhängigkeiten",
-        "ru": "(René) обновление зависимостей",
-        "pt": "(René) atualizar dependências",
-        "nl": "(René) update afhankelijkheden",
-        "fr": "(René) mettre à jour les dépendances",
-        "it": "(René) aggiornamento dipendenze",
-        "es": "(René) dependencias de actualización",
-        "pl": "(René) uaktualnianie zależności",
-        "uk": "(René) оновлення залежностей",
-        "zh-cn": "(René) 更新依赖关系"
       }
     },
     "titleLang": {
