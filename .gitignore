@@ -29,3 +29,4 @@ test*.js
 /.vscode/launch.json
 /MIGRATED_PROJECT.esproj
 /nuget.config
+/widget.html
