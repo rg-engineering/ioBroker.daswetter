@@ -1,4 +1,5 @@
-﻿/*
+﻿/* eslint-disable prefer-template */
+/*
  * DasWetter.com adapter für iobroker
  *
  * Created: 21.03.2017 21:31:28
@@ -25,8 +26,7 @@ function startAdapter(options) {
             try {
                 //adapter.log.debug("start");
                 await main();
-            }
-            catch (e) {
+            } catch (e) {
                 adapter.log.error("exception catch after ready [" + e + "]");
             }
         },
@@ -37,6 +37,7 @@ function startAdapter(options) {
                 adapter && adapter.log && adapter.log.info && adapter.log.info("cleaned everything up...");
                 callback();
             } catch (e) {
+                adapter.log.error("exception catch after unload [" + e + "]");
                 callback();
             }
 
@@ -114,8 +115,7 @@ function getIconUrl(num) {
         if (iconSet == 7) {//custom
             url = adapter.config.CustomPath;
             ext = adapter.config.CustomPathExt;
-        }
-        else {
+        } else {
             url = "/adapter/daswetter/icons/tiempo-weather/galeria" + iconSet + "/";
             ext = (iconSet < 5 || adapter.config.UsePNGorOriginalSVG) ? ".png" : ".svg";
 
@@ -149,8 +149,7 @@ function getWindIconUrl(num) {
         if (iconSet == "custom") {
             url = adapter.config.WindCustomPath;
             ext = adapter.config.WindCustomPathExt;
-        }
-        else {
+        } else {
             url = "/adapter/daswetter/icons/viento-wind/" + iconSet + "/";
             ext = ".png";
         }
@@ -171,8 +170,7 @@ function getMoonIconUrl(num) {
         if (iconSet == "custom") {
             url = adapter.config.MoonCustomPath;
             ext = adapter.config.MoonCustomPathExt;
-        }
-        else {
+        } else {
             url = "/adapter/daswetter/icons/luna-moon/";
             ext = ".png";
         }
@@ -210,8 +208,7 @@ async function getprops(obj, keyName) {
             unit = dataValue.replace(/\s/g, "_");
 
             //adapter.log.debug('got unit '  + dataValue);
-        }
-        else {
+        } else {
             const keyNameLong = keyName + "_" + arr[i].replace(/\s/g, "_");
             await insertIntoList(keyNameLong, dataValue, unit);
             unit = "";
@@ -597,41 +594,34 @@ async function getForecastDataHourly() {
                     if (CurrentHour < 23) {
                         inXhours2Check = CurrentHour + 1;
                         inXdays2Check = 1;
-                    }
-                    else {
+                    } else {
                         inXhours2Check = 1;
                         inXdays2Check = 2;
                     }
-                }
-                else if (parseInt(adapter.config.createInXHour) === 2) {
+                } else if (parseInt(adapter.config.createInXHour) === 2) {
                     inXhours = 2;
                     if (CurrentHour < 22) {
                         inXhours2Check = CurrentHour + 2;
                         inXdays2Check = 1;
-                    }
-                    else {
+                    } else {
                         inXhours2Check = 24 - CurrentHour + 2;
                         inXdays2Check = 2;
                     }
-                }
-                else if (parseInt(adapter.config.createInXHour) === 3) {
+                } else if (parseInt(adapter.config.createInXHour) === 3) {
                     inXhours = 3;
                     if (CurrentHour < 21) {
                         inXhours2Check = CurrentHour + 3;
                         inXdays2Check = 1;
-                    }
-                    else {
+                    } else {
                         inXhours2Check = 24 - CurrentHour + 3;
                         inXdays2Check = 2;
                     }
-                }
-                else if (parseInt(adapter.config.createInXHour) === 4) {
+                } else if (parseInt(adapter.config.createInXHour) === 4) {
                     inXhours = 6;
                     if (CurrentHour < 18) {
                         inXhours2Check = CurrentHour + 6;
                         inXdays2Check = 1;
-                    }
-                    else {
+                    } else {
                         inXhours2Check = 24 - CurrentHour + 6;
                         inXdays2Check = 2;
                     }
@@ -926,8 +916,7 @@ async function getForecastDataHourly() {
                             let diff = 1;
                             if (nOldTime4Sun > -1) {
                                 diff = Hour4SunTime - nOldTime4Sun;
-                            }
-                            else {
+                            } else {
                                 diff = Hour4SunTime;
                             }
                             const SunHours = diff * SunTime / 100.0;
@@ -1067,8 +1056,7 @@ async function getForecastDataHourlyJSON() {
 
                         adapter.log.debug("got " + JSON.stringify(result.day));
                     }
-                }
-                else {
+                } else {
                     adapter.log.debug("got " + numOfDays + " days");
                 }
 
@@ -1420,8 +1408,7 @@ async function getForecastDataHourlyJSON() {
                             let diff = 1;
                             if (nOldTime4Sun > -1) {
                                 diff = Hour4SunTime - nOldTime4Sun;
-                            }
-                            else {
+                            } else {
                                 diff = Hour4SunTime;
                             }
                             const SunHours = diff * SunTime / 100.0;
@@ -1486,8 +1473,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
         if (typeof value === "object" && value !== null) {
             adapter.log.error("insert " + key + " with " + JSON.stringify(value) + " " + sUnit + " " + (newObj != null ? JSON.stringify(newObj) : ""));
-        }
-        else {
+        } else {
             adapter.log.debug("insert " + key + " with " + value + " " + sUnit + " " + (newObj != null ? JSON.stringify(newObj) : ""));
         }
         let obj;
@@ -1495,8 +1481,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
         if (newObj !== null) {
             obj = newObj;
             //adapter.log.debug("using newObj");
-        }
-        else {
+        } else {
             let d = key.match(/Day_(\d)\./);
             if (d) {
                 d = parseInt(d[1], 10) - 1;
@@ -1604,7 +1589,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_value/) || key.match(/\.Wind_dir/) || key.match(/\.wind_dir/) || key.match(/\.Wind_valueB/)) {
+                } else if (key.match(/\.wind_value/) || key.match(/\.Wind_value/)  || key.match(/\.Wind_valueB/)) {
                     valueType = "string";
                     obj = {
                         type: "state",
@@ -1917,8 +1902,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                             write: false
                         }
                     };
-                }
-                else if (key.match(/\.local_info_offset/)) {
+                } else if (key.match(/\.local_info_offset/)) {
                     valueType = "int";
                     obj = {
                         type: "state",
@@ -2050,9 +2034,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 }
-            }
-
-            else if (key.match(/\.Location$/)) {
+            } else if (key.match(/\.Location$/)) {
                 valueType = "string";
                 obj = {
                     type: "state",
@@ -2119,14 +2101,11 @@ async function insertIntoList(key, value, unit, newObj = null) {
 
             if (valueType == "string") {
                 val = value;
-            }
-            else if (valueType == "int") {
+            } else if (valueType == "int") {
                 val = parseInt(value);
-            }
-            else if (valueType == "float") {
+            } else if (valueType == "float") {
                 val = parseFloat(value);
-            }
-            else {
+            } else {
                 val = value;
                 adapter.log.error("unkown type " + valueType + " for " + key);
             }
