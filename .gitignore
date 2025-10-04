@@ -30,3 +30,6 @@ test*.js
 /MIGRATED_PROJECT.esproj
 /nuget.config
 /widget.html
+
+.commitinfo
+/.vscode/extensions.json
