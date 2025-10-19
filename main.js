@@ -1,4 +1,4 @@
-﻿/* eslint-disable prefer-template */
+/* eslint-disable prefer-template */
 /*
  * DasWetter.com adapter für iobroker
  *
@@ -88,7 +88,7 @@ async function main() {
         adapter.terminate ? adapter.terminate(15) : process.exit(15);
     }, nParseTimeout);
 
-
+    await CheckLastCall();
 
     await getForecastData7Days();
     await getForecastData5Days();
@@ -180,6 +180,71 @@ function getMoonIconUrl(num) {
         return "";
     }
 }
+
+async function CheckLastCall() {
+
+    try {
+
+        const key = "info.lastCall";
+        const obj = {
+            type: "state",
+            common: {
+                name: "Last call timestamp",
+                type: "string",
+                role: "info.timestamp",
+                read: true,
+                write: false
+            },
+            native: {}
+        };
+
+        await adapter.setObjectNotExistsAsync(key, obj);
+
+
+        const lastCallState = await adapter.getStateAsync(key);
+       
+        if (!lastCallState || !lastCallState.val) {
+            // Kein vorheriger Aufruf vorhanden
+            adapter.log.debug("Kein vorheriger info.lastCall gefunden.");
+           
+            
+        } else {
+            try {
+                const lastCallDate = new Date(lastCallState.val);
+                if (isNaN(lastCallDate.getTime())) {
+                    adapter.log.warn("info.lastCall enthält keinen gültigen Zeitstempel: " + lastCallState.val);
+                    
+                } else {
+                    const now = Date.now();
+                    const diffMs = now - lastCallDate.getTime();
+                    const diffMin = diffMs / 60000.0;
+                    adapter.log.debug("info.lastCall ist " + diffMin.toFixed(2) + " Minuten her.");
+                    if (diffMin > 15) {
+                        adapter.log.debug("info.lastCall ist länger als 15 Minuten her (" + diffMin.toFixed(2) + " min).");
+                        
+                    } else {
+                        adapter.log.warn("The last request was less than 15 minutes ago. You should query the data no more than 4 times per hour to reduce the load on the server. (" + diffMin.toFixed(2) + " min).");
+                       
+                    }
+                }
+            } catch (e) {
+                adapter.log.error("Fehler beim Parsen von info.lastCall: " + e);
+                
+            }
+        }
+
+        
+
+        // Aktualisiere den letzten Aufruf
+        const currentCall = new Date().toISOString();
+        await adapter.setStateAsync(key, { val: currentCall, ack: true });
+
+    } catch (e) {
+        adapter.log.error("Exception in CheckLastCall: " + e);
+    }
+
+}
+
 
 async function getprops(obj, keyName) {
     //rückwärts parsen, dann kommt unit for dem wert und kann somit in die liste eingetragen werden
