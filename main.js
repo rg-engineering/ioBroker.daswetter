@@ -1890,7 +1890,7 @@ async function insertIntoList(key, value, unit, newObj = null) {
                         }
                     };
                 } else if (key.match(/\.wind_dir/)) {
-                    valueType = "int";
+                    valueType = "string";
                     obj = {
                         type: "state",
                         common: {
