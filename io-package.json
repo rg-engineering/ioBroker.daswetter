@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.4",
+    "version": "3.2.5",
     "news": {
+      "3.2.5": {
+        "en": "#442: bug fix for state of wind direction\n#417: info, if data query is too often (max. 4 times per hour)\nupdate dependencies + changes based on adapter checker",
+        "de": "#442: bugfix für zustand der windrichtung\n#417: info, wenn die datenabfrage zu oft ist (max. 4 mal pro stunde)\naktualisierung abhängigkeiten + änderungen basierend auf adapter-checker",
+        "ru": "#442: исправление ошибки для состояния направления ветра\n#417: информация, если запрос данных слишком часто (максимум 4 раза в час)\nзависимости обновления + изменения на основе проверки адаптера",
+        "pt": "#442: correção de bug para o estado da direção do vento\n#417: info, se a consulta de dados é muito frequente (máx. 4 vezes por hora)\natualizar dependências + alterações com base no verificador de adaptadores",
+        "nl": "#442: bugfix voor windrichting\n#417: info, als gegevensquery te vaak is (max. 4 keer per uur)\nupdate afhankelijkheden + wijzigingen op basis van adaptercontrole",
+        "fr": "#442: correction du bug pour l'état de la direction du vent\n#417: info, si la requête de données est trop souvent (max. 4 fois par heure)\nmettre à jour les dépendances + les changements basés sur le vérificateur d'adaptateur",
+        "it": "#442: correzione bug per la direzione del vento\n#417: info, se la query dei dati è troppo spesso (max. 4 volte all'ora)\naggiornamento dipendenze + modifiche in base all'adattatore checker",
+        "es": "#442: corrección de errores para la dirección del estado del viento\n#417: info, si la consulta de datos es demasiado a menudo (máximo 4 veces por hora)\ndependencias de actualización + cambios basados en el control de adaptador",
+        "pl": "# 442: błąd naprawić dla stanu kierunku wiatru\n# 417: info, jeśli zapytanie o dane jest zbyt często (max. 4 razy na godzinę)\naktualizacja zależności + zmiany w oparciu o sprawdzacz adaptera",
+        "uk": "#442: виправлення помилок для стану вітрового напрямку\n#417: інформація, якщо ці дані дуже часто (макс. 4 рази за годину)\nоновлення залежності + зміни на основі перевірки адаптера",
+        "zh-cn": "#442:虫子固定风向状态\n#417:信息,如果数据查询太频繁(最多每小时4次)\n根据适配器检查器更新依赖性+变化"
+      },
       "3.2.4": {
         "en": "new testing\nupdate dependencies + changes based on adapter checker",
         "de": "neue tests\naktualisierung abhängigkeiten + änderungen basierend auf adapter-checker",
@@ -80,19 +93,6 @@
         "pl": "(René) uaktualnianie zależności\n(René) poprawki błędów oparte na rekomendacji sprawdzania adaptera",
         "uk": "(René) оновлення залежностей\n(René) Виправлення помилок на основі рекомендації адаптера",
         "zh-cn": "(René) 更新依赖关系\n(René) 根据适配器检查器建议修复错误"
-      },
-      "3.1.15": {
-        "en": "(René) see issue #354: change of dependencies",
-        "de": "(René) siehe Ausgabe #354: Änderung der Abhängigkeiten",
-        "ru": "(René) см. вопрос #354: изменение зависимостей",
-        "pt": "(René) veja a edição #354: mudança de dependências",
-        "nl": "(René) zie nummer #354: verandering van afhankelijkheden",
-        "fr": "(René) voir le numéro 354 : changement de dépendance",
-        "it": "(René) vedi numero 354: cambiamento delle dipendenze",
-        "es": "(René) ver la cuestión #354: cambio de dependencia",
-        "pl": "(René) zob. numer # 354: zmiana zależności",
-        "uk": "(René) див. питання #354: зміна залежностей",
-        "zh-cn": "(René)参见第354期:属地变更"
       }
     },
     "titleLang": {

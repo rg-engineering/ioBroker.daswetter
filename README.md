@@ -74,8 +74,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 3.2.5 (2025-10-21)
 * (René) #442: bug fix for state of wind direction
 * (René) #417: info, if data query is too often (max. 4 times per hour)
 * (René) update dependencies + changes based on adapter checker
