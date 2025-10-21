@@ -76,6 +76,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 -->
 
 ### **WORK IN PROGRESS**
+* (René) #442: bug fix for state of wind direction
 * (René) #417: info, if data query is too often (max. 4 times per hour)
 * (René) update dependencies + changes based on adapter checker
 
