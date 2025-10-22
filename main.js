@@ -219,7 +219,7 @@ async function CheckLastCall() {
                     const diffMs = now - lastCallDate.getTime();
                     const diffMin = diffMs / 60000.0;
                     adapter.log.debug("info.lastCall ist " + diffMin.toFixed(2) + " Minuten her.");
-                    if (diffMin > 15) {
+                    if (diffMin > 14) {
                         adapter.log.debug("info.lastCall ist länger als 15 Minuten her (" + diffMin.toFixed(2) + " min).");
                         
                     } else {
