@@ -74,8 +74,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 3.2.6 (2025-10-22)
 * (René) #417: bug fix: allow 14 minutes between two data requests to avoid unnecessary warnings
 
 ### 3.2.5 (2025-10-21)

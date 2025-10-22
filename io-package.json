@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.5",
+    "version": "3.2.6",
     "news": {
+      "3.2.6": {
+        "en": "#417: bug fix: allow 14 minutes between two data requests to avoid unnecessary warnings",
+        "de": "#417: bugfix: 14 minuten zwischen zwei datenanfragen erlauben, unnötige warnungen zu vermeiden",
+        "ru": "#417: исправление ошибок: разрешить 14 минут между двумя запросами данных, чтобы избежать ненужных предупреждений",
+        "pt": "#417: correção de bug: permitir 14 minutos entre duas solicitações de dados para evitar avisos desnecessários",
+        "nl": "#417: bug fix: laat 14 minuten tussen twee data verzoeken om onnodige waarschuwingen te voorkomen",
+        "fr": "#417: correction du bug: laisser 14 minutes entre deux requêtes de données pour éviter les avertissements inutiles",
+        "it": "#417: bug fix: consentire 14 minuti tra due richieste di dati per evitare inutili avvisi",
+        "es": "#417: bug fix: permitir 14 minutos entre dos solicitudes de datos para evitar advertencias innecesarias",
+        "pl": "# 417: naprawić błąd: pozwolić na 14 minut pomiędzy dwoma żądaniami o dane, aby uniknąć niepotrzebnych ostrzeżeń",
+        "uk": "#417: виправлення помилок: дозволити 14 хвилин між двома запитами даних, щоб уникнути зайвих попередження",
+        "zh-cn": "# 417: 错误修正 : 在两个数据请求之间允许14分钟以避免不必要的警告"
+      },
       "3.2.5": {
         "en": "#442: bug fix for state of wind direction\n#417: info, if data query is too often (max. 4 times per hour)\nupdate dependencies + changes based on adapter checker",
         "de": "#442: bugfix für zustand der windrichtung\n#417: info, wenn die datenabfrage zu oft ist (max. 4 mal pro stunde)\naktualisierung abhängigkeiten + änderungen basierend auf adapter-checker",
@@ -80,19 +93,6 @@
         "pl": "zobacz numer # 406: test z nodejs @ 22\naktualizacji zależności\nmigracja do admin 5 UI (jsonConfig)",
         "uk": "переглянути номер #406: тест з nodejs@22\nоновлення залежності\nміграція до адмін 5 UI (jsonConfig)",
         "zh-cn": "参见第406期:带节点的测试@22\n更新依赖关系\n迁移到管理员 5 UI (jsonConfig)"
-      },
-      "3.1.16": {
-        "en": "(René) update dependencies\n(René) bug fixes based on adapter checker recommendation",
-        "de": "(René) aktualisieren Abhängigkeiten\n(René) Fehlerbehebungen basierend auf Adapter-Checker Empfehlung",
-        "ru": "(René) обновление зависимостей\n(René) исправления ошибок на основе рекомендации адаптера",
-        "pt": "(René) atualizar dependências\n(René) correções de bugs com base na recomendação do verificador do adaptador",
-        "nl": "(René) update afhankelijkheden\n(René) bug fixes gebaseerd op adaptercontrole aanbeveling",
-        "fr": "(René) mettre à jour les dépendances\nCorrections de bugs (René) basées sur la recommandation de l'adaptateur checker",
-        "it": "(René) aggiornamento dipendenze\n(René) correzioni di bug in base alla raccomandazione dell'adattatore checker",
-        "es": "(René) dependencias de actualización\n(René) correcciones de errores basadas en la recomendación de control de adaptador",
-        "pl": "(René) uaktualnianie zależności\n(René) poprawki błędów oparte na rekomendacji sprawdzania adaptera",
-        "uk": "(René) оновлення залежностей\n(René) Виправлення помилок на основі рекомендації адаптера",
-        "zh-cn": "(René) 更新依赖关系\n(René) 根据适配器检查器建议修复错误"
       }
     },
     "titleLang": {
