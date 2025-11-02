@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.7",
+    "version": "3.2.8",
     "news": {
+      "3.2.8": {
+        "en": "see issue #444: avoid crash if no data received, show response status in debug log",
+        "de": "siehe ausgabe #444: crash vermeiden, wenn keine daten empfangen wurden, antwortstatus anzeigen in debug log",
+        "ru": "проблема no444: избегайте сбоев, если данные не получены, покажите статус ответа в журнале отладки",
+        "pt": "ver problema # 444: evitar falha se nenhum dado recebido, mostrar o estado de resposta no log de depuração",
+        "nl": "zie probleem #444: crash vermijden als er geen gegevens zijn ontvangen, responsstatus tonen in debuglog",
+        "fr": "voir le numéro 444: éviter le crash si aucune donnée n'a été reçue, afficher l'état de la réponse dans le journal de débogage",
+        "it": "vedi problema #444: evitare crash se non sono stati ricevuti dati, mostrare lo stato di risposta nel registro di debug",
+        "es": "ver el número #444: evitar el accidente si no se reciben datos, mostrar el estado de respuesta en el registro de depuración",
+        "pl": "zobacz numer # 444: unikaj awarii, jeśli nie otrzymano danych, pokaż status odpowiedzi w dzienniku debugowania",
+        "uk": "переглянути номер #444: уникнути аварійних ситуацій, якщо не було отримано дані, показати статус відповіді в журналі debug",
+        "zh-cn": "参见第444期: 如果没有收到数据, 请避免崩溃, 在调试日志中显示响应状态 "
+      },
       "3.2.7": {
         "en": "enable / disable each path separately in admin",
         "de": "aktivieren / deaktivieren jeder pfad separat in admin",
@@ -80,19 +93,6 @@
         "pl": "tłumaczenia\n",
         "uk": "переклади\n",
         "zh-cn": "翻译\n"
-      },
-      "3.2.1": {
-        "en": "see issue #411: jsonConfig fixed",
-        "de": "siehe Ausgabe #411: jsonConfig behoben",
-        "ru": "#411: jsonConfig",
-        "pt": "veja a questão #411: jsonConfig corrigido",
-        "nl": "zie nummer #411: jsonConfig vast",
-        "fr": "voir le numéro #411: jsonConfig corrigé",
-        "it": "vedi numero #411: jsonConfig fisso",
-        "es": "ver número #411: jsonConfig fijo",
-        "pl": "zobacz numer # 411: jsonConfig stały",
-        "uk": "переглянути номер #411: jsonConfig фіксований",
-        "zh-cn": "参见第411期:jsonConfig 已修复"
       }
     },
     "titleLang": {

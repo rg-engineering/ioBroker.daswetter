@@ -1,6 +1,6 @@
 {
   "name": "iobroker.daswetter",
-  "version": "3.2.7",
+  "version": "3.2.8",
   "description": "ioBroker DasWetter.com Adapter",
   "author": {
     "name": "René G.",
