@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.6",
+    "version": "3.2.7",
     "news": {
+      "3.2.7": {
+        "en": "enable / disable each path separately in admin",
+        "de": "aktivieren / deaktivieren jeder pfad separat in admin",
+        "ru": "включение/отключение каждого пути отдельно в админ",
+        "pt": "habilitar / desativar cada caminho separadamente no administrador",
+        "nl": "elk pad apart in admin inschakelen/deactiveren",
+        "fr": "active / désactive chaque chemin séparément dans admin",
+        "it": "abilitare / disabilitare ogni percorso separatamente in admin",
+        "es": "habilitar / deshabilitar cada ruta por separado en administración",
+        "pl": "włączyć / wyłączyć każdą ścieżkę oddzielnie w admin",
+        "uk": "увімкнути / вимкнути кожну шлях окремо в адмін",
+        "zh-cn": "启用/ 在管理员中禁用每个路径"
+      },
       "3.2.6": {
         "en": "#417: bug fix: allow 14 minutes between two data requests to avoid unnecessary warnings",
         "de": "#417: bugfix: 14 minuten zwischen zwei datenanfragen erlauben, unnötige warnungen zu vermeiden",
@@ -80,19 +93,6 @@
         "pl": "zobacz numer # 411: jsonConfig stały",
         "uk": "переглянути номер #411: jsonConfig фіксований",
         "zh-cn": "参见第411期:jsonConfig 已修复"
-      },
-      "3.2.0": {
-        "en": "see issue #406: test with nodejs@22\nupdate dependencies\nmigration to admin 5 UI (jsonConfig)",
-        "de": "siehe ausgabe #406: test mit nodejs@22\naktualisierung der abhängigkeiten\nmigration zu admin 5 UI (jsonConfig)",
-        "ru": "#406: тест с nodejs@22\nобновление зависимостей\nadmin 5 UI (jsonConfig)",
-        "pt": "veja a edição #406: teste com nodejs@22\ndependências\nmigração para administrador 5 UI (jsonConfig)",
-        "nl": "zie nummer 406: test met nodejs@22\nafhankelijkheden bijwerken\nmigratie naar admin 5 UI (jsonConfig)",
-        "fr": "voir le numéro 406: test avec nodejs@22\nmettre à jour les dépendances\nmigration vers admin 5 UI (jsonConfig)",
-        "it": "vedi numero 406: prova con nodejs@22\naggiornamento dipendenze\nmigrazione a admin 5 UI (jsonConfig)",
-        "es": "ver número #406: prueba con nodejs@22\ndependencias de actualización\nmigración a admin 5 UI (jsonConfig)",
-        "pl": "zobacz numer # 406: test z nodejs @ 22\naktualizacji zależności\nmigracja do admin 5 UI (jsonConfig)",
-        "uk": "переглянути номер #406: тест з nodejs@22\nоновлення залежності\nміграція до адмін 5 UI (jsonConfig)",
-        "zh-cn": "参见第406期:带节点的测试@22\n更新依赖关系\n迁移到管理员 5 UI (jsonConfig)"
       }
     },
     "titleLang": {
