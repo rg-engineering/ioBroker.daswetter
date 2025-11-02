@@ -283,7 +283,8 @@ async function getprops(obj, keyName) {
 
 
 async function getForecastData7Days() {
-    if (adapter.config.Days7Forecast) {
+    if (adapter.config.Days7Forecast !== null && adapter.config.Days7Forecast.length > 0
+        && (adapter.config.enableDays7Forecast!==null && adapter.config.enableDays7Forecast === true)) {
 
         let buffer = null;
         try {
@@ -377,7 +378,9 @@ async function getForecastData7Days() {
 }
 
 async function getForecastData5Days() {
-    if (adapter.config.Days5Forecast) {
+    if (adapter.config.Days5Forecast !== null && adapter.config.Days5Forecast.length > 0
+        && (adapter.config.enableDays5Forecast !== null && adapter.config.enableDays5Forecast === true)) {
+
         let buffer = null;
         try {
             const url = adapter.config.Days5Forecast;
@@ -600,7 +603,8 @@ async function getForecastData5Days() {
 
 async function getForecastDataHourly() {
 
-    if (adapter.config.HourlyForecast) {
+    if (adapter.config.HourlyForecast !== null && adapter.config.HourlyForecast.length > 0
+        && (adapter.config.enableHourlyForecast !== null && adapter.config.enableHourlyForecast === true)) {
 
         let buffer = null;
         try {
@@ -1044,11 +1048,10 @@ async function getForecastDataHourly() {
     }
 }
 
-
-
-
 async function getForecastDataHourlyJSON() {
-    if (adapter.config.HourlyForecastJSON) {
+    if (adapter.config.HourlyForecastJSON !== null && adapter.config.HourlyForecastJSON.length > 0
+        && (adapter.config.enableHourlyForecastJSON !== null && adapter.config.enableHourlyForecastJSON === true)) {
+
         let res = null;
         try {
             const url = adapter.config.HourlyForecastJSON;

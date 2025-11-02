@@ -35,49 +35,89 @@
           "lg": 12,
           "xl": 12
         },
-        "Days7Forecast": {
+        "enableDays7Forecast": {
           "newLine": true,
+          "type": "checkbox",
+          "label": "enableDays7Forecast",
+          "xs": 2,
+          "sm": 2,
+          "md": 2,
+          "lg": 2,
+          "xl": 2
+        },
+        "Days7Forecast": {
+          "newLine": false,
           "type": "text",
           "label": "URL_7_days_forecast",
           "help": "XML file with the 7-day weather forecast and general daily overview",
-          "xs": 12,
-          "sm": 12,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
+          "xs": 10,
+          "sm": 10,
+          "md": 10,
+          "lg": 10,
+          "xl": 10
+        },
+        "enableDays5Forecast": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "enableDays5Forecast",
+          "xs": 2,
+          "sm": 2,
+          "md": 2,
+          "lg": 2,
+          "xl": 2
         },
         "Days5Forecast": {
-          "newLine": true,
+          "newLine": false,
           "type": "text",
           "label": "URL_5_days_forecast",
           "help": "XML file with 5-day weather forecast and detailed information for every 3 hours",
-          "xs": 12,
-          "sm": 12,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
+          "xs": 10,
+          "sm": 10,
+          "md": 10,
+          "lg": 10,
+          "xl": 10
+        },
+        "enableHourlyForecast": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "enableHourlyForecast",
+          "xs": 2,
+          "sm": 2,
+          "md": 2,
+          "lg": 2,
+          "xl": 2
         },
         "HourlyForecast": {
-          "newLine": true,
+          "newLine": false,
           "type": "text",
           "label": "URL_hourly_forecast",
           "help": "XML file with weather forecasts for the next 5 days and hourly information",
-          "xs": 12,
-          "sm": 12,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
+          "xs": 10,
+          "sm": 10,
+          "md": 10,
+          "lg": 10,
+          "xl": 10
+        },
+        "enableHourlyForecastJSON": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "enableHourlyForecastJSON",
+          "xs": 2,
+          "sm": 2,
+          "md": 2,
+          "lg": 2,
+          "xl": 2
         },
         "HourlyForecastJSON": {
-          "newLine": true,
+          "newLine": false,
           "type": "text",
           "label": "URL_hourly_forecast_JSON",
           "help": "JSON file with 5-day weather forecast and detailed information for every 3 hours",
-          "xs": 12,
-          "sm": 12,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
+          "xs": 10,
+          "sm": 10,
+          "md": 10,
+          "lg": 10,
+          "xl": 10
         },
         "dividerHdr2": {
           "newLine": true,
