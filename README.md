@@ -74,6 +74,11 @@ Now we have implemented a "auto-repair" which changes to structure to documented
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) rework with typescript
+* (René) support of new api from DasWetter.com
+
 ### 3.2.8 (2025-11-02)
 * (René) see issue #444: avoid crash if no data received, show response status in debug log
 
