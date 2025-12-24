@@ -34,3 +34,7 @@ test*.js
 .commitinfo
 /.vscode/extensions.json
 /iobroker.daswetter-3.2.6.tgz
+/iobroker.daswetter-3.9.9.tgz
+/build/
+/build/main.js
+/build/main.js.map
