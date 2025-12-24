@@ -3,35 +3,19 @@
  * Created with @iobroker/create-adapter v2.6.5
  */
 
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
+
 
 //https://www.iobroker.net/#en/documentation/dev/adapterdev.md
 
-import {
-	existsSync,
-	mkdirSync,
-	//writeFileSync,
-	//statSync,
-	//unlinkSync,
-	//readFileSync,
-	//readdirSync,
-	//lstatSync,
-} from 'node:fs';
-import {
-	//normalize,
-	join
-} from 'node:path';
-//import { Adapter, type AdapterOptions, getAbsoluteDefaultDataDir } from '@iobroker/adapter-core';
 import * as utils from "@iobroker/adapter-core";
 
 // Load your modules here, e.g.:
 // import * as fs from "fs";
-
+import Meteored from "./lib/meteored";
 
 export class DasWetter extends utils.Adapter {
 
-	
+	private meteored: Meteored | null = null;
 
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
@@ -105,7 +89,7 @@ export class DasWetter extends utils.Adapter {
 		//create path if  not exists
 		// /opt/iobroker/iobroker-data/files/ai-heatingcontrol/data
 
-		
+
 
 		//try {
 		//	await this.mkdirAsync(null, "files/ai-heatingcontrol/data");
@@ -113,7 +97,23 @@ export class DasWetter extends utils.Adapter {
 		//	this.log.warn("exception while creating folder " + err);
 		//}
 
+		const config = {
+			name: "DasWetter",
+
+			//muss noch in's admin
+			API_key: "32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5",
+			postcode: "08228",
+			city:"Rodewisch"
+		}
+		this.log.debug("create instance of Meteored");
+		this.meteored = new Meteored(this, config);
+
+		//muss in den cron / intervall
 		
+		await this.meteored.GetLocation();
+		await this.meteored.GetForecastDaily();
+		await this.meteored.GetForecastHourly();
+		await this.meteored.GetSymbols();
 	}
 
 	/**

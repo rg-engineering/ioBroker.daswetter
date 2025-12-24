@@ -1,6 +1,6 @@
 {
   "name": "iobroker.daswetter",
-  "version": "3.2.8",
+  "version": "3.9.9",
   "description": "ioBroker DasWetter.com Adapter",
   "author": {
     "name": "René G.",
@@ -34,7 +34,8 @@
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/build-tools": "^2.0.15",
     "@iobroker/eslint-config": "^2.2.0",
-    "@iobroker/testing": "^5.1.1"
+    "@iobroker/testing": "^5.1.1",
+    "baseline-browser-mapping": "^2.9.11"
   },
   "main": "build/main.js",
   "bugs": {
@@ -53,16 +54,16 @@
     "2-build": "node tasks.js --2-build",
     "3-copy": "node tasks.js --3-copy",
     "4-patch": "node tasks.js --4-patch",
-    "build": "npm run build-backend",
+    "build": "npm run build-backend && npm pack",
     "build-backend": "tsc -p tsconfig.build.json",
     "npm": "npm i"
   },
   "files": [
     "admin/",
     "admin{,/!(i18n)/**}/flat.txt",
-    "admin/icons",
+    "!admin/icons",
     "docs/",
-    "lib/",
+    "!lib/",
     "!.vscode",
     "!.github",
     "!.git",
@@ -73,10 +74,14 @@
     "!.idea",
     "!test",
     "!typings",
-    "www/",
+    "!www/",
     "io-package.json",
     "LICENSE",
-    "main.js"
+    "!main.js",
+    "build/",
+    "!readme.txt",
+    "!docs/iconos.zip"
+
   ],
   "readmeFilename": "README.md"
 }

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.2.8",
+    "version": "3.9.9",
     "news": {
       "3.2.8": {
         "en": "see issue #444: avoid crash if no data received, show response status in debug log",
@@ -122,8 +122,7 @@
       "uk": "читає дані прогнозу погоди з DasWetter.com. Доступні різні моделі прогнозу."
     },
     "platform": "Javascript/Node.js",
-    "mode": "schedule",
-    "schedule": "*/15 * * * *",
+    "mode": "daemon",
     "icon": "daswettercom.png",
     "enabled": true,
     "allowInit": true,
