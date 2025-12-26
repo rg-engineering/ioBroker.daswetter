@@ -1,20 +1,63 @@
 // This file extends the AdapterConfig type from "@types/iobroker"
 
-//ist das gleiche interface wie in types.d.ts
-export interface DasWetterConfig {
+
+//Interface zu meteored
+export interface MetoredConfig {
 	name: string; //translated names from enum in ioBroker
 	API_key: string; //api key based on account
 	postcode: string;//postcode for location
 	city: string;
+	language: string | undefined;
+	dateFormat: string; 
+	parseTimeout: number;
+
+	iconSet: number,
+	UsePNGorOriginalSVG: boolean,
+	UseColorOrBW: boolean,
+	CustomPath: string,
+	CustomPathExt: string,
+
+	windiconSet: number,
+	WindCustomPath: string,
+	WindCustomPathExt: string,
+
+	mooniconSet: number,
+	MoonCustomPath: string,
+	MoonCustomPathExt: string
 }
 
+
+interface locations {
+	IsActive: boolean,
+	postcode: string,
+	city: string
+}
 
 // Augment the globally declared type ioBroker.AdapterConfig
 declare global {
 	namespace ioBroker {
 		interface AdapterConfig {
 			dummy: string
-			
+
+			locations: locations[],
+			ApiKey: string,
+			parseInterval: number,
+			parseTimeout: number,
+
+			iconSet: number,
+			UsePNGorOriginalSVG: boolean,
+			UseColorOrBW: boolean,
+			CustomPath: string,
+			CustomPathExt: string,
+
+			windiconSet: number,
+			WindCustomPath: string,
+			WindCustomPathExt: string,
+
+			mooniconSet: number,
+			MoonCustomPath: string,
+			MoonCustomPathExt: string
+
 		}
 	}
 }

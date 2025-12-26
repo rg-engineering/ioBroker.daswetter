@@ -212,10 +212,15 @@
     ]
   },
   "native": {
-    "Days7Forecast": "",
-    "Days5Forecast": "",
-    "HourlyForecast": "",
-    "HourlyForecastJSON": "",
+    "ApiKey": "",
+    "locations": [
+      {
+        "postcode": "",
+        "city": ""
+      }
+    ],
+
+
     "enableDays7Forecast": true,
     "enableDays5Forecast": true,
     "enableHourlyForecast": true,
@@ -232,5 +237,8 @@
     "MoonCustomPathExt": "png",
     "createCurrent": true,
     "createInXHour": 0
-  }
+  },
+  "objects": [],
+  "instanceObjects": []
+  
 }

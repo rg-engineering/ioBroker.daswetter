@@ -29,41 +29,44 @@ For more details and for information how to disable the error reporting see [Sen
                                                                           
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=34ESBMJ932QZC)
 
-
 This adapter reads weather forecast data from DasWetter.com.
 
-**ATTENTION: At the moment, new registrations at DasWetter are apparently not possible. Please do not open any tickets here in the adapter, as we have no influence on the data provider. As soon as we have new information, we will publish it here.**
+## update hint v4
+This adapter v4 uses the new API (2026). The data structure is now different compared to older versions
+of the adapter. Old instances must be deleted and a new instance of adapter must be created.
+Every user must enable the new API on the website of DasWetter. There will be API key provided which
+must be used in the settings of the adapter.
+With new API also new users can be registered on website of (DasWetter)[https://dashboard.meteored.com/de/login]
+
+## general functionality
+The user must enable the API on the server of (DasWetter)[https://dashboard.meteored.com/de/login] first.
+With API key, postcode and city name in adapter configuration the adapter is then able to retrieve
+forecast data from the server.
+At first after adapter start a location check takes place. With postcode we try to find out the nearest
+weather station. Typically the server answers with different locations from different countries because
+of similar postcodes. The adapter then tries to find out the right weather station with city name.
+If the nearest station was found a location hash is stored internally which is later used to request
+weather forecast data.
+At the moment only two paths are available
+* daily forcast
+The daily forecast provides general weather forcast data for the next 5 days
+
+* hourly forecast
+The hourly forecast provides a more detailed forecast for 24 hours of the current day
 
 
-You need an account on DasWetter.com. Register at https://www.daswetter.com/api/#/login
-The account is for free under certain conditions.
+### limitations of free plan
 
-In your account you will find three URL for four different data models:
-* Forecast for the next 7 days and general information of the day: high and low, wind (symbol and description), Day symbol and weather conditions
-* detailed information for 5 days and every 3 hours: The general daily information is the following: peak, lows, wind, gusts, Precipitation, relative humidity, 
-sea level air pressure, snow line, Sunrise and sunset, dates related to the moon, local time
-* Preview with detailed data every hour (only for the first 2 days, then every 3 hours)
-* Prediction for 5 days and every 3 hours (in JSON format)
+![free plan limitations](/docs/free_plan.png "free plan limitations")
 
-All four models are implemented and one should be used at least.
-In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx  must be used. Just copy the complete URL from your account.
+### alternatives
+
+If the forecast is only to be displayed on a visualization, the [widget](https://www.daswetter.com/users/de/widget) can also be a good alternative.
+A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-weather-and-heating?tab=readme-ov-file#meteored-weather-widget) is already available.
 
 ## Hints
-### icons used in vis
-* Access icons like `http://ip:8082/adapter/daswetter/icons/tiempo-weather/galeria1/1.png`.
-* in galerie6 original icons are in svg format. Vis app might have problems to visualize it. So converted png are available. Just use option "use png"
-* in galerie5 original icons are in svg and png format. Beside also color and white versions are available
 
-### "current" in NextHours_Day1:
-* DasWetter.com does not deliver real current weather values
-* but sometimes it's helpfull to have the forecast of current hour available
-* so we added "current" which is just a copy of related forecast hour values
-* please make sure you call the adapter at least one time per hour to make sure "current" is updated well
-* see also github feature request [issue24](https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
-### path 4
-* at the moment DasWetter.com sends data which are different to their own specification. 
-Now we have implemented a "auto-repair" which changes to structure to documented shape.
 
 ## known issues
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.daswetter/issues) if you find bugs or whish new features
@@ -76,8 +79,9 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 -->
 
 ### **WORK IN PROGRESS**
-* (René) rework with typescript
-* (René) support of new api from DasWetter.com
+* (René, copilot) rework with typescript
+* (René, copilot) support of new api from DasWetter.com
+* (René) adapter type changed from "scheduled" to "deamon"
 
 ### 3.2.8 (2025-11-02)
 * (René) see issue #444: avoid crash if no data received, show response status in debug log

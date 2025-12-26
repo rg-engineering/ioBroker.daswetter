@@ -4,16 +4,14 @@ import type { DasWetter } from "../main";
 
 import Base from "./base";
 
-import type { DasWetterConfig } from './adapter-config';
+import type { MetoredConfig } from './adapter-config';
 
-
-//API key: 32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5
-//location hash 7383011b46bae98d1b1277b8a71c1286
 
 //todo
-// Fehlerbehandlung (return vom server)
-// Daten in OID übernehmen
-// config vom admin holen
+// neuen API key erzeugen
+
+// symbole abgleich mit return und Pfad
+// rollen für datenpunkte
 
 //siehe https://dashboard.meteored.com/de/api#documentation
 
@@ -43,7 +41,7 @@ interface day_data {
     "sun_mid": number,
     "sun_out": number,
     "moon_in": number,
-    "moon_out": 1766605550000,
+    "moon_out": number,
     "moon_symbol": number,
     "moon_illumination": number
 }
@@ -84,21 +82,64 @@ export default class Meteored extends Base {
     location_hash = "";
     location_description = "";
     location_country = "";
+    language: string | undefined = "";
+    dateFormat = "";
+    parseTimeout = 10;
 
     symbols: symbol_data[] = [];
     days_forecast: day_data[] = [];
     hours_forecast: hour_data[] = [];
 
+    iconSet= 0;
+    UsePNGorOriginalSVG = true;
+    UseColorOrBW= true;
+    CustomPath = "";
+    CustomPathExt = "";
+
+    windiconSet = 0;
+    WindCustomPath = "";
+    WindCustomPathExt = "";
+
+    mooniconSet = 0;
+    MoonCustomPath = "";
+    MoonCustomPathExt = "";
+
+
     url = "";
 
-    constructor(adapter: DasWetter, config: DasWetterConfig) {
-        super(adapter, config.name);
-        this.api_key = config.API_key;
-        this.postcode = config.postcode;
-        this.city = config.city;
+    constructor(adapter: DasWetter, id: number, config: MetoredConfig) {
+        super(adapter, id, config.name);
+        this.api_key = typeof config.API_key === "string" ? config.API_key : "";
+        this.postcode = typeof config.postcode === "string" ? config.postcode : "";
+        this.city = typeof config.city === "string" ? config.city : "";
+        this.language = typeof config.language === "string" ? config.language : "DE";
+        this.dateFormat = typeof config.dateFormat === "string" ? config.dateFormat : "YYMMDD";
+        this.parseTimeout = typeof config.parseTimeout === "number" ? config.parseTimeout : 10;
+
+        this.iconSet = config.iconSet;
+        this.UsePNGorOriginalSVG = config.UsePNGorOriginalSVG;
+        this.UseColorOrBW = config.UseColorOrBW;
+        this.CustomPath = config.CustomPath;
+        this.CustomPathExt = config.CustomPathExt;
+
+        this.windiconSet = config.windiconSet;
+        this.WindCustomPath = config.WindCustomPath;
+        this.WindCustomPathExt = config.WindCustomPathExt;
+
+        this.mooniconSet = config.mooniconSet;
+        this.MoonCustomPath = config.MoonCustomPath;
+        this.MoonCustomPathExt = config.MoonCustomPathExt;
     }
 
-    CheckError(status:number): boolean{
+    async Start(): Promise<void> {
+        await this.CreateObjects();
+
+        await this.GetLocation();
+        await this.GetSymbols();
+    }
+
+
+    CheckError(status: number): boolean {
 
         if (!status || typeof status !== "number") {
             this.logError(" no response or invalid status");
@@ -135,12 +176,10 @@ export default class Meteored extends Base {
     async GetLocation(): Promise<void> {
         this.logDebug("GetLocation called");
 
-        /*
-        curl -X 'GET' \
-            'https://api.meteored.com/api/location/v1/search/postalcode/08228' \
-            -H 'accept: application/json' \
-            -H 'x-api-key: 32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5'
-        */
+        if (this.api_key === undefined || this.api_key == "") {
+            this.logError("no api key available, please check settings");
+            return;
+        }
 
         const url = "https://api.meteored.com/api/location/v1/search/postalcode/" + this.postcode;
         const headers = {
@@ -151,7 +190,7 @@ export default class Meteored extends Base {
         try {
             const resp = await axios.get(url, {
                 headers: headers,
-                timeout: 10000
+                timeout: this.parseTimeout * 1000
             });
 
             if (this.CheckError(resp.status)) {
@@ -161,8 +200,6 @@ export default class Meteored extends Base {
             try {
                 // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
                 this.logDebug("Meteored GetLocation response: " + JSON.stringify(resp.data));
-
-
 
                 // Sicher extrahieren: resp.data.data.locations
                 const locations: location_data[] =
@@ -194,42 +231,9 @@ export default class Meteored extends Base {
                         this.logError("Meteored GetLocation: no matching location for city \"" + this.city + "\"");
                     }
                 }
-                /*
-                {
-  "ok": true,
-  "expiracion": 1766561160547,
-  "data": {
-    "locations": [
-      {
-        "hash": "a79ecf2d85e1c63ace22d6d8299b2675",
-        "name": "Terrassa",
-        "description": "Barcelona, Katalonien",
-        "country_name": "Spanien"
-      },
-      {
-        "hash": "a79ecf2d85e1c63ace22d6d8299b2675",
-        "name": "Terrassa",
-        "description": "Provinz Barcelona",
-        "country_name": "Spanien"
-      },
-      {
-        "hash": "7383011b46bae98d1b1277b8a71c1286",
-        "name": "Rodewisch",
-        "description": "Sachsen",
-        "country_name": "Deutschland"
-      },
-      {
-        "hash": "b7698c3089cc23819247f5818b91215e",
-        "name": "Vilnius",
-        "description": "Bezirk Vilnius",
-        "country_name": "Litauen"
-      }
-    ]
-  }
-}
 
+                await this.SetData_Location();
 
-                */
             } catch (e) {
                 this.logError("exception in GetLocation data parse " + e);
             }
@@ -243,12 +247,15 @@ export default class Meteored extends Base {
     async GetForecastDaily(): Promise<void> {
         this.logDebug("GetForecastDaily called");
 
-        /*
-        curl -X 'GET' \
-            'https://api.meteored.com/api/forecast/v1/daily/7383011b46bae98d1b1277b8a71c1286' \
-            -H 'accept: application/json' \
-            -H 'x-api-key: 32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5'
-        */
+        if (this.location_hash === undefined || this.location_hash == "") {
+            this.logError("no location hash available, please check postcode and city settings");
+            return;
+        }
+        if (this.api_key === undefined || this.api_key == "") {
+            this.logError("no api key available, please check settings");
+            return;
+        }
+
         const url = "https://api.meteored.com/api/forecast/v1/daily/" + this.location_hash;
         const headers = {
             accept: "application/json",
@@ -258,7 +265,7 @@ export default class Meteored extends Base {
         try {
             const resp = await axios.get(url, {
                 headers: headers,
-                timeout: 10000
+                timeout: this.parseTimeout * 1000
             });
             if (this.CheckError(resp.status)) {
                 return;
@@ -318,138 +325,13 @@ export default class Meteored extends Base {
 
                         this.days_forecast = mapped;
                         this.logDebug("Meteored GetForecastDaily: parsed days_forecast count=" + this.days_forecast.length);
-
-                        
-
                     } catch (e) {
                         this.logError("Meteored GetForecastDaily: error mapping days array: " + e);
                         this.days_forecast = [];
                     }
-                }
-                /*
-                {
-                  "ok": true,
-                  "expiracion": 1766566620000,
-                  "data": {
-                    "hash": "7383011b46bae98d1b1277b8a71c1286",
-                    "name": "Rodewisch",
-                    "url": "https://www.daswetter.com/wetter_Rodewisch-Europa-Deutschland-Sachsen--1-27287.html",
-                    "days": [
-                      {
-                        "start": 1766530800000,
-                        "symbol": 24,
-                        "temperature_min": -5.69,
-                        "temperature_max": -0.75,
-                        "wind_speed": 26,
-                        "wind_gust": 53,
-                        "wind_direction": "NE",
-                        "rain": 0.1,
-                        "rain_probability": 30,
-                        "humidity": 75,
-                        "pressure": 1030,
-                        "snowline": 0,
-                        "uv_index_max": 0.4,
-                        "sun_in": 1766560210000,
-                        "sun_mid": 1766574602000,
-                        "sun_out": 1766588998000,
-                        "moon_in": 1766570292000,
-                        "moon_out": 1766605550000,
-                        "moon_symbol": 4,
-                        "moon_illumination": 17.6
-                      },
-                      {
-                        "start": 1766617200000,
-                        "symbol": 1,
-                        "temperature_min": -5.6,
-                        "temperature_max": 1.42,
-                        "wind_speed": 16,
-                        "wind_gust": 32,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 62,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0.4,
-                        "sun_in": 1766646630000,
-                        "sun_mid": 1766661032000,
-                        "sun_out": 1766675438000,
-                        "moon_in": 1766657571000,
-                        "moon_out": 1766696557000,
-                        "moon_symbol": 5,
-                        "moon_illumination": 26.05
-                      },
-                      {
-                        "start": 1766703600000,
-                        "symbol": 1,
-                        "temperature_min": -4.94,
-                        "temperature_max": 2.29,
-                        "wind_speed": 9,
-                        "wind_gust": 21,
-                        "wind_direction": "N",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 67,
-                        "pressure": 1031,
-                        "snowline": 1500,
-                        "uv_index_max": 0.5,
-                        "sun_in": 1766733046000,
-                        "sun_mid": 1766747462000,
-                        "sun_out": 1766761882000,
-                        "moon_in": 1766744751000,
-                        "moon_out": 1766787595000,
-                        "moon_symbol": 6,
-                        "moon_illumination": 35.71
-                      },
-                      {
-                        "start": 1766790000000,
-                        "symbol": 4,
-                        "temperature_min": -4.68,
-                        "temperature_max": 1.12,
-                        "wind_speed": 10,
-                        "wind_gust": 22,
-                        "wind_direction": "SW",
-                        "rain": 0,
-                        "rain_probability": 10,
-                        "humidity": 77,
-                        "pressure": 1033,
-                        "snowline": 2800,
-                        "uv_index_max": 0.5,
-                        "sun_in": 1766819460000,
-                        "sun_mid": 1766833891000,
-                        "sun_out": 1766848329000,
-                        "moon_in": 1766831908000,
-                        "moon_out": 0,
-                        "moon_symbol": 7,
-                        "moon_illumination": 46.27
-                      },
-                      {
-                        "start": 1766876400000,
-                        "symbol": 9,
-                        "temperature_min": -4.22,
-                        "temperature_max": 0.89,
-                        "wind_speed": 14,
-                        "wind_gust": 32,
-                        "wind_direction": "N",
-                        "rain": 0,
-                        "rain_probability": 20,
-                        "humidity": 90,
-                        "pressure": 1034,
-                        "snowline": 0,
-                        "uv_index_max": 0.5,
-                        "sun_in": 1766905870000,
-                        "sun_mid": 1766920321000,
-                        "sun_out": 1766934778000,
-                        "moon_in": 1766919118000,
-                        "moon_out": 1766878747000,
-                        "moon_symbol": 8,
-                        "moon_illumination": 57.31
-                      }
-                    ]
-                  }
-                }
-                */
 
+                    await this.SetData_ForecastDaily();
+                }
             } catch (e) {
                 // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
                 this.logError("exception in GetForecastDaily data parse " + e);
@@ -463,12 +345,15 @@ export default class Meteored extends Base {
     async GetForecastHourly(): Promise<void> {
         this.logDebug("GetForecastHourly called");
 
-        /*
-        curl -X 'GET' \
-            'https://api.meteored.com/api/forecast/v1/hourly/7383011b46bae98d1b1277b8a71c1286' \
-            -H 'accept: application/json' \
-            -H 'x-api-key: 32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5'
-        */
+        if (this.location_hash === undefined || this.location_hash == "") {
+            this.logError("no location hash available, please check postcode and city settings");
+            return;
+        }
+        if (this.api_key === undefined || this.api_key == "") {
+            this.logError("no api key available, please check settings");
+            return;
+        }
+
         const url = "https://api.meteored.com/api/forecast/v1/hourly/" + this.location_hash;
         const headers = {
             accept: "application/json",
@@ -478,7 +363,7 @@ export default class Meteored extends Base {
         try {
             const resp = await axios.get(url, {
                 headers: headers,
-                timeout: 10000
+                timeout: this.parseTimeout * 1000
             });
             if (this.CheckError(resp.status)) {
                 return;
@@ -528,429 +413,7 @@ export default class Meteored extends Base {
                     }
                 }
 
-                /*
-                {
-                  "ok": true,
-                  "expiracion": 1766566620000,
-                  "data": {
-                    "hash": "7383011b46bae98d1b1277b8a71c1286",
-                    "name": "Rodewisch",
-                    "url": "https://www.daswetter.com/wetter_Rodewisch-Europa-Deutschland-Sachsen--1-27287.html",
-                    "start": 1766530800000,
-                    "hours": [
-                      {
-                        "end": 1766534400000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.19,
-                        "temperature_feels_like": -6.18,
-                        "wind_speed": 19,
-                        "wind_gust": 40,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 84,
-                        "pressure": 1026,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766538000000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.23,
-                        "temperature_feels_like": -6.31,
-                        "wind_speed": 20,
-                        "wind_gust": 41,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 81,
-                        "pressure": 1026,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766541600000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.34,
-                        "temperature_feels_like": -6.6,
-                        "wind_speed": 21,
-                        "wind_gust": 43,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 77,
-                        "pressure": 1027,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766545200000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.49,
-                        "temperature_feels_like": -6.88,
-                        "wind_speed": 21,
-                        "wind_gust": 44,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 76,
-                        "pressure": 1027,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766548800000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.46,
-                        "temperature_feels_like": -7.07,
-                        "wind_speed": 23,
-                        "wind_gust": 49,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 76,
-                        "pressure": 1027,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766552400000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.31,
-                        "temperature_feels_like": -7.21,
-                        "wind_speed": 26,
-                        "wind_gust": 52,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 73,
-                        "pressure": 1028,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766556000000,
-                        "symbol": 5,
-                        "night": true,
-                        "temperature": -1.56,
-                        "temperature_feels_like": -7,
-                        "wind_speed": 22,
-                        "wind_gust": 53,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 85,
-                        "pressure": 1028,
-                        "snowline": 200,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766559600000,
-                        "symbol": 25,
-                        "night": false,
-                        "temperature": -1.96,
-                        "temperature_feels_like": -7.4,
-                        "wind_speed": 21,
-                        "wind_gust": 45,
-                        "wind_direction": "NE",
-                        "rain": 0.1,
-                        "rain_probability": 30,
-                        "humidity": 89,
-                        "pressure": 1028,
-                        "snowline": 100,
-                        "uv_index_max": 0,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766563200000,
-                        "symbol": 5,
-                        "night": false,
-                        "temperature": -1.71,
-                        "temperature_feels_like": -7.36,
-                        "wind_speed": 23,
-                        "wind_gust": 47,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 10,
-                        "humidity": 80,
-                        "pressure": 1029,
-                        "snowline": 200,
-                        "uv_index_max": 0.1,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766566800000,
-                        "symbol": 5,
-                        "night": false,
-                        "temperature": -1.5,
-                        "temperature_feels_like": -7.36,
-                        "wind_speed": 25,
-                        "wind_gust": 52,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 69,
-                        "pressure": 1030,
-                        "snowline": 200,
-                        "uv_index_max": 0.2,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766570400000,
-                        "symbol": 5,
-                        "night": false,
-                        "temperature": -1.54,
-                        "temperature_feels_like": -7.31,
-                        "wind_speed": 24,
-                        "wind_gust": 52,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 70,
-                        "pressure": 1030,
-                        "snowline": 200,
-                        "uv_index_max": 0.3,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766574000000,
-                        "symbol": 5,
-                        "night": false,
-                        "temperature": -1.34,
-                        "temperature_feels_like": -7.11,
-                        "wind_speed": 25,
-                        "wind_gust": 51,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 67,
-                        "pressure": 1030,
-                        "snowline": 200,
-                        "uv_index_max": 0.4,
-                        "clouds": 99
-                      },
-                      {
-                        "end": 1766577600000,
-                        "symbol": 5,
-                        "night": false,
-                        "temperature": -1.71,
-                        "temperature_feels_like": -7.48,
-                        "wind_speed": 24,
-                        "wind_gust": 51,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 70,
-                        "pressure": 1030,
-                        "snowline": 200,
-                        "uv_index_max": 0.4,
-                        "clouds": 100
-                      },
-                      {
-                        "end": 1766581200000,
-                        "symbol": 4,
-                        "night": false,
-                        "temperature": -1.91,
-                        "temperature_feels_like": -7.72,
-                        "wind_speed": 24,
-                        "wind_gust": 50,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 68,
-                        "pressure": 1030,
-                        "snowline": 100,
-                        "uv_index_max": 0.2,
-                        "clouds": 91
-                      },
-                      {
-                        "end": 1766584800000,
-                        "symbol": 4,
-                        "night": false,
-                        "temperature": -2.65,
-                        "temperature_feels_like": -8.68,
-                        "wind_speed": 24,
-                        "wind_gust": 50,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 72,
-                        "pressure": 1031,
-                        "snowline": 0,
-                        "uv_index_max": 0.1,
-                        "clouds": 93
-                      },
-                      {
-                        "end": 1766588400000,
-                        "symbol": 4,
-                        "night": false,
-                        "temperature": -3.48,
-                        "temperature_feels_like": -9.57,
-                        "wind_speed": 23,
-                        "wind_gust": 49,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 76,
-                        "pressure": 1031,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 82
-                      },
-                      {
-                        "end": 1766592000000,
-                        "symbol": 3,
-                        "night": true,
-                        "temperature": -4.05,
-                        "temperature_feels_like": -10.12,
-                        "wind_speed": 22,
-                        "wind_gust": 47,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 78,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 33
-                      },
-                      {
-                        "end": 1766595600000,
-                        "symbol": 3,
-                        "night": true,
-                        "temperature": -4.57,
-                        "temperature_feels_like": -10.8,
-                        "wind_speed": 22,
-                        "wind_gust": 45,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 80,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 21
-                      },
-                      {
-                        "end": 1766599200000,
-                        "symbol": 1,
-                        "night": true,
-                        "temperature": -4.74,
-                        "temperature_feels_like": -10.8,
-                        "wind_speed": 20,
-                        "wind_gust": 45,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 78,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 1
-                      },
-                      {
-                        "end": 1766602800000,
-                        "symbol": 1,
-                        "night": true,
-                        "temperature": -5.01,
-                        "temperature_feels_like": -10.83,
-                        "wind_speed": 19,
-                        "wind_gust": 41,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 75,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 0
-                      },
-                      {
-                        "end": 1766606400000,
-                        "symbol": 1,
-                        "night": true,
-                        "temperature": -5.2,
-                        "temperature_feels_like": -10.88,
-                        "wind_speed": 18,
-                        "wind_gust": 38,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 72,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 0
-                      },
-                      {
-                        "end": 1766610000000,
-                        "symbol": 1,
-                        "night": true,
-                        "temperature": -5.28,
-                        "temperature_feels_like": -10.88,
-                        "wind_speed": 17,
-                        "wind_gust": 36,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 69,
-                        "pressure": 1032,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 0
-                      },
-                      {
-                        "end": 1766613600000,
-                        "symbol": 1,
-                        "night": true,
-                        "temperature": -5.26,
-                        "temperature_feels_like": -10.59,
-                        "wind_speed": 16,
-                        "wind_gust": 35,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 66,
-                        "pressure": 1033,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 0
-                      },
-                      {
-                        "end": 1766617200000,
-                        "symbol": 1,
-                        "night": true,
-                        "temperature": -5.14,
-                        "temperature_feels_like": -10.35,
-                        "wind_speed": 15,
-                        "wind_gust": 32,
-                        "wind_direction": "NE",
-                        "rain": 0,
-                        "rain_probability": 0,
-                        "humidity": 64,
-                        "pressure": 1033,
-                        "snowline": 0,
-                        "uv_index_max": 0,
-                        "clouds": 0
-                      }
-                    ]
-                  }
-                }
-                
-                */
+                await this.SetData_ForecastHourly();
 
 
             } catch (e) {
@@ -966,12 +429,11 @@ export default class Meteored extends Base {
     async GetSymbols(): Promise<void> {
         this.logDebug("GetSymbols called");
 
-        /*
-        curl -X 'GET' \
-      'https://api.meteored.com/api/doc/v1/forecast/symbol' \
-      -H 'accept: application/json' \
-      -H 'x-api-key: 32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5'
-        */
+        if (this.api_key === undefined || this.api_key == "") {
+            this.logError("no api key available, please check settings");
+            return;
+        }
+
         const url = "https://api.meteored.com/api/doc/v1/forecast/symbol";
         const headers = {
             accept: "application/json",
@@ -981,7 +443,7 @@ export default class Meteored extends Base {
         try {
             const resp = await axios.get(url, {
                 headers: headers,
-                timeout: 10000
+                timeout: this.parseTimeout * 1000
             });
             if (this.CheckError(resp.status)) {
                 return;
@@ -1004,7 +466,7 @@ export default class Meteored extends Base {
                     try {
                         const mapped: symbol_data[] = rawSymbols.map((s: symbol_data) => {
                             const id = (s && (typeof s.id === "number" ? s.id : Number(s.id))) || 0;
-                            const dayObj: symbol_day |null = s && s.day ? s.day : null ;
+                            const dayObj: symbol_day | null = s && s.day ? s.day : null;
                             const dayShort = dayObj && dayObj.short ? String(dayObj.short) : "";
                             const dayLong = dayObj && dayObj.long ? String(dayObj.long) : "";
 
@@ -1033,6 +495,326 @@ export default class Meteored extends Base {
 
             this.logError("exception in GetSymbols " + e);
         }
+    }
 
+    async CreateObjects(): Promise<void> {
+
+        let key = "location_" + this.id;
+        await this.CreateDatapoint(key, "channel", "", "", "", false, false, "location");
+        await this.CreateDatapoint(key + ".Location", "state", "value", "string", "", true, false, "location name");
+        await this.CreateDatapoint(key + ".URL", "state", "value", "string", "", true, false, "location Web URL");
+
+        key = "location_" + this.id + ".ForecastDaily";
+        await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");
+
+        for (let d = 1; d < 6; d++) {
+            key = "location_" + this.id + ".ForecastDaily.Day_" + d;
+            await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
+
+            await this.CreateDatapoint(key + ".start", "state", "value", "string", "", true, false, "start of forecast");
+            await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "symbol id");
+            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "symbol URL");
+            await this.CreateDatapoint(key + ".Temperature_Min", "state", "value", "number", "°C", true, false, "minimum temperature");
+            await this.CreateDatapoint(key + ".Temperature_Max", "state", "value", "number", "°C", true, false, "maximum temperature");
+            await this.CreateDatapoint(key + ".Wind_Speed", "state", "value", "number", "km/h", true, false, "Wind Speed");
+            await this.CreateDatapoint(key + ".Wind_Gust", "state", "value", "number", "km/h", true, false, "Wind Gust");
+            await this.CreateDatapoint(key + ".Wind_Direction", "state", "value", "string", "", true, false, "Wind Direction");
+            await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "Rain");
+            await this.CreateDatapoint(key + ".Rain_Probability", "state", "value", "number", "%", true, false, "Rain");
+            await this.CreateDatapoint(key + ".Humidity", "state", "value", "number", "%", true, false, "Humidity");
+            await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "kPa", true, false, "Pressure");
+            await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "", true, false, "Snowline");
+            await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "UV_index_max");
+            await this.CreateDatapoint(key + ".Sun_in", "state", "value", "string", "", true, false, "Sun_in");
+            await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "Sun_mid");
+            await this.CreateDatapoint(key + ".Sun_out", "state", "value", "string", "", true, false, "Sun_out");
+            await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "Moon_in");
+            await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "Moon_out");
+            await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "Moon_symbol");
+            await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "Moon symbol URL");
+            await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "Moon_illumination");
+        }
+
+        key = "location_" + this.id + ".ForecastHourly";
+        await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
+
+        for (let h = 1; h < 25; h++) {
+            key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
+            await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
+
+            await this.CreateDatapoint(key + ".end", "state", "value", "string", "", true, false, "Start");
+            await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Symbol");
+            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "Symbol URL");
+            await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "is night");
+            await this.CreateDatapoint(key + ".temperature", "state", "value", "number", "°C", true, false, "Temperature");
+            await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value", "number", "°C", true, false, "temperature feels like");
+            await this.CreateDatapoint(key + ".wind_speed", "state", "value", "number", "km/h", true, false, "wind speed");
+            await this.CreateDatapoint(key + ".wind_gust", "state", "value", "number", "km/h", true, false, "wind gust");
+            await this.CreateDatapoint(key + ".wind_direction", "state", "value", "string", "", true, false, "wind direction");
+            await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "rain");
+            await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "rain probability");
+            await this.CreateDatapoint(key + ".humidity", "state", "value", "number", "%", true, false, "humidity");
+            await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "kPa", true, false, "pressure");
+            await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "", true, false, "snowline");
+            await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "uv_index_max");
+            await this.CreateDatapoint(key + ".clouds", "state", "value", "number", "%", true, false, "clouds");
+        }
+    }
+
+    async SetData_Location(): Promise<void> {
+
+        const key = "location_" + this.id;
+        await this.adapter.setState(key + ".Location", this.city, true);
+
+    }
+
+    async SetData_ForecastDaily(): Promise<void> {
+
+        let key = "location_" + this.id;
+
+        await this.adapter.setState(key + ".URL", this.url, true);
+
+        for (let d = 1; d < 6; d++) {
+
+            key = "location_" + this.id + ".ForecastDaily.Day_" + d;
+
+            let timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].start ? this.days_forecast[d - 1].start : 0;
+            let formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".start", formattedTimeval, true);
+
+            await this.adapter.setState(key + ".symbol", this.days_forecast[d - 1].symbol, true);
+            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(this.days_forecast[d - 1].symbol), true);
+            await this.adapter.setState(key + ".Temperature_Min", this.days_forecast[d - 1].temperature_min, true);
+            await this.adapter.setState(key + ".Temperature_Max", this.days_forecast[d - 1].temperature_max, true);
+            await this.adapter.setState(key + ".Wind_Speed", this.days_forecast[d - 1].wind_speed, true);
+            await this.adapter.setState(key + ".Wind_Gust", this.days_forecast[d - 1].wind_gust, true);
+            await this.adapter.setState(key + ".Wind_Direction", this.days_forecast[d - 1].wind_direction, true);
+            await this.adapter.setState(key + ".Rain", this.days_forecast[d - 1].rain, true);
+            await this.adapter.setState(key + ".Rain_Probability", this.days_forecast[d - 1].rain_probability, true);
+            await this.adapter.setState(key + ".Humidity", this.days_forecast[d - 1].humidity, true);
+            await this.adapter.setState(key + ".Pressure", this.days_forecast[d - 1].pressure, true);
+            await this.adapter.setState(key + ".Snowline", this.days_forecast[d - 1].snowline, true);
+            await this.adapter.setState(key + ".UV_index_max", this.days_forecast[d - 1].uv_index_max, true);
+
+
+            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].sun_in ? this.days_forecast[d - 1].sun_in : 0;
+            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".Sun_in", formattedTimeval, true);
+
+            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].sun_mid ? this.days_forecast[d - 1].sun_mid : 0;
+            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".Sun_mid", formattedTimeval, true);
+
+            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].sun_out ? this.days_forecast[d - 1].sun_out : 0;
+            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".Sun_out", formattedTimeval, true);
+
+            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].moon_in ? this.days_forecast[d - 1].moon_in : 0;
+            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".Moon_in", formattedTimeval, true);
+
+            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].moon_out ? this.days_forecast[d - 1].moon_out : 0;
+            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".Moon_out", formattedTimeval, true);
+
+            await this.adapter.setState(key + ".Moon_symbol", this.days_forecast[d - 1].moon_symbol, true);
+            await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(this.days_forecast[d - 1].moon_symbol), true);
+
+            await this.adapter.setState(key + ".Moon_illumination", this.days_forecast[d - 1].moon_illumination, true);
+        }
+
+
+
+    }
+
+
+    async SetData_ForecastHourly(): Promise<void> {
+
+        for (let h = 1; h < 25; h++) {
+            const key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
+
+            const timeval = this.hours_forecast[h - 1] && this.hours_forecast[h - 1].end ? this.hours_forecast[h - 1].end : 0;
+            const formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
+            await this.adapter.setState(key + ".end", formattedTimeval, true);
+
+            await this.adapter.setState(key + ".symbol", this.hours_forecast[h - 1].symbol, true);
+            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(this.hours_forecast[h - 1].symbol), true);
+            await this.adapter.setState(key + ".night", this.hours_forecast[h - 1].night, true);
+            await this.adapter.setState(key + ".temperature", this.hours_forecast[h - 1].temperature, true);
+            await this.adapter.setState(key + ".temperature_feels_like", this.hours_forecast[h - 1].temperature_feels_like, true);
+            await this.adapter.setState(key + ".wind_speed", this.hours_forecast[h - 1].wind_speed, true);
+            await this.adapter.setState(key + ".wind_gust", this.hours_forecast[h - 1].wind_gust, true);
+            await this.adapter.setState(key + ".wind_direction", this.hours_forecast[h - 1].wind_direction, true);
+            await this.adapter.setState(key + ".rain", this.hours_forecast[h - 1].rain, true);
+            await this.adapter.setState(key + ".rain_probability", this.hours_forecast[h - 1].rain_probability, true);
+            await this.adapter.setState(key + ".humidity", this.hours_forecast[h - 1].humidity, true);
+            await this.adapter.setState(key + ".pressure", this.hours_forecast[h - 1].pressure, true);
+            await this.adapter.setState(key + ".snowline", this.hours_forecast[h - 1].snowline, true);
+            await this.adapter.setState(key + ".uv_index_max", this.hours_forecast[h - 1].uv_index_max, true);
+            await this.adapter.setState(key + ".clouds", this.hours_forecast[h - 1].clouds, true);
+        }
+    }
+    FormatTimestampToLocal(timestamp: number): string {
+        try {
+            if (timestamp === null || timestamp === undefined || Number.isNaN(Number(timestamp))) {
+                return "";
+            }
+
+            let ms = Number(timestamp);
+
+            // Wenn der Zeitstempel offensichtlich in Sekunden vorliegt (kleiner als 10^10),
+            // dann in Millisekunden umwandeln.
+            if (ms > 0 && ms < 10000000000) { // ~ Sat Nov 20 2286, safe cutoff for seconds
+                ms = ms * 1000;
+            }
+
+            const d = new Date(ms);
+            if (isNaN(d.getTime())) {
+                return "";
+            }
+
+            // Resolve locale
+            const locale = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE";
+
+            /*
+            // If a custom dateFormat is provided, perform token replacement
+            if (this.dateFormat && typeof this.dateFormat === "string" && this.dateFormat.trim() !== "") {
+                const year = d.getFullYear();
+                const month = d.getMonth() + 1;
+                const day = d.getDate();
+                const hours = d.getHours();
+                const minutes = d.getMinutes();
+                const seconds = d.getSeconds();
+
+                const pad = (n: number, len = 2): string => String(n).padStart(len, "0");
+
+                // Token replacements (common patterns)
+                const replacements: { [token: string]: string } = {
+                    "YYYY": String(year),
+                    "YY": String(year).slice(-2),
+                    "MM": pad(month),
+                    "M": String(month),
+                    "DD": pad(day),
+                    "D": String(day),
+                    "HH": pad(hours),
+                    "H": String(hours),
+                    "hh": pad(hours),
+                    "h": String(hours),
+                    "mm": pad(minutes),
+                    "m": String(minutes),
+                    "ss": pad(seconds),
+                    "s": String(seconds)
+                };
+
+                // Perform replacement - replace longest tokens first to avoid partial matches
+                const tokens = Object.keys(replacements).sort((a, b) => b.length - a.length);
+                let formatted = String(this.dateFormat);
+                for (const t of tokens) {
+                    // Use split/join to avoid RegExp escape issues
+                    formatted = formatted.split(t).join(replacements[t]);
+                }
+
+                return formatted;
+            }
+            */
+            // Default formatting using locale with date+time and seconds (fallback behavior)
+            return d.toLocaleString(locale, {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+
+
+        } catch (e) {
+            this.logError("FormatTimestampToLocal error: " + e);
+            return "";
+        }
+    }
+
+
+
+    // symbol functions
+
+    getIconUrl(num:number):string {
+        const iconSet = this.iconSet;
+        
+        let url = "";
+        let ext = "";
+        if (num) {
+
+            if (iconSet == 7) {//custom
+                url = this.CustomPath;
+                ext = this.CustomPathExt;
+            } else {
+                url = "/adapter/daswetter/icons/tiempo-weather/galeria" + iconSet + "/";
+                ext = (iconSet < 5 || this.UsePNGorOriginalSVG) ? ".png" : ".svg";
+
+                //this.logDebug("getIconURL " + num + " " + this.UsePNGorOriginalSVG + " " + this.UseColorOrBW);
+
+                if (iconSet === 5) {
+                    if (this.UsePNGorOriginalSVG) {
+                        url = url + "PNG/";
+                    } else {
+                        url = url + "SVG/";
+                    }
+
+                    if (this.UseColorOrBW) {
+                        url = url + "Color/";
+                    } else {
+                        url = url + "White/";
+                    }
+                }
+            }
+            url = url + num + ext;
+        }
+        return url;
+    }
+
+    /*
+    getWindIconUrl(num: number): string {
+
+        let url = "";
+        let ext = "";
+
+        switch (this.windiconSet) {
+            case 1:
+                url = "/adapter/daswetter/icons/viento-wind/Beaufort-White/";
+                ext = ".png";
+                break;
+            case 2:
+                url = "/adapter/daswetter/icons/viento-wind/galeria2-Beaufort/";
+                ext = ".png";
+                break;
+            case 3:
+                url = "/adapter/daswetter/icons/viento-wind/galeria1/";
+                ext = ".png";
+                break;
+            case 4:
+                url = this.WindCustomPath;
+                ext = this.WindCustomPathExt;
+                break;
+
+        }
+        return url + num + ext;
+    }
+    */
+
+    getMoonIconUrl(num: number): string {
+        const iconSet = this.mooniconSet;
+        let url = "";
+        let ext = "";
+
+        if (iconSet == 2) {
+            url = this.MoonCustomPath;
+            ext = this.MoonCustomPathExt;
+        } else {
+            url = "/adapter/daswetter/icons/luna-moon/";
+            ext = ".png";
+        }
+
+        return url + num + ext;
     }
 }

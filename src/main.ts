@@ -3,19 +3,20 @@
  * Created with @iobroker/create-adapter v2.6.5
  */
 
-
+/*
+ neuen api key generieren, wenn dev fertig!!
+ */
 
 //https://www.iobroker.net/#en/documentation/dev/adapterdev.md
 
 import * as utils from "@iobroker/adapter-core";
-
-// Load your modules here, e.g.:
-// import * as fs from "fs";
 import Meteored from "./lib/meteored";
 
 export class DasWetter extends utils.Adapter {
 
-	private meteored: Meteored | null = null;
+	private meteored: Meteored[] = [];
+	private parseInterval: NodeJS.Timeout | null =null;
+	
 
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
@@ -23,7 +24,7 @@ export class DasWetter extends utils.Adapter {
 			name: "daswetter",
 		});
 		this.on("ready", this.onReady.bind(this));
-		this.on("stateChange", this.onStateChange.bind(this));
+		// this.on("stateChange", this.onStateChange.bind(this));
 		// this.on("objectChange", this.onObjectChange.bind(this));
 		// this.on("message", this.onMessage.bind(this));
 		this.on("unload", this.onUnload.bind(this));
@@ -37,84 +38,76 @@ export class DasWetter extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("config : " + JSON.stringify(this.config));
-		//this.log.info("config option2: " + this.config.option2);
-
-		/*
-		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-		*/
-		/*
-		await this.setObjectNotExistsAsync("testVariable", {
-			type: "state",
-			common: {
-				name: "testVariable",
-				type: "boolean",
-				role: "indicator",
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		*/
-		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-		//this.subscribeStates("testVariable");
-		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-		// this.subscribeStates("lights.*");
-		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-		// this.subscribeStates("*");
-
-		/*
-			setState examples
-			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-		*/
-		// the variable testVariable is set to true as command (ack=false)
-		//await this.setStateAsync("testVariable", true);
-
-		// same thing, but the value is flagged "ack"
-		// ack should be always set to true if the value is received from or acknowledged from the target system
-		//await this.setStateAsync("testVariable", { val: true, ack: true });
-
-		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		//await this.setStateAsync("testVariable", { val: true, ack: true, expire: 30 });
-
-		// examples for the checkPassword/checkGroup functions
-		//let result = await this.checkPasswordAsync("admin", "iobroker");
-		//this.log.info("check user admin pw iobroker: " + result);
-
-		//result = await this.checkGroupAsync("admin", "admin");
-		//this.log.info("check group user admin group admin: " + result)
-
-		//create path if  not exists
-		// /opt/iobroker/iobroker-data/files/ai-heatingcontrol/data
-
-
-
-		//try {
-		//	await this.mkdirAsync(null, "files/ai-heatingcontrol/data");
-		//} catch (err) {
-		//	this.log.warn("exception while creating folder " + err);
-		//}
-
-		const config = {
-			name: "DasWetter",
-
-			//muss noch in's admin
-			API_key: "32b5b47ddf0aefaecc45a1d0e17a057c582c58339264c798c5814819c9da8ca5",
-			postcode: "08228",
-			city:"Rodewisch"
-		}
-		this.log.debug("create instance of Meteored");
-		this.meteored = new Meteored(this, config);
-
-		//muss in den cron / intervall
+		this.log.debug("config : " + JSON.stringify(this.config));
 		
-		await this.meteored.GetLocation();
-		await this.meteored.GetForecastDaily();
-		await this.meteored.GetForecastHourly();
-		await this.meteored.GetSymbols();
+		for (let l = 0; l < this.config.locations.length; l++) {
+
+			if (this.config.locations[l].IsActive) {
+				const config = {
+					name: "DasWetter_" + l,
+
+					API_key: this.config.ApiKey,
+					postcode: this.config.locations[l].postcode,
+					city: this.config.locations[l].city,
+					language: this.language,
+					dateFormat: this.dateFormat,
+					parseTimeout: this.config.parseTimeout,
+
+					iconSet: this.config.iconSet,
+					UsePNGorOriginalSVG: this.config.UsePNGorOriginalSVG,
+					UseColorOrBW: this.config.UseColorOrBW,
+					CustomPath: this.config.CustomPath,
+					CustomPathExt: this.config.CustomPathExt,
+
+					windiconSet: this.config.windiconSet,
+					WindCustomPath: this.config.WindCustomPath,
+					WindCustomPathExt: this.config.WindCustomPathExt,
+
+					mooniconSet: this.config.mooniconSet,
+					MoonCustomPath: this.config.MoonCustomPath,
+					MoonCustomPathExt: this.config.MoonCustomPathExt
+
+				}
+				this.log.debug("create instance of Meteored");
+				const instance = new Meteored(this, l+1, config);
+
+				this.meteored.push(instance);
+			}
+		}
+
+		for (let l = 0; l < this.meteored.length; l++) {
+			//muss auch in den cron / intervall
+			await this.meteored[l].Start();
+			await this.meteored[l].GetForecastDaily();
+			await this.meteored[l].GetForecastHourly();
+		}
+
+		this.parseInterval = setInterval(() => {
+			// Aufruf der async-Funktion und Fehler protokollieren, damit das Intervall nicht wegen einer unbehandelten Exception abstürzt
+			(this.updateForecast.bind(this)()).catch((err: unknown) => {
+				this.log.error("updateForecast error: " + (err instanceof Error ? err.stack || err.message : String(err)));
+			});
+		}, this.config.parseInterval * 60 * 1000);
+
+
 	}
+
+
+	async updateForecast(): Promise<void> {
+		if (this.meteored !== undefined) {
+			for (let l = 0; l < this.meteored.length; l++) {
+				try {
+					await this.meteored[l].GetForecastDaily();
+					await this.meteored[l].GetForecastHourly();
+				} catch (err) {
+					// Loggen und weiter mit dem nächsten Eintrag
+					this.log.error(`Fehler beim Aktualisieren von Meteored[${l}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
+				}
+			}
+		}
+	}
+
+
 
 	/**
 	 * Is called when adapter shuts down - callback has to be called under any circumstances!
@@ -125,8 +118,9 @@ export class DasWetter extends utils.Adapter {
 			// clearTimeout(timeout1);
 			// clearTimeout(timeout2);
 			// ...
-			// clearInterval(interval1);
-
+			if (this.parseInterval) {
+				clearInterval(this.parseInterval);
+			}
 			
 
 			callback();
@@ -154,6 +148,7 @@ export class DasWetter extends utils.Adapter {
 	/**
 	 * Is called if a subscribed state changes
 	 */
+	/*
 	private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
 		if (state) {
 			// The state was changed
@@ -166,6 +161,7 @@ export class DasWetter extends utils.Adapter {
 			this.log.info(`state ${id} deleted`);
 		}
 	}
+	*/
 
 	// If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
 	// /**
@@ -183,6 +179,7 @@ export class DasWetter extends utils.Adapter {
 	// 		}
 	// 	}
 	// }
+
 
 }
 

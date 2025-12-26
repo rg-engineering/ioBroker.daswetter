@@ -4,11 +4,12 @@ import type { DasWetter } from "../main";
 export default class Base {
 
     public adapter: DasWetter;
+    id: number;
     name: string;
 
-    constructor(adapter: DasWetter, name: string) {
+    constructor(adapter: DasWetter,id:number, name: string) {
         this.adapter = adapter;
-
+        this.id = id;
         this.name = name;
 
         this.logDebug("instance created");

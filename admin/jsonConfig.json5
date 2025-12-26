@@ -22,145 +22,28 @@
         "dividerHdr1": {
           "newLine": true,
           "type": "header",
-          "text": "path configuration",
+          "text": "general configuration",
           "size": 2
         },
-        "pathhint": {
-          "type": "staticText",
-          "text": "hint_path",
+        "ApiKey": {
           "newLine": true,
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "enableDays7Forecast": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "enableDays7Forecast",
-          "xs": 2,
-          "sm": 2,
-          "md": 2,
-          "lg": 2,
-          "xl": 2
-        },
-        "Days7Forecast": {
-          "newLine": false,
           "type": "text",
-          "label": "URL_7_days_forecast",
-          "help": "XML file with the 7-day weather forecast and general daily overview",
-          "xs": 10,
-          "sm": 10,
-          "md": 10,
-          "lg": 10,
-          "xl": 10
-        },
-        "enableDays5Forecast": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "enableDays5Forecast",
-          "xs": 2,
-          "sm": 2,
-          "md": 2,
-          "lg": 2,
-          "xl": 2
-        },
-        "Days5Forecast": {
-          "newLine": false,
-          "type": "text",
-          "label": "URL_5_days_forecast",
-          "help": "XML file with 5-day weather forecast and detailed information for every 3 hours",
-          "xs": 10,
-          "sm": 10,
-          "md": 10,
-          "lg": 10,
-          "xl": 10
-        },
-        "enableHourlyForecast": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "enableHourlyForecast",
-          "xs": 2,
-          "sm": 2,
-          "md": 2,
-          "lg": 2,
-          "xl": 2
-        },
-        "HourlyForecast": {
-          "newLine": false,
-          "type": "text",
-          "label": "URL_hourly_forecast",
-          "help": "XML file with weather forecasts for the next 5 days and hourly information",
-          "xs": 10,
-          "sm": 10,
-          "md": 10,
-          "lg": 10,
-          "xl": 10
-        },
-        "enableHourlyForecastJSON": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "enableHourlyForecastJSON",
-          "xs": 2,
-          "sm": 2,
-          "md": 2,
-          "lg": 2,
-          "xl": 2
-        },
-        "HourlyForecastJSON": {
-          "newLine": false,
-          "type": "text",
-          "label": "URL_hourly_forecast_JSON",
-          "help": "JSON file with 5-day weather forecast and detailed information for every 3 hours",
-          "xs": 10,
-          "sm": 10,
-          "md": 10,
-          "lg": 10,
-          "xl": 10
-        },
-        "dividerHdr2": {
-          "newLine": true,
-          "type": "header",
-          "text": "settings",
-          "size": 2
-        },
-        "createCurrent": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "createCurrent",
+          "label": "api key",
+          "help": "API key from DasWetter website",
           "xs": 12,
           "sm": 12,
           "md": 4,
           "lg": 4,
           "xl": 4
         },
-        "createInXHour": {
+        "parseInterval": {
           "newLine": true,
-          "type": "select",
-          "label": "createInXHour",
-          "options": [
-            {
-              "label": { "en": "none" },
-              "value": 0
-            },
-            {
-              "label": { "en": "in 1 hour" },
-              "value": 1
-            },
-            {
-              "label": { "en": "in 2 hour" },
-              "value": 2
-            },
-            {
-              "label": { "en": "in 3 hour" },
-              "value": 3
-            },
-            {
-              "label": { "en": "in 6 hour" },
-              "value": 4
-            }
-          ],
+          "type": "number",
+          "label": "parse_interval",
+          "help": "parse interval in [min]",
+          "min": 40,
+          "max": 600,
+          "default": 60,
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -168,15 +51,72 @@
           "xl": 4
         },
         "parseTimeout": {
-          "newLine": true,
+          "newLine": false,
           "type": "number",
           "label": "parse_timeout",
+          "help": "maximim parse timeout before no response error [sec]",
+          "min": 10,
+          "max": 60,
+          "default": 10,
           "xs": 12,
           "sm": 12,
           "md": 4,
           "lg": 4,
           "xl": 4
+        },
+
+        "dividerHdr2": {
+          "newLine": true,
+          "type": "header",
+          "text": "location configuration",
+          "size": 2
+        },
+        "locations": {
+          "type": "table",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
+          "label": "location settings",
+          "showSecondAddAt": 5,
+          "noDelete": false,
+          "items": [
+            {
+              "type": "checkbox",
+              "attr": "IsActive",
+              "width": "5% ",
+              "title": "IsActive",
+              "tooltip": "enable location",
+              "filter": false,
+              "sort": false,
+              "default": false
+            },
+            {
+              "type": "text",
+              "attr": "postcode",
+              "width": "30% ",
+              "title": "postcode",
+              "tooltip": "postcode of location",
+              "filter": false,
+              "sort": false,
+              "default": false
+            },
+            {
+              "type": "text",
+              "attr": "city",
+              "width": "30% ",
+              "title": "city",
+              "tooltip": "city of location",
+              "filter": false,
+              "sort": false,
+              "default": false
+            }
+          ]
         }
+
+
       }
     },
     "Symbols": {
@@ -207,10 +147,6 @@
             {
               "label": { "en": "galeria5" },
               "value": 5
-            },
-            {
-              "label": { "en": "galeria6" },
-              "value": 6
             },
             {
               "label": { "en": "custum" },
@@ -289,19 +225,19 @@
           "options": [
             {
               "label": { "en": "Beaufort-White" },
-              "value": "Beaufort-White"
+              "value": 1
             },
             {
               "label": { "en": "galeria2-Beaufort" },
-              "value": "galeria2-Beaufort"
+              "value": 2
             },
             {
               "label": { "en": "galeria1" },
-              "value": "galeria1"
+              "value": 3
             },
             {
               "label": { "en": "custum" },
-              "value": "custom"
+              "value": 4
             }
           ],
           "xs": 12,
@@ -356,11 +292,11 @@
           "options": [
             {
               "label": { "en": "original" },
-              "value": "original"
+              "value": 1
             },
             {
               "label": { "en": "custum" },
-              "value": "custom"
+              "value": 2
             }
           ],
           "xs": 12,
