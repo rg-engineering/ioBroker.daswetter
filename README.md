@@ -36,10 +36,10 @@ This adapter v4 uses the new API (2026). The data structure is now different com
 of the adapter. Old instances must be deleted and a new instance of adapter must be created.
 Every user must enable the new API on the website of DasWetter. There will be API key provided which
 must be used in the settings of the adapter.
-With new API also new users can be registered on website of (DasWetter)[https://dashboard.meteored.com/de/login]
+With new API also new users can be registered on website of [DasWetter](https://dashboard.meteored.com/de/login)
 
 ## general functionality
-The user must enable the API on the server of (DasWetter)[https://dashboard.meteored.com/de/login] first.
+The user must enable the API on the server of [DasWetter](https://dashboard.meteored.com/de/login) first.
 With API key, postcode and city name in adapter configuration the adapter is then able to retrieve
 forecast data from the server.
 At first after adapter start a location check takes place. With postcode we try to find out the nearest
@@ -79,6 +79,8 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 -->
 
 ### **WORK IN PROGRESS**
+**Breaking Changes**
+intances of older versions must be deleted and a new instance must be created
 * (René, copilot) rework with typescript
 * (René, copilot) support of new api from DasWetter.com
 * (René) adapter type changed from "scheduled" to "deamon"

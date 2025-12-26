@@ -173,35 +173,17 @@
         "condition": {
           "operand": "and",
           "rules": [
-            "oldVersion<3.2.2",
-            "newVersion>=3.2.2"
+            "oldVersion<3.9.9",
+            "newVersion>=4.0.0"
           ]
         },
         "title": {
-          "en": "new registrations at DasWetter are apparently not possible",
-          "de": "Neuanmeldungen bei DasWetter sind offenbar nicht möglich",
-          "ru": "новые регистрации в DasWetter, очевидно, невозможны",
-          "pt": "novos registros no DasWetter aparentemente não são possíveis",
-          "nl": "nieuwe inschrijvingen bij DasWetter zijn blijkbaar niet mogelijk",
-          "fr": "les nouvelles inscriptions chez DasWetter ne sont apparemment pas possibles",
-          "it": "apparentemente non sono possibili nuove registrazioni su DasWetter",
-          "es": "Al parecer, no es posible realizar nuevos registros en DasWetter",
-          "pl": "nowe rejestracje w DasWetter najwyraźniej nie są możliwe",
-          "uk": "нові реєстрації на DasWetter, очевидно, неможливі",
-          "zh-cn": "显然不可能在 DasWetter 进行新注册"
-        },
+          "en": "new API of DasWetter is now supported",
+          "de": "Die neue API von DasWetter wird nun unterstützt"
+         },
         "text": {
-          "en": "At the moment, new registrations at DasWetter are apparently not possible. Please do not open any tickets here in the adapter, as we have no influence on the data provider. As soon as we have new information, we will publish it here.",
-          "de": "Derzeit sind Neuanmeldungen bei DasWetter offenbar nicht möglich. Bitte eröffnen Sie hier im Adapter keine Tickets, da wir keinen Einfluss auf den Datenanbieter haben. Sobald uns neue Informationen vorliegen, werden wir diese hier veröffentlichen.",
-          "ru": "На данный момент новая регистрация на DasWetter, по всей видимости, невозможна. Пожалуйста, не открывайте никаких заявок здесь, в адаптере, поскольку мы не имеем никакого влияния на поставщика данных. Как только у нас появится новая информация, мы опубликуем ее здесь.",
-          "pt": "No momento, aparentemente não são possíveis novos registros no DasWetter. Por favor, não abra nenhum ticket aqui no adaptador, pois não temos influência sobre o provedor de dados. Assim que tivermos novas informações, publicaremos aqui.",
-          "nl": "Op dit moment zijn nieuwe inschrijvingen bij DasWetter blijkbaar niet mogelijk. Open a.u.b. geen tickets hier in de adapter, aangezien wij geen invloed hebben op de dataprovider. Zodra wij nieuwe informatie hebben, zullen wij dit hier publiceren.",
-          "fr": "Pour le moment, de nouvelles inscriptions chez DasWetter ne sont apparemment pas possibles. Veuillez ne pas ouvrir de ticket ici dans l'adaptateur, car nous n'avons aucune influence sur le fournisseur de données. Dès que nous aurons de nouvelles informations, nous les publierons ici.",
-          "it": "Al momento non sembrano essere possibili nuove registrazioni su DasWetter. Si prega di non aprire alcun ticket qui nell'adattatore, poiché non abbiamo alcuna influenza sul fornitore di dati. Non appena avremo nuove informazioni le pubblicheremo qui.",
-          "es": "Por el momento, aparentemente no es posible realizar nuevos registros en DasWetter. No abra ningún ticket aquí en el adaptador, ya que no tenemos ninguna influencia sobre el proveedor de datos. Tan pronto como tengamos nueva información, la publicaremos aquí.",
-          "pl": "W tej chwili nowe rejestracje w DasWetter najwyraźniej nie są możliwe. Prosimy nie otwierać żadnych biletów tutaj, w adapterze, ponieważ nie mamy wpływu na dostawcę danych. Gdy tylko pojawią się nowe informacje, opublikujemy je tutaj.",
-          "uk": "На даний момент нові реєстрації на DasWetter, очевидно, неможливі. Будь ласка, не відкривайте жодних заявок тут, в адаптері, оскільки ми не маємо впливу на постачальника даних. Як тільки у нас буде нова інформація, ми опублікуємо її тут.",
-          "zh-cn": "目前，显然不可能在 DasWetter 进行新的注册。请不要在适配器中打开任何票证，因为我们对数据提供商没有影响力。一旦我们有新的信息，我们将在这里发布。"
+          "en": "The new DasWetter API is now supported. Users need to create an API key on the website. Additionally, the old DasWetter instance in ioBroker must be deleted and a new one created.",
+          "de": "Ab sofort wird die neue API von DasWetter unterstützt. User müssen sich einen einen API key auf der website erstellen. Außerdem muss die alte Instanz von DasWetter hier in ioBroker gelöscht werden und eine neue angelegt werden."
         },
         "level": "warn",
         "buttons": [
@@ -215,18 +197,14 @@
     "ApiKey": "",
     "locations": [
       {
+        "IsActive": true,
         "postcode": "",
         "city": ""
       }
     ],
-
-
-    "enableDays7Forecast": true,
-    "enableDays5Forecast": true,
-    "enableHourlyForecast": true,
-    "enableHourlyForecastJSON": true,
     "iconSet": 1,
-    "parseTimeout": 60,
+    "parseTimeout": 10,
+    "parseInterval": 60,
     "UsePNGorOriginalSVG": false,
     "UseColorOrBW": true,
     "CustomPath": "",
@@ -234,9 +212,7 @@
     "WindCustomPath": "",
     "WindCustomPathExt": "png",
     "MoonCustomPath": "",
-    "MoonCustomPathExt": "png",
-    "createCurrent": true,
-    "createInXHour": 0
+    "MoonCustomPathExt": "png"
   },
   "objects": [],
   "instanceObjects": []
