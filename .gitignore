@@ -6,7 +6,7 @@
 node_modules
 obj
 bin
-test
+
 typings
 
 admin/i18n/flat.txt
