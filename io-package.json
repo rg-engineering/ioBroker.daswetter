@@ -178,11 +178,29 @@
         },
         "title": {
           "en": "new API of DasWetter is now supported",
-          "de": "Die neue API von DasWetter wird nun unterstützt"
+          "de": "Die neue API von DasWetter wird nun unterstützt",
+          "ru": "теперь поддерживается новый API DasWetter",
+          "pt": "nova API do DasWetter agora é suportada",
+          "nl": "nieuwe API van DasWetter wordt nu ondersteund",
+          "fr": "la nouvelle API de DasWetter est désormais prise en charge",
+          "it": "la nuova API di DasWetter è ora supportata",
+          "es": "La nueva API de DasWetter ahora es compatible",
+          "pl": "obsługiwane jest teraz nowe API DasWetter",
+          "uk": "тепер підтримується новий API DasWetter",
+          "zh-cn": "现在支持 DasWetter 的新 API"
         },
         "text": {
           "en": "The new DasWetter API is now supported. Users need to create an API key on the website. Additionally, the old DasWetter instance in ioBroker must be deleted and a new one created.",
-          "de": "Ab sofort wird die neue API von DasWetter unterstützt. User müssen sich einen einen API key auf der website erstellen. Außerdem muss die alte Instanz von DasWetter hier in ioBroker gelöscht werden und eine neue angelegt werden."
+          "de": "Ab sofort wird die neue API von DasWetter unterstützt. User müssen sich einen einen API key auf der website erstellen. Außerdem muss die alte Instanz von DasWetter hier in ioBroker gelöscht werden und eine neue angelegt werden.",
+          "ru": "Теперь поддерживается новый API DasWetter. Пользователям необходимо создать ключ API на веб-сайте. Кроме того, необходимо удалить старый экземпляр DasWetter в ioBroker и создать новый.",
+          "pt": "A nova API DasWetter agora é suportada. Os usuários precisam criar uma chave API no site. Além disso, a instância antiga do DasWetter no ioBroker deve ser excluída e uma nova criada.",
+          "nl": "De nieuwe DasWetter API wordt nu ondersteund. Gebruikers moeten een API-sleutel op de website aanmaken. Bovendien moet de oude DasWetter-instantie in ioBroker worden verwijderd en moet er een nieuwe worden gemaakt.",
+          "fr": "La nouvelle API DasWetter est désormais prise en charge. Les utilisateurs doivent créer une clé API sur le site Web. De plus, l'ancienne instance DasWetter dans ioBroker doit être supprimée et une nouvelle créée.",
+          "it": "La nuova API DasWetter è ora supportata. Gli utenti devono creare una chiave API sul sito web. Inoltre, la vecchia istanza di DasWetter in ioBroker deve essere eliminata e crearne una nuova.",
+          "es": "La nueva API DasWetter ahora es compatible. Los usuarios deben crear una clave API en el sitio web. Además, se debe eliminar la antigua instancia de DasWetter en ioBroker y crear una nueva.",
+          "pl": "Obsługiwane jest teraz nowe API DasWetter. Użytkownicy muszą utworzyć klucz API na stronie internetowej. Dodatkowo należy usunąć starą instancję DasWetter w ioBroker i utworzyć nową.",
+          "uk": "Тепер підтримується новий API DasWetter. Користувачам необхідно створити ключ API на веб-сайті. Крім того, старий екземпляр DasWetter в ioBroker потрібно видалити та створити новий.",
+          "zh-cn": "现在支持新的 DasWetter API。用户需要在网站上创建API密钥。此外，必须删除 ioBroker 中的旧 DasWetter 实例并创建一个新实例。"
         },
         "level": "warn",
         "buttons": [
@@ -203,7 +221,7 @@
     ],
     "iconSet": 1,
     "parseTimeout": 10,
-    "parseInterval": 60,
+    "parseInterval": 120,
     "UsePNGorOriginalSVG": false,
     "UseColorOrBW": true,
     "CustomPath": "",
@@ -221,5 +239,4 @@
   "encryptedNative": [
     "ApiKey"
   ]
-
 }

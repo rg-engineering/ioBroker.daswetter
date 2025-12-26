@@ -7,11 +7,12 @@ import Base from "./base";
 import type { MetoredConfig } from './adapter-config';
 
 
+
 //todo
 // neuen API key erzeugen
 
 // symbole abgleich mit return und Pfad
-// rollen für datenpunkte
+
 
 //siehe https://dashboard.meteored.com/de/api#documentation
 
@@ -272,7 +273,7 @@ export default class Meteored extends Base {
             }
 
             try {
-                // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
+                // Logge die rohe Antwortdaten zur weitere Verarbeitung/Debug
                 this.logDebug("Meteored GetForecastDaily response: " + JSON.stringify(resp.data));
 
                 // Sicher extrahieren der URL aus resp.data.data.url und kopiere nach this.url
@@ -501,8 +502,8 @@ export default class Meteored extends Base {
 
         let key = "location_" + this.id;
         await this.CreateDatapoint(key, "channel", "", "", "", false, false, "location");
-        await this.CreateDatapoint(key + ".Location", "state", "value", "string", "", true, false, "location name");
-        await this.CreateDatapoint(key + ".URL", "state", "value", "string", "", true, false, "location Web URL");
+        await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "location name");
+        await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "location Web URL");
 
         key = "location_" + this.id + ".ForecastDaily";
         await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");
@@ -511,28 +512,34 @@ export default class Meteored extends Base {
             key = "location_" + this.id + ".ForecastDaily.Day_" + d;
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
-            await this.CreateDatapoint(key + ".start", "state", "value", "string", "", true, false, "start of forecast");
+           
+            await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period");
+            await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
+            await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day");
+
+
+            await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
             await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "symbol id");
             await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "symbol URL");
-            await this.CreateDatapoint(key + ".Temperature_Min", "state", "value", "number", "°C", true, false, "minimum temperature");
-            await this.CreateDatapoint(key + ".Temperature_Max", "state", "value", "number", "°C", true, false, "maximum temperature");
-            await this.CreateDatapoint(key + ".Wind_Speed", "state", "value", "number", "km/h", true, false, "Wind Speed");
-            await this.CreateDatapoint(key + ".Wind_Gust", "state", "value", "number", "km/h", true, false, "Wind Gust");
-            await this.CreateDatapoint(key + ".Wind_Direction", "state", "value", "string", "", true, false, "Wind Direction");
-            await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "Rain");
-            await this.CreateDatapoint(key + ".Rain_Probability", "state", "value", "number", "%", true, false, "Rain");
-            await this.CreateDatapoint(key + ".Humidity", "state", "value", "number", "%", true, false, "Humidity");
-            await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "kPa", true, false, "Pressure");
-            await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "", true, false, "Snowline");
-            await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "UV_index_max");
-            await this.CreateDatapoint(key + ".Sun_in", "state", "value", "string", "", true, false, "Sun_in");
-            await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "Sun_mid");
-            await this.CreateDatapoint(key + ".Sun_out", "state", "value", "string", "", true, false, "Sun_out");
-            await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "Moon_in");
-            await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "Moon_out");
-            await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "Moon_symbol");
-            await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "Moon symbol URL");
-            await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "Moon_illumination");
+            await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "minimum temperature");
+            await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "maximum temperature");
+            await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
+            await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
+            await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
+            await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "rain");
+            await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "rain probability");
+            await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
+            await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "kPa", true, false, "pressure");
+            await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "", true, false, "snowline");
+            await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "maximum UV index");
+            await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time");
+            await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun peak time");
+            await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time");
+            await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time");
+            await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time");
+            await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "moon symbol");
+            await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "moon symbol URL");
+            await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "moon illumination");
         }
 
         key = "location_" + this.id + ".ForecastHourly";
@@ -542,22 +549,22 @@ export default class Meteored extends Base {
             key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
-            await this.CreateDatapoint(key + ".end", "state", "value", "string", "", true, false, "Start");
-            await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Symbol");
-            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "Symbol URL");
+            await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period");
+            await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "weather symbol");
+            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol URL");
             await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "is night");
-            await this.CreateDatapoint(key + ".temperature", "state", "value", "number", "°C", true, false, "Temperature");
-            await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value", "number", "°C", true, false, "temperature feels like");
-            await this.CreateDatapoint(key + ".wind_speed", "state", "value", "number", "km/h", true, false, "wind speed");
-            await this.CreateDatapoint(key + ".wind_gust", "state", "value", "number", "km/h", true, false, "wind gust");
-            await this.CreateDatapoint(key + ".wind_direction", "state", "value", "string", "", true, false, "wind direction");
+            await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "temperature");
+            await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "temperature feels like");
+            await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
+            await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
+            await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
             await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "rain");
             await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "rain probability");
-            await this.CreateDatapoint(key + ".humidity", "state", "value", "number", "%", true, false, "humidity");
+            await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
             await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "kPa", true, false, "pressure");
             await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "", true, false, "snowline");
-            await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "uv_index_max");
-            await this.CreateDatapoint(key + ".clouds", "state", "value", "number", "%", true, false, "clouds");
+            await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "maximum UV index");
+            await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "clouds");
         }
     }
 
@@ -578,49 +585,84 @@ export default class Meteored extends Base {
 
             key = "location_" + this.id + ".ForecastDaily.Day_" + d;
 
-            let timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].start ? this.days_forecast[d - 1].start : 0;
-            let formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".start", formattedTimeval, true);
+            // Berechne sunshineduration aus sun_in / sun_out falls vorhanden
+            const day = this.days_forecast[d - 1];
+            let sunDuration = 0;
+            if (day) {
+                const sunInRaw = day.sun_in || 0;
+                const sunOutRaw = day.sun_out || 0;
+                if (sunInRaw && sunOutRaw) {
+                    let sIn = Number(sunInRaw);
+                    let sOut = Number(sunOutRaw);
+                    if (sIn > 0 && sIn < 10000000000) {
+                        sIn = sIn * 1000;
+                    }
+                    if (sOut > 0 && sOut < 10000000000) {
+                        sOut = sOut * 1000;
+                    }
+                    sunDuration = Math.max(0, (sOut - sIn) / 3600000);
+                    // runden auf 2 Nachkommastellen
+                    sunDuration = Math.round(sunDuration * 100) / 100;
 
-            await this.adapter.setState(key + ".symbol", this.days_forecast[d - 1].symbol, true);
-            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(this.days_forecast[d - 1].symbol), true);
-            await this.adapter.setState(key + ".Temperature_Min", this.days_forecast[d - 1].temperature_min, true);
-            await this.adapter.setState(key + ".Temperature_Max", this.days_forecast[d - 1].temperature_max, true);
-            await this.adapter.setState(key + ".Wind_Speed", this.days_forecast[d - 1].wind_speed, true);
-            await this.adapter.setState(key + ".Wind_Gust", this.days_forecast[d - 1].wind_gust, true);
-            await this.adapter.setState(key + ".Wind_Direction", this.days_forecast[d - 1].wind_direction, true);
-            await this.adapter.setState(key + ".Rain", this.days_forecast[d - 1].rain, true);
-            await this.adapter.setState(key + ".Rain_Probability", this.days_forecast[d - 1].rain_probability, true);
-            await this.adapter.setState(key + ".Humidity", this.days_forecast[d - 1].humidity, true);
-            await this.adapter.setState(key + ".Pressure", this.days_forecast[d - 1].pressure, true);
-            await this.adapter.setState(key + ".Snowline", this.days_forecast[d - 1].snowline, true);
-            await this.adapter.setState(key + ".UV_index_max", this.days_forecast[d - 1].uv_index_max, true);
+                    //und jetzt noch mit den Wolken verrechnen, wir wollen einen forecast für PV
+                    //to do
+                }
+            }
+            await this.adapter.setState(key + ".sunshineduration", sunDuration, true);
 
 
-            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].sun_in ? this.days_forecast[d - 1].sun_in : 0;
-            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".Sun_in", formattedTimeval, true);
+            const timeval = day && day.start ? day.start : 0;
+            const startParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".start", startParts.formattedTimeval, true);
 
-            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].sun_mid ? this.days_forecast[d - 1].sun_mid : 0;
-            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".Sun_mid", formattedTimeval, true);
+            await this.adapter.setState(key + ".date", startParts.formattedTimevalDate, true);
+            await this.adapter.setState(key + ".NameOfDay", startParts.formattedTimevalWeekday, true);
 
-            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].sun_out ? this.days_forecast[d - 1].sun_out : 0;
-            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".Sun_out", formattedTimeval, true);
 
-            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].moon_in ? this.days_forecast[d - 1].moon_in : 0;
-            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".Moon_in", formattedTimeval, true);
+            await this.adapter.setState(key + ".symbol", day ? day.symbol : 0, true);
+            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(day ? day.symbol : 0), true);
+            await this.adapter.setState(key + ".Temperature_Min", day ? day.temperature_min : 0, true);
+            await this.adapter.setState(key + ".Temperature_Max", day ? day.temperature_max : 0, true);
+            await this.adapter.setState(key + ".Wind_Speed", day ? day.wind_speed : 0, true);
+            await this.adapter.setState(key + ".Wind_Gust", day ? day.wind_gust : 0, true);
+            await this.adapter.setState(key + ".Wind_Direction", day ? day.wind_direction : "", true);
+            await this.adapter.setState(key + ".Rain", day ? day.rain : 0, true);
+            await this.adapter.setState(key + ".Rain_Probability", day ? day.rain_probability : 0, true);
+            await this.adapter.setState(key + ".Humidity", day ? day.humidity : 0, true);
+            await this.adapter.setState(key + ".Pressure", day ? day.pressure : 0, true);
+            await this.adapter.setState(key + ".Snowline", day ? day.snowline : 0, true);
+            await this.adapter.setState(key + ".UV_index_max", day ? day.uv_index_max : 0, true);
 
-            timeval = this.days_forecast[d - 1] && this.days_forecast[d - 1].moon_out ? this.days_forecast[d - 1].moon_out : 0;
-            formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".Moon_out", formattedTimeval, true);
 
-            await this.adapter.setState(key + ".Moon_symbol", this.days_forecast[d - 1].moon_symbol, true);
-            await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(this.days_forecast[d - 1].moon_symbol), true);
+            // Sun in
+            const sunInRaw = day && day.sun_in ? day.sun_in : 0;
+            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimeval, true);
 
-            await this.adapter.setState(key + ".Moon_illumination", this.days_forecast[d - 1].moon_illumination, true);
+            // Sun mid
+            const sunMidRaw = day && day.sun_mid ? day.sun_mid : 0;
+            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimeval, true);
+
+            // Sun out
+            const sunOutRaw = day && day.sun_out ? day.sun_out : 0;
+            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimeval, true);
+
+            // Moon in
+            const moonInRaw = day && day.moon_in ? day.moon_in : 0;
+            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimeval, true);
+
+            // Moon out
+            const moonOutRaw = day && day.moon_out ? day.moon_out : 0;
+            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimeval, true);
+
+            await this.adapter.setState(key + ".Moon_symbol", day ? day.moon_symbol : 0, true);
+            await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(day ? day.moon_symbol : 0), true);
+
+            await this.adapter.setState(key + ".Moon_illumination", day ? day.moon_illumination : 0, true);
         }
 
 
@@ -633,92 +675,64 @@ export default class Meteored extends Base {
         for (let h = 1; h < 25; h++) {
             const key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
 
-            const timeval = this.hours_forecast[h - 1] && this.hours_forecast[h - 1].end ? this.hours_forecast[h - 1].end : 0;
-            const formattedTimeval = timeval ? this.FormatTimestampToLocal(timeval) : "";
-            await this.adapter.setState(key + ".end", formattedTimeval, true);
+            const hour = this.hours_forecast[h - 1];
+            const timeval = hour && hour.end ? hour.end : 0;
+            const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+            await this.adapter.setState(key + ".end", endParts.formattedTimeval, true);
 
-            await this.adapter.setState(key + ".symbol", this.hours_forecast[h - 1].symbol, true);
-            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(this.hours_forecast[h - 1].symbol), true);
-            await this.adapter.setState(key + ".night", this.hours_forecast[h - 1].night, true);
-            await this.adapter.setState(key + ".temperature", this.hours_forecast[h - 1].temperature, true);
-            await this.adapter.setState(key + ".temperature_feels_like", this.hours_forecast[h - 1].temperature_feels_like, true);
-            await this.adapter.setState(key + ".wind_speed", this.hours_forecast[h - 1].wind_speed, true);
-            await this.adapter.setState(key + ".wind_gust", this.hours_forecast[h - 1].wind_gust, true);
-            await this.adapter.setState(key + ".wind_direction", this.hours_forecast[h - 1].wind_direction, true);
-            await this.adapter.setState(key + ".rain", this.hours_forecast[h - 1].rain, true);
-            await this.adapter.setState(key + ".rain_probability", this.hours_forecast[h - 1].rain_probability, true);
-            await this.adapter.setState(key + ".humidity", this.hours_forecast[h - 1].humidity, true);
-            await this.adapter.setState(key + ".pressure", this.hours_forecast[h - 1].pressure, true);
-            await this.adapter.setState(key + ".snowline", this.hours_forecast[h - 1].snowline, true);
-            await this.adapter.setState(key + ".uv_index_max", this.hours_forecast[h - 1].uv_index_max, true);
-            await this.adapter.setState(key + ".clouds", this.hours_forecast[h - 1].clouds, true);
+            await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
+            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
+            await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
+            await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
+            await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
+            await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
+            await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
+            await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
+            await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
+            await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
+            await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
+            await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
+            await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
+            await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
+            await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
         }
     }
-    FormatTimestampToLocal(timestamp: number): string {
+    FormatTimestampToLocal(timestamp: number): {
+        formattedTimeval: string,
+        formattedTimevalDate: string,
+        formattedTimevalWeekday: string
+    } {
         try {
             if (timestamp === null || timestamp === undefined || Number.isNaN(Number(timestamp))) {
-                return "";
+                return {
+                    formattedTimeval: "",
+                    formattedTimevalDate: "",
+                    formattedTimevalWeekday: ""
+                };
             }
 
             let ms = Number(timestamp);
 
             // Wenn der Zeitstempel offensichtlich in Sekunden vorliegt (kleiner als 10^10),
             // dann in Millisekunden umwandeln.
-            if (ms > 0 && ms < 10000000000) { // ~ Sat Nov 20 2286, safe cutoff for seconds
+            if (ms > 0 && ms < 10000000000) { // ~ cutoff für Sekunden
                 ms = ms * 1000;
             }
 
             const d = new Date(ms);
             if (isNaN(d.getTime())) {
-                return "";
+                return {
+                    formattedTimeval: "",
+                    formattedTimevalDate: "",
+                    formattedTimevalWeekday: ""
+                };
             }
 
             // Resolve locale
             const locale = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE";
 
-            /*
-            // If a custom dateFormat is provided, perform token replacement
-            if (this.dateFormat && typeof this.dateFormat === "string" && this.dateFormat.trim() !== "") {
-                const year = d.getFullYear();
-                const month = d.getMonth() + 1;
-                const day = d.getDate();
-                const hours = d.getHours();
-                const minutes = d.getMinutes();
-                const seconds = d.getSeconds();
-
-                const pad = (n: number, len = 2): string => String(n).padStart(len, "0");
-
-                // Token replacements (common patterns)
-                const replacements: { [token: string]: string } = {
-                    "YYYY": String(year),
-                    "YY": String(year).slice(-2),
-                    "MM": pad(month),
-                    "M": String(month),
-                    "DD": pad(day),
-                    "D": String(day),
-                    "HH": pad(hours),
-                    "H": String(hours),
-                    "hh": pad(hours),
-                    "h": String(hours),
-                    "mm": pad(minutes),
-                    "m": String(minutes),
-                    "ss": pad(seconds),
-                    "s": String(seconds)
-                };
-
-                // Perform replacement - replace longest tokens first to avoid partial matches
-                const tokens = Object.keys(replacements).sort((a, b) => b.length - a.length);
-                let formatted = String(this.dateFormat);
-                for (const t of tokens) {
-                    // Use split/join to avoid RegExp escape issues
-                    formatted = formatted.split(t).join(replacements[t]);
-                }
-
-                return formatted;
-            }
-            */
-            // Default formatting using locale with date+time and seconds (fallback behavior)
-            return d.toLocaleString(locale, {
+            // formattedTimeval: Datum + Uhrzeit
+            const formattedTimeval = d.toLocaleString(locale, {
                 year: "numeric",
                 month: "2-digit",
                 day: "2-digit",
@@ -727,11 +741,34 @@ export default class Meteored extends Base {
                 second: "2-digit"
             });
 
+            // formattedTimevalDate: nur Datum im Locale-Format
+            const formattedTimevalDate = d.toLocaleDateString(locale, {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            });
+
+            // formattedTimevalWeekday: Name des Wochentags im Locale
+            const formattedTimevalWeekday = d.toLocaleDateString(locale, {
+                weekday: "long"
+            });
+
+            return {
+                formattedTimeval,
+                formattedTimevalDate,
+                formattedTimevalWeekday
+            };
 
         } catch (e) {
             this.logError("FormatTimestampToLocal error: " + e);
-            return "";
+            return {
+                formattedTimeval: "",
+                formattedTimevalDate: "",
+                formattedTimevalWeekday: ""
+            };
         }
+
+
     }
 
 

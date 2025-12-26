@@ -43,7 +43,7 @@
           "help": "parse interval in [min]",
           "min": 40,
           "max": 600,
-          "default": 60,
+          "default": 120,
           "xs": 12,
           "sm": 12,
           "md": 4,
@@ -221,7 +221,7 @@
         "windiconSet": {
           "newLine": true,
           "type": "select",
-          "label": "Icon set",
+          "label": "Icon set to select",
           "options": [
             {
               "label": { "en": "Beaufort-White" },
@@ -288,7 +288,7 @@
         "mooniconSet": {
           "newLine": true,
           "type": "select",
-          "label": "Icon set",
+          "label": "Icon set to select",
           "options": [
             {
               "label": { "en": "original" },

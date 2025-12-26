@@ -80,7 +80,8 @@
     "!main.js",
     "build/",
     "!readme.txt",
-    "!docs/iconos.zip"
+    "!docs/iconos.zip",
+    "!docs/old_docu"
 
   ],
   "readmeFilename": "README.md"
