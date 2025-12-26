@@ -34,7 +34,7 @@
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/build-tools": "^2.0.15",
     "@iobroker/eslint-config": "^2.2.0",
-    "@iobroker/testing": "^5.1.1",
+    "@iobroker/testing": "^5.2.2",
     "baseline-browser-mapping": "^2.9.11"
   },
   "main": "build/main.js",
