@@ -38,3 +38,4 @@ test*.js
 /build/
 /build/main.js
 /build/main.js.map
+/docs/old_docu/
