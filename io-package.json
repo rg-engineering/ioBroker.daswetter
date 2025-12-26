@@ -125,7 +125,6 @@
     "mode": "daemon",
     "icon": "daswettercom.png",
     "enabled": true,
-    "allowInit": true,
     "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
     "keywords": [
       "weather",
@@ -180,7 +179,7 @@
         "title": {
           "en": "new API of DasWetter is now supported",
           "de": "Die neue API von DasWetter wird nun unterstützt"
-         },
+        },
         "text": {
           "en": "The new DasWetter API is now supported. Users need to create an API key on the website. Additionally, the old DasWetter instance in ioBroker must be deleted and a new one created.",
           "de": "Ab sofort wird die neue API von DasWetter unterstützt. User müssen sich einen einen API key auf der website erstellen. Außerdem muss die alte Instanz von DasWetter hier in ioBroker gelöscht werden und eine neue angelegt werden."
@@ -215,6 +214,12 @@
     "MoonCustomPathExt": "png"
   },
   "objects": [],
-  "instanceObjects": []
-  
+  "instanceObjects": [],
+  "protectedNative": [
+    "ApiKey"
+  ],
+  "encryptedNative": [
+    "ApiKey"
+  ]
+
 }
