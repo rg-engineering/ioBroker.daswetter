@@ -383,6 +383,7 @@ class Meteored extends base_1.default {
             await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
             await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "symbol id");
             await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "symbol URL");
+            await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
             await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "minimum temperature");
             await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "maximum temperature");
             await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
@@ -410,7 +411,8 @@ class Meteored extends base_1.default {
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
             await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period");
             await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "weather symbol");
-            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol URL");
+            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
+            await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "weather symbol URL");
             await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "is night");
             await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "temperature");
             await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "temperature feels like");
@@ -465,6 +467,7 @@ class Meteored extends base_1.default {
             await this.adapter.setState(key + ".NameOfDay", startParts.formattedTimevalWeekday, true);
             await this.adapter.setState(key + ".symbol", day ? day.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(day ? day.symbol : 0), true);
+            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(day ? day.symbol : 0), true);
             await this.adapter.setState(key + ".Temperature_Min", day ? day.temperature_min : 0, true);
             await this.adapter.setState(key + ".Temperature_Max", day ? day.temperature_max : 0, true);
             await this.adapter.setState(key + ".Wind_Speed", day ? day.wind_speed : 0, true);
@@ -510,6 +513,7 @@ class Meteored extends base_1.default {
             await this.adapter.setState(key + ".end", endParts.formattedTimeval, true);
             await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
+            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0), true);
             await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
             await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
             await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
@@ -585,6 +589,30 @@ class Meteored extends base_1.default {
         }
     }
     // symbol functions
+    getSymbolLongDescription(num) {
+        try {
+            // sichere Konvertierung und Normalisierung
+            const id = typeof num === "number" ? num : Number(num);
+            if (Number.isNaN(id)) {
+                this.logDebug("getSymbolLongDescription called with invalid num: " + num);
+                return "";
+            }
+            // Suche in der symbols-Liste nach passender id
+            const found = Array.isArray(this.symbols)
+                ? this.symbols.find((s) => s !== undefined && s !== null && typeof s.id === "number" && s.id === id)
+                : undefined;
+            if (found && found.day && typeof found.day.long === "string") {
+                return found.day.long;
+            }
+            // Kein Eintrag gefunden -> leerer String
+            this.logDebug("getSymbolLongDescription: no matching symbol for id " + id);
+            return "";
+        }
+        catch (e) {
+            this.logError("getSymbolLongDescription error: " + e);
+            return "";
+        }
+    }
     getIconUrl(num) {
         const iconSet = this.iconSet;
         let url = "";
@@ -595,7 +623,7 @@ class Meteored extends base_1.default {
                 ext = this.CustomPathExt;
             }
             else {
-                url = "/adapter/daswetter/icons/tiempo-weather/galeria" + iconSet + "/";
+                url = "/daswetter.admin/icons/tiempo-weather/galeria" + iconSet + "/";
                 ext = (iconSet < 5 || this.UsePNGorOriginalSVG) ? ".png" : ".svg";
                 //this.logDebug("getIconURL " + num + " " + this.UsePNGorOriginalSVG + " " + this.UseColorOrBW);
                 if (iconSet === 5) {
@@ -625,15 +653,15 @@ class Meteored extends base_1.default {
 
         switch (this.windiconSet) {
             case 1:
-                url = "/adapter/daswetter/icons/viento-wind/Beaufort-White/";
+                url = "/daswetter.admin/icons/viento-wind/Beaufort-White/";
                 ext = ".png";
                 break;
             case 2:
-                url = "/adapter/daswetter/icons/viento-wind/galeria2-Beaufort/";
+                url = "/daswetter.admin/icons/viento-wind/galeria2-Beaufort/";
                 ext = ".png";
                 break;
             case 3:
-                url = "/adapter/daswetter/icons/viento-wind/galeria1/";
+                url = "/daswetter.admin/icons/viento-wind/galeria1/";
                 ext = ".png";
                 break;
             case 4:
@@ -654,7 +682,7 @@ class Meteored extends base_1.default {
             ext = this.MoonCustomPathExt;
         }
         else {
-            url = "/adapter/daswetter/icons/luna-moon/";
+            url = "/daswetter.admin/icons/luna-moon/";
             ext = ".png";
         }
         return url + num + ext;

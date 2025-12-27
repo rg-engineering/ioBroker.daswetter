@@ -61,7 +61,7 @@
   "files": [
     "admin/",
     "admin{,/!(i18n)/**}/flat.txt",
-    "!admin/icons",
+    "admin/icons",
     "docs/",
     "!lib/",
     "!.vscode",
@@ -81,7 +81,8 @@
     "build/",
     "!readme.txt",
     "!docs/iconos.zip",
-    "!docs/old_docu"
+    "!docs/old_docu",
+    "!docs/iconos"
 
   ],
   "readmeFilename": "README.md"

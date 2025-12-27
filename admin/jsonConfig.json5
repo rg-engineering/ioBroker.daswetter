@@ -149,6 +149,10 @@
               "value": 5
             },
             {
+              "label": { "en": "galeria6" },
+              "value": 6
+            },
+            {
               "label": { "en": "custum" },
               "value": 7
             }

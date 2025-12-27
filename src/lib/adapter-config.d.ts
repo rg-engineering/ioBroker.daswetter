@@ -2,7 +2,7 @@
 
 
 //Interface zu meteored
-export interface MetoredConfig {
+export interface MeteoredConfig {
 	name: string; //translated names from enum in ioBroker
 	API_key: string; //api key based on account
 	postcode: string;//postcode for location
