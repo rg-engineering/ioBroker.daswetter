@@ -54,6 +54,8 @@ The daily forecast provides general weather forcast data for the next 5 days
 * hourly forecast
 The hourly forecast provides a more detailed forecast for 24 hours of the current day
 
+We try to reduce the number of requests from server to a minimum. Every user should also 
+reduce the requests to a lowest minimum. Meteored provides us the basic plan for free...
 
 ### limitations of free plan
 
@@ -80,7 +82,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 
 ### **WORK IN PROGRESS**
 **Breaking Changes**
-intances of older versions must be deleted and a new instance must be created
+intances of older versions **must be deleted** and a new instance must be created
 * (René, copilot) rework with typescript
 * (René, copilot) support of new api from DasWetter.com
 * (René) adapter type changed from "scheduled" to "deamon"
