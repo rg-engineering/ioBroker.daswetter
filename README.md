@@ -79,10 +79,9 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
 ### **WORK IN PROGRESS**
 **Breaking Changes**
-intances of older versions **must be deleted** and a new instance must be created
+instances of older versions **must be deleted** and a new instance must be created
 * (René, copilot) rework with typescript
 * (René, copilot) support of new api from DasWetter.com
 * (René) adapter type changed from "scheduled" to "deamon"

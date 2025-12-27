@@ -3,6 +3,7 @@
     "name": "daswetter",
     "version": "3.9.9",
     "news": {
+      
       "3.2.8": {
         "en": "see issue #444: avoid crash if no data received, show response status in debug log",
         "de": "siehe ausgabe #444: crash vermeiden, wenn keine daten empfangen wurden, antwortstatus anzeigen in debug log",
@@ -80,19 +81,6 @@
         "pl": "zmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
         "uk": "зміни, які вимагаються перевіркою адаптера\nоновлені залежності",
         "zh-cn": "适配器检查器要求的更改\n更新依赖关系"
-      },
-      "3.2.2": {
-        "en": "translations\n",
-        "de": "übersetzungen\n",
-        "ru": "перевод\n",
-        "pt": "traduções\n",
-        "nl": "vertalingen\n",
-        "fr": "traductions\n",
-        "it": "traduzioni\n",
-        "es": "traducciones\n",
-        "pl": "tłumaczenia\n",
-        "uk": "переклади\n",
-        "zh-cn": "翻译\n"
       }
     },
     "titleLang": {
