@@ -1,9 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "3.9.9",
+    "version": "4.0.0",
     "news": {
-      
+      "4.0.0": {
+        "en": "**Breaking Changes**\ninstances of older versions **must be deleted** and a new instance must be created\n* rework with typescript\n* support of new api from DasWetter.com\n* adapter type changed from \"scheduled\" to \"deamon\"",
+        "de": "**Veränderungen* *\nbeispiele älterer versionen **muss gelöscht werden** und eine neue instanz muss erstellt werden\n* nacharbeiten mit schrift\n* Unterstützung neuer api von DasWetter.com\n* adaptertyp geändert von \"geplant\" zu \"deamon\"",
+        "ru": "**Преодоление изменений* *\nэкземпляры старых версий **должны быть удалены** и должен быть создан новый экземпляр \n* переработка с помощью typescript\n* поддержка новых api от DasWetter.com\nтип адаптера изменился с «запланированного» на «диамон»",
+        "pt": "*Quebrar as Alterações **\ninstâncias de versões mais antigas ** devem ser apagadas** e uma nova instância deve ser criada\n* retrabalho com digitação\n* suporte de novo api de DasWitter.com\n* tipo de adaptador mudado de \"agendado\" para \"demônio\"",
+        "nl": "**Breaking Changes* *\ninstanties van oudere versies **moet verwijderd worden** en er moet een nieuwe instantie aangemaakt worden\n* rework met typescript\n* ondersteuning van nieuwe api van DasWetter.com\n* adapter type veranderd van \"gepland\" naar \"deamon\"",
+        "fr": "** Changements importants* *\nles instances des anciennes versions ** doivent être supprimées** et une nouvelle instance doit être créée\n* retravailler avec dactylographie\n* soutien de nouveaux api de DasWetter.com\n* type d'adaptateur changé de \"programmé\" à \"diamon\"",
+        "it": "* Cambiamenti di cambiamento* #\nistanze di versioni precedenti ** devono essere eliminate** e deve essere creato un nuovo caso\n* rielaborare con typescript\n* supporto di nuovi api da DasWetter.com\n* tipo adattatore cambiato da \"scheduled\" a \"deamon\"",
+        "es": "**Breaking Changes* *\ninstancias de versiones anteriores ** debe ser eliminado** y debe crearse una nueva instancia\n* rework with typescript\n* soporte de nuevo api de DasWetter.com\n* tipo de adaptador cambiado de \"scheduled\" a \"deamon\"",
+        "pl": "** Breaking Changes **\ninstancje starszych wersji ** muszą zostać usunięte* * i należy utworzyć nową instancję \n* rework z maszynopisem\n* wsparcie nowego api z DasWetter.com\n* typ adaptera zmieniony z \"zaplanowanego\" na \"deamon\"",
+        "uk": "** Зміна маршрутів* Ім'я *\nекземпляри старших версій**** та нового екземпляра повинні бути створені\n* реконструкція з типом\n* підтримка нового api від DasWetter.com\n* тип адаптера змінено з \"розміщеного\" до \"деамону\"",
+        "zh-cn": "** 突发变化* * 《大会正式记录,第五十八届会议,补编第5号》(A/C.6/61/Rev.1)\n旧版本** 必须删除** 必须创建新实例\n* 用打字符重写\n* 来自DasWetter.com的新阿皮的支持\n*适配器类型从\"预定\"改为\"deamon\""
+      },
       "3.2.8": {
         "en": "see issue #444: avoid crash if no data received, show response status in debug log",
         "de": "siehe ausgabe #444: crash vermeiden, wenn keine daten empfangen wurden, antwortstatus anzeigen in debug log",
