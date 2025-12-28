@@ -24,6 +24,8 @@
     "parse_timeout": "time-out voor downloaden en parseren [seconden]",
     "postcode": "postcode",
     "postcode of location": "postcode van locatie",
+    "useDailyForecast": "Dagen",
+    "useHourlyForecast": "Uur",
     "use_color_or_bw": "gebruik gekleurde of witte symbolen",
     "use_png_or_svg": "gebruik PNG in plaats van SVG"
 }

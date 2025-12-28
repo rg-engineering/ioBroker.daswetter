@@ -30,5 +30,8 @@
   "city": "city",
   "city of location": "city of location",
 
-  "location settings": "location settings"
+  "location settings": "location settings",
+
+  "useDailyForecast": "Days",
+  "useHourlyForecast": "Hours"
 }

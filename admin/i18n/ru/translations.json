@@ -24,6 +24,8 @@
     "parse_timeout": "тайм-аут загрузки и анализа [секунды]",
     "postcode": "почтовый индекс",
     "postcode of location": "почтовый индекс местоположения",
+    "useDailyForecast": "Дни",
+    "useHourlyForecast": "Часы",
     "use_color_or_bw": "используйте цветные или белые символы",
     "use_png_or_svg": "используйте PNG вместо SVG"
 }

@@ -24,6 +24,8 @@
     "parse_timeout": "délai d'expiration du téléchargement et de l'analyse [secondes]",
     "postcode": "code postal",
     "postcode of location": "code postal du lieu",
+    "useDailyForecast": "Jours",
+    "useHourlyForecast": "Heures",
     "use_color_or_bw": "utiliser des symboles colorés ou blancs",
     "use_png_or_svg": "utiliser PNG au lieu de SVG"
 }

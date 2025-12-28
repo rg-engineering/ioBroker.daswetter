@@ -24,6 +24,8 @@
     "parse_timeout": "час очікування завантаження та аналізу [секунди]",
     "postcode": "поштовий індекс",
     "postcode of location": "поштовий індекс місця розташування",
+    "useDailyForecast": "днів",
+    "useHourlyForecast": "години",
     "use_color_or_bw": "використовувати кольорові або білі символи",
     "use_png_or_svg": "використовувати PNG замість SVG"
 }

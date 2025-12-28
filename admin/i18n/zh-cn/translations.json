@@ -24,6 +24,8 @@
     "parse_timeout": "下载和解析超时[秒]",
     "postcode": "邮政编码",
     "postcode of location": "地点的邮政编码",
+    "useDailyForecast": "天",
+    "useHourlyForecast": "时间",
     "use_color_or_bw": "使用彩色或白色符号",
     "use_png_or_svg": "使用 PNG 代替 SVG"
 }

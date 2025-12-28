@@ -24,6 +24,8 @@
     "parse_timeout": "tempo limite de download e análise [segundos]",
     "postcode": "código postal",
     "postcode of location": "código postal do local",
+    "useDailyForecast": "Dias",
+    "useHourlyForecast": "Horas",
     "use_color_or_bw": "use símbolos coloridos ou brancos",
     "use_png_or_svg": "use PNG em vez de SVG"
 }
