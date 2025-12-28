@@ -103,7 +103,7 @@ export class DasWetter extends utils.Adapter {
 					await this.meteored[n].GetForecastHourly();
 				} catch (err) {
 					// Loggen und weiter mit dem nächsten Eintrag
-					this.log.error(`Fehler beim Aktualisieren von Meteored[${l}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
+					this.log.error(`Fehler beim Aktualisieren von Meteored[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
 				}
 			}
 		}

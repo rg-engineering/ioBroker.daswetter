@@ -71,6 +71,7 @@ interface symbol_day {
 interface symbol_data {
     "id": number,
     "day": symbol_day
+    "night"?: symbol_day
 }
 
 export default class Meteored extends Base {
@@ -617,8 +618,8 @@ export default class Meteored extends Base {
 
         let key = "location_" + this.id;
         await this.CreateDatapoint(key, "channel", "", "", "", false, false, "location");
-        await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "location name");
-        await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "location Web URL");
+        await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "Location name");
+        await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "Location default site URL");
 
 
         if (this.useDailyForecast) {
@@ -636,28 +637,28 @@ export default class Meteored extends Base {
 
 
                 await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
-                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "symbol id");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "symbol URL");
+                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "URL to weather symbol");
                 await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
-                await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "minimum temperature");
-                await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "maximum temperature");
-                await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
-                await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
-                await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
-                await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "rain");
-                await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "rain probability");
-                await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
-                await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "kPa", true, false, "pressure");
-                await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "", true, false, "snowline");
-                await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "maximum UV index");
+                await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "Minimum temperature");
+                await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Maximum temperature");
+                await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
+                await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
+                await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+                await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
+                await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
+                await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
+                await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+                await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
+                await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
                 await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time");
-                await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun peak time");
+                await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun noon time");
                 await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time");
                 await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time");
                 await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time");
-                await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "moon symbol");
-                await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "moon symbol URL");
-                await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "moon illumination");
+                await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "Identifier for moon symbol");
+                await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "URL to moon symbol");
+                await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "Percentage of illuminated moon");
             }
         }
 
@@ -670,22 +671,22 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
                 await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period");
-                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "weather symbol");
+                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
                 await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
-                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "weather symbol URL");
-                await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "is night");
-                await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "temperature");
-                await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "temperature feels like");
-                await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
-                await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
-                await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
-                await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "rain");
-                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "rain probability");
-                await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
-                await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "kPa", true, false, "pressure");
-                await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "", true, false, "snowline");
-                await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "maximum UV index");
-                await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "clouds");
+                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
+                await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "Flag that indicates if the hour is at night");
+                await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
+                await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
+                await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
+                await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
+                await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+                await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
+                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "Rain probability for accumulated rain");
+                await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
+                await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+                await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
+                await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
+                await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
             }
         }
     }
@@ -743,7 +744,7 @@ export default class Meteored extends Base {
 
             await this.adapter.setState(key + ".symbol", day ? day.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(day ? day.symbol : 0), true);
-            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(day ? day.symbol : 0), true);
+            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(day ? day.symbol : 0, false), true);
             await this.adapter.setState(key + ".Temperature_Min", day ? day.temperature_min : 0, true);
             await this.adapter.setState(key + ".Temperature_Max", day ? day.temperature_max : 0, true);
             await this.adapter.setState(key + ".Wind_Speed", day ? day.wind_speed : 0, true);
@@ -805,7 +806,7 @@ export default class Meteored extends Base {
 
             await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
-            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0), true);
+            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
             await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
             await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
             await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
@@ -898,7 +899,7 @@ export default class Meteored extends Base {
 
 
     // symbol functions
-    getSymbolLongDescription(num: number): string {
+    getSymbolLongDescription(num: number, isNight: boolean): string {
         try {
             // sichere Konvertierung und Normalisierung
             const id = typeof num === "number" ? num : Number(num);
@@ -912,9 +913,18 @@ export default class Meteored extends Base {
                 ? this.symbols.find((s) => s !== undefined && s !== null && typeof s.id === "number" && s.id === id)
                 : undefined;
 
+
+            if (isNight) {
+                if (found && found.night && typeof found.night.long === "string") {
+                    return found.night.long;
+                }
+            }  
+
+            //if night-value not provided or it's day:
             if (found && found.day && typeof found.day.long === "string") {
                 return found.day.long;
             }
+            
 
             // Kein Eintrag gefunden -> leerer String
             this.logDebug("getSymbolLongDescription: no matching symbol for id " + id);

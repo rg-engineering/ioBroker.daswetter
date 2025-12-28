@@ -81,7 +81,12 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 -->
 
 ### **WORK IN PROGRESS**
-* (René) forecast download for daily and hourly can now be disabled to reduce number of DP's
+* (René) see issue #457: forecast download for daily and hourly can now be disabled to reduce number of DP's
+* (René) see issue #456: combination of postcode and free text search for location API added, if location not found by postcode a free text search is executed
+* (René) see issue #458: unit for pressure changed to millibar / hPa
+* (René) see issue #459: bug fix to be able to edit custom path for moon symbols
+* (René) if API provides night specific symbol description, it will be shown now
+* (René) datapoint descriptions changed
 
 ### 4.0.0 (2025-12-27)
 **Breaking Changes**
