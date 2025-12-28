@@ -112,6 +112,26 @@
               "filter": false,
               "sort": false,
               "default": false
+            },
+            {
+              "type": "checkbox",
+              "attr": "useDailyForecast",
+              "width": "5% ",
+              "title": "useDailyForecast",
+              "tooltip": "enable download of daily forecast",
+              "filter": false,
+              "sort": false,
+              "default": true
+            },
+            {
+              "type": "checkbox",
+              "attr": "useHourlyForecast",
+              "width": "5% ",
+              "title": "useHourlyForecast",
+              "tooltip": "enable download of hourly forecast",
+              "filter": false,
+              "sort": false,
+              "default": true
             }
           ]
         }

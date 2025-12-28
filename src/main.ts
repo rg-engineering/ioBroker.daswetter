@@ -52,6 +52,8 @@ export class DasWetter extends utils.Adapter {
 					language: this.language,
 					dateFormat: this.dateFormat,
 					parseTimeout: this.config.parseTimeout,
+					useDailyForecast: this.config.locations[l].useDailyForecast,
+					useHourlyForecast: this.config.locations[l].useHourlyForecast,
 
 					iconSet: this.config.iconSet,
 					UsePNGorOriginalSVG: this.config.UsePNGorOriginalSVG,
@@ -75,11 +77,11 @@ export class DasWetter extends utils.Adapter {
 			}
 		}
 
-		for (let l = 0; l < this.meteored.length; l++) {
+		for (let n = 0; n < this.meteored.length; n++) {
 			//muss auch in den cron / intervall
-			await this.meteored[l].Start();
-			await this.meteored[l].GetForecastDaily();
-			await this.meteored[l].GetForecastHourly();
+			await this.meteored[n].Start();
+			await this.meteored[n].GetForecastDaily();
+			await this.meteored[n].GetForecastHourly();
 		}
 
 		this.parseInterval = setInterval(() => {
@@ -95,10 +97,10 @@ export class DasWetter extends utils.Adapter {
 
 	async updateForecast(): Promise<void> {
 		if (this.meteored !== undefined) {
-			for (let l = 0; l < this.meteored.length; l++) {
+			for (let n = 0; n < this.meteored.length; n++) {
 				try {
-					await this.meteored[l].GetForecastDaily();
-					await this.meteored[l].GetForecastHourly();
+					await this.meteored[n].GetForecastDaily();
+					await this.meteored[n].GetForecastHourly();
 				} catch (err) {
 					// Loggen und weiter mit dem nächsten Eintrag
 					this.log.error(`Fehler beim Aktualisieren von Meteored[${l}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);

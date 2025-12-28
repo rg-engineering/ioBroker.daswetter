@@ -10,6 +10,8 @@ export interface MeteoredConfig {
 	language: string | undefined;
 	dateFormat: string; 
 	parseTimeout: number;
+	useDailyForecast: boolean,
+	useHourlyForecast: boolean
 
 	iconSet: number,
 	UsePNGorOriginalSVG: boolean,
@@ -30,7 +32,9 @@ export interface MeteoredConfig {
 interface locations {
 	IsActive: boolean,
 	postcode: string,
-	city: string
+	city: string,
+	useDailyForecast: boolean,
+	useHourlyForecast: boolean
 }
 
 // Augment the globally declared type ioBroker.AdapterConfig

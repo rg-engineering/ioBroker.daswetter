@@ -79,6 +79,10 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) forecast download for daily and hourly can now be disabled to reduce number of DP's
+
 ### 4.0.0 (2025-12-27)
 **Breaking Changes**
 instances of older versions **must be deleted** and a new instance must be created

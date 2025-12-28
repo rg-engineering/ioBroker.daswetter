@@ -84,6 +84,8 @@ export default class Meteored extends Base {
     language: string | undefined = "";
     dateFormat = "";
     parseTimeout = 10;
+    useDailyForecast = true;
+    useHourlyForecast = true;
 
     symbols: symbol_data[] = [];
     days_forecast: day_data[] = [];
@@ -114,6 +116,8 @@ export default class Meteored extends Base {
         this.language = typeof config.language === "string" ? config.language : "DE";
         this.dateFormat = typeof config.dateFormat === "string" ? config.dateFormat : "YYMMDD";
         this.parseTimeout = typeof config.parseTimeout === "number" ? config.parseTimeout : 10;
+        this.useDailyForecast = typeof config.useDailyForecast === "boolean" ? config.useDailyForecast : true;
+        this.useHourlyForecast =  typeof config.useHourlyForecast === "boolean" ? config.useHourlyForecast : true;
 
         this.iconSet = config.iconSet;
         this.UsePNGorOriginalSVG = config.UsePNGorOriginalSVG;
@@ -244,184 +248,197 @@ export default class Meteored extends Base {
 
 
     async GetForecastDaily(): Promise<void> {
-        this.logDebug("GetForecastDaily called");
 
-        if (this.location_hash === undefined || this.location_hash == "") {
-            this.logError("no location hash available, please check postcode and city settings");
-            return;
-        }
-        if (this.api_key === undefined || this.api_key == "") {
-            this.logError("no api key available, please check settings");
-            return;
-        }
 
-        const url = "https://api.meteored.com/api/forecast/v1/daily/" + this.location_hash;
-        const headers = {
-            accept: "application/json",
-            "x-api-key": this.api_key
-        };
+        if (this.useDailyForecast) {
+            this.logDebug("GetForecastDaily called");
 
-        try {
-            const resp = await axios.get(url, {
-                headers: headers,
-                timeout: this.parseTimeout * 1000
-            });
-            if (this.CheckError(resp.status)) {
+            if (this.location_hash === undefined || this.location_hash == "") {
+                this.logError("no location hash available, please check postcode and city settings");
+                return;
+            }
+            if (this.api_key === undefined || this.api_key == "") {
+                this.logError("no api key available, please check settings");
                 return;
             }
 
+            const url = "https://api.meteored.com/api/forecast/v1/daily/" + this.location_hash;
+            const headers = {
+                accept: "application/json",
+                "x-api-key": this.api_key
+            };
+
             try {
-                // Logge die rohe Antwortdaten zur weitere Verarbeitung/Debug
-                this.logDebug("Meteored GetForecastDaily response: " + JSON.stringify(resp.data));
-
-                // Sicher extrahieren der URL aus resp.data.data.url und kopiere nach this.url
-                const extractedUrl: string =
-                    resp && resp.data && resp.data.data && resp.data.data.url
-                        ? String(resp.data.data.url)
-                        : "";
-
-                if (extractedUrl) {
-                    this.url = extractedUrl;
-                    this.logDebug("Meteored GetForecastDaily: url=" + this.url);
+                const resp = await axios.get(url, {
+                    headers: headers,
+                    timeout: this.parseTimeout * 1000
+                });
+                if (this.CheckError(resp.status)) {
+                    return;
                 }
 
-                // Sicher extrahieren: resp.data.data.days
-                const rawDays: day_data[] =
-                    resp && resp.data && resp.data.data && Array.isArray(resp.data.data.days)
-                        ? resp.data.data.days
-                        : [];
+                try {
+                    // Logge die rohe Antwortdaten zur weitere Verarbeitung/Debug
+                    this.logDebug("Meteored GetForecastDaily response: " + JSON.stringify(resp.data));
 
-                if (rawDays.length === 0) {
-                    this.logError("Meteored GetForecastDaily: no days array in response, setting empty days_forecast");
-                    this.days_forecast = [];
-                } else {
-                    // Mappe rohe Objekte auf das definierte day_data-Interface mit sicheren Typen/Defaults
-                    try {
-                        const mapped: day_data[] = rawDays.map((d: day_data) => {
-                            return {
-                                start: typeof d.start === "number" ? d.start : Number(d.start) || 0,
-                                symbol: typeof d.symbol === "number" ? d.symbol : Number(d.symbol) || 0,
-                                temperature_min: typeof d.temperature_min === "number" ? d.temperature_min : Number(d.temperature_min) || 0,
-                                temperature_max: typeof d.temperature_max === "number" ? d.temperature_max : Number(d.temperature_max) || 0,
-                                wind_speed: typeof d.wind_speed === "number" ? d.wind_speed : Number(d.wind_speed) || 0,
-                                wind_gust: typeof d.wind_gust === "number" ? d.wind_gust : Number(d.wind_gust) || 0,
-                                wind_direction: d.wind_direction ? String(d.wind_direction) : "",
-                                rain: typeof d.rain === "number" ? d.rain : Number(d.rain) || 0,
-                                rain_probability: typeof d.rain_probability === "number" ? d.rain_probability : Number(d.rain_probability) || 0,
-                                humidity: typeof d.humidity === "number" ? d.humidity : Number(d.humidity) || 0,
-                                pressure: typeof d.pressure === "number" ? d.pressure : Number(d.pressure) || 0,
-                                snowline: typeof d.snowline === "number" ? d.snowline : Number(d.snowline) || 0,
-                                uv_index_max: typeof d.uv_index_max === "number" ? d.uv_index_max : Number(d.uv_index_max) || 0,
-                                sun_in: typeof d.sun_in === "number" ? d.sun_in : Number(d.sun_in) || 0,
-                                sun_mid: typeof d.sun_mid === "number" ? d.sun_mid : Number(d.sun_mid) || 0,
-                                sun_out: typeof d.sun_out === "number" ? d.sun_out : Number(d.sun_out) || 0,
-                                moon_in: typeof d.moon_in === "number" ? d.moon_in : Number(d.moon_in) || 0,
-                                moon_out: typeof d.moon_out === "number" ? d.moon_out : Number(d.moon_out) || 0,
-                                moon_symbol: typeof d.moon_symbol === "number" ? d.moon_symbol : Number(d.moon_symbol) || 0,
-                                moon_illumination: typeof d.moon_illumination === "number" ? d.moon_illumination : Number(d.moon_illumination) || 0
-                            } as day_data;
-                        });
+                    // Sicher extrahieren der URL aus resp.data.data.url und kopiere nach this.url
+                    const extractedUrl: string =
+                        resp && resp.data && resp.data.data && resp.data.data.url
+                            ? String(resp.data.data.url)
+                            : "";
 
-                        this.days_forecast = mapped;
-                        this.logDebug("Meteored GetForecastDaily: parsed days_forecast count=" + this.days_forecast.length);
-                    } catch (e) {
-                        this.logError("Meteored GetForecastDaily: error mapping days array: " + e);
-                        this.days_forecast = [];
+                    if (extractedUrl) {
+                        this.url = extractedUrl;
+                        this.logDebug("Meteored GetForecastDaily: url=" + this.url);
                     }
 
-                    await this.SetData_ForecastDaily();
+                    // Sicher extrahieren: resp.data.data.days
+                    const rawDays: day_data[] =
+                        resp && resp.data && resp.data.data && Array.isArray(resp.data.data.days)
+                            ? resp.data.data.days
+                            : [];
+
+                    if (rawDays.length === 0) {
+                        this.logError("Meteored GetForecastDaily: no days array in response, setting empty days_forecast");
+                        this.days_forecast = [];
+                    } else {
+                        // Mappe rohe Objekte auf das definierte day_data-Interface mit sicheren Typen/Defaults
+                        try {
+                            const mapped: day_data[] = rawDays.map((d: day_data) => {
+                                return {
+                                    start: typeof d.start === "number" ? d.start : Number(d.start) || 0,
+                                    symbol: typeof d.symbol === "number" ? d.symbol : Number(d.symbol) || 0,
+                                    temperature_min: typeof d.temperature_min === "number" ? d.temperature_min : Number(d.temperature_min) || 0,
+                                    temperature_max: typeof d.temperature_max === "number" ? d.temperature_max : Number(d.temperature_max) || 0,
+                                    wind_speed: typeof d.wind_speed === "number" ? d.wind_speed : Number(d.wind_speed) || 0,
+                                    wind_gust: typeof d.wind_gust === "number" ? d.wind_gust : Number(d.wind_gust) || 0,
+                                    wind_direction: d.wind_direction ? String(d.wind_direction) : "",
+                                    rain: typeof d.rain === "number" ? d.rain : Number(d.rain) || 0,
+                                    rain_probability: typeof d.rain_probability === "number" ? d.rain_probability : Number(d.rain_probability) || 0,
+                                    humidity: typeof d.humidity === "number" ? d.humidity : Number(d.humidity) || 0,
+                                    pressure: typeof d.pressure === "number" ? d.pressure : Number(d.pressure) || 0,
+                                    snowline: typeof d.snowline === "number" ? d.snowline : Number(d.snowline) || 0,
+                                    uv_index_max: typeof d.uv_index_max === "number" ? d.uv_index_max : Number(d.uv_index_max) || 0,
+                                    sun_in: typeof d.sun_in === "number" ? d.sun_in : Number(d.sun_in) || 0,
+                                    sun_mid: typeof d.sun_mid === "number" ? d.sun_mid : Number(d.sun_mid) || 0,
+                                    sun_out: typeof d.sun_out === "number" ? d.sun_out : Number(d.sun_out) || 0,
+                                    moon_in: typeof d.moon_in === "number" ? d.moon_in : Number(d.moon_in) || 0,
+                                    moon_out: typeof d.moon_out === "number" ? d.moon_out : Number(d.moon_out) || 0,
+                                    moon_symbol: typeof d.moon_symbol === "number" ? d.moon_symbol : Number(d.moon_symbol) || 0,
+                                    moon_illumination: typeof d.moon_illumination === "number" ? d.moon_illumination : Number(d.moon_illumination) || 0
+                                } as day_data;
+                            });
+
+                            this.days_forecast = mapped;
+                            this.logDebug("Meteored GetForecastDaily: parsed days_forecast count=" + this.days_forecast.length);
+                        } catch (e) {
+                            this.logError("Meteored GetForecastDaily: error mapping days array: " + e);
+                            this.days_forecast = [];
+                        }
+
+                        await this.SetData_ForecastDaily();
+                    }
+                } catch (e) {
+                    // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
+                    this.logError("exception in GetForecastDaily data parse " + e);
                 }
             } catch (e) {
-                // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                this.logError("exception in GetForecastDaily data parse " + e);
-            }
-        } catch (e) {
 
-            this.logError("exception in GetForecastDaily " + e);
+                this.logError("exception in GetForecastDaily " + e);
+            }
+        } else {
+            this.logDebug("GetForecastDaily called, but skipped");
         }
     }
 
+
+
     async GetForecastHourly(): Promise<void> {
-        this.logDebug("GetForecastHourly called");
+        if (this.useHourlyForecast) {
+            this.logDebug("GetForecastHourly called");
 
-        if (this.location_hash === undefined || this.location_hash == "") {
-            this.logError("no location hash available, please check postcode and city settings");
-            return;
-        }
-        if (this.api_key === undefined || this.api_key == "") {
-            this.logError("no api key available, please check settings");
-            return;
-        }
-
-        const url = "https://api.meteored.com/api/forecast/v1/hourly/" + this.location_hash;
-        const headers = {
-            accept: "application/json",
-            "x-api-key": this.api_key
-        };
-
-        try {
-            const resp = await axios.get(url, {
-                headers: headers,
-                timeout: this.parseTimeout * 1000
-            });
-            if (this.CheckError(resp.status)) {
+            if (this.location_hash === undefined || this.location_hash == "") {
+                this.logError("no location hash available, please check postcode and city settings");
+                return;
+            }
+            if (this.api_key === undefined || this.api_key == "") {
+                this.logError("no api key available, please check settings");
                 return;
             }
 
+            const url = "https://api.meteored.com/api/forecast/v1/hourly/" + this.location_hash;
+            const headers = {
+                accept: "application/json",
+                "x-api-key": this.api_key
+            };
+
             try {
-                // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
-                this.logDebug("Meteored GetForecastHourly response: " + JSON.stringify(resp.data));
-
-
-                // Sicher extrahieren: resp.data.data.hours
-                const rawHours: hour_data[] =
-                    resp && resp.data && resp.data.data && Array.isArray(resp.data.data.hours)
-                        ? resp.data.data.hours
-                        : [];
-
-                if (rawHours.length === 0) {
-                    this.logError("Meteored GetForecastHourly: no hours array in response, setting empty hours_forecast");
-                    this.hours_forecast = [];
-                } else {
-                    try {
-                        const mapped: hour_data[] = rawHours.map((h: hour_data) => {
-                            return {
-                                end: typeof h.end === "number" ? h.end : Number(h.end) || 0,
-                                symbol: typeof h.symbol === "number" ? h.symbol : Number(h.symbol) || 0,
-                                night: typeof h.night === "boolean" ? h.night : (h.night === "true" || h.night === true) || false,
-                                temperature: typeof h.temperature === "number" ? h.temperature : Number(h.temperature) || 0,
-                                temperature_feels_like: typeof h.temperature_feels_like === "number" ? h.temperature_feels_like : Number(h.temperature_feels_like) || 0,
-                                wind_speed: typeof h.wind_speed === "number" ? h.wind_speed : Number(h.wind_speed) || 0,
-                                wind_gust: typeof h.wind_gust === "number" ? h.wind_gust : Number(h.wind_gust) || 0,
-                                wind_direction: h.wind_direction ? String(h.wind_direction) : "",
-                                rain: typeof h.rain === "number" ? h.rain : Number(h.rain) || 0,
-                                rain_probability: typeof h.rain_probability === "number" ? h.rain_probability : Number(h.rain_probability) || 0,
-                                humidity: typeof h.humidity === "number" ? h.humidity : Number(h.humidity) || 0,
-                                pressure: typeof h.pressure === "number" ? h.pressure : Number(h.pressure) || 0,
-                                snowline: typeof h.snowline === "number" ? h.snowline : Number(h.snowline) || 0,
-                                uv_index_max: typeof h.uv_index_max === "number" ? h.uv_index_max : Number(h.uv_index_max) || 0,
-                                clouds: typeof h.clouds === "number" ? h.clouds : Number(h.clouds) || 0
-                            } as hour_data;
-                        });
-
-                        this.hours_forecast = mapped;
-                        this.logDebug("Meteored GetForecastHourly: parsed hours_forecast count=" + this.hours_forecast.length);
-                    } catch (e) {
-                        this.logError("Meteored GetForecastHourly: error mapping hours array: " + e);
-                        this.hours_forecast = [];
-                    }
+                const resp = await axios.get(url, {
+                    headers: headers,
+                    timeout: this.parseTimeout * 1000
+                });
+                if (this.CheckError(resp.status)) {
+                    return;
                 }
 
-                await this.SetData_ForecastHourly();
+                try {
+                    // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
+                    this.logDebug("Meteored GetForecastHourly response: " + JSON.stringify(resp.data));
 
 
+                    // Sicher extrahieren: resp.data.data.hours
+                    const rawHours: hour_data[] =
+                        resp && resp.data && resp.data.data && Array.isArray(resp.data.data.hours)
+                            ? resp.data.data.hours
+                            : [];
+
+                    if (rawHours.length === 0) {
+                        this.logError("Meteored GetForecastHourly: no hours array in response, setting empty hours_forecast");
+                        this.hours_forecast = [];
+                    } else {
+                        try {
+                            const mapped: hour_data[] = rawHours.map((h: hour_data) => {
+                                return {
+                                    end: typeof h.end === "number" ? h.end : Number(h.end) || 0,
+                                    symbol: typeof h.symbol === "number" ? h.symbol : Number(h.symbol) || 0,
+                                    night: typeof h.night === "boolean" ? h.night : (h.night === "true" || h.night === true) || false,
+                                    temperature: typeof h.temperature === "number" ? h.temperature : Number(h.temperature) || 0,
+                                    temperature_feels_like: typeof h.temperature_feels_like === "number" ? h.temperature_feels_like : Number(h.temperature_feels_like) || 0,
+                                    wind_speed: typeof h.wind_speed === "number" ? h.wind_speed : Number(h.wind_speed) || 0,
+                                    wind_gust: typeof h.wind_gust === "number" ? h.wind_gust : Number(h.wind_gust) || 0,
+                                    wind_direction: h.wind_direction ? String(h.wind_direction) : "",
+                                    rain: typeof h.rain === "number" ? h.rain : Number(h.rain) || 0,
+                                    rain_probability: typeof h.rain_probability === "number" ? h.rain_probability : Number(h.rain_probability) || 0,
+                                    humidity: typeof h.humidity === "number" ? h.humidity : Number(h.humidity) || 0,
+                                    pressure: typeof h.pressure === "number" ? h.pressure : Number(h.pressure) || 0,
+                                    snowline: typeof h.snowline === "number" ? h.snowline : Number(h.snowline) || 0,
+                                    uv_index_max: typeof h.uv_index_max === "number" ? h.uv_index_max : Number(h.uv_index_max) || 0,
+                                    clouds: typeof h.clouds === "number" ? h.clouds : Number(h.clouds) || 0
+                                } as hour_data;
+                            });
+
+                            this.hours_forecast = mapped;
+                            this.logDebug("Meteored GetForecastHourly: parsed hours_forecast count=" + this.hours_forecast.length);
+                        } catch (e) {
+                            this.logError("Meteored GetForecastHourly: error mapping hours array: " + e);
+                            this.hours_forecast = [];
+                        }
+                    }
+
+                    await this.SetData_ForecastHourly();
+
+
+                } catch (e) {
+                    // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
+                    this.logError("exception in GetForecastHourly data parse " + e);
+                }
             } catch (e) {
-                // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                this.logError("exception in GetForecastHourly data parse " + e);
-            }
-        } catch (e) {
 
-            this.logError("exception in GetForecastHourly " + e);
+                this.logError("exception in GetForecastHourly " + e);
+            }
+
+        } else {
+            this.logDebug("GetForecastHourly called, but skipped");
         }
     }
 
@@ -503,68 +520,73 @@ export default class Meteored extends Base {
         await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "location name");
         await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "location Web URL");
 
-        key = "location_" + this.id + ".ForecastDaily";
-        await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");
 
-        for (let d = 1; d < 6; d++) {
-            key = "location_" + this.id + ".ForecastDaily.Day_" + d;
-            await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
+        if (this.useDailyForecast) {
+            key = "location_" + this.id + ".ForecastDaily";
+            await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");
 
-           
-            await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period");
-            await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
-            await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day");
+            for (let d = 1; d < 6; d++) {
+                key = "location_" + this.id + ".ForecastDaily.Day_" + d;
+                await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
 
-            await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
-            await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "symbol id");
-            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "symbol URL");
-            await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
-            await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "minimum temperature");
-            await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "maximum temperature");
-            await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
-            await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
-            await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
-            await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "rain");
-            await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "rain probability");
-            await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
-            await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "kPa", true, false, "pressure");
-            await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "", true, false, "snowline");
-            await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "maximum UV index");
-            await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time");
-            await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun peak time");
-            await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time");
-            await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time");
-            await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time");
-            await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "moon symbol");
-            await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "moon symbol URL");
-            await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "moon illumination");
+                await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period");
+                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
+                await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day");
+
+
+                await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
+                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "symbol id");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "symbol URL");
+                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
+                await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "minimum temperature");
+                await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "maximum temperature");
+                await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
+                await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
+                await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
+                await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "rain");
+                await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "rain probability");
+                await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
+                await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "kPa", true, false, "pressure");
+                await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "", true, false, "snowline");
+                await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "maximum UV index");
+                await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time");
+                await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun peak time");
+                await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time");
+                await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time");
+                await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time");
+                await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "moon symbol");
+                await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "moon symbol URL");
+                await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "moon illumination");
+            }
         }
 
-        key = "location_" + this.id + ".ForecastHourly";
-        await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
+        if (this.useHourlyForecast) {
+            key = "location_" + this.id + ".ForecastHourly";
+            await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
 
-        for (let h = 1; h < 25; h++) {
-            key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
-            await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
+            for (let h = 1; h < 25; h++) {
+                key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
+                await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
-            await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period");
-            await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "weather symbol");
-            await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
-            await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "weather symbol URL");
-            await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "is night");
-            await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "temperature");
-            await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "temperature feels like");
-            await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
-            await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
-            await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
-            await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "rain");
-            await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "rain probability");
-            await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
-            await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "kPa", true, false, "pressure");
-            await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "", true, false, "snowline");
-            await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "maximum UV index");
-            await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "clouds");
+                await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period");
+                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "weather symbol");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
+                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "weather symbol URL");
+                await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "is night");
+                await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "temperature");
+                await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "temperature feels like");
+                await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "wind speed");
+                await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "wind gust");
+                await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "wind direction");
+                await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "rain");
+                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "rain probability");
+                await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "humidity");
+                await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "kPa", true, false, "pressure");
+                await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "", true, false, "snowline");
+                await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "maximum UV index");
+                await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "clouds");
+            }
         }
     }
 
