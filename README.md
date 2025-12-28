@@ -79,8 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 4.1.0 (2025-12-28)
 * (René) see issue #457: forecast download for daily and hourly can now be disabled to reduce number of DP's
 * (René) see issue #456: combination of postcode and free text search for location API added, if location not found by postcode a free text search is executed
 * (René) see issue #458: unit for pressure changed to millibar / hPa

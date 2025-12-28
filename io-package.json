@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "news": {
+      "4.1.0": {
+        "en": "see issue #457: forecast download for daily and hourly can now be disabled to reduce number of DP's\nsee issue #456: combination of postcode and free text search for location API added, if location not found by postcode a free text search is executed\nsee issue #458: unit for pressure changed to millibar / hPa\nsee issue #459: bug fix to be able to edit custom path for moon symbols\nif API provides night specific symbol description, it will be shown now\ndatapoint descriptions changed",
+        "de": "siehe Ausgabe #457: prognostizierte Downloads für Tag und Stunde können jetzt deaktiviert werden, um die Anzahl der DP's zu reduzieren\nsiehe Ausgabe #456: Kombination von Postcode und freier Textsuche nach Standort API hinzugefügt, wenn nicht durch Postleitzahl gefunden eine kostenlose Textsuche ausgeführt wird\nsiehe Ausgabe #458: Einheit für Druck in Millibar / hPa\nsiehe ausgabe #459: bugfix, um benutzerdefinierte pfad für mondsymbole bearbeiten zu können\nwenn API eine nachtsspezifische Symbolbeschreibung bietet, wird es jetzt angezeigt\ndatenpunktbeschreibungen geändert",
+        "ru": "#457: прогнозируемая загрузка для ежедневной и ежечасной загрузки теперь может быть отключена для уменьшения числа DP\n#456: комбинация почтового кода и бесплатного текстового поиска для добавленного API местоположения, если местоположение, не найденное почтовым индексом, выполняется бесплатный текстовый поиск\nсм. выпуск #458: единица давления изменена на миллибар / hPa\n#459: исправление ошибок для редактирования пользовательского пути для символов луны\nесли API предоставит описание ночного символа, то оно будет показано\nизменились описания точек данных",
+        "pt": "ver número 457: o download da previsão para cada dia e hora pode agora ser desativado para reduzir o número de DP's\nver problema #456: combinação de código postal e pesquisa de texto livre para localização API adicionado, se localização não encontrada pelo código postal uma pesquisa de texto livre é executada\nver número 458: unidade de pressão alterada para milibar / hPa\nver problema # 459: correção de erros para ser capaz de editar caminho personalizado para símbolos de lua\nse a API fornecer a descrição do símbolo específico da noite, será mostrado agora\ndescrições dos pontos de dados alteradas",
+        "nl": "zie nummer #457. Voorspelling downloaden voor dagelijks en uurlijks kan nu worden uitgeschakeld om het aantal DP's te verminderen\nzie nummer #456: combinatie van postcode en vrije tekst zoeken naar locatie API toegevoegd, als locatie niet gevonden door postcode een vrije tekst zoeken wordt uitgevoerd\nzie nummer #458: eenheid voor druk gewijzigd in millibar / hPa\nzie probleem #459: bug fix te kunnen bewerken aangepaste pad voor maan symbolen\nals API geeft nacht specifieke symbool beschrijving, zal het nu worden getoond\ngegevenspuntenbeschrijvingen gewijzigd",
+        "fr": "voir le numéro 457: les prévisions de téléchargement quotidien et horaire peuvent maintenant être désactivées pour réduire le nombre de DP\nvoir le numéro 456: combinaison de code postal et recherche de texte libre pour l'API de localisation ajoutée, si l'emplacement non trouvé par code postal une recherche de texte libre est effectuée\nvoir le numéro 458: unité de pression changée en millibar/hPa\nvoir problème #459: correction de bug pour être en mesure de modifier le chemin personnalisé pour les symboles de lune\nsi API fournit une description de symbole spécifique à la nuit, elle sera affichée maintenant\nchangement des descriptions des points de données",
+        "it": "vedi numero #457: il download delle previsioni per ogni giorno e ora può ora essere disabilitato per ridurre il numero di DP\nvedi numero #456: combinazione di codice postale e ricerca di testo gratuita per la posizione API aggiunto, se la posizione non trovata da codice postale viene eseguita una ricerca di testo gratuita\nvedi numero #458: unità per pressione cambiata in millibar / hPa\nvedi numero #459: bug fix per essere in grado di modificare il percorso personalizzato per i simboli lunari\nse API fornisce la descrizione specifica del simbolo di notte, verrà mostrato ora\nle descrizioni dei datapoint cambiate",
+        "es": "ver número #457: previsiones de descarga para diario y hora ahora puede ser deshabilitado para reducir el número de DP\nver número #456: combinación de código postal y búsqueda gratuita de texto para la ubicación API añadido, si la ubicación no se encuentra por código postal una búsqueda de texto libre se ejecuta\nver el número #458: unidad para la presión cambiado a millibar / hPa\nver número #459: corrección de errores para poder editar ruta personalizada para símbolos de luna\nsi API proporciona la descripción del símbolo específica de la noche, se mostrará ahora\ndescripciones de puntos de datos cambiadas",
+        "pl": "zobacz numer # 457: prognoza pobierania dziennych i godzinowych może być teraz wyłączona w celu zmniejszenia liczby DP\nzobacz numer # 456: połączenie kodu pocztowego i wolnego wyszukiwania tekstowego dla lokalizacji API dodano, jeśli lokalizacja nie została znaleziona przez kod pocztowy, wykonuje się darmowe wyszukiwanie tekstowe\nzob. numer # 458: jednostka ciśnienia zmieniona na millibar / hPa\nsee issue # 459: bug fix to be abonent to edit customs path for moon symbols\njeśli API dostarcza opis symboli określonych w nocy, zostanie to pokazane teraz\nzmienione opisy punktów danych",
+        "uk": "переглянути номер #457: завантаження прогнозу для щоденного та годинного використання тепер може бути вимкнено для зменшення кількості ДП\nпереглянути номер #456: комбінація поштових індексів та безкоштовний текстовий пошук для розміщення API додано, якщо розташування не знайдено поштових індексів, виконано безкоштовний пошук тексту\nпереглянути номер #458: блок для тиску змінений на мілібар / hPa\nпереглянути номер #459: виправлення помилок, щоб мати можливість редагувати користувацький шлях для знаків місяця\nякщо API забезпечує нічний специфічний символ, він буде показано зараз\nописи точок даних змінені",
+        "zh-cn": "参见第457期:每日和小时的预测下载现在可以被禁用,以减少DP的数量\n参见第456期:如果邮电码未找到位置,则执行免费文本搜索\n参见第458期:压力单位改为毫巴/hPa\n参见第459期: 错误修正, 以编辑月球符号的自定义路径\n如果 API 提供夜间特定符号描述, 它现在将会显示\n数据点描述更改"
+      },
       "4.0.0": {
         "en": "**Breaking Changes**\ninstances of older versions **must be deleted** and a new instance must be created\n* rework with typescript\n* support of new api from DasWetter.com\n* adapter type changed from \"scheduled\" to \"deamon\"",
         "de": "**Veränderungen* *\nbeispiele älterer versionen **muss gelöscht werden** und eine neue instanz muss erstellt werden\n* nacharbeiten mit schrift\n* Unterstützung neuer api von DasWetter.com\n* adaptertyp geändert von \"geplant\" zu \"deamon\"",
@@ -80,19 +93,6 @@
         "pl": "nowe badania\naktualizacja zależności + zmiany w oparciu o sprawdzacz adaptera",
         "uk": "новий тест\nоновлення залежності + зміни на основі перевірки адаптера",
         "zh-cn": "新测试\n根据适配器检查器更新依赖性+变化"
-      },
-      "3.2.3": {
-        "en": "changes requested by adapter checker\ndependencies updated",
-        "de": "änderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
-        "ru": "изменения, запрошенные adapter checker\nобновленные зависимости",
-        "pt": "alterações solicitadas pelo verificador do adaptador\ndependências atualizadas",
-        "nl": "wijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
-        "fr": "modifications demandées par l'adaptateur checker\ndépendances mises à jour",
-        "it": "modifiche richieste da adattatore checker\ndipendenze aggiornate",
-        "es": "cambios solicitados por el adaptador\ndependencias actualizadas",
-        "pl": "zmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
-        "uk": "зміни, які вимагаються перевіркою адаптера\nоновлені залежності",
-        "zh-cn": "适配器检查器要求的更改\n更新依赖关系"
       }
     },
     "titleLang": {
