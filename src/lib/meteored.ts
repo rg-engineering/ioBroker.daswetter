@@ -179,6 +179,17 @@ export default class Meteored extends Base {
     async GetLocation(): Promise<void> {
         this.logDebug("GetLocation called");
 
+        await this.GetLocationPostcode();
+
+        if (this.location_hash === undefined || this.location_hash == "") {
+            await this.GetLocationFreetext();
+        }
+
+    }
+
+    async GetLocationPostcode(): Promise<void> {
+        this.logDebug("GetLocationPostcode called");
+
         if (this.api_key === undefined || this.api_key == "") {
             this.logError("no api key available, please check settings");
             return;
@@ -202,7 +213,86 @@ export default class Meteored extends Base {
 
             try {
                 // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
-                this.logDebug("Meteored GetLocation response: " + JSON.stringify(resp.data));
+                this.logDebug("Meteored GetLocationPostcode response: " + JSON.stringify(resp.data));
+
+                // Sicher extrahieren: resp.data.data.locations
+                const locations: location_data[] =
+                    resp && resp.data && resp.data.data && Array.isArray(resp.data.data.locations)
+                        ? resp.data.data.locations
+                        : [];
+
+                if (locations.length === 0) {
+                    this.logError("Meteored GetLocationPostcode: no locations in response");
+                } else {
+                    const cityNormalized = (this.city || "").toString().trim().toLowerCase();
+                    const match = locations.find((loc: location_data) => {
+                        const name = loc && loc.name ? String(loc.name).trim().toLowerCase() : "";
+                        return name === cityNormalized;
+                    });
+
+                    if (match) {
+                        this.location_hash = match.hash ? String(match.hash) : "";
+                        this.location_description = match.description ? String(match.description) : "";
+                        this.location_country = match.country_name ? String(match.country_name) : "";
+
+                        this.logDebug(
+                            "Meteored GetLocationPostcode: matched city \"" + this.city +
+                            "\" => hash=" + this.location_hash +
+                            ", description=" + this.location_description +
+                            ", country=" + this.location_country
+                        );
+                    } else {
+                        this.logError("Meteored GetLocationPostcode: no matching location for city \"" + this.city + "\"");
+                        this.logInfo("found the following locations:")
+                        // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
+                        locations.forEach((loc: location_data) => {
+                            const name = loc && loc.name ? String(loc.name) : "";
+                            const desc = loc && loc.description ? String(loc.description) : "";
+                            const country = loc && loc.country_name ? String(loc.country_name) : "";
+                            this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
+                        });
+
+
+                    }
+                }
+
+                await this.SetData_Location();
+
+            } catch (e) {
+                this.logError("exception in GetLocationPostcode data parse " + e);
+            }
+        } catch (e) {
+            this.logError("exception in GetLocationPostcode " + e);
+        }
+    }
+
+    async GetLocationFreetext(): Promise<void> {
+        this.logDebug("GetLocationFreetext called");
+
+        if (this.api_key === undefined || this.api_key == "") {
+            this.logError("no api key available, please check settings");
+            return;
+        }
+
+        const url = "https://api.meteored.com/api/location/v1/search/txt/" + this.city;
+        const headers = {
+            accept: "application/json",
+            "x-api-key": this.api_key
+        };
+
+        try {
+            const resp = await axios.get(url, {
+                headers: headers,
+                timeout: this.parseTimeout * 1000
+            });
+
+            if (this.CheckError(resp.status)) {
+                return;
+            }
+
+            try {
+                // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
+                this.logDebug("Meteored GetLocationFreetext response: " + JSON.stringify(resp.data));
 
                 // Sicher extrahieren: resp.data.data.locations
                 const locations: location_data[] =
@@ -225,23 +315,33 @@ export default class Meteored extends Base {
                         this.location_country = match.country_name ? String(match.country_name) : "";
 
                         this.logDebug(
-                            "Meteored GetLocation: matched city \"" + this.city +
+                            "Meteored GetLocationFreetext: matched city \"" + this.city +
                             "\" => hash=" + this.location_hash +
                             ", description=" + this.location_description +
                             ", country=" + this.location_country
                         );
                     } else {
-                        this.logError("Meteored GetLocation: no matching location for city \"" + this.city + "\"");
+                        this.logError("Meteored GetLocationFreetext: no matching location for city \"" + this.city + "\"");
+                        this.logInfo("found the following locations:")
+                        // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
+                        locations.forEach((loc: location_data) => {
+                            const name = loc && loc.name ? String(loc.name) : "";
+                            const desc = loc && loc.description ? String(loc.description) : "";
+                            const country = loc && loc.country_name ? String(loc.country_name) : "";
+                            this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
+                        });
+
+
                     }
                 }
 
                 await this.SetData_Location();
 
             } catch (e) {
-                this.logError("exception in GetLocation data parse " + e);
+                this.logError("exception in GetLocationFreetext data parse " + e);
             }
         } catch (e) {
-            this.logError("exception in GetLocation " + e);
+            this.logError("exception in GetLocationFreetext " + e);
         }
     }
 
