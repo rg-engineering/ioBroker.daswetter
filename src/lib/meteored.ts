@@ -301,7 +301,7 @@ export default class Meteored extends Base {
                         : [];
 
                 if (locations.length === 0) {
-                    this.logError("Meteored GetLocation: no locations in response");
+                    this.logError("Meteored GetLocationFreetext: no locations in response");
                 } else {
                     const cityNormalized = (this.city || "").toString().trim().toLowerCase();
                     const match = locations.find((loc: location_data) => {
