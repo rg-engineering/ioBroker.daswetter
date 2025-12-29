@@ -11,6 +11,8 @@ import type { MeteoredConfig } from './adapter-config';
 //todo
 // neuen API key erzeugen
 
+// deutsche Texte für symbol_description
+// sun in, out moon in out nur mit Uhrzeit ohne Datum
 
 //siehe https://dashboard.meteored.com/de/api#documentation
 
@@ -681,7 +683,7 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
                 await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
                 await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
-                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "°C", true, false, "Rain probability for accumulated rain");
+                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
                 await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
                 await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
                 await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
@@ -760,28 +762,28 @@ export default class Meteored extends Base {
 
             // Sun in
             const sunInRaw = day && day.sun_in ? day.sun_in : 0;
-            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
-            await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimeval, true);
+            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimevalTime, true);
 
             // Sun mid
             const sunMidRaw = day && day.sun_mid ? day.sun_mid : 0;
-            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
-            await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimeval, true);
+            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimevalTime, true);
 
             // Sun out
             const sunOutRaw = day && day.sun_out ? day.sun_out : 0;
-            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
-            await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimeval, true);
+            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimevalTime, true);
 
             // Moon in
             const moonInRaw = day && day.moon_in ? day.moon_in : 0;
-            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
-            await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimeval, true);
+            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimevalTime, true);
 
             // Moon out
             const moonOutRaw = day && day.moon_out ? day.moon_out : 0;
-            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
-            await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimeval, true);
+            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimevalTime, true);
 
             await this.adapter.setState(key + ".Moon_symbol", day ? day.moon_symbol : 0, true);
             await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(day ? day.moon_symbol : 0), true);
@@ -825,14 +827,16 @@ export default class Meteored extends Base {
     FormatTimestampToLocal(timestamp: number): {
         formattedTimeval: string,
         formattedTimevalDate: string,
-        formattedTimevalWeekday: string
+        formattedTimevalWeekday: string,
+        formattedTimevalTime: string,
     } {
         try {
             if (timestamp === null || timestamp === undefined || Number.isNaN(Number(timestamp))) {
                 return {
                     formattedTimeval: "",
                     formattedTimevalDate: "",
-                    formattedTimevalWeekday: ""
+                    formattedTimevalWeekday: "",
+                    formattedTimevalTime:""
                 };
             }
 
@@ -849,7 +853,8 @@ export default class Meteored extends Base {
                 return {
                     formattedTimeval: "",
                     formattedTimevalDate: "",
-                    formattedTimevalWeekday: ""
+                    formattedTimevalWeekday: "",
+                    formattedTimevalTime:""
                 };
             }
 
@@ -873,6 +878,13 @@ export default class Meteored extends Base {
                 day: "2-digit"
             });
 
+            // formattedTimevalTime: nur Uhrzeit im Locale-Format
+            const formattedTimevalTime = d.toLocaleDateString(locale, {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+
             // formattedTimevalWeekday: Name des Wochentags im Locale
             const formattedTimevalWeekday = d.toLocaleDateString(locale, {
                 weekday: "long"
@@ -881,7 +893,8 @@ export default class Meteored extends Base {
             return {
                 formattedTimeval,
                 formattedTimevalDate,
-                formattedTimevalWeekday
+                formattedTimevalWeekday,
+                formattedTimevalTime,
             };
 
         } catch (e) {
@@ -889,7 +902,8 @@ export default class Meteored extends Base {
             return {
                 formattedTimeval: "",
                 formattedTimevalDate: "",
-                formattedTimevalWeekday: ""
+                formattedTimevalWeekday: "",
+                formattedTimevalTime: "",
             };
         }
 
