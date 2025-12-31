@@ -270,6 +270,15 @@ export default class Meteored extends Base {
                     } else {
                         this.logError("Meteored GetLocationPostcode: no matching location for city \"" + this.city + "\"" +
                             (bundeslandNormalized ? " and bundesland \"" + this.bundesland + "\"" : ""));
+
+                        this.logInfo("found the following locations:")
+                        // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
+                        locations.forEach((loc: location_data) => {
+                            const name = loc && loc.name ? String(loc.name) : "";
+                            const desc = loc && loc.description ? String(loc.description) : "";
+                            const country = loc && loc.country_name ? String(loc.country_name) : "";
+                            this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
+                        });
                     }
                 }
 
@@ -354,6 +363,15 @@ export default class Meteored extends Base {
                     } else {
                         this.logError("Meteored GetLocationFreetext: no matching location for city \"" + this.city + "\"" +
                             (bundeslandNormalized ? " and bundesland \"" + this.bundesland + "\"" : ""));
+                        this.logInfo("found the following locations:")
+                        // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
+                        locations.forEach((loc: location_data) => {
+                            const name = loc && loc.name ? String(loc.name) : "";
+                            const desc = loc && loc.description ? String(loc.description) : "";
+                            const country = loc && loc.country_name ? String(loc.country_name) : "";
+                            this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
+                        });
+
                     }
                 }
                 await this.SetData_Location();
