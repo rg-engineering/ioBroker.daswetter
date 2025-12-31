@@ -119,12 +119,22 @@
             {
               "type": "text",
               "attr": "city",
-              "width": "30% ",
+              "width": "25% ",
               "title": "city",
               "tooltip": "city of location",
               "filter": false,
               "sort": false,
               "default": false
+            },
+            {
+              "type": "text",
+              "attr": "bundesland",
+              "width": "20% ",
+              "title": "bundesland",
+              "tooltip": "optional: bundesland/state for description filter (e.g. Saxony-Anhalt, Saxony, Baden-Württemberg, Bavaria, Thuringia, Brandenburg)",
+              "filter": false,
+              "sort": false,
+              "default": ""
             },
             {
               "type": "checkbox",

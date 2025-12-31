@@ -10,6 +10,7 @@ class Meteored extends base_1.default {
     api_key = "";
     postcode = "";
     city = "";
+    bundesland = "";
     location_hash = "";
     location_description = "";
     location_country = "";
@@ -38,6 +39,7 @@ class Meteored extends base_1.default {
         this.api_key = typeof config.API_key === "string" ? config.API_key : "";
         this.postcode = typeof config.postcode === "string" ? config.postcode : "";
         this.city = typeof config.city === "string" ? config.city : "";
+        this.bundesland = typeof config.bundesland === "string" ? config.bundesland : "";
         this.language = typeof config.language === "string" ? config.language : "DE";
         this.dateFormat = typeof config.dateFormat === "string" ? config.dateFormat : "YYMMDD";
         this.parseTimeout = typeof config.parseTimeout === "number" ? config.parseTimeout : 10;
@@ -125,10 +127,21 @@ class Meteored extends base_1.default {
                     this.logError("Meteored GetLocationPostcode: no locations in response");
                 }
                 else {
+                    this.logInfo("Meteored GetLocationPostcode: found " + locations.length + " locations:");
+                    locations.forEach((loc) => {
+                        const name = loc && loc.name ? String(loc.name) : "";
+                        const desc = loc && loc.description ? String(loc.description) : "";
+                        const country = loc && loc.country_name ? String(loc.country_name) : "";
+                        this.logInfo("  Name: " + name + ", Description: " + desc + ", Country: " + country);
+                    });
                     const cityNormalized = (this.city || "").toString().trim().toLowerCase();
+                    const bundeslandNormalized = (this.bundesland || "").toString().trim().toLowerCase();
                     const match = locations.find((loc) => {
                         const name = loc && loc.name ? String(loc.name).trim().toLowerCase() : "";
-                        return name === cityNormalized;
+                        const description = loc && loc.description ? String(loc.description).trim().toLowerCase() : "";
+                        const nameMatches = name === cityNormalized;
+                        const descriptionMatches = bundeslandNormalized === "" || description === bundeslandNormalized;
+                        return nameMatches && descriptionMatches;
                     });
                     if (match) {
                         this.location_hash = match.hash ? String(match.hash) : "";
@@ -140,15 +153,8 @@ class Meteored extends base_1.default {
                             ", country=" + this.location_country);
                     }
                     else {
-                        this.logError("Meteored GetLocationPostcode: no matching location for city \"" + this.city + "\"");
-                        this.logInfo("found the following locations:");
-                        // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
-                        locations.forEach((loc) => {
-                            const name = loc && loc.name ? String(loc.name) : "";
-                            const desc = loc && loc.description ? String(loc.description) : "";
-                            const country = loc && loc.country_name ? String(loc.country_name) : "";
-                            this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
-                        });
+                        this.logError("Meteored GetLocationPostcode: no matching location for city \"" + this.city + "\"" +
+                            (bundeslandNormalized ? " and bundesland \"" + this.bundesland + "\"" : ""));
                     }
                 }
                 await this.SetData_Location();
@@ -191,10 +197,21 @@ class Meteored extends base_1.default {
                     this.logError("Meteored GetLocationFreetext: no locations in response");
                 }
                 else {
+                    this.logInfo("Meteored GetLocationFreetext: found " + locations.length + " locations:");
+                    locations.forEach((loc) => {
+                        const name = loc && loc.name ? String(loc.name) : "";
+                        const desc = loc && loc.description ? String(loc.description) : "";
+                        const country = loc && loc.country_name ? String(loc.country_name) : "";
+                        this.logInfo("  Name: " + name + ", Description: " + desc + ", Country: " + country);
+                    });
                     const cityNormalized = (this.city || "").toString().trim().toLowerCase();
+                    const bundeslandNormalized = (this.bundesland || "").toString().trim().toLowerCase();
                     const match = locations.find((loc) => {
                         const name = loc && loc.name ? String(loc.name).trim().toLowerCase() : "";
-                        return name === cityNormalized;
+                        const description = loc && loc.description ? String(loc.description).trim().toLowerCase() : "";
+                        const nameMatches = name === cityNormalized;
+                        const descriptionMatches = bundeslandNormalized === "" || description === bundeslandNormalized;
+                        return nameMatches && descriptionMatches;
                     });
                     if (match) {
                         this.location_hash = match.hash ? String(match.hash) : "";
@@ -206,15 +223,8 @@ class Meteored extends base_1.default {
                             ", country=" + this.location_country);
                     }
                     else {
-                        this.logError("Meteored GetLocationFreetext: no matching location for city \"" + this.city + "\"");
-                        this.logInfo("found the following locations:");
-                        // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
-                        locations.forEach((loc) => {
-                            const name = loc && loc.name ? String(loc.name) : "";
-                            const desc = loc && loc.description ? String(loc.description) : "";
-                            const country = loc && loc.country_name ? String(loc.country_name) : "";
-                            this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
-                        });
+                        this.logError("Meteored GetLocationFreetext: no matching location for city \"" + this.city + "\"" +
+                            (bundeslandNormalized ? " and bundesland \"" + this.bundesland + "\"" : ""));
                     }
                 }
                 await this.SetData_Location();

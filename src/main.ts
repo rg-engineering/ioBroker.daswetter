@@ -49,6 +49,7 @@ export class DasWetter extends utils.Adapter {
 					API_key: this.config.ApiKey,
 					postcode: this.config.locations[l].postcode,
 					city: this.config.locations[l].city,
+					bundesland: this.config.locations[l].bundesland,
 					language: this.language,
 					dateFormat: this.dateFormat,
 					parseTimeout: this.config.parseTimeout,
