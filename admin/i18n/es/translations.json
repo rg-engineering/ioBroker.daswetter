@@ -12,7 +12,7 @@
     "custom_path": "ruta personalizada",
     "custom_path_ext": "extensión de nombre de archivo personalizada",
     "custom_path_hint": "La ruta personalizada debe tener el formato \"/adapter/daswetter/icons/tiempo-weather/galeria4/\". La extensión debe comenzar con un punto (por ejemplo, .png)",
-    "custum": "costumbre",
+    "custom": "costumbre",
     "enable location": "habilitar ubicación",
     "general configuration": "configuración general",
     "location configuration": "configuración de ubicación",

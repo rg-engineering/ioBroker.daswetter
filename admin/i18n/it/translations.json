@@ -12,7 +12,7 @@
     "custom_path": "percorso personalizzato",
     "custom_path_ext": "estensione del nome file personalizzata",
     "custom_path_hint": "il percorso personalizzato deve essere nel formato \"/adapter/daswetter/icons/tiempo-weather/galeria4/\". L'estensione deve iniziare con un punto (es. .png)",
-    "custum": "personalizzato",
+    "custom": "personalizzato",
     "enable location": "abilitare la posizione",
     "general configuration": "configurazione generale",
     "location configuration": "configurazione della posizione",

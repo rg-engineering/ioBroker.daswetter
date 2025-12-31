@@ -8,7 +8,7 @@
   "custom_path": "customized path",
   "custom_path_ext": "customized file name extension",
   "custom_path_hint": "custom path must be in the form \"/adapter/daswetter/icons/tiempo-weather/galeria4/\". The extension must start with a dot (eg .png)",
-  "custum": "custum",
+  "custom": "custom",
   "original": "original",
   "parse_timeout": "download and parse timeout [seconds]",
 

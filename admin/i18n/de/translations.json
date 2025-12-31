@@ -12,7 +12,7 @@
     "custom_path": "benutzerdefinierter Pfad",
     "custom_path_ext": "benutzerdefinierte Dateinamenerweiterung",
     "custom_path_hint": "Der benutzerdefinierte Pfad muss das Format \"/ adapter / daswetter / icons / tiempo-weather / galeria4 /\" haben. Die Erweiterung muss mit einem Punkt beginnen (zB .png)",
-    "custum": "nutzerspezifisch",
+    "custom": "nutzerspezifisch",
     "enable location": "Standort aktivieren",
     "general configuration": "allgemeine Konfiguration",
     "location configuration": "Konfiguration der Orte",

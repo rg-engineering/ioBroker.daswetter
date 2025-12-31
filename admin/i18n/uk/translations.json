@@ -12,7 +12,7 @@
     "custom_path": "індивідуальний шлях",
     "custom_path_ext": "індивідуальне розширення імені файлу",
     "custom_path_hint": "спеціальний шлях має бути у формі \"/adapter/daswetter/icons/tiempo-weather/galeria4/\". Розширення має починатися з крапки (наприклад, .png)",
-    "custum": "звичайний",
+    "custom": "звичайний",
     "enable location": "увімкнути місцезнаходження",
     "general configuration": "загальна конфігурація",
     "location configuration": "конфігурація розташування",

@@ -12,7 +12,7 @@
     "custom_path": "定制路径",
     "custom_path_ext": "自定义文件扩展名",
     "custom_path_hint": "自定义路径的格式必须为“/adapter/daswetter/icons/tiempo-weather/galeria4/”。扩展名必须以点开头（例如 .png）",
-    "custum": "定制",
+    "custom": "定制",
     "enable location": "启用位置",
     "general configuration": "通用配置",
     "location configuration": "位置配置",
