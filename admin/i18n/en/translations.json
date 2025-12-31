@@ -29,6 +29,8 @@
   "postcode of location": "postcode of location",
   "city": "city",
   "city of location": "city of location",
+  "bundesland": "state",
+  "optional: bundesland/state for description filter (e.g. Saxony-Anhalt, Saxony, Baden-Württemberg, Bavaria, Thuringia, Brandenburg)": "optional: state for description filter (e.g. Saxony-Anhalt, Saxony, Baden-Württemberg, Bavaria, Thuringia, Brandenburg)",
 
   "location settings": "location settings",
 
