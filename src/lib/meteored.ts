@@ -12,7 +12,7 @@ import type { MeteoredConfig } from './adapter-config';
 // neuen API key erzeugen
 
 // deutsche Texte für symbol_description
-// sun in, out moon in out nur mit Uhrzeit ohne Datum
+
 
 //siehe https://dashboard.meteored.com/de/api#documentation
 
@@ -161,6 +161,9 @@ export default class Meteored extends Base {
             case 400:
                 this.logError(" 400 Bad Request");
                 break;
+            case 401:
+                this.logError(" 401 Unauthorized");
+                break;
             case 404:
                 this.logError(" 404 Not Found");
                 break;
@@ -225,7 +228,7 @@ export default class Meteored extends Base {
                         : [];
 
                 if (locations.length === 0) {
-                    this.logError("Meteored GetLocationPostcode: no locations in response");
+                    this.logInfo("Meteored GetLocationPostcode: no locations in response");
                 } else {
                     const cityNormalized = (this.city || "").toString().trim().toLowerCase();
                     const match = locations.find((loc: location_data) => {
@@ -245,7 +248,7 @@ export default class Meteored extends Base {
                             ", country=" + this.location_country
                         );
                     } else {
-                        this.logError("Meteored GetLocationPostcode: no matching location for city \"" + this.city + "\"");
+                        this.logInfo("Meteored GetLocationPostcode: no matching location for city \"" + this.city + "\"");
                         this.logInfo("found the following locations:")
                         // Für jede gefundene Location eine separate Zeile loggen (Name, description, country)
                         locations.forEach((loc: location_data) => {
@@ -254,8 +257,6 @@ export default class Meteored extends Base {
                             const country = loc && loc.country_name ? String(loc.country_name) : "";
                             this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
                         });
-
-
                     }
                 }
 
@@ -333,11 +334,8 @@ export default class Meteored extends Base {
                             const country = loc && loc.country_name ? String(loc.country_name) : "";
                             this.logInfo("Name: " + name + ", description: " + desc + ", country: " + country);
                         });
-
-
                     }
                 }
-
                 await this.SetData_Location();
 
             } catch (e) {
@@ -347,8 +345,6 @@ export default class Meteored extends Base {
             this.logError("exception in GetLocationFreetext " + e);
         }
     }
-
-
 
     async GetForecastDaily(): Promise<void> {
 
@@ -632,13 +628,15 @@ export default class Meteored extends Base {
                 key = "location_" + this.id + ".ForecastDaily.Day_" + d;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
-
+                //daswetter.0.location_2.ForecastDaily.Day_1.date    -> 31.12.2025
                 await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period");
+
                 await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
                 await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day");
 
-
+                //daswetter.0.location_2.ForecastDaily.Day_1.start   -> 31.12.2025, 00:00:00
                 await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
+
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
                 await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "URL to weather symbol");
                 await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
@@ -668,11 +666,19 @@ export default class Meteored extends Base {
             key = "location_" + this.id + ".ForecastHourly";
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
 
+            
+            await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast periods");
+
             for (let h = 1; h < 25; h++) {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
-                await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period");
+                //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
+                await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period (date and time)");
+
+                //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
+                await this.CreateDatapoint(key + ".time", "state", "date", "string", "", true, false, "end of forecast period (time only)");
+
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
                 await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
                 await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
@@ -798,13 +804,21 @@ export default class Meteored extends Base {
 
     async SetData_ForecastHourly(): Promise<void> {
 
-        for (let h = 1; h < 25; h++) {
-            const key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
+        let  key = "location_" + this.id + ".ForecastHourly";
+        let hour = this.hours_forecast[0];
+            let timeval = hour && hour.end ? hour.end : 0;
+            let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+          
+        await this.adapter.setState(key + ".date", endParts.formattedTimevalDate, true);
 
-            const hour = this.hours_forecast[h - 1];
-            const timeval = hour && hour.end ? hour.end : 0;
-            const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
+        for (let h = 1; h < 25; h++) {
+             key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
+
+             hour = this.hours_forecast[h - 1];
+             timeval = hour && hour.end ? hour.end : 0;
+             endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
             await this.adapter.setState(key + ".end", endParts.formattedTimeval, true);
+            await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
 
             await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
@@ -934,6 +948,8 @@ export default class Meteored extends Base {
                 }
             }  
 
+
+
             //if night-value not provided or it's day:
             if (found && found.day && typeof found.day.long === "string") {
                 return found.day.long;
@@ -948,6 +964,8 @@ export default class Meteored extends Base {
             return "";
         }
     }
+
+    
 
 
     getIconUrl(num:number):string {
