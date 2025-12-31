@@ -193,11 +193,15 @@ export default class Meteored extends Base {
     async GetLocationPostcode(): Promise<void> {
         this.logDebug("GetLocationPostcode called");
 
+
         if (this.api_key === undefined || this.api_key == "") {
             this.logError("no api key available, please check settings");
             return;
         }
-
+        if (this.postcode === undefined || this.postcode == "") {
+            this.logInfo("Postcode not set, skipping GetLocationPostcode");
+            return;
+        }
         const url = "https://api.meteored.com/api/location/v1/search/postalcode/" + this.postcode;
         const headers = {
             accept: "application/json",

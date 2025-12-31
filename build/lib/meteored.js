@@ -103,6 +103,10 @@ class Meteored extends base_1.default {
             this.logError("no api key available, please check settings");
             return;
         }
+        if (this.postcode === undefined || this.postcode == "") {
+            this.logInfo("Postcode not set, skipping GetLocationPostcode");
+            return;
+        }
         const url = "https://api.meteored.com/api/location/v1/search/postalcode/" + this.postcode;
         const headers = {
             accept: "application/json",
