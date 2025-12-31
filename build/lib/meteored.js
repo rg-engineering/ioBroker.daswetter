@@ -147,7 +147,7 @@ class Meteored extends base_1.default {
                         this.location_hash = match.hash ? String(match.hash) : "";
                         this.location_description = match.description ? String(match.description) : "";
                         this.location_country = match.country_name ? String(match.country_name) : "";
-                        this.logDebug("Meteored GetLocationPostcode: matched city \"" + this.city +
+                        this.logInfo("Meteored GetLocationPostcode: matched city \"" + this.city +
                             "\" => hash=" + this.location_hash +
                             ", description=" + this.location_description +
                             ", country=" + this.location_country);
@@ -217,7 +217,7 @@ class Meteored extends base_1.default {
                         this.location_hash = match.hash ? String(match.hash) : "";
                         this.location_description = match.description ? String(match.description) : "";
                         this.location_country = match.country_name ? String(match.country_name) : "";
-                        this.logDebug("Meteored GetLocationFreetext: matched city \"" + this.city +
+                        this.logInfo("Meteored GetLocationFreetext: matched city \"" + this.city +
                             "\" => hash=" + this.location_hash +
                             ", description=" + this.location_description +
                             ", country=" + this.location_country);

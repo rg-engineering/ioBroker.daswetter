@@ -252,7 +252,7 @@ export default class Meteored extends Base {
                         this.location_description = match.description ? String(match.description) : "";
                         this.location_country = match.country_name ? String(match.country_name) : "";
 
-                        this.logDebug(
+                        this.logInfo(
                             "Meteored GetLocationPostcode: matched city \"" + this.city +
                             "\" => hash=" + this.location_hash +
                             ", description=" + this.location_description +
@@ -336,7 +336,7 @@ export default class Meteored extends Base {
                         this.location_description = match.description ? String(match.description) : "";
                         this.location_country = match.country_name ? String(match.country_name) : "";
 
-                        this.logDebug(
+                        this.logInfo(
                             "Meteored GetLocationFreetext: matched city \"" + this.city +
                             "\" => hash=" + this.location_hash +
                             ", description=" + this.location_description +
