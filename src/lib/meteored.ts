@@ -95,9 +95,9 @@ export default class Meteored extends Base {
     days_forecast: day_data[] = [];
     hours_forecast: hour_data[] = [];
 
-    iconSet= 0;
+    iconSet = 0;
     UsePNGorOriginalSVG = true;
-    UseColorOrBW= true;
+    UseColorOrBW = true;
     CustomPath = "";
     CustomPathExt = "";
 
@@ -122,7 +122,7 @@ export default class Meteored extends Base {
         this.dateFormat = typeof config.dateFormat === "string" ? config.dateFormat : "YYMMDD";
         this.parseTimeout = typeof config.parseTimeout === "number" ? config.parseTimeout : 10;
         this.useDailyForecast = typeof config.useDailyForecast === "boolean" ? config.useDailyForecast : true;
-        this.useHourlyForecast =  typeof config.useHourlyForecast === "boolean" ? config.useHourlyForecast : true;
+        this.useHourlyForecast = typeof config.useHourlyForecast === "boolean" ? config.useHourlyForecast : true;
 
         this.iconSet = config.iconSet;
         this.UsePNGorOriginalSVG = config.UsePNGorOriginalSVG;
@@ -214,11 +214,21 @@ export default class Meteored extends Base {
         };
 
         try {
-            const resp = await axios.get(url, {
-                headers: headers,
-                timeout: this.parseTimeout * 1000
-            });
 
+            let resp;
+            try {
+                resp = await axios.get(url, {
+                    headers: headers,
+                    timeout: this.parseTimeout * 1000
+                });
+            } catch (err) {
+                if (axios.isAxiosError(err)) {
+                    this.logError("axios error in GetLocationPostcode: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
+                } else {
+                    this.logError("exception in GetLocationPostcode (non-axios): " + err);
+                }
+                return;
+            }
             if (this.CheckError(resp.status)) {
                 return;
             }
@@ -307,10 +317,21 @@ export default class Meteored extends Base {
         };
 
         try {
-            const resp = await axios.get(url, {
-                headers: headers,
-                timeout: this.parseTimeout * 1000
-            });
+
+            let resp;
+            try {
+                resp = await axios.get(url, {
+                    headers: headers,
+                    timeout: this.parseTimeout * 1000
+                });
+            } catch (err) {
+                if (axios.isAxiosError(err)) {
+                    this.logError("axios error in GetLocationFreetext: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
+                } else {
+                    this.logError("exception in GetLocationFreetext (non-axios): " + err);
+                }
+                return;
+            }
 
             if (this.CheckError(resp.status)) {
                 return;
@@ -406,10 +427,22 @@ export default class Meteored extends Base {
             };
 
             try {
-                const resp = await axios.get(url, {
-                    headers: headers,
-                    timeout: this.parseTimeout * 1000
-                });
+
+                let resp;
+                try {
+                    resp = await axios.get(url, {
+                        headers: headers,
+                        timeout: this.parseTimeout * 1000
+                    });
+                } catch (err) {
+                    if (axios.isAxiosError(err)) {
+                        this.logError("axios error in GetForecastDaily: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
+                    } else {
+                        this.logError("exception in GetForecastDaily (non-axios): " + err);
+                    }
+                    return;
+                }
+
                 if (this.CheckError(resp.status)) {
                     return;
                 }
@@ -510,10 +543,22 @@ export default class Meteored extends Base {
             };
 
             try {
-                const resp = await axios.get(url, {
-                    headers: headers,
-                    timeout: this.parseTimeout * 1000
-                });
+
+                let resp;
+                try {
+                    resp = await axios.get(url, {
+                        headers: headers,
+                        timeout: this.parseTimeout * 1000
+                    });
+                } catch (err) {
+                    if (axios.isAxiosError(err)) {
+                        this.logError("axios error in GetForecastHourly: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
+                    } else {
+                        this.logError("exception in GetForecastHourly (non-axios): " + err);
+                    }
+                    return;
+                }
+
                 if (this.CheckError(resp.status)) {
                     return;
                 }
@@ -594,10 +639,23 @@ export default class Meteored extends Base {
         };
 
         try {
-            const resp = await axios.get(url, {
-                headers: headers,
-                timeout: this.parseTimeout * 1000
-            });
+
+            let resp;
+            try {
+                resp = await axios.get(url, {
+                    headers: headers,
+                    timeout: this.parseTimeout * 1000
+                });
+            } catch (err) {
+                if (axios.isAxiosError(err)) {
+                    this.logError("axios error in GetSymbols: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
+                } else {
+                    this.logError("exception in GetSymbols (non-axios): " + err);
+                }
+                return;
+            }
+
+
             if (this.CheckError(resp.status)) {
                 return;
             }
@@ -704,7 +762,7 @@ export default class Meteored extends Base {
             key = "location_" + this.id + ".ForecastHourly";
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
 
-            
+
             await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast periods");
 
             for (let h = 1; h < 25; h++) {
@@ -806,27 +864,27 @@ export default class Meteored extends Base {
 
             // Sun in
             const sunInRaw = day && day.sun_in ? day.sun_in : 0;
-            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
             await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimevalTime, true);
 
             // Sun mid
             const sunMidRaw = day && day.sun_mid ? day.sun_mid : 0;
-            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
             await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimevalTime, true);
 
             // Sun out
             const sunOutRaw = day && day.sun_out ? day.sun_out : 0;
-            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
             await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimevalTime, true);
 
             // Moon in
             const moonInRaw = day && day.moon_in ? day.moon_in : 0;
-            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
             await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimevalTime, true);
 
             // Moon out
             const moonOutRaw = day && day.moon_out ? day.moon_out : 0;
-            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
             await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimevalTime, true);
 
             await this.adapter.setState(key + ".Moon_symbol", day ? day.moon_symbol : 0, true);
@@ -842,19 +900,19 @@ export default class Meteored extends Base {
 
     async SetData_ForecastHourly(): Promise<void> {
 
-        let  key = "location_" + this.id + ".ForecastHourly";
+        let key = "location_" + this.id + ".ForecastHourly";
         let hour = this.hours_forecast[0];
-            let timeval = hour && hour.end ? hour.end : 0;
-            let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
-          
+        let timeval = hour && hour.end ? hour.end : 0;
+        let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+
         await this.adapter.setState(key + ".date", endParts.formattedTimevalDate, true);
 
         for (let h = 1; h < 25; h++) {
-             key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
+            key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
 
-             hour = this.hours_forecast[h - 1];
-             timeval = hour && hour.end ? hour.end : 0;
-             endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime:"" };
+            hour = this.hours_forecast[h - 1];
+            timeval = hour && hour.end ? hour.end : 0;
+            endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
             await this.adapter.setState(key + ".end", endParts.formattedTimeval, true);
             await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
 
@@ -888,7 +946,7 @@ export default class Meteored extends Base {
                     formattedTimeval: "",
                     formattedTimevalDate: "",
                     formattedTimevalWeekday: "",
-                    formattedTimevalTime:""
+                    formattedTimevalTime: ""
                 };
             }
 
@@ -906,7 +964,7 @@ export default class Meteored extends Base {
                     formattedTimeval: "",
                     formattedTimevalDate: "",
                     formattedTimevalWeekday: "",
-                    formattedTimevalTime:""
+                    formattedTimevalTime: ""
                 };
             }
 
@@ -984,7 +1042,7 @@ export default class Meteored extends Base {
                 if (found && found.night && typeof found.night.long === "string") {
                     return found.night.long;
                 }
-            }  
+            }
 
 
 
@@ -992,7 +1050,7 @@ export default class Meteored extends Base {
             if (found && found.day && typeof found.day.long === "string") {
                 return found.day.long;
             }
-            
+
 
             // Kein Eintrag gefunden -> leerer String
             this.logDebug("getSymbolLongDescription: no matching symbol for id " + id);
@@ -1003,12 +1061,12 @@ export default class Meteored extends Base {
         }
     }
 
-    
 
 
-    getIconUrl(num:number):string {
+
+    getIconUrl(num: number): string {
         const iconSet = this.iconSet;
-        
+
         let url = "";
         let ext = "";
         if (num) {

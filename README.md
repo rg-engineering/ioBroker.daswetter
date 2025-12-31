@@ -84,6 +84,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René) translations of symbol descriptions
 * (René) some new datapoints (time and date) to identify forecast periods
 * (René) see issue #462: sun and moon times now without date part (time-only)
+* (TA2k) Add bundesland / state as search option and move some debug to info logs
 
 
 ### 4.1.0 (2025-12-28)
