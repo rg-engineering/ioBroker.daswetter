@@ -7,8 +7,9 @@ export interface MeteoredConfig {
 	API_key: string; //api key based on account
 	postcode: string;//postcode for location
 	city: string;
+	bundesland: string;
 	language: string | undefined;
-	dateFormat: string; 
+	dateFormat: string;
 	parseTimeout: number;
 	useDailyForecast: boolean,
 	useHourlyForecast: boolean
@@ -33,6 +34,7 @@ interface locations {
 	IsActive: boolean,
 	postcode: string,
 	city: string,
+	bundesland: string,
 	useDailyForecast: boolean,
 	useHourlyForecast: boolean
 }
