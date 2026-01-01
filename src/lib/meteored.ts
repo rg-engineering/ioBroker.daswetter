@@ -725,14 +725,15 @@ export default class Meteored extends Base {
                 key = "location_" + this.id + ".ForecastDaily.Day_" + d;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
-                //daswetter.0.location_2.ForecastDaily.Day_1.date    -> 31.12.2025
-                await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period");
+
+                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period");
+                await this.CreateDatapoint(key + ".date", "state", "string", "string", "", true, false, "date of forecast period");
 
                 await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
                 await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day");
 
                 //daswetter.0.location_2.ForecastDaily.Day_1.start   -> 31.12.2025, 00:00:00
-                await this.CreateDatapoint(key + ".start", "state", "date", "string", "", true, false, "start of forecast period");
+                await this.CreateDatapoint(key + ".start", "state", "value", "number", "", true, false, "start of forecast period");
 
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
                 await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "URL to weather symbol");
@@ -764,14 +765,15 @@ export default class Meteored extends Base {
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
 
 
-            await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast periods");
+            await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast periods");
+            await this.CreateDatapoint(key + ".date", "state", "string", "string", "", true, false, "date of forecast periods");
 
             for (let h = 1; h < 25; h++) {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
                 //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
-                await this.CreateDatapoint(key + ".end", "state", "date", "string", "", true, false, "end of forecast period (date and time)");
+                await this.CreateDatapoint(key + ".end", "state", "value", "number", "", true, false, "end of forecast period (date and time)");
 
                 //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
                 await this.CreateDatapoint(key + ".time", "state", "date", "string", "", true, false, "end of forecast period (time only)");
@@ -840,9 +842,10 @@ export default class Meteored extends Base {
 
 
             const timeval = day && day.start ? day.start : 0;
-            const startParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "" };
-            await this.adapter.setState(key + ".start", startParts.formattedTimeval, true);
+            const startParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", isoString: "" };
+            await this.adapter.setState(key + ".start", timeval, true);
 
+            await this.adapter.setState(key + ".date_full", startParts.isoString, true);
             await this.adapter.setState(key + ".date", startParts.formattedTimevalDate, true);
             await this.adapter.setState(key + ".NameOfDay", startParts.formattedTimevalWeekday, true);
 
@@ -865,27 +868,27 @@ export default class Meteored extends Base {
 
             // Sun in
             const sunInRaw = day && day.sun_in ? day.sun_in : 0;
-            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+            const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimevalTime, true);
 
             // Sun mid
             const sunMidRaw = day && day.sun_mid ? day.sun_mid : 0;
-            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+            const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimevalTime, true);
 
             // Sun out
             const sunOutRaw = day && day.sun_out ? day.sun_out : 0;
-            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+            const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimevalTime, true);
 
             // Moon in
             const moonInRaw = day && day.moon_in ? day.moon_in : 0;
-            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+            const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimevalTime, true);
 
             // Moon out
             const moonOutRaw = day && day.moon_out ? day.moon_out : 0;
-            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+            const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString:"" };
             await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimevalTime, true);
 
             await this.adapter.setState(key + ".Moon_symbol", day ? day.moon_symbol : 0, true);
@@ -904,8 +907,9 @@ export default class Meteored extends Base {
         let key = "location_" + this.id + ".ForecastHourly";
         let hour = this.hours_forecast[0];
         let timeval = hour && hour.end ? hour.end : 0;
-        let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
+        let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString:"" };
 
+        await this.adapter.setState(key + ".date_full", endParts.isoString, true);
         await this.adapter.setState(key + ".date", endParts.formattedTimevalDate, true);
 
         for (let h = 1; h < 25; h++) {
@@ -913,8 +917,8 @@ export default class Meteored extends Base {
 
             hour = this.hours_forecast[h - 1];
             timeval = hour && hour.end ? hour.end : 0;
-            endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "" };
-            await this.adapter.setState(key + ".end", endParts.formattedTimeval, true);
+            endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString :""};
+            await this.adapter.setState(key + ".end", timeval, true);
             await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
 
             await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
@@ -942,6 +946,7 @@ export default class Meteored extends Base {
         formattedTimevalDate: string,
         formattedTimevalWeekday: string,
         formattedTimevalTime: string,
+        isoString: string, // für Datenpunkt Typ "date"
     } {
         try {
             if (timestamp === null || timestamp === undefined || Number.isNaN(Number(timestamp))) {
@@ -949,15 +954,15 @@ export default class Meteored extends Base {
                     formattedTimeval: "",
                     formattedTimevalDate: "",
                     formattedTimevalWeekday: "",
-                    formattedTimevalTime: ""
+                    formattedTimevalTime: "",
+                    isoString: ""
                 };
             }
 
             let ms = Number(timestamp);
 
-            // Wenn der Zeitstempel offensichtlich in Sekunden vorliegt (kleiner als 10^10),
-            // dann in Millisekunden umwandeln.
-            if (ms > 0 && ms < 10000000000) { // ~ cutoff für Sekunden
+            // Wenn der Zeitstempel offensichtlich in Sekunden vorliegt
+            if (ms > 0 && ms < 10000000000) {
                 ms = ms * 1000;
             }
 
@@ -967,17 +972,18 @@ export default class Meteored extends Base {
                     formattedTimeval: "",
                     formattedTimevalDate: "",
                     formattedTimevalWeekday: "",
-                    formattedTimevalTime: ""
+                    formattedTimevalTime: "",
+                    isoString: ""
                 };
             }
 
             // Resolve locale
-            const locale = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE";
+            const locale = (this.language && typeof this.language === "string" && this.language.trim())
+                ? this.language
+                : "de-DE";
 
-            this.logDebug("FormatTimestampToLocal " + this.language + " = " + locale);
-
-            // formattedTimeval: Datum + Uhrzeit
-            const formattedTimeval = d.toLocaleString(locale, {
+            // Intl-DateTimeFormat
+            const dtfFull = new Intl.DateTimeFormat(locale, {
                 year: "numeric",
                 month: "2-digit",
                 day: "2-digit",
@@ -986,30 +992,44 @@ export default class Meteored extends Base {
                 second: "2-digit"
             });
 
-            // formattedTimevalDate: nur Datum im Locale-Format
-            const formattedTimevalDate = d.toLocaleDateString(locale, {
+            const dtfDate = new Intl.DateTimeFormat(locale, {
                 year: "numeric",
                 month: "2-digit",
                 day: "2-digit"
             });
 
-            // formattedTimevalTime: nur Uhrzeit im Locale-Format
-            const formattedTimevalTime = d.toLocaleDateString(locale, {
+            const dtfTime = new Intl.DateTimeFormat(locale, {
                 hour: "2-digit",
                 minute: "2-digit",
                 second: "2-digit"
             });
 
-            // formattedTimevalWeekday: Name des Wochentags im Locale
-            const formattedTimevalWeekday = d.toLocaleDateString(locale, {
+            const dtfWeekday = new Intl.DateTimeFormat(locale, {
                 weekday: "long"
             });
+
+            // Formatiert für Anzeige
+            const formattedTimeval = dtfFull.format(d);
+            const formattedTimevalDate = dtfDate.format(d);
+            const formattedTimevalTime = dtfTime.format(d);
+            const formattedTimevalWeekday = dtfWeekday.format(d);
+
+            // Für Datenpunkt vom Typ "date" → immer ISO 8601
+            const isoString = d.toISOString(); // UTC korrekt, Admin zeigt lokale Zeit
+
+            //this.logDebug("FormatTimestampToLocal : " +
+            //    formattedTimeval + " | " +
+            //    formattedTimevalDate + " | " +
+            //    formattedTimevalWeekday + " | " +
+            //    formattedTimevalTime + " | ISO: " + isoString
+            //);
 
             return {
                 formattedTimeval,
                 formattedTimevalDate,
                 formattedTimevalWeekday,
                 formattedTimevalTime,
+                isoString
             };
 
         } catch (e) {
@@ -1019,11 +1039,12 @@ export default class Meteored extends Base {
                 formattedTimevalDate: "",
                 formattedTimevalWeekday: "",
                 formattedTimevalTime: "",
+                isoString: ""
             };
         }
-
-
     }
+
+
 
 
 

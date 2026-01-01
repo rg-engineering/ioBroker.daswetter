@@ -13,7 +13,6 @@ import * as utils from "@iobroker/adapter-core";
 import Meteored from "./lib/meteored";
 
 export class DasWetter extends utils.Adapter {
-
 	private meteored: Meteored[] = [];
 	private parseInterval: NodeJS.Timeout | null =null;
 	
