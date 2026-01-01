@@ -79,13 +79,11 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 4.2.0 (2026-01-01)
 * (René) translations of symbol descriptions
 * (René) some new datapoints (time and date) to identify forecast periods
 * (René) see issue #462: sun and moon times now without date part (time-only)
 * (TA2k) Add bundesland / state as search option and move some debug to info logs
-
 
 ### 4.1.0 (2025-12-28)
 * (René) see issue #457: forecast download for daily and hourly can now be disabled to reduce number of DP's

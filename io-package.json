@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.1.0",
+    "version": "4.2.0",
     "news": {
+      "4.2.0": {
+        "en": "translations of symbol descriptions\nsome new datapoints (time and date) to identify forecast periods\nsee issue #462: sun and moon times now without date part (time-only)\nAdd bundesland / state as search option and move some debug to info logs",
+        "de": "übersetzungen von symbolbeschreibungen\neinige neue datenpunkte (zeit und datum) zur identifizierung von prognosezeiten\nsiehe ausgabe #462: sonnen- und mondzeiten jetzt ohne datumsteil (nur)\nFügen Sie Bungalow / Zustand als Suchoption und verschieben Sie einige Debug zu Info-Logs",
+        "ru": "перевод описания символов\nнекоторые новые точки данных (время и дата) для определения прогнозных периодов\n#462: время солнца и луны теперь без даты (только по времени)\nДобавьте bundesland / state в качестве опции поиска и переместите некоторые отладки в информационные журналы",
+        "pt": "traduções de descrições de símbolos\nalguns novos pontos de dados (hora e data) para identificar os períodos de previsão\nver o número 462: horas do sol e da lua agora sem parte da data (somente no tempo)\nAdicionar bundesland / estado como opção de pesquisa e mover alguns debug para logs de informações",
+        "nl": "vertalingen van symbolenbeschrijvingen\neen aantal nieuwe datapunten (tijd en datum) om prognoses te bepalen\nzie nummer #462: zon en maan tijden nu zonder datum deel (alleen tijd)\nVoeg bundesland / status als zoekoptie toe en verplaats wat debug naar info logs",
+        "fr": "traduction des descriptions des symboles\nde nouveaux points de données (heure et date) pour identifier les périodes de prévision\nvoir numéro #462: heures de soleil et de lune maintenant sans date partie (temps seulement)\nAjouter bundesland / état comme option de recherche et déplacer un debug dans les journaux d'info",
+        "it": "traduzioni delle descrizioni dei simboli\nalcuni nuovi datapoint (ora e data) per identificare i periodi di previsione\nvedi numero #462: sole e luna ora senza data parte (solo orario)\nAggiungi bundesland / stato come opzione di ricerca e spostare un po 'di debug ai registri di informazioni",
+        "es": "traducciones de descripciones de símbolos\nalgunos nuevos puntos de datos (tiempo y fecha) para determinar los períodos de pronóstico\nver número #462: sol y luna tiempos ahora sin la parte de la fecha (solamente)\nAñadir bundesland / estado como opción de búsqueda y mover un poco de depuración a los registros de información",
+        "pl": "tłumaczenia opisów symboli\nniektóre nowe punkty danych (czas i data) w celu określenia okresów prognozowania\nzobacz numer # 462: czas słoneczny i księżycowy bez części daty (tylko czas)\nDodaj bundesland / state jako opcję wyszukiwania i przenieś debug do dzienników informacji",
+        "uk": "переклади символів\nдля визначення прогнозних періодів\nпереглянути номер #462: сонце і місяць тепер без дати частини (разово)\nДодайте бундесланд / стан, як варіант пошуку і перемістіть дебюг на інформаційні колоди",
+        "zh-cn": "符号描述翻译\n确定预测期的新数据点(时间和日期)\n参见第462期:现在没有日期部分的日月时间(只限时)\n添加 buddesland / 状态为搜索选项, 并移动一些调试到信息日志"
+      },
       "4.1.0": {
         "en": "see issue #457: forecast download for daily and hourly can now be disabled to reduce number of DP's\nsee issue #456: combination of postcode and free text search for location API added, if location not found by postcode a free text search is executed\nsee issue #458: unit for pressure changed to millibar / hPa\nsee issue #459: bug fix to be able to edit custom path for moon symbols\nif API provides night specific symbol description, it will be shown now\ndatapoint descriptions changed",
         "de": "siehe Ausgabe #457: prognostizierte Downloads für Tag und Stunde können jetzt deaktiviert werden, um die Anzahl der DP's zu reduzieren\nsiehe Ausgabe #456: Kombination von Postcode und freier Textsuche nach Standort API hinzugefügt, wenn nicht durch Postleitzahl gefunden eine kostenlose Textsuche ausgeführt wird\nsiehe Ausgabe #458: Einheit für Druck in Millibar / hPa\nsiehe ausgabe #459: bugfix, um benutzerdefinierte pfad für mondsymbole bearbeiten zu können\nwenn API eine nachtsspezifische Symbolbeschreibung bietet, wird es jetzt angezeigt\ndatenpunktbeschreibungen geändert",
@@ -80,19 +93,6 @@
         "pl": "# 442: błąd naprawić dla stanu kierunku wiatru\n# 417: info, jeśli zapytanie o dane jest zbyt często (max. 4 razy na godzinę)\naktualizacja zależności + zmiany w oparciu o sprawdzacz adaptera",
         "uk": "#442: виправлення помилок для стану вітрового напрямку\n#417: інформація, якщо ці дані дуже часто (макс. 4 рази за годину)\nоновлення залежності + зміни на основі перевірки адаптера",
         "zh-cn": "#442:虫子固定风向状态\n#417:信息,如果数据查询太频繁(最多每小时4次)\n根据适配器检查器更新依赖性+变化"
-      },
-      "3.2.4": {
-        "en": "new testing\nupdate dependencies + changes based on adapter checker",
-        "de": "neue tests\naktualisierung abhängigkeiten + änderungen basierend auf adapter-checker",
-        "ru": "новые испытания\nзависимости обновления + изменения на основе проверки адаптера",
-        "pt": "novos testes\natualizar dependências + alterações com base no verificador de adaptadores",
-        "nl": "nieuwe tests\nupdate afhankelijkheden + wijzigingen op basis van adaptercontrole",
-        "fr": "nouveaux essais\nmettre à jour les dépendances + les changements basés sur le vérificateur d'adaptateur",
-        "it": "nuovi test\naggiornamento dipendenze + modifiche in base all'adattatore checker",
-        "es": "nuevas pruebas\ndependencias de actualización + cambios basados en el control de adaptador",
-        "pl": "nowe badania\naktualizacja zależności + zmiany w oparciu o sprawdzacz adaptera",
-        "uk": "новий тест\nоновлення залежності + зміни на основі перевірки адаптера",
-        "zh-cn": "新测试\n根据适配器检查器更新依赖性+变化"
       }
     },
     "titleLang": {
