@@ -5,6 +5,7 @@ import type { DasWetter } from "../main";
 import Base from "./base";
 
 import type { MeteoredConfig } from './adapter-config';
+import { WeatherTranslator } from "./translation";
 
 
 
@@ -934,6 +935,8 @@ export default class Meteored extends Base {
             await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
         }
     }
+
+
     FormatTimestampToLocal(timestamp: number): {
         formattedTimeval: string,
         formattedTimevalDate: string,
@@ -970,6 +973,8 @@ export default class Meteored extends Base {
 
             // Resolve locale
             const locale = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE";
+
+            this.logDebug("FormatTimestampToLocal " + this.language + " = " + locale);
 
             // formattedTimeval: Datum + Uhrzeit
             const formattedTimeval = d.toLocaleString(locale, {
@@ -1024,6 +1029,12 @@ export default class Meteored extends Base {
 
     // symbol functions
     getSymbolLongDescription(num: number, isNight: boolean): string {
+
+        const translator = new WeatherTranslator();
+        const lang = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE"
+
+        translator.SetLanguage(lang);
+
         try {
             // sichere Konvertierung und Normalisierung
             const id = typeof num === "number" ? num : Number(num);
@@ -1040,7 +1051,7 @@ export default class Meteored extends Base {
 
             if (isNight) {
                 if (found && found.night && typeof found.night.long === "string") {
-                    return found.night.long;
+                    return translator.translateWeather( found.night.long);
                 }
             }
 
@@ -1048,7 +1059,7 @@ export default class Meteored extends Base {
 
             //if night-value not provided or it's day:
             if (found && found.day && typeof found.day.long === "string") {
-                return found.day.long;
+                return translator.translateWeather(found.day.long);
             }
 
 
@@ -1143,4 +1154,6 @@ export default class Meteored extends Base {
 
         return url + num + ext;
     }
+
+
 }
