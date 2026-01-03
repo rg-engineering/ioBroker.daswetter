@@ -79,6 +79,10 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (H5N1v2) 41 icons for DasWetter@4.x (galeria7)
+
 ### 4.2.0 (2026-01-01)
 * (René) translations of symbol descriptions
 * (René) some new datapoints (time and date) to identify forecast periods
