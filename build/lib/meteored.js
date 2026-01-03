@@ -860,13 +860,13 @@ class Meteored extends base_1.default {
         let url = "";
         let ext = "";
         if (num) {
-            if (iconSet == 7) { //custom
+            if (iconSet == 99) { //custom
                 url = this.CustomPath;
                 ext = this.CustomPathExt;
             }
             else {
                 url = "/daswetter.admin/icons/tiempo-weather/galeria" + iconSet + "/";
-                ext = (iconSet < 5 || this.UsePNGorOriginalSVG) ? ".png" : ".svg";
+                ext = (iconSet < 5 || this.UsePNGorOriginalSVG || iconSet == 7) ? ".png" : ".svg";
                 //this.logDebug("getIconURL " + num + " " + this.UsePNGorOriginalSVG + " " + this.UseColorOrBW);
                 if (iconSet === 5) {
                     if (this.UsePNGorOriginalSVG) {
@@ -906,7 +906,7 @@ class Meteored extends base_1.default {
                 url = "/daswetter.admin/icons/viento-wind/galeria1/";
                 ext = ".png";
                 break;
-            case 4:
+            case 99:
                 url = this.WindCustomPath;
                 ext = this.WindCustomPathExt;
                 break;
@@ -919,7 +919,7 @@ class Meteored extends base_1.default {
         const iconSet = this.mooniconSet;
         let url = "";
         let ext = "";
-        if (iconSet == 2) {
+        if (iconSet == 99) {
             url = this.MoonCustomPath;
             ext = this.MoonCustomPathExt;
         }

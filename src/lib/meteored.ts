@@ -130,14 +130,38 @@ export default class Meteored extends Base {
         this.UseColorOrBW = config.UseColorOrBW;
         this.CustomPath = config.CustomPath;
         this.CustomPathExt = config.CustomPathExt;
+        // Normalize CustomPathExt: trim and ensure it starts with a dot if not empty
+        {
+            let ext = typeof config.CustomPathExt === "string" ? config.CustomPathExt.trim() : "";
+            if (ext !== "" && !ext.startsWith(".")) {
+                ext = "." + ext;
+            }
+            this.CustomPathExt = ext;
+        }
 
         this.windiconSet = config.windiconSet;
         this.WindCustomPath = config.WindCustomPath;
-        this.WindCustomPathExt = config.WindCustomPathExt;
+        this.WindCustomPathExt = config.WindCustomPathExt
+        // Normalize WindCustomPathExt: trim and ensure it starts with a dot if not empty
+        {
+            let ext = typeof config.WindCustomPathExt === "string" ? config.WindCustomPathExt.trim() : "";
+            if (ext !== "" && !ext.startsWith(".")) {
+                ext = "." + ext;
+            }
+            this.WindCustomPathExt = ext;
+        }
 
         this.mooniconSet = config.mooniconSet;
         this.MoonCustomPath = config.MoonCustomPath;
         this.MoonCustomPathExt = config.MoonCustomPathExt;
+        // Normalize MoonCustomPathExt: trim and ensure it starts with a dot if not empty
+        {
+            let ext = typeof config.MoonCustomPathExt === "string" ? config.MoonCustomPathExt.trim() : "";
+            if (ext !== "" && !ext.startsWith(".")) {
+                ext = "." + ext;
+            }
+            this.MoonCustomPathExt = ext;
+        }
     }
 
     async Start(): Promise<void> {
@@ -1103,12 +1127,14 @@ export default class Meteored extends Base {
         let ext = "";
         if (num) {
 
-            if (iconSet == 7) {//custom
+            if (iconSet == 99) {//custom
                 url = this.CustomPath;
+
+
                 ext = this.CustomPathExt;
             } else {
                 url = "/daswetter.admin/icons/tiempo-weather/galeria" + iconSet + "/";
-                ext = (iconSet < 5 || this.UsePNGorOriginalSVG) ? ".png" : ".svg";
+                ext = (iconSet < 5 || this.UsePNGorOriginalSVG || iconSet == 7) ? ".png" : ".svg";
 
                 //this.logDebug("getIconURL " + num + " " + this.UsePNGorOriginalSVG + " " + this.UseColorOrBW);
 
@@ -1150,7 +1176,7 @@ export default class Meteored extends Base {
                 url = "/daswetter.admin/icons/viento-wind/galeria1/";
                 ext = ".png";
                 break;
-            case 4:
+            case 99:
                 url = this.WindCustomPath;
                 ext = this.WindCustomPathExt;
                 break;
@@ -1165,7 +1191,7 @@ export default class Meteored extends Base {
         let url = "";
         let ext = "";
 
-        if (iconSet == 2) {
+        if (iconSet == 99) {
             url = this.MoonCustomPath;
             ext = this.MoonCustomPathExt;
         } else {
