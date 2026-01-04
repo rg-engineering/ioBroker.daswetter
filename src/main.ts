@@ -84,6 +84,11 @@ export class DasWetter extends utils.Adapter {
 			await this.meteored[n].GetForecastHourly();
 		}
 
+		if (this.parseInterval) {
+			clearInterval(this.parseInterval);
+			this.parseInterval = null;
+		}
+
 		this.parseInterval = setInterval(() => {
 			// Aufruf der async-Funktion und Fehler protokollieren, damit das Intervall nicht wegen einer unbehandelten Exception abstürzt
 			(this.updateForecast.bind(this)()).catch((err: unknown) => {
@@ -122,6 +127,7 @@ export class DasWetter extends utils.Adapter {
 			// ...
 			if (this.parseInterval) {
 				clearInterval(this.parseInterval);
+				this.parseInterval = null;
 			}
 			
 
