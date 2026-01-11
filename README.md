@@ -79,6 +79,12 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) sunshine duration for day 1 based on daylight hours and clouds calculation added
+* (René) see issue #462: sun and moon times as Unix timestamp formated as complete date+time added
+
+
 ### 4.3.0 (2026-01-03)
 * (H5N1v2) 41 icons for DasWetter@4.x (galeria7)
 

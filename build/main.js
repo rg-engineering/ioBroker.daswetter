@@ -102,8 +102,12 @@ class DasWetter extends utils.Adapter {
         for (let n = 0; n < this.meteored.length; n++) {
             //muss auch in den cron / intervall
             await this.meteored[n].Start();
-            await this.meteored[n].GetForecastDaily();
             await this.meteored[n].GetForecastHourly();
+            await this.meteored[n].GetForecastDaily();
+        }
+        if (this.parseInterval) {
+            clearInterval(this.parseInterval);
+            this.parseInterval = null;
         }
         this.parseInterval = setInterval(() => {
             // Aufruf der async-Funktion und Fehler protokollieren, damit das Intervall nicht wegen einer unbehandelten Exception abstürzt
@@ -116,8 +120,9 @@ class DasWetter extends utils.Adapter {
         if (this.meteored !== undefined) {
             for (let n = 0; n < this.meteored.length; n++) {
                 try {
-                    await this.meteored[n].GetForecastDaily();
                     await this.meteored[n].GetForecastHourly();
+                    await this.meteored[n].GetForecastDaily();
+                    await this.meteored[n].CalculateData();
                 }
                 catch (err) {
                     // Loggen und weiter mit dem nächsten Eintrag
@@ -137,6 +142,7 @@ class DasWetter extends utils.Adapter {
             // ...
             if (this.parseInterval) {
                 clearInterval(this.parseInterval);
+                this.parseInterval = null;
             }
             callback();
         }

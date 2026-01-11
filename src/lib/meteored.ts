@@ -12,7 +12,13 @@ import { WeatherTranslator } from "./translation";
 //todo
 // neuen API key erzeugen
 
-// deutsche Texte für symbol_description
+// Uhrzeit für Sonne und Mond in Unix Timestamp und in string
+// sunshineduration
+// wind symbol
+// last successfull data update -> change
+// re-use old symbols with translation table for icons not available
+// vis-2 widget für Wochenanzeige
+// sunshineduration DP für Folgetagen löschen lassen...
 
 
 //siehe https://dashboard.meteored.com/de/api#documentation
@@ -112,6 +118,7 @@ export default class Meteored extends Base {
 
 
     url = "";
+   
 
     constructor(adapter: DasWetter, id: number, config: MeteoredConfig) {
         super(adapter, id, config.name);
@@ -162,6 +169,7 @@ export default class Meteored extends Base {
             }
             this.MoonCustomPathExt = ext;
         }
+        
     }
 
     async Start(): Promise<void> {
@@ -552,6 +560,8 @@ export default class Meteored extends Base {
         if (this.useHourlyForecast) {
             this.logDebug("GetForecastHourly called");
 
+
+
             if (this.location_hash === undefined || this.location_hash == "") {
                 this.logError("no location hash available, please check postcode and city settings");
                 return;
@@ -561,6 +571,8 @@ export default class Meteored extends Base {
                 return;
             }
 
+
+            
             const url = "https://api.meteored.com/api/forecast/v1/hourly/" + this.location_hash;
             const headers = {
                 accept: "application/json",
@@ -626,6 +638,10 @@ export default class Meteored extends Base {
 
                             this.hours_forecast = mapped;
                             this.logDebug("Meteored GetForecastHourly: parsed hours_forecast count=" + this.hours_forecast.length);
+
+                            
+
+
                         } catch (e) {
                             this.logError("Meteored GetForecastHourly: error mapping hours array: " + e);
                             this.hours_forecast = [];
@@ -733,6 +749,107 @@ export default class Meteored extends Base {
         }
     }
 
+    async CalculateData(): Promise<void> {
+
+        try {
+            // Berechne Sonnenscheindauer für heute und schreibe den Wert in den entsprechenden Datenpunkt.
+            const sunDuration = this.CalculateSunshineDuration();
+            const key = "location_" + this.id + ".ForecastDaily.Day_1.sunshineduration";
+            await this.adapter.setState(key, sunDuration, true);
+        } catch (e) {
+            this.logError("CalculateData error: " + e);
+        }
+
+        //todo
+
+        //Wind-symbol aus Richtung und Stärke berechnen
+
+
+    }
+
+    private CalculateSunshineDuration(): number {
+        try {
+            if (!Array.isArray(this.days_forecast) || this.days_forecast.length === 0) {
+                this.logDebug("CalculateSunshineDuration: no days_forecast available");
+                return 0;
+            }
+
+            const today = this.days_forecast[0];
+            if (!today) {
+                this.logDebug("CalculateSunshineDuration: today forecast missing");
+                return 0;
+            }
+
+            let sunIn = typeof today.sun_in === "number" ? today.sun_in : Number(today.sun_in) || 0;
+            let sunOut = typeof today.sun_out === "number" ? today.sun_out : Number(today.sun_out) || 0;
+
+            if (!sunIn || !sunOut || sunOut <= sunIn) {
+                this.logDebug("CalculateSunshineDuration: invalid sun_in/sun_out values: sun_in=" + sunIn + " sun_out=" + sunOut);
+                return 0;
+            }
+
+            // Normalisiere: falls Werte in Sekunden vorliegen, in ms umwandeln
+            if (sunIn > 0 && sunIn < 10000000000) {
+                sunIn = sunIn * 1000;
+            }
+            if (sunOut > 0 && sunOut < 10000000000) {
+                sunOut = sunOut * 1000;
+            }
+
+            if (!Array.isArray(this.hours_forecast) || this.hours_forecast.length === 0) {
+                this.logDebug("CalculateSunshineDuration: no hours_forecast available");
+                return 0;
+            }
+
+            let totalHours = 0;
+
+            for (const h of this.hours_forecast) {
+                if (!h || (h.end === undefined || h.end === null)) {
+                    continue;
+                }
+
+                let hourEnd = typeof h.end === "number" ? h.end : Number(h.end) || 0;
+                if (hourEnd === 0) {
+                    continue;
+                }
+                // normalize end to ms if necessary
+                if (hourEnd > 0 && hourEnd < 10000000000) {
+                    hourEnd = hourEnd * 1000;
+                }
+
+                const hourStart = hourEnd - 3600000; // eine Stunde vorher
+
+                // Berechne Überlappung mit Tageslichtintervall
+                const overlapStart = Math.max(hourStart, sunIn);
+                const overlapEnd = Math.min(hourEnd, sunOut);
+                const overlapMs = Math.max(0, overlapEnd - overlapStart);
+
+                if (overlapMs <= 0) {
+                    continue;
+                }
+
+                const overlapHours = overlapMs / 3600000;
+
+                // Wolkenanteil in Prozent (0..100)
+                const clouds = (h.clouds === undefined || h.clouds === null) ? 0 : (typeof h.clouds === "number" ? h.clouds : Number(h.clouds) || 0);
+                const cloudFactor = 1 - Math.max(0, Math.min(100, clouds)) / 100;
+
+                const effectiveSunHours = overlapHours * cloudFactor;
+
+                totalHours += effectiveSunHours;
+            }
+
+            // Runde auf 2 Dezimalstellen
+            const rounded = Math.round(totalHours * 100) / 100;
+            this.logDebug("CalculateSunshineDuration: computed sunshineduration=" + rounded + " hours");
+            return rounded;
+        } catch (e) {
+            this.logError("CalculateSunshineDuration error: " + e);
+            return 0;
+        }
+    }
+
+
     async CreateObjects(): Promise<void> {
 
         let key = "location_" + this.id;
@@ -750,14 +867,23 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
 
-                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period");
-                await this.CreateDatapoint(key + ".date", "state", "string", "string", "", true, false, "date of forecast period");
+                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period (ISO string)");
+                await this.CreateDatapoint(key + ".date", "state", "value", "string", "", true, false, "date of forecast period (simple string)");
 
                 await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
-                await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day");
 
-                //daswetter.0.location_2.ForecastDaily.Day_1.start   -> 31.12.2025, 00:00:00
-                await this.CreateDatapoint(key + ".start", "state", "value", "number", "", true, false, "start of forecast period");
+                if (d == 1) {
+                    //only for today
+                    await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day, based on daylight and clouds");
+                } else {
+                    if (await this.adapter.objectExists(key + ".sunshineduration")) {
+                        this.logWarn("unused DP " + key + ".sunshineduration deleted");
+                        await this.adapter.delObjectAsync(key + ".sunshineduration");
+                    }
+                }
+
+                //date based time values for further calculation
+                await this.CreateDatapoint(key + ".start", "state", "date", "number", "", true, false, "start of forecast period [UNIX timestamp]");
 
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
                 await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "URL to weather symbol");
@@ -773,11 +899,22 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
                 await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
                 await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
-                await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time");
-                await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun noon time");
-                await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time");
-                await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time");
-                await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time");
+
+                //string based time values for direct display
+                await this.CreateDatapoint(key + ".Sun_in", "state", "value", "string", "", true, false, "sunrise time [string]");
+                await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun noon time [string]");
+                await this.CreateDatapoint(key + ".Sun_out", "state", "value", "string", "", true, false, "sunset time [string]");
+                await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time [string]");
+                await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time [string]");
+
+                //date based time values for further calculation
+                await this.CreateDatapoint(key + ".Sun_in_full", "state", "date", "number", "", true, false, "sunrise time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Sun_mid_full", "state", "date", "number", "", true, false, "sun noon time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Sun_out_full", "state", "date", "number", "", true, false, "sunset time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Moon_in_full", "state", "date", "number", "", true, false, "moonrise time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Moon_out_full", "state", "date", "number", "", true, false, "moonset time [Unix timestamp]");
+
+
                 await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "Identifier for moon symbol");
                 await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "URL to moon symbol");
                 await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "Percentage of illuminated moon");
@@ -789,18 +926,18 @@ export default class Meteored extends Base {
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
 
 
-            await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast periods");
-            await this.CreateDatapoint(key + ".date", "state", "string", "string", "", true, false, "date of forecast periods");
+            await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast periods [ISO string]");
+            await this.CreateDatapoint(key + ".date", "state", "string", "string", "", true, false, "date of forecast periods [simple string]");
 
             for (let h = 1; h < 25; h++) {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
                 //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
-                await this.CreateDatapoint(key + ".end", "state", "value", "number", "", true, false, "end of forecast period (date and time)");
+                await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
 
                 //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
-                await this.CreateDatapoint(key + ".time", "state", "date", "string", "", true, false, "end of forecast period (time only)");
+                await this.CreateDatapoint(key + ".time", "state", "value", "string", "", true, false, "end of forecast period [time string only}");
 
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
                 await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
@@ -839,31 +976,7 @@ export default class Meteored extends Base {
 
             key = "location_" + this.id + ".ForecastDaily.Day_" + d;
 
-            // Berechne sunshineduration aus sun_in / sun_out falls vorhanden
             const day = this.days_forecast[d - 1];
-            let sunDuration = 0;
-            if (day) {
-                const sunInRaw = day.sun_in || 0;
-                const sunOutRaw = day.sun_out || 0;
-                if (sunInRaw && sunOutRaw) {
-                    let sIn = Number(sunInRaw);
-                    let sOut = Number(sunOutRaw);
-                    if (sIn > 0 && sIn < 10000000000) {
-                        sIn = sIn * 1000;
-                    }
-                    if (sOut > 0 && sOut < 10000000000) {
-                        sOut = sOut * 1000;
-                    }
-                    sunDuration = Math.max(0, (sOut - sIn) / 3600000);
-                    // runden auf 2 Nachkommastellen
-                    sunDuration = Math.round(sunDuration * 100) / 100;
-
-                    //und jetzt noch mit den Wolken verrechnen, wir wollen einen forecast für PV
-                    //to do
-                }
-            }
-            await this.adapter.setState(key + ".sunshineduration", sunDuration, true);
-
 
             const timeval = day && day.start ? day.start : 0;
             const startParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", isoString: "" };
@@ -894,26 +1007,31 @@ export default class Meteored extends Base {
             const sunInRaw = day && day.sun_in ? day.sun_in : 0;
             const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimevalTime, true);
+            await this.adapter.setState(key + ".Sun_in_full", sunInRaw, true);
 
             // Sun mid
             const sunMidRaw = day && day.sun_mid ? day.sun_mid : 0;
             const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimevalTime, true);
+            await this.adapter.setState(key + ".Sun_mid_full", sunMidRaw, true);
 
             // Sun out
             const sunOutRaw = day && day.sun_out ? day.sun_out : 0;
             const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimevalTime, true);
+            await this.adapter.setState(key + ".Sun_out_full", sunOutRaw, true);
 
             // Moon in
             const moonInRaw = day && day.moon_in ? day.moon_in : 0;
             const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimevalTime, true);
+            await this.adapter.setState(key + ".Moon_in_full", moonInRaw, true);
 
             // Moon out
             const moonOutRaw = day && day.moon_out ? day.moon_out : 0;
             const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString:"" };
             await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimevalTime, true);
+            await this.adapter.setState(key + ".Moon_out_full", moonOutRaw, true);
 
             await this.adapter.setState(key + ".Moon_symbol", day ? day.moon_symbol : 0, true);
             await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(day ? day.moon_symbol : 0), true);
