@@ -12,13 +12,13 @@ import { WeatherTranslator } from "./translation";
 //todo
 // neuen API key erzeugen
 
-// Uhrzeit für Sonne und Mond in Unix Timestamp und in string
-// sunshineduration
+
 // wind symbol
 // last successfull data update -> change
 // re-use old symbols with translation table for icons not available
 // vis-2 widget für Wochenanzeige
-// sunshineduration DP für Folgetagen löschen lassen...
+
+
 
 
 //siehe https://dashboard.meteored.com/de/api#documentation
@@ -891,8 +891,11 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "Minimum temperature");
                 await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Maximum temperature");
                 await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
+                await this.CreateDatapoint(key + ".Wind_Speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc. Beauforts scale");
                 await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
                 await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
+
                 await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
                 await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
                 await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
@@ -946,8 +949,10 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
                 await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
                 await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
+                await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
                 await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
                 await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
                 await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
                 await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
                 await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
@@ -993,8 +998,11 @@ export default class Meteored extends Base {
             await this.adapter.setState(key + ".Temperature_Min", day ? day.temperature_min : 0, true);
             await this.adapter.setState(key + ".Temperature_Max", day ? day.temperature_max : 0, true);
             await this.adapter.setState(key + ".Wind_Speed", day ? day.wind_speed : 0, true);
+            await this.adapter.setState(key + ".Wind_Speed_Beauforts", this.getWindBeaufort(day ? day.wind_speed : 0), true);
             await this.adapter.setState(key + ".Wind_Gust", day ? day.wind_gust : 0, true);
             await this.adapter.setState(key + ".Wind_Direction", day ? day.wind_direction : "", true);
+            await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(day ? day.wind_speed : 0, day ? day.wind_direction : ""), true);
+
             await this.adapter.setState(key + ".Rain", day ? day.rain : 0, true);
             await this.adapter.setState(key + ".Rain_Probability", day ? day.rain_probability : 0, true);
             await this.adapter.setState(key + ".Humidity", day ? day.humidity : 0, true);
@@ -1070,8 +1078,10 @@ export default class Meteored extends Base {
             await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
             await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
             await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
+            await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort( hour ? hour.wind_speed : 0), true);
             await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
             await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
+            await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
             await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
             await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
             await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
@@ -1275,24 +1285,71 @@ export default class Meteored extends Base {
         return url;
     }
 
-    /*
-    getWindIconUrl(num: number): string {
+
+    getWindBeaufort(num: number): number {
+
+        let result = 0;
+
+        if (num < 1) {
+            result = 0;
+        }
+        else if (num < 6) {
+            result = 1;
+        }
+        else if (num < 12) {
+            result = 2;
+        } else if (num < 20) {
+            result = 3;
+        } else if (num < 29) {
+            result = 4;
+        } else if (num < 39) {
+            result = 5;
+        } else if (num < 50) {
+            result = 6;
+        } else if (num < 62) {
+            result = 7;
+        } else if (num < 75) {
+            result = 8;
+        } else if (num < 89) {
+            result = 9;
+        } else if (num < 103) {
+            result = 10;
+        } else if (num < 118) {
+            result = 11;
+        } else {
+            result = 12;
+        }
+
+        return result;
+
+    }
+
+
+    
+    getWindIconUrl(num: number, dir: string): string {
+
+       
+        const bft = this.getWindBeaufort(num);
 
         let url = "";
         let ext = "";
 
+        // wind_bft9_NW_dark.svg
+        const name = "wind_bft" + bft + "_" + dir;
+
+
         switch (this.windiconSet) {
             case 1:
-                url = "/daswetter.admin/icons/viento-wind/Beaufort-White/";
-                ext = ".png";
+                url = "/daswetter.admin/icons/viento-wind/galeria1/";
+                
                 break;
             case 2:
-                url = "/daswetter.admin/icons/viento-wind/galeria2-Beaufort/";
-                ext = ".png";
+                url = "/daswetter.admin/icons/viento-wind/galeria2/";
+               
                 break;
             case 3:
-                url = "/daswetter.admin/icons/viento-wind/galeria1/";
-                ext = ".png";
+                url = "/daswetter.admin/icons/viento-wind/galeria3/";
+               
                 break;
             case 99:
                 url = this.WindCustomPath;
@@ -1300,9 +1357,22 @@ export default class Meteored extends Base {
                 break;
 
         }
-        return url + num + ext;
+
+        if (this.windiconSet != 99) {
+            if (this.UsePNGorOriginalSVG) {
+                url = url + "png/";
+                ext = ".png";
+            } else {
+                url = url + "svg/";
+                ext = ".png";
+            }
+        }
+
+
+
+        return url + name + ext;
     }
-    */
+    
 
     getMoonIconUrl(num: number): string {
         const iconSet = this.mooniconSet;
