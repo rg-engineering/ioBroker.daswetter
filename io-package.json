@@ -165,7 +165,7 @@
     "connectionType": "cloud",
     "dataSource": "poll",
     "adminUI": {
-      "config": "json"
+      "config": "materialize"
     },
     "messages": [
       {

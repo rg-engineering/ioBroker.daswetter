@@ -43,7 +43,6 @@ interface locations {
 declare global {
 	namespace ioBroker {
 		interface AdapterConfig {
-			dummy: string
 
 			locations: locations[],
 			ApiKey: string,

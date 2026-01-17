@@ -1,0 +1,10 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" stroke="#f1c40f" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g transform="rotate(45 60 60)">
+<line x1="60" y1="20" x2="60" y2="85"/>
+<polygon points="60,95 52,80 68,80" fill="#f1c40f"/>
+<line x1="60" y1="35" x2="75" y2="40"/>
+<line x1="60" y1="45" x2="75" y2="50"/>
+<line x1="60" y1="55" x2="75" y2="60"/>
+<line x1="60" y1="65" x2="75" y2="70"/>
+</g>
+</svg>
