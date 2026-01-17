@@ -89,10 +89,8 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René) calculation of wind speed Beauforts based on wind speed in km/h added
 * (René) WindIconURL calculation added based on wind direction and wind speed
 * (René, chatGPT) wind icons added (svg and png)
-* (René) API key stored encrypted and not shown in admin anymore (like a password)
 * (René) translations updated
 * (René) URL for weather symbols, wind and moon updated to new icon folder structure
-
 
 ### 4.3.0 (2026-01-03)
 * (H5N1v2) 41 icons for DasWetter@4.x (galeria7)
