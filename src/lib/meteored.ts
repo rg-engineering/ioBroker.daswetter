@@ -211,6 +211,22 @@ export default class Meteored extends Base {
             this.logError("no api key available, please check settings");
             return;
         }
+
+        // Prüfen auf unsichtbare oder ungültige Zeichen
+        const invalidChars = this.api_key.split('').filter(c => {
+            const code = c.charCodeAt(0);
+            // erlaubte ASCII-Zeichen 32-126 (sichtbare Zeichen) plus Tab (9)
+            return !(code >= 32 && code <= 126) && code !== 9;
+        });
+
+        if (invalidChars.length > 0) {
+            this.logError(`API-Key enthält ${invalidChars.length} ungültige Zeichen: [${invalidChars.map(c => '\\u' + c.charCodeAt(0).toString(16)).join(', ')}]`);
+            return;
+        } else {
+            this.logInfo("API-Key ist sauber ✅");
+        }
+
+
         if (this.postcode === undefined || this.postcode == "") {
             this.logInfo("Postcode not set, skipping GetLocationPostcode");
             return;

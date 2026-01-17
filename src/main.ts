@@ -38,7 +38,9 @@ export class DasWetter extends utils.Adapter {
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
 		this.log.debug("config : " + JSON.stringify(this.config));
-		
+
+		//this.log.debug("API key : " + JSON.stringify(this.config.ApiKey));
+
 		for (let l = 0; l < this.config.locations.length; l++) {
 
 			if (this.config.locations[l].IsActive) {

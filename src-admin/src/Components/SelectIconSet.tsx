@@ -84,6 +84,9 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
 
             const svgs = entries
                 .filter(e => !e.isDir && e.file?.endsWith(ext))
+                .sort((a, b) =>
+                    a.file.localeCompare(b.file, undefined, { numeric: true, sensitivity: 'base' })
+                )
                 .map(e => `${basePath}/${e.file}`);
 
             // eslint-disable-next-line no-console
