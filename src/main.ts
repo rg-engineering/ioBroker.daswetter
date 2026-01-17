@@ -55,19 +55,23 @@ export class DasWetter extends utils.Adapter {
 					useDailyForecast: this.config.locations[l].useDailyForecast,
 					useHourlyForecast: this.config.locations[l].useHourlyForecast,
 
-					iconSet: this.config.iconSet,
-					UsePNGorOriginalSVG: this.config.UsePNGorOriginalSVG,
-					UseColorOrBW: this.config.UseColorOrBW,
+					IconSet: this.config.IconSet,
+					UsePNGorSVG: this.config.UsePNGorSVG,
+                    PNGSize: this.config.PNGSize,
 					CustomPath: this.config.CustomPath,
-					CustomPathExt: this.config.CustomPathExt,
 
-					windiconSet: this.config.windiconSet,
+
+					WindIconSet: this.config.WindIconSet,
+					WindUsePNGorSVG: this.config.WindUsePNGorSVG,
+					WindPNGSize: this.config.WindPNGSize,
 					WindCustomPath: this.config.WindCustomPath,
-					WindCustomPathExt: this.config.WindCustomPathExt,
 
-					mooniconSet: this.config.mooniconSet,
+
+					MoonIconSet: this.config.MoonIconSet,
+					MoonUsePNGorSVG: this.config.MoonUsePNGorSVG,
+					MoonPNGSize: this.config.MoonPNGSize,
 					MoonCustomPath: this.config.MoonCustomPath,
-					MoonCustomPathExt: this.config.MoonCustomPathExt
+					
 
 				}
 				this.log.debug("create instance of Meteored");

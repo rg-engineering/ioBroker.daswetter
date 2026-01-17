@@ -50,19 +50,21 @@ declare global {
 			parseInterval: number,
 			parseTimeout: number,
 
-			iconSet: number,
-			UsePNGorOriginalSVG: boolean,
-			UseColorOrBW: boolean,
+			IconSet: number,
+			UsePNGorSVG: boolean,
+            PNGSize: number,
 			CustomPath: string,
-			CustomPathExt: string,
 
-			windiconSet: number,
+			WindIconSet: number,
+			WindUsePNGorSVG: boolean,
+			WindPNGSize: number,
 			WindCustomPath: string,
-			WindCustomPathExt: string,
 
-			mooniconSet: number,
+			MoonIconSet: number,
+			MoonUsePNGorSVG: boolean,
+			MoonPNGSize: number,
 			MoonCustomPath: string,
-			MoonCustomPathExt: string
+
 
 		}
 	}
