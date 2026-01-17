@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable prefer-template */
 /* eslint-disable quote-props */
-/* eslint-disable prettier/prettier */
+
 import React from 'react';
 
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
@@ -38,12 +39,11 @@ const schema: ConfigItemPanel = {
             "xl": 1
         },
         "meteoredURL": {
-            "type": "staticLink",
-            "text": "Meteored dashboard",
-            "href": "https://dashboard.meteored.com/de",
-            "button": true,
+            "type": "staticInfo",
+            "text": "<a href='https://dashboard.meteored.com/de' target='_blank'>🌤 Meteored Dashboard</a>",
             "icon": "info",
             "newLine": false,
+            "data": "", 
             "xs": 12,
             "sm": 12,
             "md": 6,

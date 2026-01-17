@@ -23,21 +23,17 @@ export interface DasWetterAdapterConfig extends ioBroker.AdapterConfig {
 	IconSet: number,
 	UsePNGorSVG: boolean,
     PNGSize: number,
-	//UseColorOrBW: boolean,
 	CustomPath: string,
-	//CustomPathExt: string,
-
+	
 	WindIconSet: number,
 	WindUsePNGorSVG: boolean,
     WindPNGSize: number,
 	WindCustomPath: string,
-	//WindCustomPathExt: string,
 
 	MoonIconSet: number,
 	MoonUsePNGorSVG: boolean,
     MoonPNGSize: number,
 	MoonCustomPath: string,
-	//MoonCustomPathExt: string
 
 
 }

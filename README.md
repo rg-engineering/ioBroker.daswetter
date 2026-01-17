@@ -81,13 +81,16 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 -->
 
 ### **WORK IN PROGRESS**
+* (René, chatGPT, copilot) admin overworked with react
+* (René, copilot) preview of symbols for weather, wind and moon in admin
 * (René) sunshine duration for day 1 based on daylight hours and clouds calculation added
 * (René) see issue #462: sun and moon times as Unix timestamp formated as complete date+time added
 * (René) new datapoints "Wind_Speed_Beauforts" and "Wind_symbol_URL" added
 * (René) calculation of wind speed Beauforts based on wind speed in km/h added
 * (René) WindIconURL calculation added based on wind direction and wind speed
 * (René, chatGPT) wind icons added (svg and png)
-* 
+* (René) API key stored encrypted and not shown in admin anymore (like a password)
+* (René) translations updated
 
 
 ### 4.3.0 (2026-01-03)

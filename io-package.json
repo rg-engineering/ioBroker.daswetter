@@ -216,20 +216,26 @@
       {
         "IsActive": true,
         "postcode": "",
-        "city": ""
+        "city": "",
+        "bundesland": "",
+        "useDailyForecast": "true",
+        "useHourlyForecast": "true"
       }
     ],
-    "iconSet": 1,
     "parseTimeout": 10,
     "parseInterval": 120,
-    "UsePNGorOriginalSVG": false,
-    "UseColorOrBW": true,
+    "IconSet": 1,
+    "UsePNGorSVG": false,
+    "PNGSize": 2,
     "CustomPath": "",
-    "CustomPathExt": "png",
+    "WindIconSet": 1,
+    "WindUsePNGorSVG": false,
+    "WindPNGSize": 2,
     "WindCustomPath": "",
-    "WindCustomPathExt": "png",
-    "MoonCustomPath": "",
-    "MoonCustomPathExt": "png"
+    "MoonIconSet": 1,
+    "MoonUsePNGorSVG": false,
+    "MoonPNGSize": 2,
+    "MoonCustomPath": ""
   },
   "objects": [],
   "instanceObjects": [],

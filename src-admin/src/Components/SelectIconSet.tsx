@@ -145,7 +145,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
         const i = idx + 1;
         return (
             <MenuItem value={i} key={i}>
-                <em>{I18n.t('gallery' + i)}</em>
+                <em>{I18n.t('gallery') + i}</em>
             </MenuItem>
         );
     });
@@ -196,13 +196,13 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
                             displayEmpty
                         >
                             <MenuItem value={1}>
-                                <em>{I18n.t('28*28')}</em>
+                                <em>{'28*28'}</em>
                             </MenuItem>
                             <MenuItem value={2}>
-                                <em>{I18n.t('64*64')}</em>
+                                <em>{'64*64'}</em>
                             </MenuItem>
                             <MenuItem value={3}>
-                                <em>{I18n.t('128*128')}</em>
+                                <em>{'128*128'}</em>
                             </MenuItem>
 
                         </Select>
