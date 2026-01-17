@@ -12,11 +12,10 @@ import { WeatherTranslator } from "./translation";
 //todo
 // neuen API key erzeugen
 
-
-// wind symbol
 // last successfull data update -> change
 // re-use old symbols with translation table for icons not available
 // vis-2 widget für Wochenanzeige
+// Umkopieren auf current hour
 
 
 
@@ -102,24 +101,23 @@ export default class Meteored extends Base {
     days_forecast: day_data[] = [];
     hours_forecast: hour_data[] = [];
 
-    iconSet = 0;
-    UsePNGorOriginalSVG = true;
-    UseColorOrBW = true;
+    IconSet = 0;
+    UsePNGorSVG = true;
+    PNGSize = 2;
     CustomPath = "";
-    CustomPathExt = "";
 
-    windiconSet = 0;
+    WindIconSet = 0;
+    WindUsePNGorSVG = true;
+    WindPNGSize = 2;
     WindCustomPath = "";
-    WindCustomPathExt = "";
 
-    mooniconSet = 0;
+    MoonIconSet = 0;
+    MoonUsePNGorSVG = true;
+    MoonPNGSize = 2;
     MoonCustomPath = "";
-    MoonCustomPathExt = "";
-
 
     url = "";
    
-
     constructor(adapter: DasWetter, id: number, config: MeteoredConfig) {
         super(adapter, id, config.name);
         this.api_key = typeof config.API_key === "string" ? config.API_key : "";
@@ -132,44 +130,21 @@ export default class Meteored extends Base {
         this.useDailyForecast = typeof config.useDailyForecast === "boolean" ? config.useDailyForecast : true;
         this.useHourlyForecast = typeof config.useHourlyForecast === "boolean" ? config.useHourlyForecast : true;
 
-        this.iconSet = config.iconSet;
-        this.UsePNGorOriginalSVG = config.UsePNGorOriginalSVG;
-        this.UseColorOrBW = config.UseColorOrBW;
+        this.IconSet = config.IconSet;
+        this.UsePNGorSVG = config.UsePNGorSVG;
+        this.PNGSize = config.PNGSize;
         this.CustomPath = config.CustomPath;
-        this.CustomPathExt = config.CustomPathExt;
-        // Normalize CustomPathExt: trim and ensure it starts with a dot if not empty
-        {
-            let ext = typeof config.CustomPathExt === "string" ? config.CustomPathExt.trim() : "";
-            if (ext !== "" && !ext.startsWith(".")) {
-                ext = "." + ext;
-            }
-            this.CustomPathExt = ext;
-        }
 
-        this.windiconSet = config.windiconSet;
+        this.WindIconSet = config.WindIconSet;
+        this.WindUsePNGorSVG = config.WindUsePNGorSVG;
+        this.WindPNGSize = config.WindPNGSize;
         this.WindCustomPath = config.WindCustomPath;
-        this.WindCustomPathExt = config.WindCustomPathExt
-        // Normalize WindCustomPathExt: trim and ensure it starts with a dot if not empty
-        {
-            let ext = typeof config.WindCustomPathExt === "string" ? config.WindCustomPathExt.trim() : "";
-            if (ext !== "" && !ext.startsWith(".")) {
-                ext = "." + ext;
-            }
-            this.WindCustomPathExt = ext;
-        }
 
-        this.mooniconSet = config.mooniconSet;
+        this.MoonIconSet = config.MoonIconSet;
+        this.MoonUsePNGorSVG = config.MoonUsePNGorSVG;
+        this.MoonPNGSize = config.MoonPNGSize;
         this.MoonCustomPath = config.MoonCustomPath;
-        this.MoonCustomPathExt = config.MoonCustomPathExt;
-        // Normalize MoonCustomPathExt: trim and ensure it starts with a dot if not empty
-        {
-            let ext = typeof config.MoonCustomPathExt === "string" ? config.MoonCustomPathExt.trim() : "";
-            if (ext !== "" && !ext.startsWith(".")) {
-                ext = "." + ext;
-            }
-            this.MoonCustomPathExt = ext;
-        }
-        
+
     }
 
     async Start(): Promise<void> {
@@ -1249,34 +1224,27 @@ export default class Meteored extends Base {
 
 
     getIconUrl(num: number): string {
-        const iconSet = this.iconSet;
+        const iconSet = this.IconSet;
 
         let url = "";
-        let ext = "";
+        let ext = ".svg";
+        if (this.UsePNGorSVG) {
+            ext = ".png";
+        }
+
         if (num) {
 
             if (iconSet == 99) {//custom
                 url = this.CustomPath;
-
-
-                ext = this.CustomPathExt;
             } else {
-                url = "/daswetter.admin/icons/tiempo-weather/galeria" + iconSet + "/";
-                ext = (iconSet < 5 || this.UsePNGorOriginalSVG || iconSet == 7) ? ".png" : ".svg";
-
-                //this.logDebug("getIconURL " + num + " " + this.UsePNGorOriginalSVG + " " + this.UseColorOrBW);
-
-                if (iconSet === 5) {
-                    if (this.UsePNGorOriginalSVG) {
-                        url = url + "PNG/";
-                    } else {
-                        url = url + "SVG/";
-                    }
-
-                    if (this.UseColorOrBW) {
-                        url = url + "Color/";
-                    } else {
-                        url = url + "White/";
+                url = "/daswetter.admin/icons/weather/gallery" + iconSet + "/";
+                if (this.UsePNGorSVG) {
+                    if (this.PNGSize == 1) {
+                        url = url + "28x28/";
+                    } else if (this.PNGSize == 2) {
+                        url = url + "64x64/";
+                    } else if (this.PNGSize == 3) {
+                        url = url + "128x128/";
                     }
                 }
             }
@@ -1292,11 +1260,9 @@ export default class Meteored extends Base {
 
         if (num < 1) {
             result = 0;
-        }
-        else if (num < 6) {
+        } else if (num < 6) {
             result = 1;
-        }
-        else if (num < 12) {
+        } else if (num < 12) {
             result = 2;
         } else if (num < 20) {
             result = 3;
@@ -1328,66 +1294,71 @@ export default class Meteored extends Base {
     
     getWindIconUrl(num: number, dir: string): string {
 
-       
         const bft = this.getWindBeaufort(num);
-
-        let url = "";
-        let ext = "";
 
         // wind_bft9_NW_dark.svg
         const name = "wind_bft" + bft + "_" + dir;
 
+        const iconSet = this.WindIconSet;
 
-        switch (this.windiconSet) {
-            case 1:
-                url = "/daswetter.admin/icons/viento-wind/galeria1/";
-                
-                break;
-            case 2:
-                url = "/daswetter.admin/icons/viento-wind/galeria2/";
-               
-                break;
-            case 3:
-                url = "/daswetter.admin/icons/viento-wind/galeria3/";
-               
-                break;
-            case 99:
+        let url = "";
+        let ext = ".svg";
+        if (this.WindUsePNGorSVG) {
+            ext = ".png";
+        }
+
+        if (num) {
+
+            if (iconSet == 99) {//custom
                 url = this.WindCustomPath;
-                ext = this.WindCustomPathExt;
-                break;
-
-        }
-
-        if (this.windiconSet != 99) {
-            if (this.UsePNGorOriginalSVG) {
-                url = url + "png/";
-                ext = ".png";
             } else {
-                url = url + "svg/";
-                ext = ".png";
+                url = "/daswetter.admin/icons/wind/gallery" + iconSet + "/";
+                if (this.WindUsePNGorSVG) {
+                    if (this.WindPNGSize == 1) {
+                        url = url + "28x28/";
+                    } else if (this.WindPNGSize == 2) {
+                        url = url + "64x64/";
+                    } else if (this.WindPNGSize == 3) {
+                        url = url + "128x128/";
+                    }
+                }
             }
+            url = url + name + ext;
         }
+        return url;
 
-
-
-        return url + name + ext;
+        
     }
     
 
     getMoonIconUrl(num: number): string {
-        const iconSet = this.mooniconSet;
-        let url = "";
-        let ext = "";
+        const iconSet = this.MoonIconSet;
 
-        if (iconSet == 99) {
-            url = this.MoonCustomPath;
-            ext = this.MoonCustomPathExt;
-        } else {
-            url = "/daswetter.admin/icons/luna-moon/";
+        let url = "";
+        let ext = ".svg";
+        if (this.MoonUsePNGorSVG) {
             ext = ".png";
         }
 
-        return url + num + ext;
+        if (num) {
+
+            if (iconSet == 99) {//custom
+                url = this.MoonCustomPath;
+            } else {
+                url = "/daswetter.admin/icons/moon/gallery" + iconSet + "/";
+                if (this.MoonUsePNGorSVG) {
+                    if (this.MoonPNGSize == 1) {
+                        url = url + "28x28/";
+                    } else if (this.MoonPNGSize == 2) {
+                        url = url + "64x64/";
+                    } else if (this.MoonPNGSize == 3) {
+                        url = url + "128x128/";
+                    }
+                }
+            }
+            url = url + num + ext;
+        }
+        return url;
     }
 
 
