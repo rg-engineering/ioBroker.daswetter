@@ -158,10 +158,10 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
             <div style={{ marginBottom: 12 }}>
-                <FormControl variant="standard" sx={{ minWidth: '40%', maxWidth: '60%' }} >
-                    <InputLabel id="room-selector-label">{I18n.t('select a icon set')}</InputLabel>
+                <FormControl variant="standard" sx={{ minWidth: '20%', maxWidth: '60%' }} >
+                    <InputLabel id="icon-selector-label">{I18n.t('select a icon set')}</InputLabel>
                     <Select <number>
-                        labelId="room-selector-label"
+                        labelId="icon-selector-label"
                         value={IconSet ?? 1}
                         onChange={handleChangeSymbol}
                         displayEmpty
@@ -190,7 +190,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
                 />
 
                 {UsePNGorSVG && IconSet !== 99 && (
-                    <FormControl variant="standard" sx={{ minWidth: '40%', maxWidth: '60%' }} >
+                    <FormControl variant="standard" sx={{ minWidth: '20%', maxWidth: '40%' }} >
                         <InputLabel id="PNGSize-selector-label">{I18n.t('select a PNG size')}</InputLabel>
                         <Select
                             labelId="PNGSize-selector-label"

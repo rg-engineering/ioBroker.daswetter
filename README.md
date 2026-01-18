@@ -81,7 +81,10 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 -->
 
 ### **WORK IN PROGRESS**
-* (René, chatGPT, copilot) admin overworked with react
+
+**Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.
+
+* (René, chatGPT, copilot) admin-UI overworked with react
 * (René, copilot) preview of symbols for weather, wind and moon in admin
 * (René) sunshine duration for day 1 based on daylight hours and clouds calculation added
 * (René) see issue #462: sun and moon times as Unix timestamp formated as complete date+time added
@@ -91,6 +94,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René, chatGPT) wind icons added (svg and png)
 * (René) translations updated
 * (René) URL for weather symbols, wind and moon updated to new icon folder structure
+* (René) see issue #473: copy datapoints of current hour into 'current'-folder; update every hour with internal timer added; must be enabled in admin
 
 ### 4.3.0 (2026-01-03)
 * (H5N1v2) 41 icons for DasWetter@4.x (galeria7)

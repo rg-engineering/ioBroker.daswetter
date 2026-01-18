@@ -23,17 +23,19 @@ class Meteored extends base_1.default {
     symbols = [];
     days_forecast = [];
     hours_forecast = [];
-    iconSet = 0;
-    UsePNGorOriginalSVG = true;
-    UseColorOrBW = true;
+    IconSet = 0;
+    UsePNGorSVG = true;
+    PNGSize = 2;
     CustomPath = "";
-    CustomPathExt = "";
-    windiconSet = 0;
+    WindIconSet = 0;
+    WindUsePNGorSVG = true;
+    WindPNGSize = 2;
     WindCustomPath = "";
-    WindCustomPathExt = "";
-    mooniconSet = 0;
+    MoonIconSet = 0;
+    MoonUsePNGorSVG = true;
+    MoonPNGSize = 2;
     MoonCustomPath = "";
-    MoonCustomPathExt = "";
+    CopyCurrentHour = false;
     url = "";
     constructor(adapter, id, config) {
         super(adapter, id, config.name);
@@ -46,41 +48,19 @@ class Meteored extends base_1.default {
         this.parseTimeout = typeof config.parseTimeout === "number" ? config.parseTimeout : 10;
         this.useDailyForecast = typeof config.useDailyForecast === "boolean" ? config.useDailyForecast : true;
         this.useHourlyForecast = typeof config.useHourlyForecast === "boolean" ? config.useHourlyForecast : true;
-        this.iconSet = config.iconSet;
-        this.UsePNGorOriginalSVG = config.UsePNGorOriginalSVG;
-        this.UseColorOrBW = config.UseColorOrBW;
+        this.IconSet = config.IconSet;
+        this.UsePNGorSVG = config.UsePNGorSVG;
+        this.PNGSize = config.PNGSize;
         this.CustomPath = config.CustomPath;
-        this.CustomPathExt = config.CustomPathExt;
-        // Normalize CustomPathExt: trim and ensure it starts with a dot if not empty
-        {
-            let ext = typeof config.CustomPathExt === "string" ? config.CustomPathExt.trim() : "";
-            if (ext !== "" && !ext.startsWith(".")) {
-                ext = "." + ext;
-            }
-            this.CustomPathExt = ext;
-        }
-        this.windiconSet = config.windiconSet;
+        this.WindIconSet = config.WindIconSet;
+        this.WindUsePNGorSVG = config.WindUsePNGorSVG;
+        this.WindPNGSize = config.WindPNGSize;
         this.WindCustomPath = config.WindCustomPath;
-        this.WindCustomPathExt = config.WindCustomPathExt;
-        // Normalize WindCustomPathExt: trim and ensure it starts with a dot if not empty
-        {
-            let ext = typeof config.WindCustomPathExt === "string" ? config.WindCustomPathExt.trim() : "";
-            if (ext !== "" && !ext.startsWith(".")) {
-                ext = "." + ext;
-            }
-            this.WindCustomPathExt = ext;
-        }
-        this.mooniconSet = config.mooniconSet;
+        this.MoonIconSet = config.MoonIconSet;
+        this.MoonUsePNGorSVG = config.MoonUsePNGorSVG;
+        this.MoonPNGSize = config.MoonPNGSize;
         this.MoonCustomPath = config.MoonCustomPath;
-        this.MoonCustomPathExt = config.MoonCustomPathExt;
-        // Normalize MoonCustomPathExt: trim and ensure it starts with a dot if not empty
-        {
-            let ext = typeof config.MoonCustomPathExt === "string" ? config.MoonCustomPathExt.trim() : "";
-            if (ext !== "" && !ext.startsWith(".")) {
-                ext = "." + ext;
-            }
-            this.MoonCustomPathExt = ext;
-        }
+        this.CopyCurrentHour = config.CopyCurrentHour;
     }
     async Start() {
         await this.CreateObjects();
@@ -130,6 +110,19 @@ class Meteored extends base_1.default {
         if (this.api_key === undefined || this.api_key == "") {
             this.logError("no api key available, please check settings");
             return;
+        }
+        // Prüfen auf unsichtbare oder ungültige Zeichen
+        const invalidChars = this.api_key.split('').filter(c => {
+            const code = c.charCodeAt(0);
+            // erlaubte ASCII-Zeichen 32-126 (sichtbare Zeichen) plus Tab (9)
+            return !(code >= 32 && code <= 126) && code !== 9;
+        });
+        if (invalidChars.length > 0) {
+            this.logError(`API-Key enthält ${invalidChars.length} ungültige Zeichen: [${invalidChars.map(c => '\\u' + c.charCodeAt(0).toString(16)).join(', ')}]`);
+            return;
+        }
+        else {
+            this.logDebug("API-Key ist sauber ✅");
         }
         if (this.postcode === undefined || this.postcode == "") {
             this.logInfo("Postcode not set, skipping GetLocationPostcode");
@@ -726,30 +719,38 @@ class Meteored extends base_1.default {
             for (let h = 1; h < 25; h++) {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
-                //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
-                await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
-                //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
-                await this.CreateDatapoint(key + ".time", "state", "value", "string", "", true, false, "end of forecast period [time string only}");
-                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
-                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
-                await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "Flag that indicates if the hour is at night");
-                await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
-                await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
-                await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
-                await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
-                await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
-                await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
-                await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
-                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
-                await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
-                await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
-                await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
-                await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
-                await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
+                await this.CreateObjectsHourly(key);
+            }
+            if (this.CopyCurrentHour) {
+                key = "location_" + this.id + ".ForecastHourly.Current";
+                await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Current Hour");
+                await this.CreateObjectsHourly(key);
             }
         }
+    }
+    async CreateObjectsHourly(key) {
+        //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
+        await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
+        //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
+        await this.CreateDatapoint(key + ".time", "state", "value", "string", "", true, false, "end of forecast period [time string only}");
+        await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
+        await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
+        await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
+        await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "Flag that indicates if the hour is at night");
+        await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
+        await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
+        await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
+        await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
+        await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
+        await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+        await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
+        await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
+        await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
+        await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
+        await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+        await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
+        await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
+        await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
     }
     async SetData_Location() {
         const key = "location_" + this.id;
@@ -815,37 +816,49 @@ class Meteored extends base_1.default {
     }
     async SetData_ForecastHourly() {
         let key = "location_" + this.id + ".ForecastHourly";
-        let hour = this.hours_forecast[0];
-        let timeval = hour && hour.end ? hour.end : 0;
-        let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
+        const hour = this.hours_forecast[0];
+        const timeval = hour && hour.end ? hour.end : 0;
+        const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
         await this.adapter.setState(key + ".date_full", endParts.isoString, true);
         await this.adapter.setState(key + ".date", endParts.formattedTimevalDate, true);
         for (let h = 1; h < 25; h++) {
             key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
-            hour = this.hours_forecast[h - 1];
-            timeval = hour && hour.end ? hour.end : 0;
-            endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
-            await this.adapter.setState(key + ".end", timeval, true);
-            await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
-            await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
-            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
-            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
-            await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
-            await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
-            await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
-            await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
-            await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
-            await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
-            await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
-            await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
-            await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
-            await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
-            await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
-            await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
-            await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
-            await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
-            await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
+            await this.SetData_ForecastHourlyOneHour(key, h);
         }
+        if (this.CopyCurrentHour) {
+            await this.SetData_ForecastHourlyCurrent();
+        }
+    }
+    async SetData_ForecastHourlyOneHour(key, h) {
+        const hour = this.hours_forecast[h - 1];
+        const timeval = hour && hour.end ? hour.end : 0;
+        const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
+        await this.adapter.setState(key + ".end", timeval, true);
+        await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
+        await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
+        await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
+        await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
+        await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
+        await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
+        await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
+        await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
+        await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
+        await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
+        await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
+        await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
+        await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
+        await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
+        await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
+        await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
+        await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
+        await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
+        await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
+    }
+    async SetData_ForecastHourlyCurrent() {
+        const key = "location_" + this.id + ".ForecastHourly.Current";
+        const d = new Date();
+        const h = d.getHours();
+        await this.SetData_ForecastHourlyOneHour(key, h);
     }
     FormatTimestampToLocal(timestamp) {
         try {
@@ -966,31 +979,31 @@ class Meteored extends base_1.default {
         }
     }
     getIconUrl(num) {
-        const iconSet = this.iconSet;
+        const iconSet = this.IconSet;
         let url = "";
-        let ext = "";
+        let ext = ".svg";
+        if (this.UsePNGorSVG) {
+            ext = ".png";
+        }
         if (num) {
             if (iconSet == 99) { //custom
                 url = this.CustomPath;
-                ext = this.CustomPathExt;
             }
             else {
-                url = "/daswetter.admin/icons/tiempo-weather/galeria" + iconSet + "/";
-                ext = (iconSet < 5 || this.UsePNGorOriginalSVG || iconSet == 7) ? ".png" : ".svg";
-                //this.logDebug("getIconURL " + num + " " + this.UsePNGorOriginalSVG + " " + this.UseColorOrBW);
-                if (iconSet === 5) {
-                    if (this.UsePNGorOriginalSVG) {
-                        url = url + "PNG/";
+                url = "/daswetter.admin/icons/weather/gallery" + iconSet + "/";
+                if (this.UsePNGorSVG) {
+                    if (this.PNGSize == 1) {
+                        url = url + "png/28x28/";
                     }
-                    else {
-                        url = url + "SVG/";
+                    else if (this.PNGSize == 2) {
+                        url = url + "png/64x64/";
                     }
-                    if (this.UseColorOrBW) {
-                        url = url + "Color/";
+                    else if (this.PNGSize == 3) {
+                        url = url + "png/128x128/";
                     }
-                    else {
-                        url = url + "White/";
-                    }
+                }
+                else {
+                    url = url + "svg/";
                 }
             }
             url = url + num + ext;
@@ -1042,50 +1055,70 @@ class Meteored extends base_1.default {
     }
     getWindIconUrl(num, dir) {
         const bft = this.getWindBeaufort(num);
-        let url = "";
-        let ext = "";
         // wind_bft9_NW_dark.svg
         const name = "wind_bft" + bft + "_" + dir;
-        switch (this.windiconSet) {
-            case 1:
-                url = "/daswetter.admin/icons/viento-wind/galeria1/";
-                break;
-            case 2:
-                url = "/daswetter.admin/icons/viento-wind/galeria2/";
-                break;
-            case 3:
-                url = "/daswetter.admin/icons/viento-wind/galeria3/";
-                break;
-            case 99:
-                url = this.WindCustomPath;
-                ext = this.WindCustomPathExt;
-                break;
-        }
-        if (this.windiconSet != 99) {
-            if (this.UsePNGorOriginalSVG) {
-                url = url + "png/";
-                ext = ".png";
-            }
-            else {
-                url = url + "svg/";
-                ext = ".png";
-            }
-        }
-        return url + name + ext;
-    }
-    getMoonIconUrl(num) {
-        const iconSet = this.mooniconSet;
+        const iconSet = this.WindIconSet;
         let url = "";
-        let ext = "";
-        if (iconSet == 99) {
-            url = this.MoonCustomPath;
-            ext = this.MoonCustomPathExt;
-        }
-        else {
-            url = "/daswetter.admin/icons/luna-moon/";
+        let ext = ".svg";
+        if (this.WindUsePNGorSVG) {
             ext = ".png";
         }
-        return url + num + ext;
+        if (num) {
+            if (iconSet == 99) { //custom
+                url = this.WindCustomPath;
+            }
+            else {
+                url = "/daswetter.admin/icons/wind/gallery" + iconSet + "/";
+                if (this.WindUsePNGorSVG) {
+                    if (this.WindPNGSize == 1) {
+                        url = url + "png/28x28/";
+                    }
+                    else if (this.WindPNGSize == 2) {
+                        url = url + "png/64x64/";
+                    }
+                    else if (this.WindPNGSize == 3) {
+                        url = url + "png/128x128/";
+                    }
+                }
+                else {
+                    url = url + "svg/";
+                }
+            }
+            url = url + name + ext;
+        }
+        return url;
+    }
+    getMoonIconUrl(num) {
+        const iconSet = this.MoonIconSet;
+        let url = "";
+        let ext = ".svg";
+        if (this.MoonUsePNGorSVG) {
+            ext = ".png";
+        }
+        if (num) {
+            if (iconSet == 99) { //custom
+                url = this.MoonCustomPath;
+            }
+            else {
+                url = "/daswetter.admin/icons/moon/gallery" + iconSet + "/";
+                if (this.MoonUsePNGorSVG) {
+                    if (this.MoonPNGSize == 1) {
+                        url = url + "png/28x28/";
+                    }
+                    else if (this.MoonPNGSize == 2) {
+                        url = url + "png/64x64/";
+                    }
+                    else if (this.MoonPNGSize == 3) {
+                        url = url + "png/128x128/";
+                    }
+                }
+                else {
+                    url = url + "svg/";
+                }
+            }
+            url = url + num + ext;
+        }
+        return url;
     }
 }
 exports.default = Meteored;

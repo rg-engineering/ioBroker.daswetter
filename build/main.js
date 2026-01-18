@@ -41,15 +41,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DasWetter = void 0;
-/*
- neuen api key generieren, wenn dev fertig!!
- */
 //https://www.iobroker.net/#en/documentation/dev/adapterdev.md
 const utils = __importStar(require("@iobroker/adapter-core"));
 const meteored_1 = __importDefault(require("./lib/meteored"));
 class DasWetter extends utils.Adapter {
     meteored = [];
     parseInterval = null;
+    updateInterval = null;
+    updateTimeout = null;
     constructor(options = {}) {
         super({
             ...options,
@@ -69,6 +68,7 @@ class DasWetter extends utils.Adapter {
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
         // this.config:
         this.log.debug("config : " + JSON.stringify(this.config));
+        //this.log.debug("API key : " + JSON.stringify(this.config.ApiKey));
         for (let l = 0; l < this.config.locations.length; l++) {
             if (this.config.locations[l].IsActive) {
                 const config = {
@@ -82,17 +82,19 @@ class DasWetter extends utils.Adapter {
                     parseTimeout: this.config.parseTimeout,
                     useDailyForecast: this.config.locations[l].useDailyForecast,
                     useHourlyForecast: this.config.locations[l].useHourlyForecast,
-                    iconSet: this.config.iconSet,
-                    UsePNGorOriginalSVG: this.config.UsePNGorOriginalSVG,
-                    UseColorOrBW: this.config.UseColorOrBW,
+                    IconSet: this.config.IconSet,
+                    UsePNGorSVG: this.config.UsePNGorSVG,
+                    PNGSize: this.config.PNGSize,
                     CustomPath: this.config.CustomPath,
-                    CustomPathExt: this.config.CustomPathExt,
-                    windiconSet: this.config.windiconSet,
+                    WindIconSet: this.config.WindIconSet,
+                    WindUsePNGorSVG: this.config.WindUsePNGorSVG,
+                    WindPNGSize: this.config.WindPNGSize,
                     WindCustomPath: this.config.WindCustomPath,
-                    WindCustomPathExt: this.config.WindCustomPathExt,
-                    mooniconSet: this.config.mooniconSet,
+                    MoonIconSet: this.config.MoonIconSet,
+                    MoonUsePNGorSVG: this.config.MoonUsePNGorSVG,
+                    MoonPNGSize: this.config.MoonPNGSize,
                     MoonCustomPath: this.config.MoonCustomPath,
-                    MoonCustomPathExt: this.config.MoonCustomPathExt
+                    CopyCurrentHour: this.config.CopyCurrentHour,
                 };
                 this.log.debug("create instance of Meteored");
                 const instance = new meteored_1.default(this, l + 1, config);
@@ -115,6 +117,18 @@ class DasWetter extends utils.Adapter {
                 this.log.error("updateForecast error: " + (err instanceof Error ? err.stack || err.message : String(err)));
             });
         }, this.config.parseInterval * 60 * 1000);
+        if (this.updateInterval) {
+            clearInterval(this.updateInterval);
+            this.updateInterval = null;
+        }
+        if (this.updateTimeout) {
+            clearTimeout(this.updateTimeout);
+            this.updateTimeout = null;
+        }
+        if (this.config.CopyCurrentHour) {
+            this.log.debug("create timer for data copy every hour");
+            this.scheduleHourlyTask();
+        }
     }
     async updateForecast() {
         if (this.meteored !== undefined) {
@@ -131,6 +145,39 @@ class DasWetter extends utils.Adapter {
             }
         }
     }
+    scheduleHourlyTask() {
+        const now = new Date();
+        const msUntilNextHour = (60 - now.getMinutes()) * 60 * 1000 -
+            now.getSeconds() * 1000 -
+            now.getMilliseconds();
+        this.updateTimeout = setTimeout(() => {
+            void this.runTask(); // erster Lauf zur vollen Stunde
+            this.updateInterval = setInterval(() => {
+                void this.runTask();
+            }, 60 * 60 * 1000);
+        }, msUntilNextHour);
+    }
+    async runTask() {
+        try {
+            await this.copyCurrentHour();
+        }
+        catch (error) {
+            console.error("Fehler beim stündlichen Task:", error);
+        }
+    }
+    async copyCurrentHour() {
+        if (this.meteored !== undefined) {
+            for (let n = 0; n < this.meteored.length; n++) {
+                try {
+                    await this.meteored[n].SetData_ForecastHourlyCurrent();
+                }
+                catch (err) {
+                    // Loggen und weiter mit dem nächsten Eintrag
+                    this.log.error(`Fehler beim Kopieren von Daten[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
+                }
+            }
+        }
+    }
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      */
@@ -143,6 +190,14 @@ class DasWetter extends utils.Adapter {
             if (this.parseInterval) {
                 clearInterval(this.parseInterval);
                 this.parseInterval = null;
+            }
+            if (this.updateInterval) {
+                clearInterval(this.updateInterval);
+                this.updateInterval = null;
+            }
+            if (this.updateTimeout) {
+                clearTimeout(this.updateTimeout);
+                this.updateTimeout = null;
             }
             callback();
         }

@@ -28,6 +28,8 @@ export interface MeteoredConfig {
 	MoonUsePNGorSVG: boolean,
 	MoonPNGSize: number,
 	MoonCustomPath: string,
+
+	CopyCurrentHour: boolean
 }
 
 
@@ -65,6 +67,7 @@ declare global {
 			MoonPNGSize: number,
 			MoonCustomPath: string,
 
+            CopyCurrentHour: boolean	
 
 		}
 	}

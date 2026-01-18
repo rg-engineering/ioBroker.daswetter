@@ -35,5 +35,7 @@ export interface DasWetterAdapterConfig extends ioBroker.AdapterConfig {
     MoonPNGSize: number,
 	MoonCustomPath: string,
 
+    CopyCurrentHour: boolean,
+
 
 }

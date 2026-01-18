@@ -96,6 +96,20 @@ const schema: ConfigItemPanel = {
             "xl": 4
         },
 
+        "CopyCurrentHour": {
+            "newLine": true,
+            "type": "checkbox",
+            "label": "copy current hour",
+            "help": "copy data of current hour to separate DP's",
+            "default": false,
+            "xs": 12,
+            "sm": 12,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
+        },
+
+
         "dividerHdr2": {
             "newLine": true,
             "type": "header",
@@ -210,6 +224,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.ApiKey = params.ApiKey;
                     native.parseInterval = params.parseInterval;
                     native.parseTimeout = params.parseTimeout;
+                    native.CopyCurrentHour = params.CopyCurrentHour;
                     
                     props.changeNative(native);
                 }}

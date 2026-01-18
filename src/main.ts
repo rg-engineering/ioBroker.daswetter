@@ -12,9 +12,10 @@ import Meteored from "./lib/meteored";
 
 export class DasWetter extends utils.Adapter {
 	private meteored: Meteored[] = [];
-	private parseInterval: NodeJS.Timeout | null =null;
-	
-
+	private parseInterval: NodeJS.Timeout | null = null;
+	private updateInterval: NodeJS.Timeout | null = null;
+	private updateTimeout: NodeJS.Timeout | null = null;
+		
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
 			...options,
@@ -71,6 +72,8 @@ export class DasWetter extends utils.Adapter {
 					MoonUsePNGorSVG: this.config.MoonUsePNGorSVG,
 					MoonPNGSize: this.config.MoonPNGSize,
 					MoonCustomPath: this.config.MoonCustomPath,
+
+                    CopyCurrentHour: this.config.CopyCurrentHour,
 					
 
 				}
@@ -101,6 +104,20 @@ export class DasWetter extends utils.Adapter {
 		}, this.config.parseInterval * 60 * 1000);
 
 
+		if (this.updateInterval) {
+			clearInterval(this.updateInterval);
+			this.updateInterval = null;
+		}
+		if (this.updateTimeout) {
+			clearTimeout(this.updateTimeout);
+			this.updateTimeout = null;
+		}
+
+
+		if (this.config.CopyCurrentHour) {
+            this.log.debug("create timer for data copy every hour");
+			this.scheduleHourlyTask();
+		}
 	}
 
 
@@ -120,7 +137,43 @@ export class DasWetter extends utils.Adapter {
 		}
 	}
 
+	scheduleHourlyTask(): void {
+		const now: Date = new Date();
 
+		const msUntilNextHour: number =
+			(60 - now.getMinutes()) * 60 * 1000 -
+			now.getSeconds() * 1000 -
+			now.getMilliseconds();
+
+		this.updateTimeout=setTimeout((): void => {
+			void this.runTask(); // erster Lauf zur vollen Stunde
+
+			this.updateInterval=setInterval((): void => { //und dann jede Stunde
+				void this.runTask();
+			}, 60 * 60 * 1000);
+		}, msUntilNextHour);
+	}
+
+	async runTask(): Promise<void> {
+		try {
+			await this.copyCurrentHour();
+		} catch (error) {
+			console.error("Fehler beim stündlichen Task:", error);
+		}
+	}
+
+	async copyCurrentHour(): Promise<void> {
+		if (this.meteored !== undefined) {
+			for (let n = 0; n < this.meteored.length; n++) {
+				try {
+					await this.meteored[n].SetData_ForecastHourlyCurrent();
+				} catch (err) {
+					// Loggen und weiter mit dem nächsten Eintrag
+					this.log.error(`Fehler beim Kopieren von Daten[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Is called when adapter shuts down - callback has to be called under any circumstances!
@@ -134,6 +187,15 @@ export class DasWetter extends utils.Adapter {
 			if (this.parseInterval) {
 				clearInterval(this.parseInterval);
 				this.parseInterval = null;
+			}
+
+			if (this.updateInterval) {
+				clearInterval(this.updateInterval);
+				this.updateInterval = null;
+			}
+			if (this.updateTimeout) {
+				clearTimeout(this.updateTimeout);
+				this.updateTimeout = null;
 			}
 			
 

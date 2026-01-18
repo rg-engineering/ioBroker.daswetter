@@ -235,7 +235,8 @@
     "MoonIconSet": 1,
     "MoonUsePNGorSVG": false,
     "MoonPNGSize": 2,
-    "MoonCustomPath": ""
+    "MoonCustomPath": "",
+    "CopyCurrentHour": false
   },
   "objects": [],
   "instanceObjects": [],

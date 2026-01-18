@@ -38,5 +38,8 @@
   "select a icon set": "Select icon set",
   "useDailyForecast": "Use daily forecast",
   "useHourlyForecast": "use hourly forecast",
-  "use_png_or_svg": "Use PNG instead of SVG"
+  "use_png_or_svg": "Use PNG instead of SVG",
+
+  "copy current hour": "Copy current hour",
+  "copy data of current hour to separate DP's": "Copy data of current hour to separate datapoints"
 }

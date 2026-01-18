@@ -116,6 +116,8 @@ export default class Meteored extends Base {
     MoonPNGSize = 2;
     MoonCustomPath = "";
 
+    CopyCurrentHour = false;
+
     url = "";
    
     constructor(adapter: DasWetter, id: number, config: MeteoredConfig) {
@@ -144,6 +146,8 @@ export default class Meteored extends Base {
         this.MoonUsePNGorSVG = config.MoonUsePNGorSVG;
         this.MoonPNGSize = config.MoonPNGSize;
         this.MoonCustomPath = config.MoonCustomPath;
+
+        this.CopyCurrentHour = config.CopyCurrentHour;
 
     }
 
@@ -927,33 +931,52 @@ export default class Meteored extends Base {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
 
-                //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
-                await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
+                await this.CreateObjectsHourly(key);
+            }
 
-                //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
-                await this.CreateDatapoint(key + ".time", "state", "value", "string", "", true, false, "end of forecast period [time string only}");
 
-                await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
-                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
-                await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "Flag that indicates if the hour is at night");
-                await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
-                await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
-                await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
-                await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
-                await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
-                await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
-                await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
-                await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
-                await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
-                await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
-                await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
-                await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
-                await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
+            if (this.CopyCurrentHour) {
+                key = "location_" + this.id + ".ForecastHourly.Current";
+                await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Current Hour");
+
+                await this.CreateObjectsHourly(key);
+
             }
         }
+
     }
+
+    async CreateObjectsHourly(key: string): Promise<void> {
+        //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
+        await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
+
+        //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
+        await this.CreateDatapoint(key + ".time", "state", "value", "string", "", true, false, "end of forecast period [time string only}");
+
+        await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
+        await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
+        await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
+        await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "Flag that indicates if the hour is at night");
+        await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
+        await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
+        await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
+        await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
+        await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
+        await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+        await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
+        await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
+        await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
+        await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
+        await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+        await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
+        await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
+        await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
+
+
+    }
+
+
+
 
     async SetData_Location(): Promise<void> {
 
@@ -1046,9 +1069,9 @@ export default class Meteored extends Base {
     async SetData_ForecastHourly(): Promise<void> {
 
         let key = "location_" + this.id + ".ForecastHourly";
-        let hour = this.hours_forecast[0];
-        let timeval = hour && hour.end ? hour.end : 0;
-        let endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString:"" };
+        const hour = this.hours_forecast[0];
+        const timeval = hour && hour.end ? hour.end : 0;
+        const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString:"" };
 
         await this.adapter.setState(key + ".date_full", endParts.isoString, true);
         await this.adapter.setState(key + ".date", endParts.formattedTimevalDate, true);
@@ -1056,31 +1079,51 @@ export default class Meteored extends Base {
         for (let h = 1; h < 25; h++) {
             key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
 
-            hour = this.hours_forecast[h - 1];
-            timeval = hour && hour.end ? hour.end : 0;
-            endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString :""};
-            await this.adapter.setState(key + ".end", timeval, true);
-            await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
-
-            await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
-            await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
-            await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
-            await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
-            await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
-            await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
-            await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
-            await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort( hour ? hour.wind_speed : 0), true);
-            await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
-            await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
-            await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
-            await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
-            await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
-            await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
-            await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
-            await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
-            await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
-            await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
+            await this.SetData_ForecastHourlyOneHour(key, h);
+            
         }
+
+        if (this.CopyCurrentHour) {
+            await this.SetData_ForecastHourlyCurrent();
+        }
+    }
+
+    async SetData_ForecastHourlyOneHour(key: string, h: number): Promise<void> {
+        const hour = this.hours_forecast[h - 1];
+        const timeval = hour && hour.end ? hour.end : 0;
+        const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
+        await this.adapter.setState(key + ".end", timeval, true);
+        await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
+
+        await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
+        await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
+        await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
+        await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
+        await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
+        await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
+        await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
+        await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
+        await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
+        await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
+        await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
+        await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
+        await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
+        await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
+        await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
+        await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
+        await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
+        await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
+
+    }
+
+
+
+    async SetData_ForecastHourlyCurrent(): Promise<void> {
+
+        const key = "location_" + this.id + ".ForecastHourly.Current";
+        const d = new Date();
+        const h = d.getHours();
+        await this.SetData_ForecastHourlyOneHour(key, h);
     }
 
 

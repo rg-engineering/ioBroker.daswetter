@@ -38,5 +38,8 @@
   "select a icon set": "Symbolsatz auswählen",
   "useDailyForecast": "Tagesprognose verwenden",
   "useHourlyForecast": "stündliche Vorhersage verwenden",
-  "use_png_or_svg": "PNG anstelle von SVG verwenden"
+  "use_png_or_svg": "PNG anstelle von SVG verwenden",
+
+  "copy current hour": "Aktuelle Stunde kopieren",
+  "copy data of current hour to separate DP's": "Daten für die aktuelle Stunde in extra Datenpunkte kopieren"
 }
