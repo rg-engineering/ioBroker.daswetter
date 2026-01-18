@@ -16,7 +16,7 @@ import { WeatherTranslator } from "./translation";
 // re-use old symbols with translation table for icons not available
 // vis-2 widget für Wochenanzeige
 // Umkopieren auf current hour
-
+// ApiKey als Password speichern
 
 
 
@@ -223,7 +223,7 @@ export default class Meteored extends Base {
             this.logError(`API-Key enthält ${invalidChars.length} ungültige Zeichen: [${invalidChars.map(c => '\\u' + c.charCodeAt(0).toString(16)).join(', ')}]`);
             return;
         } else {
-            this.logInfo("API-Key ist sauber ✅");
+            this.logDebug("API-Key ist sauber ✅");
         }
 
 
@@ -1253,15 +1253,18 @@ export default class Meteored extends Base {
             if (iconSet == 99) {//custom
                 url = this.CustomPath;
             } else {
+
                 url = "/daswetter.admin/icons/weather/gallery" + iconSet + "/";
                 if (this.UsePNGorSVG) {
                     if (this.PNGSize == 1) {
-                        url = url + "28x28/";
+                        url = url + "png/28x28/";
                     } else if (this.PNGSize == 2) {
-                        url = url + "64x64/";
+                        url = url + "png/64x64/";
                     } else if (this.PNGSize == 3) {
-                        url = url + "128x128/";
+                        url = url + "png/128x128/";
                     }
+                } else {
+                    url = url + "svg/"
                 }
             }
             url = url + num + ext;
@@ -1331,19 +1334,22 @@ export default class Meteored extends Base {
                 url = "/daswetter.admin/icons/wind/gallery" + iconSet + "/";
                 if (this.WindUsePNGorSVG) {
                     if (this.WindPNGSize == 1) {
-                        url = url + "28x28/";
+                        url = url + "png/28x28/";
                     } else if (this.WindPNGSize == 2) {
-                        url = url + "64x64/";
+                        url = url + "png/64x64/";
                     } else if (this.WindPNGSize == 3) {
-                        url = url + "128x128/";
+                        url = url + "png/128x128/";
                     }
+                } else {
+                    url = url + "svg/";
+
                 }
             }
             url = url + name + ext;
         }
         return url;
 
-        
+
     }
     
 
@@ -1364,12 +1370,14 @@ export default class Meteored extends Base {
                 url = "/daswetter.admin/icons/moon/gallery" + iconSet + "/";
                 if (this.MoonUsePNGorSVG) {
                     if (this.MoonPNGSize == 1) {
-                        url = url + "28x28/";
+                        url = url + "png/28x28/";
                     } else if (this.MoonPNGSize == 2) {
-                        url = url + "64x64/";
+                        url = url + "png/64x64/";
                     } else if (this.MoonPNGSize == 3) {
-                        url = url + "128x128/";
+                        url = url + "png/128x128/";
                     }
+                } else {
+                    url = url + "svg/"
                 }
             }
             url = url + num + ext;

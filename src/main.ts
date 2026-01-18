@@ -3,9 +3,7 @@
  * Created with @iobroker/create-adapter v2.6.5
  */
 
-/*
- neuen api key generieren, wenn dev fertig!!
- */
+
 
 //https://www.iobroker.net/#en/documentation/dev/adapterdev.md
 
