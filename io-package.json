@@ -240,10 +240,6 @@
   },
   "objects": [],
   "instanceObjects": [],
-  "protectedNative": [
-    
-  ],
-  "encryptedNative": [
-    
-  ]
+  "protectedNative": [],
+  "encryptedNative": []
 }
