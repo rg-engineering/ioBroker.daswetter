@@ -15,7 +15,6 @@ import { WeatherTranslator } from "./translation";
 // last successfull data update -> change
 // re-use old symbols with translation table for icons not available
 // vis-2 widget für Wochenanzeige
-// Umkopieren auf current hour
 // ApiKey als Password speichern
 
 

@@ -81,9 +81,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 -->
 
 ### **WORK IN PROGRESS**
-
 **Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.
-
 * (René, chatGPT, copilot) admin-UI overworked with react
 * (René, copilot) preview of symbols for weather, wind and moon in admin
 * (René) sunshine duration for day 1 based on daylight hours and clouds calculation added
