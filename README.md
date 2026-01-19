@@ -92,7 +92,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René, chatGPT) wind icons added (svg and png)
 * (René) translations updated
 * (René) URL for weather symbols, wind and moon updated to new icon folder structure
-* (René) see issue #473: copy datapoints of current hour into 'current'-folder; update every hour with internal timer added; must be enabled in admin
+* (René) see issue #473: copy datapoints of current hour into "current"-folder; update every hour with internal timer added; must be enabled in admin
 
 ### 4.3.0 (2026-01-03)
 * (H5N1v2) 41 icons for DasWetter@4.x (galeria7)
