@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.4.0",
+    "version": "4.4.1",
     "news": {
+      "4.4.1": {
+        "en": "*Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.\nnew folder structure for weather, wind and moon icons",
+        "de": "*Attention:** Die Ordnerstruktur für die Icons hat sich geändert. Einige Icon-Sets sind bereits vorhanden, andere fehlen aber noch. Wenn jemand ihre Icons beibringen möchte, kontaktieren Sie mich bitte.\nneue ordnerstruktur für wetter-, wind- und mondsymbole",
+        "ru": "*Внимание:** Структура папок для иконок изменилась. Несколько наборов значков уже доступны, но другие все еще отсутствуют. Если кто-то хочет поделиться своими иконами, пожалуйста, свяжитесь со мной.\nновая структура папок для икон погоды, ветра и луны",
+        "pt": "*Atenção:**A estrutura da pasta para os ícones mudou. Alguns conjuntos de ícones já estão disponíveis, mas outros ainda estão faltando. Se alguém quiser contribuir com seus ícones, entre em contato comigo.\nnova estrutura de pasta para ícones de tempo, vento e lua",
+        "nl": "*Let op:** De mapstructuur voor de pictogrammen is veranderd. Een paar pictogramsets zijn al beschikbaar, maar anderen ontbreken nog. Als iemand zijn iconen wil bijdragen, neem dan contact met me op.\nnieuwe mapstructuur voor weer, wind en maanpictogrammen",
+        "fr": "*Attention :** La structure du dossier pour les icônes a changé. Quelques jeux d'icônes sont déjà disponibles, mais d'autres manquent encore. Si quelqu'un souhaite contribuer à leurs icônes, veuillez me contacter.\nnouvelle structure de dossier pour les icônes météo, vent et lune",
+        "it": "*Attenzione:** La struttura della cartella per le icone è cambiata. Alcuni set icona sono già disponibili, ma altri sono ancora mancanti. Se qualcuno vuole contribuire alle proprie icone, contattatemi.\nnuova struttura della cartella per le icone meteo, vento e luna",
+        "es": "*Atención:** La estructura de carpetas para los iconos ha cambiado. Algunos iconos ya están disponibles, pero otros siguen desaparecidos. Si alguien quiere aportar sus iconos, por favor contácteme.\nnueva estructura de carpetas para iconos meteorológicos, vientos y lunas",
+        "pl": "* Uwaga: * * Struktura folderów dla ikon uległa zmianie. Kilka zestawów ikon jest już dostępnych, ale innych nadal brakuje. Jeśli ktoś chciałby wnieść swoje ikony, skontaktuj się ze mną.\nnowa struktura folderów dla ikon pogody, wiatru i księżyca",
+        "uk": "*Примітка:*** Змінено структуру папки для ікон. Кілька іконок вже доступні, але інші все ще відсутні. Якщо хтось хотів би допомогти своїм іконам, будь ласка, зв'яжіться з нами.\nнова структура папок для погодних умов, вітрових і місячних ікон",
+        "zh-cn": "*注意:** 图标的文件夹结构已经改变。 已有一些图标集可供使用,但其他的仍然缺失. 如果有人愿意献上他们的偶像,请联系我.\n用于天气、风和月亮图标的新文件夹结构"
+      },
       "4.3.0": {
         "en": "41 icons for DasWetter@4.x (galeria7)",
         "de": "41 Symbole für DasWetter@4.x (galeria7)",
@@ -80,19 +93,6 @@
         "pl": "włączyć / wyłączyć każdą ścieżkę oddzielnie w admin",
         "uk": "увімкнути / вимкнути кожну шлях окремо в адмін",
         "zh-cn": "启用/ 在管理员中禁用每个路径"
-      },
-      "3.2.6": {
-        "en": "#417: bug fix: allow 14 minutes between two data requests to avoid unnecessary warnings",
-        "de": "#417: bugfix: 14 minuten zwischen zwei datenanfragen erlauben, unnötige warnungen zu vermeiden",
-        "ru": "#417: исправление ошибок: разрешить 14 минут между двумя запросами данных, чтобы избежать ненужных предупреждений",
-        "pt": "#417: correção de bug: permitir 14 minutos entre duas solicitações de dados para evitar avisos desnecessários",
-        "nl": "#417: bug fix: laat 14 minuten tussen twee data verzoeken om onnodige waarschuwingen te voorkomen",
-        "fr": "#417: correction du bug: laisser 14 minutes entre deux requêtes de données pour éviter les avertissements inutiles",
-        "it": "#417: bug fix: consentire 14 minuti tra due richieste di dati per evitare inutili avvisi",
-        "es": "#417: bug fix: permitir 14 minutos entre dos solicitudes de datos para evitar advertencias innecesarias",
-        "pl": "# 417: naprawić błąd: pozwolić na 14 minut pomiędzy dwoma żądaniami o dane, aby uniknąć niepotrzebnych ostrzeżeń",
-        "uk": "#417: виправлення помилок: дозволити 14 хвилин між двома запитами даних, щоб уникнути зайвих попередження",
-        "zh-cn": "# 417: 错误修正 : 在两个数据请求之间允许14分钟以避免不必要的警告"
       }
     },
     "titleLang": {
