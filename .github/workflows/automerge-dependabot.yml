@@ -26,7 +26,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # Optional: Path to your auto-merge configuration file
-          # config-file-path: '.github/auto-merge.yml'
+          config-file-path: '.github/auto-merge.yml'
           # Optional: Merge method (merge, squash, or rebase)
           # merge-method: 'squash'
           # Optional: Wait for other checks to complete
