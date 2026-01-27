@@ -22,9 +22,9 @@ export class DasWetter extends utils.Adapter {
 			name: "daswetter",
 		});
 		this.on("ready", this.onReady.bind(this));
-		// this.on("stateChange", this.onStateChange.bind(this));
-		// this.on("objectChange", this.onObjectChange.bind(this));
-		// this.on("message", this.onMessage.bind(this));
+		//this.on("stateChange", this.onStateChange.bind(this));
+		//this.on("objectChange", this.onObjectChange.bind(this));
+		this.on("message", this.onMessage.bind(this));
 		this.on("unload", this.onUnload.bind(this));
 	}
 
@@ -219,42 +219,55 @@ export class DasWetter extends utils.Adapter {
 	// 		// The object was deleted
 	// 		this.log.info(`object ${id} deleted`);
 	// 	}
-	// }
+	//}
 
 	/**
 	 * Is called if a subscribed state changes
 	 */
-	/*
-	private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
-		if (state) {
-			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
-           
-
-		} else {
-			// The state was deleted
-			this.log.info(`state ${id} deleted`);
-		}
-	}
-	*/
+	//private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
+	//	if (state) {
+	//		// The state was changed
+	//		this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+	//
+    //
+	//
+	//	} else {
+	//		// The state was deleted
+	//		this.log.info(`state ${id} deleted`);
+	//	}
+	//}
+	
 
 	// If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
 	// /**
 	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
 	//  * Using this method requires "common.messagebox" property to be set to true in io-package.json
 	//  */
-	// private onMessage(obj: ioBroker.Message): void {
-	// 	if (typeof obj === "object" && obj.message) {
-	// 		if (obj.command === "send") {
-	// 			// e.g. send email or pushover or whatever
-	// 			this.log.info("send command");
+	private onMessage(obj: ioBroker.Message): void {
+		if (typeof obj === "object" && obj.command) {
+			if (obj.command === "getsysmboldescription") { 
+				// e.g. send email or pushover or whatever
+				this.log.info("got message " + obj.command);
 
-	// 			// Send response in callback if required
-	// 			if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-	// 		}
-	// 	}
-	// }
+				let description: any = [];
+
+				if (this.meteored && this.meteored.length > 0) {
+
+					description = this.meteored[0].GetSymbolDescription();
+				}
+
+				// Send response in callback if required
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, description, obj.callback);
+				}
+			} else {
+				this.log.warn("got unknown message: " + obj.command + " / " + obj.message);
+			}
+		} else {
+			this.log.warn("got invalid message object " + JSON.stringify(obj));
+		}
+	}
 
 
 }

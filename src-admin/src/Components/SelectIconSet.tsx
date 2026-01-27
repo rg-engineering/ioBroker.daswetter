@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import type { AdminConnection } from '@iobroker/adapter-react-v5';
 import { I18n } from '@iobroker/adapter-react-v5';
 
-
 import type { SelectChangeEvent } from '@mui/material';
+
+import type { SymbolDescription } from "../types";
 
 import {
     FormControl,
@@ -29,6 +30,8 @@ interface SettingsProps {
     CustomPath?: string;
     UsePNGorSVG?: boolean;
     PNGSize?: number;
+
+    symboldescription: SymbolDescription[] | null;
 
     onChange: (IconSet: number,
         CustomPath: string,
@@ -231,17 +234,43 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
                 {iconFiles.length === 0 ? (
                     <div style={{ color: '#888' }}>{I18n.t('no_icons_found')}</div>
                 ) : (
-                    iconFiles.map((src) => (
-                        <div key={src} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <img
-                                src={src}
-                                alt={src}
-                                style={{ width: 48, height: 48, objectFit: 'contain', border: '1px solid #ccc', padding: 4, background: '#fff' }}
-                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                            />
-                            <div style={{ maxWidth: 120, fontSize: 11, color: '#666', textAlign: 'center', wordBreak: 'break-all' }}>{src}</div>
-                        </div>
-                    ))
+                    iconFiles.map((src) => {
+                        // dateiname extrahieren (letzter Pfadteil)
+                        const parts = src.split('/');
+                        const fileName = parts[parts.length - 1] ?? '';
+
+                        // dateiendung entfernen -> id (z.B. "1")
+                        let id = fileName.replace(/\.[^.]+$/, '');
+
+                        // Wenn id nur aus Ziffern besteht, entferne führende Nullen,
+                        // aber lasse eine einzelne "0" intakt (z.B. "01" -> "1", "0" -> "0")
+                        if (/^\d+$/.test(id)) {
+                            id = id.replace(/^0+(?=\d)/, '');
+                        }
+
+                        // versuche Beschreibung zu finden; id kann number oder string sein -> stringvergleich
+                        const description = props.symboldescription?.find(s => String((s as any).id) === id)?.description ?? '';
+
+                        return (
+                            <div key={src} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                {/* Beschreibung oberhalb des Bildes anzeigen, falls vorhanden */}
+                                {description ? (
+                                    <div style={{ maxWidth: 120, fontSize: 12, color: '#444', textAlign: 'center', wordBreak: 'break-all', marginBottom: 6 }}>
+                                        {description}
+                                    </div>
+                                ) : (
+                                    <div style={{ height: 18 }} /> // Platz für Ausrichtung, wenn keine Beschreibung vorhanden
+                                )}
+                                <img
+                                    src={src}
+                                    alt={src}
+                                    style={{ width: 48, height: 48, objectFit: 'contain', border: '1px solid #ccc', padding: 4, background: '#fff' }}
+                                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                                />
+                                <div style={{ maxWidth: 120, fontSize: 11, color: '#666', textAlign: 'center', wordBreak: 'break-all' }}>{src}</div>
+                            </div>
+                        );
+                    })
                 )}
             </div>
         </div>

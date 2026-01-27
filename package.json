@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.3.2",
-    "axios": "^1.13.2",
+    "axios": "^1.13.3",
     "xml2json-light": "^1.0.6"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "@iobroker/build-tools": "^2.0.15",
     "@iobroker/eslint-config": "^2.2.0",
     "@iobroker/testing": "^5.2.2",
-    "baseline-browser-mapping": "^2.9.11"
+    "baseline-browser-mapping": "^2.9.18"
   },
   "main": "build/main.js",
   "bugs": {

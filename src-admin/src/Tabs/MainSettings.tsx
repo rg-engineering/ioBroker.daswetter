@@ -72,7 +72,7 @@ const schema: ConfigItemPanel = {
             "type": "number",
             "label": "parse_interval",
             "help": "parse interval in [min]",
-            "min": 40,
+            "min": 60,
             "max": 1440,
             "default": 240,
             "xs": 12,

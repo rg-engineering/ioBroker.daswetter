@@ -12,6 +12,12 @@ interface locations {
 }
 
 
+interface SymbolDescription {
+	id: number,
+	description: string;
+};   
+
+
 export interface DasWetterAdapterConfig extends ioBroker.AdapterConfig {
     /** Configuration of the adapter */
 

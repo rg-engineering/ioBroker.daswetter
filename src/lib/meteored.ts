@@ -1428,4 +1428,34 @@ export default class Meteored extends Base {
     }
 
 
+    GetSymbolDescription(): {
+        id: number,
+        description: string
+    }[] {
+
+        const description: {
+            id: number,
+            description: string
+        }[] = [];
+
+        const translator = new WeatherTranslator();
+        const lang = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE"
+
+        translator.SetLanguage(lang);
+
+        if (this.symbols && this.symbols.length > 0) {
+            for (const sym of this.symbols) {
+                description.push({
+                    id: sym.id,
+                    description: translator.translateWeather(sym.day.long)
+                });
+            }
+        }
+
+        this.logDebug("GetSymbolDescription: send data to admin" + JSON.stringify(description));
+
+        return description;
+    }
+
+
 }

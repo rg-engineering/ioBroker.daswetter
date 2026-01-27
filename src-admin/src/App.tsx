@@ -42,7 +42,7 @@ import plLang from './i18n/pl.json';
 import ukLang from './i18n/uk.json';
 import zhCnLang from './i18n/zh-cn.json';
 
-import type { DasWetterAdapterConfig } from "./types";
+import type { DasWetterAdapterConfig, SymbolDescription } from "./types";
 
 
 const styles: Record<string, any> = {
@@ -102,6 +102,11 @@ interface AppState extends GenericAppState {
 class App extends GenericApp<GenericAppProps, AppState> {
 
     private uploadInputRef: React.RefObject<HTMLInputElement>;
+    private symboldescription: SymbolDescription[] | null = null;
+    
+
+
+
     constructor(props: GenericAppProps) {
         const extendedProps = { ...props };
         extendedProps.encryptedFields = ['pass'];
@@ -165,9 +170,31 @@ class App extends GenericApp<GenericAppProps, AppState> {
         this.setState({ alive: !!aliveState?.val, selectedTab, systemConfig });
         await this.socket.subscribeState(`system.adapter.daswetter.${this.instance}.alive`, this.onAliveChanged);
 
+
+        await this.GetSymbolDescription();
+
         console.log("onConnectionReady done");
 
     }
+
+
+    async GetSymbolDescription() {
+
+        const instance = `daswetter.${this.instance}`;
+
+        console.log("111 GetSymbolDescription called " + instance);
+
+        try {
+            const result = await this.socket.sendTo(instance, "getsysmboldescription", "getsysmboldescription");
+            console.log("222 got description : " + JSON.stringify(result));
+            this.symboldescription = result;
+
+        } catch (err) {
+            console.error("Error getting symbol description: " + err);
+
+        }
+    }
+
 
     onAliveChanged = (_id: string, state: ioBroker.State | null | undefined): void => {
         if (!!state?.val !== this.state.alive) {
@@ -286,6 +313,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 theme={this.state.theme}
                 themeName={this.state.themeName}
                 systemConfig={this.state.systemConfig}
+                symboldescription={this.symboldescription}
             />
         );
     }
@@ -312,6 +340,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 theme={this.state.theme}
                 themeName={this.state.themeName}
                 systemConfig={this.state.systemConfig}
+               
             />
         );
     }
@@ -338,6 +367,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 theme={this.state.theme}
                 themeName={this.state.themeName}
                 systemConfig={this.state.systemConfig}
+                
             />
         );
     }

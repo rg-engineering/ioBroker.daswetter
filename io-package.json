@@ -125,6 +125,7 @@
     "mode": "daemon",
     "icon": "daswettercom.png",
     "enabled": true,
+    "messagebox": true,
     "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
     "keywords": [
       "weather",

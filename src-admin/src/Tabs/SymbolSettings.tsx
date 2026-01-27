@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
-import type { DasWetterAdapterConfig } from "../types";
+import type { DasWetterAdapterConfig, SymbolDescription } from "../types";
 
 import SelectIconSet from '../Components/SelectIconSet';
 interface SettingsProps {
@@ -19,6 +19,8 @@ interface SettingsProps {
     systemConfig: ioBroker.SystemConfigObject;
     rooms?: Record<string, ioBroker.EnumObject>;
     alive: boolean;
+
+    symboldescription: SymbolDescription[] | null;
 }
 
 export default function SymbolSettings(props: SettingsProps): React.JSX.Element {
@@ -39,6 +41,11 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
         props.changeNative(newNative);
     };
 
+  
+
+
+
+
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
             <div style={{ marginBottom: 12 }}>
@@ -56,6 +63,8 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
                     PNGSize={props.native.PNGSize}
 
                     onChange={onUpdate}
+
+                    symboldescription={props.symboldescription}
 
                 />
             </div>

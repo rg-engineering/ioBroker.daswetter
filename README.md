@@ -79,6 +79,13 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) show symbol description beside the symbol in admin as preview
+* (René) see issue #480: set minimum interval for data request to 60 minutes to avoid too many requests
+* (René) new icons added (thanks to forum member Negalein)
+
+
 ### 4.4.1 (2026-01-19)
 **Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.
 * (René) new folder structure for weather, wind and moon icons
