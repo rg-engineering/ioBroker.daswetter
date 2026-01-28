@@ -1088,41 +1088,61 @@ export default class Meteored extends Base {
     }
 
     async SetData_ForecastHourlyOneHour(key: string, h: number): Promise<void> {
-        const hour = this.hours_forecast[h - 1];
-        const timeval = hour && hour.end ? hour.end : 0;
-        const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
-        await this.adapter.setState(key + ".end", timeval, true);
-        await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
+        try {
+            if (h > 0) {
 
-        await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
-        await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
-        await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
-        await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
-        await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
-        await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
-        await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
-        await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
-        await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
-        await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
-        await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
-        await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
-        await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
-        await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
-        await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
-        await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
-        await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
-        await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
 
+
+                const hour = this.hours_forecast[h - 1];
+                const timeval = hour && hour.end ? hour.end : 0;
+                const endParts = timeval ? this.FormatTimestampToLocal(timeval) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
+                await this.adapter.setState(key + ".end", timeval, true);
+                await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
+
+                await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
+                await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
+                await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
+                await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
+                await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
+                await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
+                await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
+                await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
+                await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
+                await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
+                await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
+                await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
+                await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
+                await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
+                await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
+                await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
+                await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
+                await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
+            }
+        } catch (e) {
+            this.logError("SetData_ForecastHourlyOneHour error for hour " + h  + " with key " + key + ": " + e);
+        }
     }
-
-
 
     async SetData_ForecastHourlyCurrent(): Promise<void> {
 
-        const key = "location_" + this.id + ".ForecastHourly.Current";
-        const d = new Date();
-        const h = d.getHours();
-        await this.SetData_ForecastHourlyOneHour(key, h);
+        try {
+            const key = "location_" + this.id + ".ForecastHourly.Current";
+            const d = new Date();
+            const h = d.getHours();
+
+            //check if data for today available
+            const hour = this.hours_forecast[h - 1];
+            const timeval = hour && hour.end ? hour.end : 0;
+            const end = timeval ? new Date(timeval) : 0;
+
+            if (end != 0 && end.getDate() == d.getDate() && end.getMonth() == d.getMonth() && end.getFullYear() == d.getFullYear()) {
+                await this.SetData_ForecastHourlyOneHour(key, h);
+            } else {
+                this.logDebug("SetData_ForecastHourlyCurrent: current not copied because data from yesterday");
+            }
+        } catch (e) {
+            this.logError("SetData_ForecastHourlyCurrent error: " + e);
+        }
     }
 
 
@@ -1309,7 +1329,13 @@ export default class Meteored extends Base {
                     url = url + "svg/"
                 }
             }
-            url = url + num + ext;
+
+            let sNum = num.toString();
+            if (num < 10) {
+                sNum = "0" + sNum;
+            }
+
+            url = url + sNum + ext;
         }
         return url;
     }

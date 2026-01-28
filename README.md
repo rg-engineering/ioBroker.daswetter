@@ -84,6 +84,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René) show symbol description beside the symbol in admin as preview
 * (René) see issue #480: set minimum interval for data request to 60 minutes to avoid too many requests
 * (René) new icons added (thanks to forum member Negalein)
+* (René) see issue #478. bug fix copy current data at midnight
 
 
 ### 4.4.1 (2026-01-19)

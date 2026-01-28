@@ -55,9 +55,9 @@ class DasWetter extends utils.Adapter {
             name: "daswetter",
         });
         this.on("ready", this.onReady.bind(this));
-        // this.on("stateChange", this.onStateChange.bind(this));
-        // this.on("objectChange", this.onObjectChange.bind(this));
-        // this.on("message", this.onMessage.bind(this));
+        //this.on("stateChange", this.onStateChange.bind(this));
+        //this.on("objectChange", this.onObjectChange.bind(this));
+        this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
     }
     /**
@@ -204,6 +204,62 @@ class DasWetter extends utils.Adapter {
         catch (e) {
             this.log.error("exception in onUnload " + e);
             callback();
+        }
+    }
+    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
+    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
+    // /**
+    //  * Is called if a subscribed object changes
+    //  */
+    // private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
+    // 	if (obj) {
+    // 		// The object was changed
+    // 		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
+    // 	} else {
+    // 		// The object was deleted
+    // 		this.log.info(`object ${id} deleted`);
+    // 	}
+    //}
+    /**
+     * Is called if a subscribed state changes
+     */
+    //private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
+    //	if (state) {
+    //		// The state was changed
+    //		this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+    //
+    //
+    //
+    //	} else {
+    //		// The state was deleted
+    //		this.log.info(`state ${id} deleted`);
+    //	}
+    //}
+    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
+    // /**
+    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
+    //  */
+    onMessage(obj) {
+        if (typeof obj === "object" && obj.command) {
+            if (obj.command === "getsysmboldescription") {
+                // e.g. send email or pushover or whatever
+                this.log.info("got message " + obj.command);
+                let description = [];
+                if (this.meteored && this.meteored.length > 0) {
+                    description = this.meteored[0].GetSymbolDescription();
+                }
+                // Send response in callback if required
+                if (obj.callback) {
+                    this.sendTo(obj.from, obj.command, description, obj.callback);
+                }
+            }
+            else {
+                this.log.warn("got unknown message: " + obj.command + " / " + obj.message);
+            }
+        }
+        else {
+            this.log.warn("got invalid message object " + JSON.stringify(obj));
         }
     }
 }
