@@ -28,14 +28,14 @@ interface SettingsProps {
 
     IconSet?: number;
     CustomPath?: string;
-    UsePNGorSVG?: boolean;
+    IconType?: number;
     PNGSize?: number;
 
     symboldescription: SymbolDescription[] | null;
 
     onChange: (IconSet: number,
         CustomPath: string,
-        UsePNGorSVG: boolean,
+        IconType: number,
         PNGSize: number) => void;
 }
 
@@ -44,7 +44,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
     // Initiale Werte: erst aus props.native, dann aus Einzelprops, sonst Defaults
     const [IconSet, setIconSet] = useState<number>(() =>  props.IconSet ?? 1);
     const [CustomPath, setCustomPath] = useState<string>(() =>  props.CustomPath ?? '');
-    const [UsePNGorSVG, setUsePNGorSVG] = useState<boolean>(() =>  props.UsePNGorSVG ?? true);
+    const [IconType, setIconType] = useState<number>(() =>  props.IconType ?? 1);
     const [PNGSize, setPNGSize] = useState<number>(() =>  props.PNGSize ?? 1);
 
     // state für geladene dateien
@@ -57,7 +57,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
         let basePath = '';
         if (IconSet !== 99) {
             basePath = `${props.basepath}${IconSet}/`;
-            if (UsePNGorSVG) {
+            if (IconType==1) {
                 basePath += 'png/';
                 if (PNGSize === 1) {
                     basePath += '28x28';
@@ -80,9 +80,13 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
             console.log(`adapter.${props.adapterName}`);
             const entries = await props.socket.readDir(`${props.adapterName}.admin`, basePath);
 
-            let ext = '.svg';
-            if (UsePNGorSVG) {
+            let ext = '.png';
+            if (IconType==1) {
                 ext = '.png';
+            } else if (IconType == 2) {
+                ext = '.svg';
+            } else if (IconType == 3) {
+                ext = '.gif';
             }
 
             const svgs = entries
@@ -113,7 +117,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
                 console.error(err);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [IconSet, CustomPath, UsePNGorSVG, PNGSize, props.basepath, props.adapterName]);
+    }, [IconSet, CustomPath, IconType, PNGSize, props.basepath, props.adapterName]);
 
     // Handler: ändern lokalen State + Parent informieren (wenn vorhanden)
     const handleChangeSymbol = (event: SelectChangeEvent<number>) => {
@@ -121,28 +125,29 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
         setIconSet(value);
 
         // notify parent with full argument list
-        props.onChange(value, CustomPath, UsePNGorSVG, PNGSize);
+        props.onChange(value, CustomPath, IconType, PNGSize);
     };
 
-    const handleChangePngOrSvg = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
-        const value = typeof checked === 'boolean' ? checked : event.target.checked;
-        setUsePNGorSVG(value);
+    const handleChangeIconType = (event: SelectChangeEvent<number>) => {
+        const value = Number(event.target.value);
+        setIconType(value);
 
-        props.onChange(IconSet, CustomPath, value, PNGSize);
+        props.onChange(IconSet, CustomPath, IconType, value);
     };
+
 
     const handleChangeCustomPath = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         const value = event.target.value ?? '';
         setCustomPath(value);
 
-        props.onChange(IconSet, value, UsePNGorSVG, PNGSize);
+        props.onChange(IconSet, value, IconType, PNGSize);
     };
 
     const handleChangePNGSize = (event: SelectChangeEvent<number>) => {
         const value = Number(event.target.value);
         setPNGSize(value);
 
-        props.onChange(IconSet, CustomPath, UsePNGorSVG, value);
+        props.onChange(IconSet, CustomPath, IconType, value);
     };
 
     // Galerie Items
@@ -180,19 +185,28 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
             </div>
 
             <div>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            color="primary"
-                            checked={UsePNGorSVG}
-                            onChange={handleChangePngOrSvg}
-                            aria-label="use_png_or_svg"
-                        />
-                    }
-                    label={I18n.t('use_png_or_svg')}
-                />
+                <FormControl variant="standard" sx={{ minWidth: '20%', maxWidth: '40%' }} >
+                    <InputLabel id="IconType-selector-label">{I18n.t('select a Icon type')}</InputLabel>
+                    <Select
+                        labelId="IconType-selector-label"
+                        value={IconType ?? 1}
+                        onChange={handleChangeIconType}
+                        displayEmpty
+                    >
+                        <MenuItem value={1}>
+                            <em>{'png'}</em>
+                        </MenuItem>
+                        <MenuItem value={2}>
+                            <em>{'svg'}</em>
+                        </MenuItem>
+                        <MenuItem value={3}>
+                            <em>{'gif'}</em>
+                        </MenuItem>
 
-                {UsePNGorSVG && IconSet !== 99 && (
+                    </Select>
+                </FormControl>
+
+                {IconType==1 && IconSet !== 99 && (
                     <FormControl variant="standard" sx={{ minWidth: '20%', maxWidth: '40%' }} >
                         <InputLabel id="PNGSize-selector-label">{I18n.t('select a PNG size')}</InputLabel>
                         <Select

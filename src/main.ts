@@ -57,19 +57,19 @@ export class DasWetter extends utils.Adapter {
 					useHourlyForecast: this.config.locations[l].useHourlyForecast,
 
 					IconSet: this.config.IconSet,
-					UsePNGorSVG: this.config.UsePNGorSVG,
+					IconType: this.config.IconType,
                     PNGSize: this.config.PNGSize,
 					CustomPath: this.config.CustomPath,
 
 
 					WindIconSet: this.config.WindIconSet,
-					WindUsePNGorSVG: this.config.WindUsePNGorSVG,
+					WindIconType: this.config.WindIconType,
 					WindPNGSize: this.config.WindPNGSize,
 					WindCustomPath: this.config.WindCustomPath,
 
 
 					MoonIconSet: this.config.MoonIconSet,
-					MoonUsePNGorSVG: this.config.MoonUsePNGorSVG,
+					MoonIconType: this.config.MoonIconType,
 					MoonPNGSize: this.config.MoonPNGSize,
 					MoonCustomPath: this.config.MoonCustomPath,
 

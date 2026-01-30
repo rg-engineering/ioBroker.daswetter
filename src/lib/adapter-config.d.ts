@@ -15,17 +15,17 @@ export interface MeteoredConfig {
 	useHourlyForecast: boolean
 
 	IconSet: number,
-	UsePNGorSVG: boolean,
+	IconType: number,
     PNGSize: number,
 	CustomPath: string,
 
 	WindIconSet: number,
-	WindUsePNGorSVG: boolean,
+	WindIconType: number,
 	WindPNGSize: number,
 	WindCustomPath: string,
 
 	MoonIconSet: number,
-	MoonUsePNGorSVG: boolean,
+	MoonIconType: number,
 	MoonPNGSize: number,
 	MoonCustomPath: string,
 
@@ -53,17 +53,17 @@ declare global {
 			parseTimeout: number,
 
 			IconSet: number,
-			UsePNGorSVG: boolean,
+			IconType: number,
             PNGSize: number,
 			CustomPath: string,
 
 			WindIconSet: number,
-			WindUsePNGorSVG: boolean,
+			WindIconType: number,
 			WindPNGSize: number,
 			WindCustomPath: string,
 
 			MoonIconSet: number,
-			MoonUsePNGorSVG: boolean,
+			MoonIconType: number,
 			MoonPNGSize: number,
 			MoonCustomPath: string,
 

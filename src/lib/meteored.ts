@@ -96,22 +96,25 @@ export default class Meteored extends Base {
     useDailyForecast = true;
     useHourlyForecast = true;
 
+    expires_hour = 0;
+    expires_day = 0;
+
     symbols: symbol_data[] = [];
     days_forecast: day_data[] = [];
     hours_forecast: hour_data[] = [];
 
     IconSet = 0;
-    UsePNGorSVG = true;
+    IconType = 1;
     PNGSize = 2;
     CustomPath = "";
 
     WindIconSet = 0;
-    WindUsePNGorSVG = true;
+    WindIconType = 1;
     WindPNGSize = 2;
     WindCustomPath = "";
 
     MoonIconSet = 0;
-    MoonUsePNGorSVG = true;
+    MoonIconType = 1;
     MoonPNGSize = 2;
     MoonCustomPath = "";
 
@@ -132,17 +135,17 @@ export default class Meteored extends Base {
         this.useHourlyForecast = typeof config.useHourlyForecast === "boolean" ? config.useHourlyForecast : true;
 
         this.IconSet = config.IconSet;
-        this.UsePNGorSVG = config.UsePNGorSVG;
+        this.IconType = config.IconType;
         this.PNGSize = config.PNGSize;
         this.CustomPath = config.CustomPath;
 
         this.WindIconSet = config.WindIconSet;
-        this.WindUsePNGorSVG = config.WindUsePNGorSVG;
+        this.WindIconType = config.WindIconType;
         this.WindPNGSize = config.WindPNGSize;
         this.WindCustomPath = config.WindCustomPath;
 
         this.MoonIconSet = config.MoonIconSet;
-        this.MoonUsePNGorSVG = config.MoonUsePNGorSVG;
+        this.MoonIconType = config.MoonIconType;
         this.MoonPNGSize = config.MoonPNGSize;
         this.MoonCustomPath = config.MoonCustomPath;
 
@@ -438,6 +441,15 @@ export default class Meteored extends Base {
         if (this.useDailyForecast) {
             this.logDebug("GetForecastDaily called");
 
+            const now = Date.now();
+
+            if (this.expires_day > now) {
+
+                this.logDebug("GetForecastDaily: cached data still valid until " + new Date(this.expires_day).toISOString() + ", skipping fetch");
+                return;
+            }
+
+
             if (this.location_hash === undefined || this.location_hash == "") {
                 this.logError("no location hash available, please check postcode and city settings");
                 return;
@@ -477,6 +489,10 @@ export default class Meteored extends Base {
                 try {
                     // Logge die rohe Antwortdaten zur weitere Verarbeitung/Debug
                     this.logDebug("Meteored GetForecastDaily response: " + JSON.stringify(resp.data));
+
+
+                    this.expires_day = resp && resp.data && resp.data.expiracion ? Number(resp.data.expiracion) : 0; 
+
 
                     // Sicher extrahieren der URL aus resp.data.data.url und kopiere nach this.url
                     const extractedUrl: string =
@@ -554,6 +570,12 @@ export default class Meteored extends Base {
         if (this.useHourlyForecast) {
             this.logDebug("GetForecastHourly called");
 
+            const now = Date.now();
+            if (this.expires_hour > now) {
+
+                this.logDebug("GetForecastHourly: cached data still valid until " + new Date(this.expires_day).toISOString() + ", skipping fetch");
+                return;
+            }
 
 
             if (this.location_hash === undefined || this.location_hash == "") {
@@ -597,6 +619,8 @@ export default class Meteored extends Base {
                 try {
                     // Logge die rohe Antwortdaten zur weiteren Verarbeitung/Debug
                     this.logDebug("Meteored GetForecastHourly response: " + JSON.stringify(resp.data));
+
+                    this.expires_hour = resp && resp.data && resp.data.expiracion ? Number(resp.data.expiracion) : 0; 
 
 
                     // Sicher extrahieren: resp.data.data.hours
@@ -1305,10 +1329,16 @@ export default class Meteored extends Base {
         const iconSet = this.IconSet;
 
         let url = "";
-        let ext = ".svg";
-        if (this.UsePNGorSVG) {
+        let ext = ".png";
+
+        if (this.IconType == 1) {
             ext = ".png";
+        } else if (this.IconType == 2) {
+            ext = ".svg";
+        } else if (this.IconType == 3) {
+            ext = ".gif";
         }
+
 
         if (num) {
 
@@ -1317,7 +1347,7 @@ export default class Meteored extends Base {
             } else {
 
                 url = "/daswetter.admin/icons/weather/gallery" + iconSet + "/";
-                if (this.UsePNGorSVG) {
+                if (this.IconType==1) {
                     if (this.PNGSize == 1) {
                         url = url + "png/28x28/";
                     } else if (this.PNGSize == 2) {
@@ -1389,9 +1419,13 @@ export default class Meteored extends Base {
         const iconSet = this.WindIconSet;
 
         let url = "";
-        let ext = ".svg";
-        if (this.WindUsePNGorSVG) {
+        let ext = ".png";
+        if (this.WindIconType == 1) {
             ext = ".png";
+        } else if (this.WindIconType == 2) {
+            ext = ".svg";
+        } else if (this.WindIconType == 3) {
+            ext = ".gif";
         }
 
         if (num) {
@@ -1400,7 +1434,7 @@ export default class Meteored extends Base {
                 url = this.WindCustomPath;
             } else {
                 url = "/daswetter.admin/icons/wind/gallery" + iconSet + "/";
-                if (this.WindUsePNGorSVG) {
+                if (this.WindIconType == 1) {
                     if (this.WindPNGSize == 1) {
                         url = url + "png/28x28/";
                     } else if (this.WindPNGSize == 2) {
@@ -1425,9 +1459,13 @@ export default class Meteored extends Base {
         const iconSet = this.MoonIconSet;
 
         let url = "";
-        let ext = ".svg";
-        if (this.MoonUsePNGorSVG) {
+        let ext = ".png";
+        if (this.MoonIconType == 1) {
             ext = ".png";
+        } else if (this.MoonIconType == 2) {
+            ext = ".svg";
+        } else if (this.MoonIconType == 3) {
+            ext = ".gif";
         }
 
         if (num) {
@@ -1436,7 +1474,7 @@ export default class Meteored extends Base {
                 url = this.MoonCustomPath;
             } else {
                 url = "/daswetter.admin/icons/moon/gallery" + iconSet + "/";
-                if (this.MoonUsePNGorSVG) {
+                if (this.MoonIconType == 1) {
                     if (this.MoonPNGSize == 1) {
                         url = url + "png/28x28/";
                     } else if (this.MoonPNGSize == 2) {
