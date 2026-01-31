@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.4.1",
+    "version": "4.5.0",
     "news": {
+      "4.5.0": {
+        "en": "show symbol description beside the symbol in admin as preview\nsee issue #480: set minimum interval for data request to 60 minutes to avoid too many requests\nnew icons (png only) added (thanks to forum member Negalein)\nsee issue #478. bug fix copy current data at midnight\nsee issue #492: rate limiter: check expired time of last request before new request\nsee issue #490: icon file extension selectable in admin (svg, png or gif)",
+        "de": "symbolbeschreibung neben dem symbol in admin als vorschau anzeigen\nsiehe ausgabe #480: mindestintervall für die datenanfrage auf 60 minuten festlegen, um zu viele anfragen zu vermeiden\nneue Icons (nur Png) hinzugefügt (dank Forummitglied Negalein)\nsiehe ausgabe #478. fehler beheben kopieren sie aktuelle daten um mitternacht\nsiehe ausgabe #492: preisbegrenzer: abgelaufene zeit der letzten anfrage vor neuer anfrage\nsiehe ausgabe #490: symbol-dateierweiterung wählbar in admin (svg, png oder gif)",
+        "ru": "показать описание символа рядом с символом в admin в качестве предварительного просмотра\nпроблема no480: установить минимальный интервал для запроса данных до 60 минут, чтобы избежать слишком большого количества запросов\nдобавлены новые значки (только png) (благодарим участника форума Негалейна)\nсм. статью #478. исправление ошибок копировать текущие данные в полночь\n#492: ограничитель скорости: проверьте истекшее время последнего запроса перед новым запросом\nпроблема #490: расширение файла иконки, выбираемое в админ (svg, png или gif)",
+        "pt": "mostrar a descrição do símbolo ao lado do símbolo no administrador como antevisão\nver problema #480: definir intervalo mínimo para a solicitação de dados para 60 minutos para evitar muitos pedidos\nnovos ícones (apenas png) adicionados (graças ao membro do fórum Negalein)\nver número 478. corrigir erro copiar dados atuais à meia-noite\nver problema #492: limitador de taxa: verificação expirada do último pedido antes de novo pedido\nver problema #490: extensão de arquivo ícone selecionável no administrador (svg, png ou gif)",
+        "nl": "toon symbool beschrijving naast het symbool in admin als voorbeeld\nzie probleem #480: stel een minimum interval in voor gegevensverzoek tot 60 minuten om te veel verzoeken te vermijden\nnieuwe pictogrammen (alleen png) toegevoegd (met dank aan forumlid Negalein)\nzie nummer 478. fout repareren kopieer huidige gegevens om middernacht\nzie nummer #492: snelheid limiter: controleer verlopen tijd van laatste verzoek voor nieuw verzoek\nzie probleem #490: pictogram bestandsextensie te selecteren in admin (svg, png of gif)",
+        "fr": "afficher la description du symbole à côté du symbole dans admin comme aperçu\nvoir le numéro 480: fixer l'intervalle minimal pour la demande de données à 60 minutes pour éviter trop de demandes\nnouvelles icônes (png seulement) ajoutées (merci au membre du forum Negalein)\nvoir numéro 478. bug corriger copie les données actuelles à minuit\nvoir le numéro #492: limiteur de tarifs: vérifier l'expiration de la dernière demande avant la nouvelle demande\nvoir le numéro #490: extension de fichier icône sélectionnable dans admin (svg, png ou gif)",
+        "it": "mostra la descrizione del simbolo accanto al simbolo in admin come anteprima\nvedi numero #480: impostare l'intervallo minimo per la richiesta di dati a 60 minuti per evitare troppe richieste\nnuove icone (solo png) aggiunto (grazie al membro del forum Negalein)\nvedi numero 478. correzione bug copia dati correnti a mezzanotte\nvedi numero #492: tasso limiter: check scaduto tempo di ultima richiesta prima della nuova richiesta\nvedi numero #490: estensione del file icon selezionabile in admin (svg, png o gif)",
+        "es": "mostrar la descripción del símbolo junto al símbolo en admin como vista previa\nver número #480: establecer intervalo mínimo para la solicitud de datos a 60 minutos para evitar demasiadas solicitudes\nnuevos iconos (png solamente) añadido (gracias al miembro del foro Negalein)\nver número #478. corrección de errores copia datos actuales a medianoche\nver número #492: límite de tarifas: comprobar el tiempo expirado de la última solicitud antes de la nueva solicitud\nver número #490: extensión de archivo icono seleccionable en admin (svg, png o gif)",
+        "pl": "pokaż opis symbolu obok symbolu w admin jako podgląd\nzobacz numer # 480: ustawić minimalny odstęp dla żądania danych do 60 minut, aby uniknąć zbyt wielu żądań\ndodano nowe ikony (tylko png) (dzięki członkowi forum Negalein)\nzob. numer 478. błąd naprawić kopiowanie danych bieżących o północy\npatrz numer # 492: ograniczenie stawki: sprawdzenie upłynął czas ostatniego wniosku przed nowym wnioskiem\nzobacz wydanie # 490: rozszerzenie pliku ikon wybrane w admin (svg, png lub gif)",
+        "uk": "показати символ опису біля символу в адміні як попередній перегляд\nпереглянути номер #480: встановити мінімальний інтервал для запиту даних до 60 хвилин, щоб уникнути занадто багато запитів\nдодано нові ікони (тільки png)\nпереглянути номер #478. виправлення помилок на ніч\nпереглянути проблему #492: обмеження швидкості: перевірити час останнього запиту перед новим запитом\nпереглянути проблему #490: розширення файлу іконки, вибране в адмінці (, png або gif)",
+        "zh-cn": "在管理员符号旁显示符号描述作为预览\n参见问题480:将数据请求的最小间隔设定为60分钟,以避免请求过多\n添加新图标( 仅 png) (感谢论坛成员 Negalein)\n见问题478。 午夜时段错误修正当前数据\n参见问题# 492: 速率限制器: 在新请求前检查上次请求的过期时间\n参见问题 # 490: 图标文件扩展名可选择在管理员( svg, png 或 gif) 中"
+      },
       "4.4.1": {
         "en": "*Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.\nnew folder structure for weather, wind and moon icons",
         "de": "*Attention:** Die Ordnerstruktur für die Icons hat sich geändert. Einige Icon-Sets sind bereits vorhanden, andere fehlen aber noch. Wenn jemand ihre Icons beibringen möchte, kontaktieren Sie mich bitte.\nneue ordnerstruktur für wetter-, wind- und mondsymbole",
@@ -80,19 +93,6 @@
         "pl": "zobacz numer # 444: unikaj awarii, jeśli nie otrzymano danych, pokaż status odpowiedzi w dzienniku debugowania",
         "uk": "переглянути номер #444: уникнути аварійних ситуацій, якщо не було отримано дані, показати статус відповіді в журналі debug",
         "zh-cn": "参见第444期: 如果没有收到数据, 请避免崩溃, 在调试日志中显示响应状态 "
-      },
-      "3.2.7": {
-        "en": "enable / disable each path separately in admin",
-        "de": "aktivieren / deaktivieren jeder pfad separat in admin",
-        "ru": "включение/отключение каждого пути отдельно в админ",
-        "pt": "habilitar / desativar cada caminho separadamente no administrador",
-        "nl": "elk pad apart in admin inschakelen/deactiveren",
-        "fr": "active / désactive chaque chemin séparément dans admin",
-        "it": "abilitare / disabilitare ogni percorso separatamente in admin",
-        "es": "habilitar / deshabilitar cada ruta por separado en administración",
-        "pl": "włączyć / wyłączyć każdą ścieżkę oddzielnie w admin",
-        "uk": "увімкнути / вимкнути кожну шлях окремо в адмін",
-        "zh-cn": "启用/ 在管理员中禁用每个路径"
       }
     },
     "titleLang": {
