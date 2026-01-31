@@ -83,7 +83,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 ### **WORK IN PROGRESS**
 * (René) show symbol description beside the symbol in admin as preview
 * (René) see issue #480: set minimum interval for data request to 60 minutes to avoid too many requests
-* (René) new icons added (thanks to forum member Negalein)
+* (René) new icons (png only) added (thanks to forum member Negalein)
 * (René) see issue #478. bug fix copy current data at midnight
 * (René) see issue #492: rate limiter: check expired time of last request before new request
 * (René) see issue #490: icon file extension selectable in admin (svg, png or gif)
