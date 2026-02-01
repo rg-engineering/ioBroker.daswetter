@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.5.0",
+    "version": "4.5.1",
     "news": {
+      "4.5.1": {
+        "en": "bug fix: wind url was not set if wind speed was zero\nbug fix: save selected icon type (svg, png or gif) in admin",
+        "de": "bugfix: windurl wurde nicht eingestellt, wenn die windgeschwindigkeit null war\nfehlerbehebung: speichern ausgewählter icon-typ (svg, png oder gif) in admin",
+        "ru": "исправление ошибки: ветровой url не был установлен, если скорость ветра была нулевой\nисправление ошибок: сохранение выбранного типа значков (svg, png или gif) в админ",
+        "pt": "correção de bug: url do vento não foi definido se a velocidade do vento foi zero\ncorreção de erros: salvar o tipo de ícone selecionado (svg, png ou gif) no administrador",
+        "nl": "bug fix: wind url is niet ingesteld als de windsnelheid nul was\nbugfix: sla het geselecteerde pictogramtype (svg, png of gif) op in admin",
+        "fr": "correction du bug: l'url du vent n'était pas réglé si la vitesse du vent était nulle\ncorrection du bug : enregistrer le type d'icône sélectionné (svg, png ou gif) dans admin",
+        "it": "correzione bug: url vento non è stato impostato se la velocità del vento era zero\ncorrezione bug: salvare il tipo di icona selezionato (svg, png o gif) in admin",
+        "es": "corrección de fallos: url del viento no estaba establecido si la velocidad del viento era cero\ncorrección de errores: guardar el tipo de icono seleccionado (svg, png o gif) en administración",
+        "pl": "bug fix: wind url nie został ustawiony, jeśli prędkość wiatru była zerowa\nfix: zapisz wybrany typ ikon (svg, png lub gif) w admin",
+        "uk": "виправлено помилку: вітер виворіт не був встановлений, якщо швидкість вітру була нульовою\nвиправлено помилку: зберегти вибраний тип ікони (png або gif) в адмін",
+        "zh-cn": "错误修正: 如果风速为零, 则未设定风 url\n错误修正: 在管理员中保存选中的图标类型( svg, png 或 gif)"
+      },
       "4.5.0": {
         "en": "show symbol description beside the symbol in admin as preview\nsee issue #480: set minimum interval for data request to 60 minutes to avoid too many requests\nnew icons (png only) added (thanks to forum member Negalein)\nsee issue #478. bug fix copy current data at midnight\nsee issue #492: rate limiter: check expired time of last request before new request\nsee issue #490: icon file extension selectable in admin (svg, png or gif)",
         "de": "symbolbeschreibung neben dem symbol in admin als vorschau anzeigen\nsiehe ausgabe #480: mindestintervall für die datenanfrage auf 60 minuten festlegen, um zu viele anfragen zu vermeiden\nneue Icons (nur Png) hinzugefügt (dank Forummitglied Negalein)\nsiehe ausgabe #478. fehler beheben kopieren sie aktuelle daten um mitternacht\nsiehe ausgabe #492: preisbegrenzer: abgelaufene zeit der letzten anfrage vor neuer anfrage\nsiehe ausgabe #490: symbol-dateierweiterung wählbar in admin (svg, png oder gif)",
@@ -80,19 +93,6 @@
         "pl": "** Breaking Changes **\ninstancje starszych wersji ** muszą zostać usunięte* * i należy utworzyć nową instancję \n* rework z maszynopisem\n* wsparcie nowego api z DasWetter.com\n* typ adaptera zmieniony z \"zaplanowanego\" na \"deamon\"",
         "uk": "** Зміна маршрутів* Ім'я *\nекземпляри старших версій**** та нового екземпляра повинні бути створені\n* реконструкція з типом\n* підтримка нового api від DasWetter.com\n* тип адаптера змінено з \"розміщеного\" до \"деамону\"",
         "zh-cn": "** 突发变化* * 《大会正式记录,第五十八届会议,补编第5号》(A/C.6/61/Rev.1)\n旧版本** 必须删除** 必须创建新实例\n* 用打字符重写\n* 来自DasWetter.com的新阿皮的支持\n*适配器类型从\"预定\"改为\"deamon\""
-      },
-      "3.2.8": {
-        "en": "see issue #444: avoid crash if no data received, show response status in debug log",
-        "de": "siehe ausgabe #444: crash vermeiden, wenn keine daten empfangen wurden, antwortstatus anzeigen in debug log",
-        "ru": "проблема no444: избегайте сбоев, если данные не получены, покажите статус ответа в журнале отладки",
-        "pt": "ver problema # 444: evitar falha se nenhum dado recebido, mostrar o estado de resposta no log de depuração",
-        "nl": "zie probleem #444: crash vermijden als er geen gegevens zijn ontvangen, responsstatus tonen in debuglog",
-        "fr": "voir le numéro 444: éviter le crash si aucune donnée n'a été reçue, afficher l'état de la réponse dans le journal de débogage",
-        "it": "vedi problema #444: evitare crash se non sono stati ricevuti dati, mostrare lo stato di risposta nel registro di debug",
-        "es": "ver el número #444: evitar el accidente si no se reciben datos, mostrar el estado de respuesta en el registro de depuración",
-        "pl": "zobacz numer # 444: unikaj awarii, jeśli nie otrzymano danych, pokaż status odpowiedzi w dzienniku debugowania",
-        "uk": "переглянути номер #444: уникнути аварійних ситуацій, якщо не було отримано дані, показати статус відповіді в журналі debug",
-        "zh-cn": "参见第444期: 如果没有收到数据, 请避免崩溃, 在调试日志中显示响应状态 "
       }
     },
     "titleLang": {
