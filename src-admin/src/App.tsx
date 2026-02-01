@@ -27,9 +27,6 @@ import TabSymbolSettings from './Tabs/SymbolSettings';
 import TabWindSymbolSettings from './Tabs/WindSymbolSettings';
 import TabMoonSymbolSettings from './Tabs/MoonSymbolSettings';
 
-
-
-
 import enLang from './i18n/en.json';
 import deLang from './i18n/de.json';
 import ruLang from './i18n/ru.json';
@@ -43,6 +40,7 @@ import ukLang from './i18n/uk.json';
 import zhCnLang from './i18n/zh-cn.json';
 
 import type { DasWetterAdapterConfig, SymbolDescription } from "./types";
+import LegacyMigrator from './MigrateData';
 
 
 const styles: Record<string, any> = {
@@ -103,10 +101,6 @@ class App extends GenericApp<GenericAppProps, AppState> {
 
     private uploadInputRef: React.RefObject<HTMLInputElement>;
     private symboldescription: SymbolDescription[] | null = null;
-    
-
-
-
     constructor(props: GenericAppProps) {
         const extendedProps = { ...props };
         extendedProps.encryptedFields = ['pass'];
@@ -152,8 +146,6 @@ class App extends GenericApp<GenericAppProps, AppState> {
     onLoadConfig(): void {
         console.log("onLoadConfig called " + JSON.stringify(this.state.native));
 
-        
-
         return;
 
     }
@@ -173,6 +165,18 @@ class App extends GenericApp<GenericAppProps, AppState> {
 
         await this.GetSymbolDescription();
 
+        // Migration auslagern - ruft LegacyMigrator.migrate auf
+        try {
+            LegacyMigrator.migrate(
+                (this.state.native as any) || {},
+                this.state.systemConfig,
+                this.getIsChanged.bind(this),
+                (partial) => this.setState(partial as any)
+            );
+        } catch (err) {
+            console.error('Fehler beim Aufruf des LegacyMigrators:', err);
+        }
+
         console.log("onConnectionReady done");
 
     }
@@ -182,11 +186,11 @@ class App extends GenericApp<GenericAppProps, AppState> {
 
         const instance = `daswetter.${this.instance}`;
 
-        console.log("111 GetSymbolDescription called " + instance);
+        //console.log("111 GetSymbolDescription called " + instance);
 
         try {
             const result = await this.socket.sendTo(instance, "getsysmboldescription", "getsysmboldescription");
-            console.log("222 got description : " + JSON.stringify(result));
+            //console.log("222 got description : " + JSON.stringify(result));
             this.symboldescription = result;
 
         } catch (err) {
@@ -372,8 +376,6 @@ class App extends GenericApp<GenericAppProps, AppState> {
         );
     }
 
-
-    
 
     renderTab(): React.JSX.Element {
 

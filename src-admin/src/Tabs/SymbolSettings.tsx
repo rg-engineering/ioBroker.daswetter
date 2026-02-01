@@ -30,21 +30,16 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
     const onUpdate = (
         IconSet: number,
         CustomPath: string,
-        UsePNGorSVG: boolean,
+        IconType: number,
         PNGSize: number
     ) => {
         const newNative = { ...props.native };
         newNative.IconSet = IconSet;
         newNative.CustomPath = CustomPath;
-        newNative.UsePNGorSVG = UsePNGorSVG;
+        newNative.IconType = IconType;
         newNative.PNGSize = PNGSize;
         props.changeNative(newNative);
     };
-
-  
-
-
-
 
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
@@ -59,7 +54,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
 
                     IconSet={props.native.IconSet}
                     CustomPath={props.native.CustomPath}
-                    UsePNGorSVG={props.native.UsePNGorSVG}
+                    IconType={props.native.IconType}
                     PNGSize={props.native.PNGSize}
 
                     onChange={onUpdate}

@@ -1114,7 +1114,7 @@ class Meteored extends base_1.default {
         else if (this.WindIconType == 3) {
             ext = ".gif";
         }
-        if (num) {
+        if (num != null && typeof num == "number" && num >= 0) {
             if (iconSet == 99) { //custom
                 url = this.WindCustomPath;
             }

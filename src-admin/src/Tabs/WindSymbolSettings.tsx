@@ -28,13 +28,13 @@ export default function WindSymbolSettings(props: SettingsProps): React.JSX.Elem
     const onUpdate = (
         IconSet: number,
         CustomPath: string,
-        UsePNGorSVG: boolean,
+        IconType: number,
         PNGSize: number
     ) => {
         const newNative = { ...props.native };
         newNative.WindIconSet = IconSet;
         newNative.WindCustomPath = CustomPath;
-        newNative.WindUsePNGorSVG = UsePNGorSVG;
+        newNative.WindIconType = IconType;
         newNative.WindPNGSize = PNGSize;
         props.changeNative(newNative);
     };
@@ -54,8 +54,10 @@ export default function WindSymbolSettings(props: SettingsProps): React.JSX.Elem
 
                 IconSet={props.native.WindIconSet}
                 CustomPath={props.native.WindCustomPath}
-                UsePNGorSVG={props.native.WindUsePNGorSVG}
+                IconType={props.native.WindIconType}
                 PNGSize={props.native.WindPNGSize}
+
+                symboldescription={null}
 
                 onChange={onUpdate}
 

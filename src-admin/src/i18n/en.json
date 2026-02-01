@@ -41,5 +41,8 @@
   "use_png_or_svg": "Use PNG instead of SVG",
 
   "copy current hour": "Copy current hour",
-  "copy data of current hour to separate DP's": "Copy data of current hour to separate datapoints"
+  "copy data of current hour to separate DP's": "Copy data of current hour to separate datapoints",
+
+
+  "select a Icon type": "Select an icon type"
 }

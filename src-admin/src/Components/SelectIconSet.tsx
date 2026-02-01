@@ -77,7 +77,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
 
         try {
             // eslint-disable-next-line no-console
-            console.log(`adapter.${props.adapterName}`);
+            //console.log(`adapter.${props.adapterName}`);
             const entries = await props.socket.readDir(`${props.adapterName}.admin`, basePath);
 
             let ext = '.png';
@@ -99,7 +99,7 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
             // eslint-disable-next-line no-console
             console.log(`Loaded ${svgs.length} icons from ${basePath}`);
             // eslint-disable-next-line no-console
-            console.log(svgs);
+            //console.log(svgs);
             setIconFiles(svgs);
 
         } catch (err) {
@@ -132,7 +132,9 @@ export default function SymbolSettings(props: SettingsProps): React.JSX.Element 
         const value = Number(event.target.value);
         setIconType(value);
 
-        props.onChange(IconSet, CustomPath, IconType, value);
+        console.log("IconType changed to " + value);
+
+        props.onChange(IconSet, CustomPath, value, PNGSize);
     };
 
 

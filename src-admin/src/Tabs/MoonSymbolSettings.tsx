@@ -29,13 +29,13 @@ export default function MoonSymbolSettings(props: SettingsProps): React.JSX.Elem
     const onUpdate = (
         IconSet: number,
         CustomPath: string,
-        UsePNGorSVG: boolean,
+        IconType: number,
         PNGSize: number
     ) => {
         const newNative = { ...props.native };
         newNative.MoonIconSet = IconSet;
         newNative.MoonCustomPath = CustomPath;
-        newNative.MoonUsePNGorSVG = UsePNGorSVG;
+        newNative.MoonIconType = IconType;
         newNative.MoonPNGSize = PNGSize;
         props.changeNative(newNative);
     };
@@ -52,8 +52,9 @@ export default function MoonSymbolSettings(props: SettingsProps): React.JSX.Elem
 
                 IconSet={props.native.MoonIconSet}
                 CustomPath={props.native.MoonCustomPath}
-                UsePNGorSVG={props.native.MoonUsePNGorSVG}
+                IconType={props.native.MoonIconType}
                 PNGSize={props.native.MoonPNGSize}
+                symboldescription={null}
 
                 onChange={onUpdate}
             />
