@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.5.1",
+    "version": "4.5.2",
     "news": {
+      "4.5.2": {
+        "en": "dependency updates and fixes based on adapter checker recommendations",
+        "de": "abhängigkeitsaktualisierungen und korrekturen basierend auf adapter-checker-empfehlungen",
+        "ru": "обновления и исправления зависимостей на основе рекомендаций проверки адаптера",
+        "pt": "atualizações e correções de dependência com base nas recomendações do verificador de adaptadores",
+        "nl": "afhankelijkheid updates en fixes op basis van adapter controleer aanbevelingen",
+        "fr": "mises à jour et corrections de dépendance basées sur les recommandations de l'adaptateur checker",
+        "it": "aggiornamenti e correzioni di dipendenza in base alle raccomandazioni dell'adattatore",
+        "es": "actualizaciones y correcciones de dependencia basadas en las recomendaciones de la ficha del adaptador",
+        "pl": "aktualizacje zależności i poprawki oparte na zaleceniach kontrolera adaptera",
+        "uk": "оновлення залежностей та виправлення на основі рекомендацій перевірки адаптера",
+        "zh-cn": "根据适配器检查器建议进行依赖性更新和修正"
+      },
       "4.5.1": {
         "en": "bug fix: wind url was not set if wind speed was zero\nbug fix: save selected icon type (svg, png or gif) in admin",
         "de": "bugfix: windurl wurde nicht eingestellt, wenn die windgeschwindigkeit null war\nfehlerbehebung: speichern ausgewählter icon-typ (svg, png oder gif) in admin",
@@ -80,19 +93,6 @@
         "pl": "zobacz numer # 457: prognoza pobierania dziennych i godzinowych może być teraz wyłączona w celu zmniejszenia liczby DP\nzobacz numer # 456: połączenie kodu pocztowego i wolnego wyszukiwania tekstowego dla lokalizacji API dodano, jeśli lokalizacja nie została znaleziona przez kod pocztowy, wykonuje się darmowe wyszukiwanie tekstowe\nzob. numer # 458: jednostka ciśnienia zmieniona na millibar / hPa\nsee issue # 459: bug fix to be abonent to edit customs path for moon symbols\njeśli API dostarcza opis symboli określonych w nocy, zostanie to pokazane teraz\nzmienione opisy punktów danych",
         "uk": "переглянути номер #457: завантаження прогнозу для щоденного та годинного використання тепер може бути вимкнено для зменшення кількості ДП\nпереглянути номер #456: комбінація поштових індексів та безкоштовний текстовий пошук для розміщення API додано, якщо розташування не знайдено поштових індексів, виконано безкоштовний пошук тексту\nпереглянути номер #458: блок для тиску змінений на мілібар / hPa\nпереглянути номер #459: виправлення помилок, щоб мати можливість редагувати користувацький шлях для знаків місяця\nякщо API забезпечує нічний специфічний символ, він буде показано зараз\nописи точок даних змінені",
         "zh-cn": "参见第457期:每日和小时的预测下载现在可以被禁用,以减少DP的数量\n参见第456期:如果邮电码未找到位置,则执行免费文本搜索\n参见第458期:压力单位改为毫巴/hPa\n参见第459期: 错误修正, 以编辑月球符号的自定义路径\n如果 API 提供夜间特定符号描述, 它现在将会显示\n数据点描述更改"
-      },
-      "4.0.0": {
-        "en": "**Breaking Changes**\ninstances of older versions **must be deleted** and a new instance must be created\n* rework with typescript\n* support of new api from DasWetter.com\n* adapter type changed from \"scheduled\" to \"deamon\"",
-        "de": "**Veränderungen* *\nbeispiele älterer versionen **muss gelöscht werden** und eine neue instanz muss erstellt werden\n* nacharbeiten mit schrift\n* Unterstützung neuer api von DasWetter.com\n* adaptertyp geändert von \"geplant\" zu \"deamon\"",
-        "ru": "**Преодоление изменений* *\nэкземпляры старых версий **должны быть удалены** и должен быть создан новый экземпляр \n* переработка с помощью typescript\n* поддержка новых api от DasWetter.com\nтип адаптера изменился с «запланированного» на «диамон»",
-        "pt": "*Quebrar as Alterações **\ninstâncias de versões mais antigas ** devem ser apagadas** e uma nova instância deve ser criada\n* retrabalho com digitação\n* suporte de novo api de DasWitter.com\n* tipo de adaptador mudado de \"agendado\" para \"demônio\"",
-        "nl": "**Breaking Changes* *\ninstanties van oudere versies **moet verwijderd worden** en er moet een nieuwe instantie aangemaakt worden\n* rework met typescript\n* ondersteuning van nieuwe api van DasWetter.com\n* adapter type veranderd van \"gepland\" naar \"deamon\"",
-        "fr": "** Changements importants* *\nles instances des anciennes versions ** doivent être supprimées** et une nouvelle instance doit être créée\n* retravailler avec dactylographie\n* soutien de nouveaux api de DasWetter.com\n* type d'adaptateur changé de \"programmé\" à \"diamon\"",
-        "it": "* Cambiamenti di cambiamento* #\nistanze di versioni precedenti ** devono essere eliminate** e deve essere creato un nuovo caso\n* rielaborare con typescript\n* supporto di nuovi api da DasWetter.com\n* tipo adattatore cambiato da \"scheduled\" a \"deamon\"",
-        "es": "**Breaking Changes* *\ninstancias de versiones anteriores ** debe ser eliminado** y debe crearse una nueva instancia\n* rework with typescript\n* soporte de nuevo api de DasWetter.com\n* tipo de adaptador cambiado de \"scheduled\" a \"deamon\"",
-        "pl": "** Breaking Changes **\ninstancje starszych wersji ** muszą zostać usunięte* * i należy utworzyć nową instancję \n* rework z maszynopisem\n* wsparcie nowego api z DasWetter.com\n* typ adaptera zmieniony z \"zaplanowanego\" na \"deamon\"",
-        "uk": "** Зміна маршрутів* Ім'я *\nекземпляри старших версій**** та нового екземпляра повинні бути створені\n* реконструкція з типом\n* підтримка нового api від DasWetter.com\n* тип адаптера змінено з \"розміщеного\" до \"деамону\"",
-        "zh-cn": "** 突发变化* * 《大会正式记录,第五十八届会议,补编第5号》(A/C.6/61/Rev.1)\n旧版本** 必须删除** 必须创建新实例\n* 用打字符重写\n* 来自DasWetter.com的新阿皮的支持\n*适配器类型从\"预定\"改为\"deamon\""
       }
     },
     "titleLang": {
@@ -241,10 +241,6 @@
   },
   "objects": [],
   "instanceObjects": [],
-  "protectedNative": [
-   
-  ],
-  "encryptedNative": [
-    
-  ]
+  "protectedNative": [],
+  "encryptedNative": []
 }
