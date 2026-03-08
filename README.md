@@ -79,8 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 4.5.3 (2026-03-08)
 * (René) solved lint errors and warnings based on adapter checker
 * (René) dependency updates and fixes based on adapter checker recommendations
 

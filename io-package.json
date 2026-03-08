@@ -1,9 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.5.2",
+    "version": "4.5.3",
     "news": {
-      
+      "4.5.3": {
+        "en": "solved lint errors and warnings based on adapter checker\ndependency updates and fixes based on adapter checker recommendations",
+        "de": "gelöste flutfehler und warnungen basierend auf adapter-checker\nabhängigkeitsaktualisierungen und korrekturen basierend auf adapter-checker-empfehlungen",
+        "ru": "решенные ошибки и предупреждения на основе проверки адаптера\nобновления и исправления зависимостей на основе рекомендаций проверки адаптера",
+        "pt": "resolveu erros de fiapo e avisos com base no verificador do adaptador\natualizações e correções de dependência com base nas recomendações do verificador de adaptadores",
+        "nl": "opgelost pluisfouten en waarschuwingen op basis van adaptercontrole\nafhankelijkheid updates en fixes op basis van adapter controleer aanbevelingen",
+        "fr": "résolution d'erreurs de linte et d'avertissements sur la base d'un vérificateur d'adaptateur\nmises à jour et corrections de dépendance basées sur les recommandations de l'adaptateur checker",
+        "it": "errori e avvertenze lint risolti basati sull'adattatore checker\naggiornamenti e correzioni di dipendenza in base alle raccomandazioni dell'adattatore",
+        "es": "solucionado errores de lint y advertencias basadas en el control de adaptador\nactualizaciones y correcciones de dependencia basadas en las recomendaciones de la ficha del adaptador",
+        "pl": "rozwiązane błędy lintu i ostrzeżenia oparte na sprawdzaczu adaptera\naktualizacje zależności i poprawki oparte na zaleceniach kontrolera adaptera",
+        "uk": "вирішені помилки і попередження на основі перевірки адаптера\nоновлення залежностей та виправлення на основі рекомендацій перевірки адаптера",
+        "zh-cn": "根据适配器检查器解决了提示错误和警告\n根据适配器检查器建议进行依赖性更新和修正"
+      },
       "4.5.1": {
         "en": "bug fix: wind url was not set if wind speed was zero\nbug fix: save selected icon type (svg, png or gif) in admin",
         "de": "bugfix: windurl wurde nicht eingestellt, wenn die windgeschwindigkeit null war\nfehlerbehebung: speichern ausgewählter icon-typ (svg, png oder gif) in admin",
