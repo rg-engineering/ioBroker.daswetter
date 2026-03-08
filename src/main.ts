@@ -12,9 +12,9 @@ import Meteored from "./lib/meteored";
 
 export class DasWetter extends utils.Adapter {
 	private meteored: Meteored[] = [];
-	private parseInterval: NodeJS.Timeout | null = null;
-	private updateInterval: NodeJS.Timeout | null = null;
-	private updateTimeout: NodeJS.Timeout | null = null;
+	private parseInterval: ReturnType<typeof setInterval> | null = null;
+	private updateInterval: ReturnType<typeof setInterval> | null = null;
+	private updateTimeout: ReturnType<typeof setTimeout> | null = null;
 		
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({

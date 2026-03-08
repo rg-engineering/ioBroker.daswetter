@@ -3,19 +3,7 @@
     "name": "daswetter",
     "version": "4.5.2",
     "news": {
-      "4.5.2": {
-        "en": "dependency updates and fixes based on adapter checker recommendations",
-        "de": "abhängigkeitsaktualisierungen und korrekturen basierend auf adapter-checker-empfehlungen",
-        "ru": "обновления и исправления зависимостей на основе рекомендаций проверки адаптера",
-        "pt": "atualizações e correções de dependência com base nas recomendações do verificador de adaptadores",
-        "nl": "afhankelijkheid updates en fixes op basis van adapter controleer aanbevelingen",
-        "fr": "mises à jour et corrections de dépendance basées sur les recommandations de l'adaptateur checker",
-        "it": "aggiornamenti e correzioni di dipendenza in base alle raccomandazioni dell'adattatore",
-        "es": "actualizaciones y correcciones de dependencia basadas en las recomendaciones de la ficha del adaptador",
-        "pl": "aktualizacje zależności i poprawki oparte na zaleceniach kontrolera adaptera",
-        "uk": "оновлення залежностей та виправлення на основі рекомендацій перевірки адаптера",
-        "zh-cn": "根据适配器检查器建议进行依赖性更新和修正"
-      },
+      
       "4.5.1": {
         "en": "bug fix: wind url was not set if wind speed was zero\nbug fix: save selected icon type (svg, png or gif) in admin",
         "de": "bugfix: windurl wurde nicht eingestellt, wenn die windgeschwindigkeit null war\nfehlerbehebung: speichern ausgewählter icon-typ (svg, png oder gif) in admin",
