@@ -314,6 +314,8 @@ now parsing all data from xml and store them in datapoints
 for compatibility: in configuration old data structure can be enabled 
 needs also 2.x of vis-weather-widget
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 MIT License
