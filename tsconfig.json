@@ -17,7 +17,8 @@
     "sourceMap": true,
     "inlineSourceMap": false,
     "useUnknownInCatchVariables": false,
-    "types": [ "@iobroker/types" ]
+    "types": ["node", "@iobroker/types" ]
   },
-  "include": [ "src/**/*.ts", "src/**/*.d.ts" ]
+  "include": [ "src/**/*.ts", "src/**/*.d.ts" ],
+  "exclude": [ "build/**", "node_modules/**", "src-admin/**" ]
 }
