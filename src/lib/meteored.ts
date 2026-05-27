@@ -119,6 +119,7 @@ export default class Meteored extends Base {
     MoonCustomPath = "";
 
     CopyCurrentHour = false;
+    DecimalPlaces4Temps = 2;
 
     url = "";
    
@@ -150,6 +151,7 @@ export default class Meteored extends Base {
         this.MoonCustomPath = config.MoonCustomPath;
 
         this.CopyCurrentHour = config.CopyCurrentHour;
+        this.DecimalPlaces4Temps = config.DecimalPlaces4Temps;
 
     }
 
@@ -1032,8 +1034,8 @@ export default class Meteored extends Base {
             await this.adapter.setState(key + ".symbol", day ? day.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(day ? day.symbol : 0), true);
             await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(day ? day.symbol : 0, false), true);
-            await this.adapter.setState(key + ".Temperature_Min", day ? day.temperature_min : 0, true);
-            await this.adapter.setState(key + ".Temperature_Max", day ? day.temperature_max : 0, true);
+            await this.adapter.setState(key + ".Temperature_Min", day ? this.formatTemperature(day.temperature_min) : 0, true);
+            await this.adapter.setState(key + ".Temperature_Max", day ? this.formatTemperature(day.temperature_max) : 0, true);
             await this.adapter.setState(key + ".Wind_Speed", day ? day.wind_speed : 0, true);
             await this.adapter.setState(key + ".Wind_Speed_Beauforts", this.getWindBeaufort(day ? day.wind_speed : 0), true);
             await this.adapter.setState(key + ".Wind_Gust", day ? day.wind_gust : 0, true);
@@ -1083,9 +1085,6 @@ export default class Meteored extends Base {
 
             await this.adapter.setState(key + ".Moon_illumination", day ? day.moon_illumination : 0, true);
         }
-
-
-
     }
 
 
@@ -1127,8 +1126,8 @@ export default class Meteored extends Base {
                 await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
                 await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
                 await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
-                await this.adapter.setState(key + ".temperature", hour ? hour.temperature : 0, true);
-                await this.adapter.setState(key + ".temperature_feels_like", hour ? hour.temperature_feels_like : 0, true);
+                await this.adapter.setState(key + ".temperature", hour ? this.formatTemperature(hour.temperature) : 0, true);
+                await this.adapter.setState(key + ".temperature_feels_like", hour ? this.formatTemperature(hour.temperature_feels_like) : 0, true);
                 await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
                 await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
                 await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
@@ -1148,15 +1147,15 @@ export default class Meteored extends Base {
     }
 
     async SetData_ForecastHourlyCurrent(): Promise<void> {
-
+        //see issue #534: forecast period is end of hour
         try {
             const key = "location_" + this.id + ".ForecastHourly.Current";
             const d = new Date();
-            const h = d.getHours();
+            const h = d.getHours() + 1; //next hour is the current forecast period, because forecast is always end of hour (e.g. 01:00:00 for 00:00-01:00)
 
             //check if data for today available
-            //see issue #534: forecast period is end of hour
-            const hour = this.hours_forecast[h - 2];
+            
+            const hour = this.hours_forecast[h - 1];
             const timeval = hour && hour.end ? hour.end : 0;
             const end = timeval ? new Date(timeval) : 0;
 
@@ -1322,8 +1321,6 @@ export default class Meteored extends Base {
             return "";
         }
     }
-
-
 
 
     getIconUrl(num: number): string {
@@ -1522,5 +1519,13 @@ export default class Meteored extends Base {
         return description;
     }
 
+
+    private formatTemperature(temp: number): number {
+        const decimalPlaces = typeof (this as any).DecimalPlaces4Temps === "number" ? (this as any).DecimalPlaces4Temps : 2;
+        if (typeof temp !== "number" || isNaN(temp)) {
+            return 0;
+        }
+        return Number(temp.toFixed(decimalPlaces));
+    }
 
 }

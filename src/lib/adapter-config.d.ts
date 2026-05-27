@@ -30,6 +30,7 @@ export interface MeteoredConfig {
 	MoonCustomPath: string,
 
 	CopyCurrentHour: boolean
+	DecimalPlaces4Temps: number
 }
 
 
@@ -67,7 +68,8 @@ declare global {
 			MoonPNGSize: number,
 			MoonCustomPath: string,
 
-            CopyCurrentHour: boolean	
+			CopyCurrentHour: boolean	
+			DecimalPlaces4Temps: number
 
 		}
 	}

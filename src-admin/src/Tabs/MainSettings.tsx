@@ -109,6 +109,21 @@ const schema: ConfigItemPanel = {
             "xl": 4
         },
 
+        "DecimalPlaces4Temps": {
+            "newLine": true,
+            "type": "number",
+            "label": "decimal places for temperatures",
+            "help": "show temperatures with 0 to 2 decimal places",
+            "default": 2,
+            "min": 0,
+            "max": 2,
+            "xs": 12,
+            "sm": 12,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
+        },
+
 
         "dividerHdr2": {
             "newLine": true,
@@ -225,6 +240,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.parseInterval = params.parseInterval;
                     native.parseTimeout = params.parseTimeout;
                     native.CopyCurrentHour = params.CopyCurrentHour;
+                    native.DecimalPlaces4Temps = params.DecimalPlaces4Temps;
                     
                     props.changeNative(native);
                 }}

@@ -73,7 +73,9 @@ export class DasWetter extends utils.Adapter {
 					MoonPNGSize: this.config.MoonPNGSize,
 					MoonCustomPath: this.config.MoonCustomPath,
 
-                    CopyCurrentHour: this.config.CopyCurrentHour,
+					CopyCurrentHour: this.config.CopyCurrentHour,
+
+                    DecimalPlaces4Temps: this.config.DecimalPlaces4Temps	
 					
 
 				}
