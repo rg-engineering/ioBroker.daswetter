@@ -81,6 +81,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 -->
 ### **WORK IN PROGRESS**
 - (copilot) Adapter requires node.js >= 22 now
+- (René) see issue 534: bug fix for current hour: time ends at forecast period
 
 ### 4.5.3 (2026-03-08)
 * (René) solved lint errors and warnings based on adapter checker

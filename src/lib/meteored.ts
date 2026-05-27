@@ -1155,7 +1155,8 @@ export default class Meteored extends Base {
             const h = d.getHours();
 
             //check if data for today available
-            const hour = this.hours_forecast[h - 1];
+            //see issue #534: forecast period is end of hour
+            const hour = this.hours_forecast[h - 2];
             const timeval = hour && hour.end ? hour.end : 0;
             const end = timeval ? new Date(timeval) : 0;
 
