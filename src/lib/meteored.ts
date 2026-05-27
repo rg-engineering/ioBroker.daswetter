@@ -877,6 +877,8 @@ export default class Meteored extends Base {
         await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "Location name");
         await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "Location default site URL");
 
+        await this.CreateDatapoint(key + ".LastDownloadTime", "state", "Date", "string", "", true, false, "time of last data update from server");
+
 
         if (this.useDailyForecast) {
             key = "location_" + this.id + ".ForecastDaily";
@@ -1015,6 +1017,8 @@ export default class Meteored extends Base {
         let key = "location_" + this.id;
 
         await this.adapter.setState(key + ".URL", this.url, true);
+        await this.adapter.setState(key + ".LastDownloadTime", new Date().toLocaleString(), true);
+
 
         for (let d = 1; d < 6; d++) {
 

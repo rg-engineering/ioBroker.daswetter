@@ -83,6 +83,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 - (copilot) Adapter requires node.js >= 22 now
 - (René) see issue 534: bug fix for current hour: time ends at forecast period
 - (René) see issue 515: decimal places for temperature adjusable between 0 and 2 in admin
+- (René) see issue 515: add a datapoint to show last time when data was downloaded from server
 
 ### 4.5.3 (2026-03-08)
 * (René) solved lint errors and warnings based on adapter checker
