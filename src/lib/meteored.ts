@@ -1525,7 +1525,7 @@ export default class Meteored extends Base {
 
 
     private formatTemperature(temp: number): number {
-        const decimalPlaces = typeof (this as any).DecimalPlaces4Temps === "number" ? (this as any).DecimalPlaces4Temps : 2;
+        const decimalPlaces = typeof this.DecimalPlaces4Temps === "number" ? this.DecimalPlaces4Temps : 2;
         if (typeof temp !== "number" || isNaN(temp)) {
             return 0;
         }

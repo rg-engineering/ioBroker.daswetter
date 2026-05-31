@@ -80,6 +80,7 @@ export default class Meteored extends Base {
     MoonPNGSize: number;
     MoonCustomPath: string;
     CopyCurrentHour: boolean;
+    DecimalPlaces4Temps: number;
     url: string;
     constructor(adapter: DasWetter, id: number, config: MeteoredConfig);
     Start(): Promise<void>;
@@ -115,5 +116,6 @@ export default class Meteored extends Base {
         id: number;
         description: string;
     }[];
+    private formatTemperature;
 }
 export {};

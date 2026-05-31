@@ -95,6 +95,7 @@ class DasWetter extends utils.Adapter {
                     MoonPNGSize: this.config.MoonPNGSize,
                     MoonCustomPath: this.config.MoonCustomPath,
                     CopyCurrentHour: this.config.CopyCurrentHour,
+                    DecimalPlaces4Temps: this.config.DecimalPlaces4Temps
                 };
                 this.log.debug("create instance of Meteored");
                 const instance = new meteored_1.default(this, l + 1, config);
