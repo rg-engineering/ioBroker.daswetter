@@ -12,9 +12,9 @@ import Meteored from "./lib/meteored";
 
 export class DasWetter extends utils.Adapter {
 	private meteored: Meteored[] = [];
-	private parseInterval: ReturnType<typeof setInterval> | null = null;
-	private updateInterval: ReturnType<typeof setInterval> | null = null;
-	private updateTimeout: ReturnType<typeof setTimeout> | null = null;
+	private parseInterval: ReturnType<typeof this.setInterval> | null = null;
+	private updateInterval: ReturnType<typeof this.setInterval> | null = null;
+	private updateTimeout: ReturnType<typeof this.setTimeout> | null = null;
 		
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
@@ -94,11 +94,11 @@ export class DasWetter extends utils.Adapter {
 		}
 
 		if (this.parseInterval) {
-			clearInterval(this.parseInterval);
+			this.clearInterval(this.parseInterval);
 			this.parseInterval = null;
 		}
 
-		this.parseInterval = setInterval(() => {
+		this.parseInterval = this.setInterval(() => {
 			// Aufruf der async-Funktion und Fehler protokollieren, damit das Intervall nicht wegen einer unbehandelten Exception abstürzt
 			(this.updateForecast.bind(this)()).catch((err: unknown) => {
 				this.log.error("updateForecast error: " + (err instanceof Error ? err.stack || err.message : String(err)));
@@ -107,11 +107,11 @@ export class DasWetter extends utils.Adapter {
 
 
 		if (this.updateInterval) {
-			clearInterval(this.updateInterval);
+			this.clearInterval(this.updateInterval);
 			this.updateInterval = null;
 		}
 		if (this.updateTimeout) {
-			clearTimeout(this.updateTimeout);
+			this.clearTimeout(this.updateTimeout);
 			this.updateTimeout = null;
 		}
 
@@ -147,10 +147,10 @@ export class DasWetter extends utils.Adapter {
 			now.getSeconds() * 1000 -
 			now.getMilliseconds();
 
-		this.updateTimeout=setTimeout((): void => {
+		this.updateTimeout=this.setTimeout((): void => {
 			void this.runTask(); // erster Lauf zur vollen Stunde
 
-			this.updateInterval=setInterval((): void => { //und dann jede Stunde
+			this.updateInterval=this.setInterval((): void => { //und dann jede Stunde
 				void this.runTask();
 			}, 60 * 60 * 1000);
 		}, msUntilNextHour);
@@ -160,7 +160,7 @@ export class DasWetter extends utils.Adapter {
 		try {
 			await this.copyCurrentHour();
 		} catch (error) {
-			console.error("Fehler beim stündlichen Task:", error);
+			this.log.error("Fehler beim stündlichen Task:" + (error instanceof Error ? error.stack || error.message : String(error)));
 		}
 	}
 
@@ -187,16 +187,16 @@ export class DasWetter extends utils.Adapter {
 			// clearTimeout(timeout2);
 			// ...
 			if (this.parseInterval) {
-				clearInterval(this.parseInterval);
+				this.clearInterval(this.parseInterval);
 				this.parseInterval = null;
 			}
 
 			if (this.updateInterval) {
-				clearInterval(this.updateInterval);
+				this.clearInterval(this.updateInterval);
 				this.updateInterval = null;
 			}
 			if (this.updateTimeout) {
-				clearTimeout(this.updateTimeout);
+				this.clearTimeout(this.updateTimeout);
 				this.updateTimeout = null;
 			}
 			
