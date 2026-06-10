@@ -541,7 +541,7 @@ export default class Meteored extends Base {
                                     moon_out: typeof d.moon_out === "number" ? d.moon_out : Number(d.moon_out) || 0,
                                     moon_symbol: typeof d.moon_symbol === "number" ? d.moon_symbol : Number(d.moon_symbol) || 0,
                                     moon_illumination: typeof d.moon_illumination === "number" ? d.moon_illumination : Number(d.moon_illumination) || 0
-                                } as day_data;
+                                };
                             });
 
                             this.days_forecast = mapped;
@@ -653,7 +653,7 @@ export default class Meteored extends Base {
                                     snowline: typeof h.snowline === "number" ? h.snowline : Number(h.snowline) || 0,
                                     uv_index_max: typeof h.uv_index_max === "number" ? h.uv_index_max : Number(h.uv_index_max) || 0,
                                     clouds: typeof h.clouds === "number" ? h.clouds : Number(h.clouds) || 0
-                                } as hour_data;
+                                };
                             });
 
                             this.hours_forecast = mapped;
@@ -748,7 +748,7 @@ export default class Meteored extends Base {
                                     short: dayShort,
                                     long: dayLong
                                 }
-                            } as symbol_data;
+                            };
                         });
 
                         this.symbols = mapped;
