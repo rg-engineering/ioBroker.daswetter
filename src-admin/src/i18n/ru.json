@@ -36,6 +36,7 @@
   "parse_timeout": "Тайм-аут анализа",
   "postcode": "Почтовый индекс",
   "postcode of location": "Почтовый индекс места, например. 60313 для Франкфурта-на-Майне",
+  "select a Icon type": "Выберите тип значка",
   "select a PNG size": "Выберите размер PNG",
   "select a icon set": "Выберите набор значков",
   "useDailyForecast": "Использовать ежедневный прогноз",

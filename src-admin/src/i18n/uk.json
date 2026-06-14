@@ -1,7 +1,7 @@
 {
   "API key from DasWetter website": "Ключ API з веб-сайту Meteored. Скористайтеся посиланням вище, щоб отримати безкоштовний ключ API.",
   "Configuration loaded from file": "Конфігурація завантажується з файлу",
-  "Download configuration": "Завантажте конфігурацію",
+  "Download configuration": "Завантажити конфігурацію",
   "Failed to download configuration": "Не вдалося завантажити конфігурацію",
   "Failed to read file": "Не вдалося прочитати файл",
   "Invalid configuration file": "Недійсний файл конфігурації",
@@ -36,6 +36,7 @@
   "parse_timeout": "Час очікування аналізу",
   "postcode": "Поштовий індекс",
   "postcode of location": "Поштовий індекс місця, напр. 60313 для Франкфурта-на-Майні",
+  "select a Icon type": "Виберіть тип значка",
   "select a PNG size": "Виберіть розмір PNG",
   "select a icon set": "Виберіть набір значків",
   "useDailyForecast": "Використовуйте щоденний прогноз",

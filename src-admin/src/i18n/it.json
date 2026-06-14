@@ -36,6 +36,7 @@
   "parse_timeout": "Timeout dell'analisi",
   "postcode": "Codice Postale",
   "postcode of location": "Codice postale del luogo, ad es. 60313 per Francoforte sul Meno",
+  "select a Icon type": "Seleziona un tipo di icona",
   "select a PNG size": "Seleziona la dimensione PNG",
   "select a icon set": "Seleziona il set di icone",
   "useDailyForecast": "Utilizza le previsioni giornaliere",
