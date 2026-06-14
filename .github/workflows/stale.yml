@@ -1,0 +1,30 @@
+# Dieses Workflow schließt automatisch Issues, die seit 5 Monaten nicht aktualisiert wurden.
+
+name: Close stale issues
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # täglich um 02:00 UTC
+  workflow_dispatch:
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/stale@v10
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          stale-issue-message: >
+            Dieses Ticket wurde seit 5 Monaten nicht aktualisiert.
+            Es wird in 7 Tagen automatisch geschlossen.
+
+          close-issue-message: >
+            Ticket wegen Inaktivität automatisch geschlossen.
+
+          days-before-stale: 150
+          days-before-close: 7
+
+          exempt-issue-labels: >
+            bug,security,important
