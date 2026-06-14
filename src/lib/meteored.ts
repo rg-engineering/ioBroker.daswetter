@@ -257,7 +257,7 @@ export default class Meteored extends Base {
                 if (axios.isAxiosError(err)) {
                     this.logError("axios error in GetLocationPostcode: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 } else {
-                    this.logError("exception in GetLocationPostcode (non-axios): " + err);
+                    this.logError("exception in GetLocationPostcode (non-axios): " + String(err));
                 }
                 return;
             }
@@ -327,10 +327,10 @@ export default class Meteored extends Base {
                 await this.SetData_Location();
 
             } catch (e) {
-                this.logError("exception in GetLocationPostcode data parse " + e);
+                this.logError("exception in GetLocationPostcode data parse " + String(e));
             }
         } catch (e) {
-            this.logError("exception in GetLocationPostcode " + e);
+            this.logError("exception in GetLocationPostcode " + String(e));
         }
     }
 
@@ -360,7 +360,7 @@ export default class Meteored extends Base {
                 if (axios.isAxiosError(err)) {
                     this.logError("axios error in GetLocationFreetext: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 } else {
-                    this.logError("exception in GetLocationFreetext (non-axios): " + err);
+                    this.logError("exception in GetLocationFreetext (non-axios): " + String(err));
                 }
                 return;
             }
@@ -430,10 +430,10 @@ export default class Meteored extends Base {
                 await this.SetData_Location();
 
             } catch (e) {
-                this.logError("exception in GetLocationFreetext data parse " + e);
+                this.logError("exception in GetLocationFreetext data parse " + String(e));
             }
         } catch (e) {
-            this.logError("exception in GetLocationFreetext " + e);
+            this.logError("exception in GetLocationFreetext " + String(e));
         }
     }
 
@@ -479,7 +479,7 @@ export default class Meteored extends Base {
                     if (axios.isAxiosError(err)) {
                         this.logError("axios error in GetForecastDaily: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                     } else {
-                        this.logError("exception in GetForecastDaily (non-axios): " + err);
+                        this.logError("exception in GetForecastDaily (non-axios): " + String(err));
                     }
                     return;
                 }
@@ -547,7 +547,7 @@ export default class Meteored extends Base {
                             this.days_forecast = mapped;
                             this.logDebug("Meteored GetForecastDaily: parsed days_forecast count=" + this.days_forecast.length);
                         } catch (e) {
-                            this.logError("Meteored GetForecastDaily: error mapping days array: " + e);
+                            this.logError("Meteored GetForecastDaily: error mapping days array: " + String(e));
                             this.days_forecast = [];
                         }
 
@@ -555,11 +555,11 @@ export default class Meteored extends Base {
                     }
                 } catch (e) {
                     // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                    this.logError("exception in GetForecastDaily data parse " + e);
+                    this.logError("exception in GetForecastDaily data parse " + String(e));
                 }
             } catch (e) {
 
-                this.logError("exception in GetForecastDaily " + e);
+                this.logError("exception in GetForecastDaily " + String(e));
             }
         } else {
             this.logDebug("GetForecastDaily called, but skipped");
@@ -609,7 +609,7 @@ export default class Meteored extends Base {
                     if (axios.isAxiosError(err)) {
                         this.logError("axios error in GetForecastHourly: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                     } else {
-                        this.logError("exception in GetForecastHourly (non-axios): " + err);
+                        this.logError("exception in GetForecastHourly (non-axios): " + String(err));
                     }
                     return;
                 }
@@ -663,7 +663,7 @@ export default class Meteored extends Base {
 
 
                         } catch (e) {
-                            this.logError("Meteored GetForecastHourly: error mapping hours array: " + e);
+                            this.logError("Meteored GetForecastHourly: error mapping hours array: " + String(e));
                             this.hours_forecast = [];
                         }
                     }
@@ -673,11 +673,11 @@ export default class Meteored extends Base {
 
                 } catch (e) {
                     // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                    this.logError("exception in GetForecastHourly data parse " + e);
+                    this.logError("exception in GetForecastHourly data parse " + String(e));
                 }
             } catch (e) {
 
-                this.logError("exception in GetForecastHourly " + e);
+                this.logError("exception in GetForecastHourly " + String(e));
             }
 
         } else {
@@ -711,7 +711,7 @@ export default class Meteored extends Base {
                 if (axios.isAxiosError(err)) {
                     this.logError("axios error in GetSymbols: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 } else {
-                    this.logError("exception in GetSymbols (non-axios): " + err);
+                    this.logError("exception in GetSymbols (non-axios): " + String(err));
                 }
                 return;
             }
@@ -754,18 +754,18 @@ export default class Meteored extends Base {
                         this.symbols = mapped;
                         this.logDebug("Meteored GetSymbols: parsed symbols count=" + this.symbols.length);
                     } catch (e) {
-                        this.logError("Meteored GetSymbols: error mapping symbols array: " + e);
+                        this.logError("Meteored GetSymbols: error mapping symbols array: " + String(e));
                         this.symbols = [];
                     }
                 }
 
             } catch (e) {
                 // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                this.logError("exception in GetSymbols data parse " + e);
+                this.logError("exception in GetSymbols data parse " + String(e));
             }
         } catch (e) {
 
-            this.logError("exception in GetSymbols " + e);
+            this.logError("exception in GetSymbols " + String(e));
         }
     }
 
@@ -777,7 +777,7 @@ export default class Meteored extends Base {
             const key = "location_" + this.id + ".ForecastDaily.Day_1.sunshineduration";
             await this.adapter.setState(key, sunDuration, true);
         } catch (e) {
-            this.logError("CalculateData error: " + e);
+            this.logError("CalculateData error: " + String(e));
         }
 
         //todo
@@ -864,7 +864,7 @@ export default class Meteored extends Base {
             this.logDebug("CalculateSunshineDuration: computed sunshineduration=" + rounded + " hours");
             return rounded;
         } catch (e) {
-            this.logError("CalculateSunshineDuration error: " + e);
+            this.logError("CalculateSunshineDuration error: " + String(e));
             return 0;
         }
     }
@@ -889,10 +889,10 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
 
-                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period (ISO string)");
-                await this.CreateDatapoint(key + ".date", "state", "value", "string", "", true, false, "date of forecast period (simple string)");
+                await this.CreateDatapoint(key + ".date_full", "state", "date.forecast.0", "string", "", true, false, "full date of forecast period (ISO string)");
+                await this.CreateDatapoint(key + ".date", "state", "date.forecast.0", "string", "", true, false, "date of forecast period (simple string)");
 
-                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
+                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek.forecast.0", "string", "", true, false, "weekday of date");
 
                 if (d == 1) {
                     //only for today
@@ -908,7 +908,7 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key + ".start", "state", "date", "number", "", true, false, "start of forecast period [UNIX timestamp]");
 
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "URL to weather symbol");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon.forecast.0", "string", "", true, false, "URL to weather symbol");
                 await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
                 await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "Minimum temperature");
                 await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Maximum temperature");
@@ -1146,7 +1146,7 @@ export default class Meteored extends Base {
                 await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
             }
         } catch (e) {
-            this.logError("SetData_ForecastHourlyOneHour error for hour " + h  + " with key " + key + ": " + e);
+            this.logError("SetData_ForecastHourlyOneHour error for hour " + h  + " with key " + key + ": " + String(e));
         }
     }
 
@@ -1169,7 +1169,7 @@ export default class Meteored extends Base {
                 this.logDebug("SetData_ForecastHourlyCurrent: current not copied because data from yesterday");
             }
         } catch (e) {
-            this.logError("SetData_ForecastHourlyCurrent error: " + e);
+            this.logError("SetData_ForecastHourlyCurrent error: " + String(e));
         }
     }
 
@@ -1266,7 +1266,7 @@ export default class Meteored extends Base {
             };
 
         } catch (e) {
-            this.logError("FormatTimestampToLocal error: " + e);
+            this.logError("FormatTimestampToLocal error: " + String(e)  );
             return {
                 formattedTimeval: "",
                 formattedTimevalDate: "",
@@ -1321,7 +1321,7 @@ export default class Meteored extends Base {
             this.logDebug("getSymbolLongDescription: no matching symbol for id " + id);
             return "";
         } catch (e) {
-            this.logError("getSymbolLongDescription error: " + e);
+            this.logError("getSymbolLongDescription error: " + String(e));
             return "";
         }
     }

@@ -203,7 +203,7 @@ export class DasWetter extends utils.Adapter {
 
 			callback();
 		} catch (e) {
-            this.log.error("exception in onUnload " + e);
+            this.log.error("exception in onUnload " + String(e));
 			callback();
 		}
 	}
