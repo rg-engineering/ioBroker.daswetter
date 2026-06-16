@@ -150,7 +150,7 @@ class Meteored extends base_1.default {
                     this.logError("axios error in GetLocationPostcode: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 }
                 else {
-                    this.logError("exception in GetLocationPostcode (non-axios): " + err);
+                    this.logError("exception in GetLocationPostcode (non-axios): " + String(err));
                 }
                 return;
             }
@@ -209,11 +209,11 @@ class Meteored extends base_1.default {
                 await this.SetData_Location();
             }
             catch (e) {
-                this.logError("exception in GetLocationPostcode data parse " + e);
+                this.logError("exception in GetLocationPostcode data parse " + String(e));
             }
         }
         catch (e) {
-            this.logError("exception in GetLocationPostcode " + e);
+            this.logError("exception in GetLocationPostcode " + String(e));
         }
     }
     async GetLocationFreetext() {
@@ -240,7 +240,7 @@ class Meteored extends base_1.default {
                     this.logError("axios error in GetLocationFreetext: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 }
                 else {
-                    this.logError("exception in GetLocationFreetext (non-axios): " + err);
+                    this.logError("exception in GetLocationFreetext (non-axios): " + String(err));
                 }
                 return;
             }
@@ -299,11 +299,11 @@ class Meteored extends base_1.default {
                 await this.SetData_Location();
             }
             catch (e) {
-                this.logError("exception in GetLocationFreetext data parse " + e);
+                this.logError("exception in GetLocationFreetext data parse " + String(e));
             }
         }
         catch (e) {
-            this.logError("exception in GetLocationFreetext " + e);
+            this.logError("exception in GetLocationFreetext " + String(e));
         }
     }
     async GetForecastDaily() {
@@ -340,7 +340,7 @@ class Meteored extends base_1.default {
                         this.logError("axios error in GetForecastDaily: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                     }
                     else {
-                        this.logError("exception in GetForecastDaily (non-axios): " + err);
+                        this.logError("exception in GetForecastDaily (non-axios): " + String(err));
                     }
                     return;
                 }
@@ -398,7 +398,7 @@ class Meteored extends base_1.default {
                             this.logDebug("Meteored GetForecastDaily: parsed days_forecast count=" + this.days_forecast.length);
                         }
                         catch (e) {
-                            this.logError("Meteored GetForecastDaily: error mapping days array: " + e);
+                            this.logError("Meteored GetForecastDaily: error mapping days array: " + String(e));
                             this.days_forecast = [];
                         }
                         await this.SetData_ForecastDaily();
@@ -406,11 +406,11 @@ class Meteored extends base_1.default {
                 }
                 catch (e) {
                     // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                    this.logError("exception in GetForecastDaily data parse " + e);
+                    this.logError("exception in GetForecastDaily data parse " + String(e));
                 }
             }
             catch (e) {
-                this.logError("exception in GetForecastDaily " + e);
+                this.logError("exception in GetForecastDaily " + String(e));
             }
         }
         else {
@@ -451,7 +451,7 @@ class Meteored extends base_1.default {
                         this.logError("axios error in GetForecastHourly: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                     }
                     else {
-                        this.logError("exception in GetForecastHourly (non-axios): " + err);
+                        this.logError("exception in GetForecastHourly (non-axios): " + String(err));
                     }
                     return;
                 }
@@ -495,7 +495,7 @@ class Meteored extends base_1.default {
                             this.logDebug("Meteored GetForecastHourly: parsed hours_forecast count=" + this.hours_forecast.length);
                         }
                         catch (e) {
-                            this.logError("Meteored GetForecastHourly: error mapping hours array: " + e);
+                            this.logError("Meteored GetForecastHourly: error mapping hours array: " + String(e));
                             this.hours_forecast = [];
                         }
                     }
@@ -503,11 +503,11 @@ class Meteored extends base_1.default {
                 }
                 catch (e) {
                     // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                    this.logError("exception in GetForecastHourly data parse " + e);
+                    this.logError("exception in GetForecastHourly data parse " + String(e));
                 }
             }
             catch (e) {
-                this.logError("exception in GetForecastHourly " + e);
+                this.logError("exception in GetForecastHourly " + String(e));
             }
         }
         else {
@@ -538,7 +538,7 @@ class Meteored extends base_1.default {
                     this.logError("axios error in GetSymbols: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 }
                 else {
-                    this.logError("exception in GetSymbols (non-axios): " + err);
+                    this.logError("exception in GetSymbols (non-axios): " + String(err));
                 }
                 return;
             }
@@ -575,18 +575,18 @@ class Meteored extends base_1.default {
                         this.logDebug("Meteored GetSymbols: parsed symbols count=" + this.symbols.length);
                     }
                     catch (e) {
-                        this.logError("Meteored GetSymbols: error mapping symbols array: " + e);
+                        this.logError("Meteored GetSymbols: error mapping symbols array: " + String(e));
                         this.symbols = [];
                     }
                 }
             }
             catch (e) {
                 // Falls JSON.stringify fehlschlägt, logge eine kurze Meldung
-                this.logError("exception in GetSymbols data parse " + e);
+                this.logError("exception in GetSymbols data parse " + String(e));
             }
         }
         catch (e) {
-            this.logError("exception in GetSymbols " + e);
+            this.logError("exception in GetSymbols " + String(e));
         }
     }
     async CalculateData() {
@@ -597,7 +597,7 @@ class Meteored extends base_1.default {
             await this.adapter.setState(key, sunDuration, true);
         }
         catch (e) {
-            this.logError("CalculateData error: " + e);
+            this.logError("CalculateData error: " + String(e));
         }
         //todo
         //Wind-symbol aus Richtung und Stärke berechnen
@@ -664,7 +664,7 @@ class Meteored extends base_1.default {
             return rounded;
         }
         catch (e) {
-            this.logError("CalculateSunshineDuration error: " + e);
+            this.logError("CalculateSunshineDuration error: " + String(e));
             return 0;
         }
     }
@@ -673,16 +673,16 @@ class Meteored extends base_1.default {
         await this.CreateDatapoint(key, "channel", "", "", "", false, false, "location");
         await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "Location name");
         await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "Location default site URL");
-        await this.CreateDatapoint(key + ".LastDownloadTime", "state", "Date", "string", "", true, false, "time of last data update from server");
+        await this.CreateDatapoint(key + ".LastDownloadTime", "state", "date", "string", "", true, false, "time of last data update from server");
         if (this.useDailyForecast) {
             key = "location_" + this.id + ".ForecastDaily";
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");
             for (let d = 1; d < 6; d++) {
                 key = "location_" + this.id + ".ForecastDaily.Day_" + d;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
-                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period (ISO string)");
-                await this.CreateDatapoint(key + ".date", "state", "value", "string", "", true, false, "date of forecast period (simple string)");
-                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
+                await this.CreateDatapoint(key + ".date_full", "state", "date.forecast.0", "string", "", true, false, "full date of forecast period (ISO string)");
+                await this.CreateDatapoint(key + ".date", "state", "date.forecast.0", "string", "", true, false, "date of forecast period (simple string)");
+                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek.forecast.0", "string", "", true, false, "weekday of date");
                 if (d == 1) {
                     //only for today
                     await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day, based on daylight and clouds");
@@ -696,43 +696,43 @@ class Meteored extends base_1.default {
                 //date based time values for further calculation
                 await this.CreateDatapoint(key + ".start", "state", "date", "number", "", true, false, "start of forecast period [UNIX timestamp]");
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "URL to weather symbol");
-                await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "symbol long description");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon.forecast.0", "string", "", true, false, "URL to weather symbol");
+                await this.CreateDatapoint(key + ".symbol_description", "state", "weather.state.forecast.0", "string", "", true, false, "symbol long description");
                 await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "Minimum temperature");
                 await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Maximum temperature");
                 await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
                 await this.CreateDatapoint(key + ".Wind_Speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc. Beauforts scale");
                 await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
                 await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
-                await this.CreateDatapoint(key + ".Rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
+                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "text", "string", "", true, false, "URL to wind symbol");
+                await this.CreateDatapoint(key + ".Rain", "state", "value.precipitation", "number", "mm", true, false, "Accumulated rain");
                 await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
                 await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
-                await this.CreateDatapoint(key + ".Pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+                await this.CreateDatapoint(key + ".Pressure", "state", "value.pressure.forecast.0", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
                 await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
-                await this.CreateDatapoint(key + ".UV_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
+                await this.CreateDatapoint(key + ".UV_index_max", "state", "value.uv", "number", "", true, false, "Maximum UV index for day");
                 //string based time values for direct display
-                await this.CreateDatapoint(key + ".Sun_in", "state", "value", "string", "", true, false, "sunrise time [string]");
-                await this.CreateDatapoint(key + ".Sun_mid", "state", "value", "string", "", true, false, "sun noon time [string]");
-                await this.CreateDatapoint(key + ".Sun_out", "state", "value", "string", "", true, false, "sunset time [string]");
-                await this.CreateDatapoint(key + ".Moon_in", "state", "value", "string", "", true, false, "moonrise time [string]");
-                await this.CreateDatapoint(key + ".Moon_out", "state", "value", "string", "", true, false, "moonset time [string]");
+                await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time [string]");
+                await this.CreateDatapoint(key + ".Sun_mid", "state", "date", "string", "", true, false, "sun noon time [string]");
+                await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time [string]");
+                await this.CreateDatapoint(key + ".Moon_in", "state", "date", "string", "", true, false, "moonrise time [string]");
+                await this.CreateDatapoint(key + ".Moon_out", "state", "date", "string", "", true, false, "moonset time [string]");
                 //date based time values for further calculation
-                await this.CreateDatapoint(key + ".Sun_in_full", "state", "date", "number", "", true, false, "sunrise time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Sun_in_full", "state", "date.sunrise", "number", "", true, false, "sunrise time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Sun_mid_full", "state", "date", "number", "", true, false, "sun noon time [Unix timestamp]");
-                await this.CreateDatapoint(key + ".Sun_out_full", "state", "date", "number", "", true, false, "sunset time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Sun_out_full", "state", "date.sunset", "number", "", true, false, "sunset time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Moon_in_full", "state", "date", "number", "", true, false, "moonrise time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Moon_out_full", "state", "date", "number", "", true, false, "moonset time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Moon_symbol", "state", "value", "number", "", true, false, "Identifier for moon symbol");
-                await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "value", "string", "", true, false, "URL to moon symbol");
+                await this.CreateDatapoint(key + ".Moon_symbol_URL", "state", "text", "string", "", true, false, "URL to moon symbol");
                 await this.CreateDatapoint(key + ".Moon_illumination", "state", "value", "number", "%", true, false, "Percentage of illuminated moon");
             }
         }
         if (this.useHourlyForecast) {
             key = "location_" + this.id + ".ForecastHourly";
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
-            await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast periods [ISO string]");
-            await this.CreateDatapoint(key + ".date", "state", "string", "string", "", true, false, "date of forecast periods [simple string]");
+            await this.CreateDatapoint(key + ".date_full", "state", "date.forecast.0", "string", "", true, false, "full date of forecast periods [ISO string]");
+            await this.CreateDatapoint(key + ".date", "state", "date.forecast.0", "string", "", true, false, "date of forecast periods [simple string]");
             for (let h = 1; h < 25; h++) {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
@@ -747,26 +747,26 @@ class Meteored extends base_1.default {
     }
     async CreateObjectsHourly(key) {
         //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
-        await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
+        await this.CreateDatapoint(key + ".end", "state", "date.forecast.0", "number", "", true, false, "end of forecast period [Unix timestamp]");
         //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
-        await this.CreateDatapoint(key + ".time", "state", "value", "string", "", true, false, "end of forecast period [time string only}");
+        await this.CreateDatapoint(key + ".time", "state", "date.forecast.0", "string", "", true, false, "end of forecast period [time string only}");
         await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-        await this.CreateDatapoint(key + ".symbol_URL", "state", "value", "string", "", true, false, "weather symbol long description");
-        await this.CreateDatapoint(key + ".symbol_description", "state", "value", "string", "", true, false, "URL to weather symbol");
-        await this.CreateDatapoint(key + ".night", "state", "value", "boolean", "", true, false, "Flag that indicates if the hour is at night");
+        await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon.forecast.0", "string", "", true, false, "URL to weather symbol");
+        await this.CreateDatapoint(key + ".symbol_description", "state", "text", "string", "", true, false, "weather symbol long description");
+        await this.CreateDatapoint(key + ".night", "state", "state", "boolean", "", true, false, "Flag that indicates if the hour is at night");
         await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
         await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
         await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
         await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
         await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
         await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-        await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "state", "string", "", true, false, "URL to wind symbol");
-        await this.CreateDatapoint(key + ".rain", "state", "value", "number", "mm", true, false, "Accumulated rain");
-        await this.CreateDatapoint(key + ".rain_probability", "state", "value", "number", "%", true, false, "Rain probability for accumulated rain");
+        await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "text", "string", "", true, false, "URL to wind symbol");
+        await this.CreateDatapoint(key + ".rain", "state", "value", "value.precipitation", "mm", true, false, "Accumulated rain");
+        await this.CreateDatapoint(key + ".rain_probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
         await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
         await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
-        await this.CreateDatapoint(key + ".snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
-        await this.CreateDatapoint(key + ".uv_index_max", "state", "value", "number", "", true, false, "Maximum UV index for day");
+        await this.CreateDatapoint(key + ".snowline", "state", "value.snowline", "number", "m", true, false, "Snowline cote expressed in meters");
+        await this.CreateDatapoint(key + ".uv_index_max", "state", "value.uv", "number", "", true, false, "Maximum UV index for day");
         await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
     }
     async SetData_Location() {
@@ -876,7 +876,7 @@ class Meteored extends base_1.default {
             }
         }
         catch (e) {
-            this.logError("SetData_ForecastHourlyOneHour error for hour " + h + " with key " + key + ": " + e);
+            this.logError("SetData_ForecastHourlyOneHour error for hour " + h + " with key " + key + ": " + String(e));
         }
     }
     async SetData_ForecastHourlyCurrent() {
@@ -897,7 +897,7 @@ class Meteored extends base_1.default {
             }
         }
         catch (e) {
-            this.logError("SetData_ForecastHourlyCurrent error: " + e);
+            this.logError("SetData_ForecastHourlyCurrent error: " + String(e));
         }
     }
     FormatTimestampToLocal(timestamp) {
@@ -974,7 +974,7 @@ class Meteored extends base_1.default {
             };
         }
         catch (e) {
-            this.logError("FormatTimestampToLocal error: " + e);
+            this.logError("FormatTimestampToLocal error: " + String(e));
             return {
                 formattedTimeval: "",
                 formattedTimevalDate: "",
@@ -1014,7 +1014,7 @@ class Meteored extends base_1.default {
             return "";
         }
         catch (e) {
-            this.logError("getSymbolLongDescription error: " + e);
+            this.logError("getSymbolLongDescription error: " + String(e));
             return "";
         }
     }

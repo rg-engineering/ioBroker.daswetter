@@ -109,21 +109,21 @@ class DasWetter extends utils.Adapter {
             await this.meteored[n].GetForecastDaily();
         }
         if (this.parseInterval) {
-            clearInterval(this.parseInterval);
+            this.clearInterval(this.parseInterval);
             this.parseInterval = null;
         }
-        this.parseInterval = setInterval(() => {
+        this.parseInterval = this.setInterval(() => {
             // Aufruf der async-Funktion und Fehler protokollieren, damit das Intervall nicht wegen einer unbehandelten Exception abstürzt
             (this.updateForecast.bind(this)()).catch((err) => {
                 this.log.error("updateForecast error: " + (err instanceof Error ? err.stack || err.message : String(err)));
             });
         }, this.config.parseInterval * 60 * 1000);
         if (this.updateInterval) {
-            clearInterval(this.updateInterval);
+            this.clearInterval(this.updateInterval);
             this.updateInterval = null;
         }
         if (this.updateTimeout) {
-            clearTimeout(this.updateTimeout);
+            this.clearTimeout(this.updateTimeout);
             this.updateTimeout = null;
         }
         if (this.config.CopyCurrentHour) {
@@ -151,9 +151,9 @@ class DasWetter extends utils.Adapter {
         const msUntilNextHour = (60 - now.getMinutes()) * 60 * 1000 -
             now.getSeconds() * 1000 -
             now.getMilliseconds();
-        this.updateTimeout = setTimeout(() => {
+        this.updateTimeout = this.setTimeout(() => {
             void this.runTask(); // erster Lauf zur vollen Stunde
-            this.updateInterval = setInterval(() => {
+            this.updateInterval = this.setInterval(() => {
                 void this.runTask();
             }, 60 * 60 * 1000);
         }, msUntilNextHour);
@@ -163,7 +163,7 @@ class DasWetter extends utils.Adapter {
             await this.copyCurrentHour();
         }
         catch (error) {
-            console.error("Fehler beim stündlichen Task:", error);
+            this.log.error("Fehler beim stündlichen Task:" + (error instanceof Error ? error.stack || error.message : String(error)));
         }
     }
     async copyCurrentHour() {
@@ -189,21 +189,21 @@ class DasWetter extends utils.Adapter {
             // clearTimeout(timeout2);
             // ...
             if (this.parseInterval) {
-                clearInterval(this.parseInterval);
+                this.clearInterval(this.parseInterval);
                 this.parseInterval = null;
             }
             if (this.updateInterval) {
-                clearInterval(this.updateInterval);
+                this.clearInterval(this.updateInterval);
                 this.updateInterval = null;
             }
             if (this.updateTimeout) {
-                clearTimeout(this.updateTimeout);
+                this.clearTimeout(this.updateTimeout);
                 this.updateTimeout = null;
             }
             callback();
         }
         catch (e) {
-            this.log.error("exception in onUnload " + e);
+            this.log.error("exception in onUnload " + String(e));
             callback();
         }
     }
@@ -256,7 +256,7 @@ class DasWetter extends utils.Adapter {
                 }
             }
             else {
-                this.log.warn("got unknown message: " + obj.command + " / " + obj.message);
+                this.log.warn("got unknown message: " + obj.command + " / " + obj.message + " from " + obj.from);
             }
         }
         else {
