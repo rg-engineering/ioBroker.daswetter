@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Request Copilot work
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const issueNumber = context.payload.issue.number;
@@ -59,7 +59,7 @@ jobs:
             });
 
       - name: Add copilot label
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             await github.rest.issues.addLabels({
