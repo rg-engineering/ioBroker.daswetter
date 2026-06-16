@@ -20,8 +20,13 @@ jobs:
             Dieses Ticket wurde seit 5 Monaten nicht aktualisiert.
             Es wird in 7 Tagen automatisch geschlossen.
 
+            This ticket has not been updated for 5 months.
+            It will be closed automatically in 7 days.
+
           close-issue-message: >
             Ticket wegen Inaktivität automatisch geschlossen.
+
+            This ticket has been closed due to inactivity.
 
           days-before-stale: 150
           days-before-close: 7
