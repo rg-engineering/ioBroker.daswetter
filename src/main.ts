@@ -264,7 +264,7 @@ export class DasWetter extends utils.Adapter {
 					this.sendTo(obj.from, obj.command, description, obj.callback);
 				}
 			} else {
-				this.log.warn("got unknown message: " + obj.command + " / " + obj.message);
+				this.log.warn("got unknown message: " + obj.command + " / " + obj.message + " from " + obj.from);
 			}
 		} else {
 			this.log.warn("got invalid message object " + JSON.stringify(obj));
