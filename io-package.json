@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.5.4",
+    "version": "4.5.5",
     "news": {
+      "4.5.5": {
+        "en": "see issue #574 and #571: state roles adapted",
+        "de": "Siehe Issue #574 und #571: Anpassung der Staatsrollen",
+        "ru": "См. выпуски #574 и #571: адаптированные роли состояний.",
+        "pt": "Veja as edições nº 574 e nº 571: funções estaduais adaptadas",
+        "nl": "zie nummer 574 en 571: aangepaste staatsrollen",
+        "fr": "Voir les problèmes n° 574 et n° 571 : adaptation des rôles d’état",
+        "it": "vedi i numeri 574 e 571: ruoli statali adattati",
+        "es": "Consulte los números 574 y 571: se adaptaron los roles de estado.",
+        "pl": "zobacz problem nr 574 i 571: dostosowane role państwowe",
+        "uk": "див. випуск №574 та №571: адаптовані ролі штатів",
+        "zh-cn": "参见问题 #574 和 #571：状态角色调整"
+      },
       "4.5.4": {
         "en": "Adapter requires node.js >= 22 now\nsee issue 534: bug fix for current hour: time ends at forecast period\nsee issue 515: decimal places for temperature adjusable between 0 and 2 in admin\nsee issue 515: add a datapoint to show last time when data was downloaded from server",
         "de": "Adapter benötigt node.js >= 22 jetzt\nsiehe ausgabe 534: fehlerbehebung für aktuelle stunde: zeit endet bei prognosezeit\nsiehe ausgabe 515: dezimalstellen für temperatur zwischen 0 und 2 in admin\nsiehe ausgabe 515: fügen sie zum letzten mal einen datenpunkt hinzu, wenn die daten vom server heruntergeladen wurden",
@@ -80,19 +93,6 @@
         "pl": "41 ikon dla DasWetter @ 4.x (galeria7)",
         "uk": "41 іконки для DasWetter@4.x (галерія7)",
         "zh-cn": "41 个 DasWetter@ 4.x (galeria7) 的图标"
-      },
-      "4.2.0": {
-        "en": "translations of symbol descriptions\nsome new datapoints (time and date) to identify forecast periods\nsee issue #462: sun and moon times now without date part (time-only)\nAdd bundesland / state as search option and move some debug to info logs",
-        "de": "übersetzungen von symbolbeschreibungen\neinige neue datenpunkte (zeit und datum) zur identifizierung von prognosezeiten\nsiehe ausgabe #462: sonnen- und mondzeiten jetzt ohne datumsteil (nur)\nFügen Sie Bungalow / Zustand als Suchoption und verschieben Sie einige Debug zu Info-Logs",
-        "ru": "перевод описания символов\nнекоторые новые точки данных (время и дата) для определения прогнозных периодов\n#462: время солнца и луны теперь без даты (только по времени)\nДобавьте bundesland / state в качестве опции поиска и переместите некоторые отладки в информационные журналы",
-        "pt": "traduções de descrições de símbolos\nalguns novos pontos de dados (hora e data) para identificar os períodos de previsão\nver o número 462: horas do sol e da lua agora sem parte da data (somente no tempo)\nAdicionar bundesland / estado como opção de pesquisa e mover alguns debug para logs de informações",
-        "nl": "vertalingen van symbolenbeschrijvingen\neen aantal nieuwe datapunten (tijd en datum) om prognoses te bepalen\nzie nummer #462: zon en maan tijden nu zonder datum deel (alleen tijd)\nVoeg bundesland / status als zoekoptie toe en verplaats wat debug naar info logs",
-        "fr": "traduction des descriptions des symboles\nde nouveaux points de données (heure et date) pour identifier les périodes de prévision\nvoir numéro #462: heures de soleil et de lune maintenant sans date partie (temps seulement)\nAjouter bundesland / état comme option de recherche et déplacer un debug dans les journaux d'info",
-        "it": "traduzioni delle descrizioni dei simboli\nalcuni nuovi datapoint (ora e data) per identificare i periodi di previsione\nvedi numero #462: sole e luna ora senza data parte (solo orario)\nAggiungi bundesland / stato come opzione di ricerca e spostare un po 'di debug ai registri di informazioni",
-        "es": "traducciones de descripciones de símbolos\nalgunos nuevos puntos de datos (tiempo y fecha) para determinar los períodos de pronóstico\nver número #462: sol y luna tiempos ahora sin la parte de la fecha (solamente)\nAñadir bundesland / estado como opción de búsqueda y mover un poco de depuración a los registros de información",
-        "pl": "tłumaczenia opisów symboli\nniektóre nowe punkty danych (czas i data) w celu określenia okresów prognozowania\nzobacz numer # 462: czas słoneczny i księżycowy bez części daty (tylko czas)\nDodaj bundesland / state jako opcję wyszukiwania i przenieś debug do dzienników informacji",
-        "uk": "переклади символів\nдля визначення прогнозних періодів\nпереглянути номер #462: сонце і місяць тепер без дати частини (разово)\nДодайте бундесланд / стан, як варіант пошуку і перемістіть дебюг на інформаційні колоди",
-        "zh-cn": "符号描述翻译\n确定预测期的新数据点(时间和日期)\n参见第462期:现在没有日期部分的日月时间(只限时)\n添加 buddesland / 状态为搜索选项, 并移动一些调试到信息日志"
       }
     },
     "titleLang": {

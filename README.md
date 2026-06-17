@@ -79,8 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 4.5.5 (2026-06-17)
 - (René) see issue #574 and #571: state roles adapted
 
 ### 4.5.4 (2026-05-31)
@@ -105,10 +104,6 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René) see issue #492: rate limiter: check expired time of last request before new request
 * (René) see issue #490: icon file extension selectable in admin (svg, png or gif)
 * (René) current is only cpopied, if data are valid for current hour
-
-### 4.4.1 (2026-01-19)
-**Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.
-* (René) new folder structure for weather, wind and moon icons
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
