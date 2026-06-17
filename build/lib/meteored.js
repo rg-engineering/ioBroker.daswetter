@@ -680,9 +680,9 @@ class Meteored extends base_1.default {
             for (let d = 1; d < 6; d++) {
                 key = "location_" + this.id + ".ForecastDaily.Day_" + d;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
-                await this.CreateDatapoint(key + ".date_full", "state", "date.forecast.0", "string", "", true, false, "full date of forecast period (ISO string)");
-                await this.CreateDatapoint(key + ".date", "state", "date.forecast.0", "string", "", true, false, "date of forecast period (simple string)");
-                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek.forecast.0", "string", "", true, false, "weekday of date");
+                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period (ISO string)");
+                await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period (simple string)");
+                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
                 if (d == 1) {
                     //only for today
                     await this.CreateDatapoint(key + ".sunshineduration", "state", "value", "number", "hours", true, false, "sunshine duration of the day, based on daylight and clouds");
@@ -696,7 +696,7 @@ class Meteored extends base_1.default {
                 //date based time values for further calculation
                 await this.CreateDatapoint(key + ".start", "state", "date", "number", "", true, false, "start of forecast period [UNIX timestamp]");
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon.forecast.0", "string", "", true, false, "URL to weather symbol");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon", "string", "", true, false, "URL to weather symbol");
                 await this.CreateDatapoint(key + ".symbol_description", "state", "weather.state.forecast.0", "string", "", true, false, "symbol long description");
                 await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "Minimum temperature");
                 await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Maximum temperature");
@@ -704,7 +704,7 @@ class Meteored extends base_1.default {
                 await this.CreateDatapoint(key + ".Wind_Speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc. Beauforts scale");
                 await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
                 await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "text", "string", "", true, false, "URL to wind symbol");
+                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "weather.icon.wind", "string", "", true, false, "URL to wind symbol");
                 await this.CreateDatapoint(key + ".Rain", "state", "value.precipitation", "number", "mm", true, false, "Accumulated rain");
                 await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
                 await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
@@ -731,8 +731,8 @@ class Meteored extends base_1.default {
         if (this.useHourlyForecast) {
             key = "location_" + this.id + ".ForecastHourly";
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastHourly");
-            await this.CreateDatapoint(key + ".date_full", "state", "date.forecast.0", "string", "", true, false, "full date of forecast periods [ISO string]");
-            await this.CreateDatapoint(key + ".date", "state", "date.forecast.0", "string", "", true, false, "date of forecast periods [simple string]");
+            await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast periods [ISO string]");
+            await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast periods [simple string]");
             for (let h = 1; h < 25; h++) {
                 key = "location_" + this.id + ".ForecastHourly.Hour_" + h;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Hour_" + h);
@@ -747,11 +747,11 @@ class Meteored extends base_1.default {
     }
     async CreateObjectsHourly(key) {
         //daswetter.0.location_2.ForecastHourly.Hour_1.end  -> 31.12.2025, 01:00:00
-        await this.CreateDatapoint(key + ".end", "state", "date.forecast.0", "number", "", true, false, "end of forecast period [Unix timestamp]");
+        await this.CreateDatapoint(key + ".end", "state", "date", "number", "", true, false, "end of forecast period [Unix timestamp]");
         //daswetter.0.location_2.ForecastHourly.Hour_1.time  -> 01:00:00
-        await this.CreateDatapoint(key + ".time", "state", "date.forecast.0", "string", "", true, false, "end of forecast period [time string only}");
+        await this.CreateDatapoint(key + ".time", "state", "date", "string", "", true, false, "end of forecast period [time string only}");
         await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-        await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon.forecast.0", "string", "", true, false, "URL to weather symbol");
+        await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon", "string", "", true, false, "URL to weather symbol");
         await this.CreateDatapoint(key + ".symbol_description", "state", "text", "string", "", true, false, "weather symbol long description");
         await this.CreateDatapoint(key + ".night", "state", "state", "boolean", "", true, false, "Flag that indicates if the hour is at night");
         await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
@@ -760,8 +760,8 @@ class Meteored extends base_1.default {
         await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
         await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
         await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-        await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "text", "string", "", true, false, "URL to wind symbol");
-        await this.CreateDatapoint(key + ".rain", "state", "value", "value.precipitation", "mm", true, false, "Accumulated rain");
+        await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "weather.icon.wind", "string", "", true, false, "URL to wind symbol");
+        await this.CreateDatapoint(key + ".rain", "state", "value.precipitation", "number", "mm", true, false, "Accumulated rain");
         await this.CreateDatapoint(key + ".rain_probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
         await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
         await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
