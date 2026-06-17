@@ -79,6 +79,10 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+- (René) see issue #574 and #571: state roles adapted
+
 ### 4.5.4 (2026-05-31)
 - (copilot) Adapter requires node.js >= 22 now
 - (René) see issue 534: bug fix for current hour: time ends at forecast period
