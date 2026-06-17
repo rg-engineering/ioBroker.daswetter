@@ -79,7 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### 4.5.5 (2026-06-17)
+### **WORK IN PROGRESS**
 - (René) see issue #574 and #571: state roles adapted
 
 ### 4.5.4 (2026-05-31)

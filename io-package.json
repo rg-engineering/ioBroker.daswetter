@@ -3,9 +3,9 @@
     "name": "daswetter",
     "version": "4.5.5",
     "news": {
-      "4.5.5": {
+      "4.5.6": {
         "en": "see issue #574 and #571: state roles adapted",
-        "de": "Siehe Issue #574 und #571: Anpassung der Staatsrollen",
+        "de": "Siehe Issue #574 und #571: Anpassung der Rollen von Datenpunkten",
         "ru": "См. выпуски #574 и #571: адаптированные роли состояний.",
         "pt": "Veja as edições nº 574 e nº 571: funções estaduais adaptadas",
         "nl": "zie nummer 574 en 571: aangepaste staatsrollen",
