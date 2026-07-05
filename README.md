@@ -79,7 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### 4.5.8 (2026-07-05)
+### **WORK IN PROGRESS**
 * (René) dependency updates and translations
 
 ### 4.5.6 (2026-06-17)
