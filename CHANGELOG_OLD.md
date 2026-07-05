@@ -8,8 +8,6 @@
 * (René) see issue #490: icon file extension selectable in admin (svg, png or gif)
 * (René) current is only cpopied, if data are valid for current hour
 
-
-
 ## 4.4.1 (2026-01-19)
 **Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.
 * (René) new folder structure for weather, wind and moon icons
