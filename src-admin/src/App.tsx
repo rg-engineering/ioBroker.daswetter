@@ -99,7 +99,7 @@ interface AppState extends GenericAppState {
 
 class App extends GenericApp<GenericAppProps, AppState> {
 
-    private uploadInputRef: React.RefObject<HTMLInputElement>;
+    private uploadInputRef: React.RefObject<HTMLInputElement> = React.createRef<HTMLInputElement>();
     private symboldescription: SymbolDescription[] | null = null;
     constructor(props: GenericAppProps) {
         const extendedProps = { ...props };

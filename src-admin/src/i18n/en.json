@@ -17,6 +17,8 @@
   "bundesland": "Federal State",
   "city": "City",
   "city of location": "City of the location, e.g. Frankfurt am Main",
+  "copy current hour": "Copy current hour",
+  "copy data of current hour to separate DP's": "Copy data of current hour to separate datapoints",
   "custom": "custom",
   "custom_path": "custom path",
   "enable download of daily forecast": "Activate download of the daily forecast (up to 5 days)",
@@ -34,15 +36,10 @@
   "parse_timeout": "Parse timeout",
   "postcode": "Postal code",
   "postcode of location": "Postal code of the place, e.g. 60313 for Frankfurt am Main",
+  "select a Icon type": "Select an icon type",
   "select a PNG size": "Select PNG size",
   "select a icon set": "Select icon set",
   "useDailyForecast": "Use daily forecast",
   "useHourlyForecast": "use hourly forecast",
-  "use_png_or_svg": "Use PNG instead of SVG",
-
-  "copy current hour": "Copy current hour",
-  "copy data of current hour to separate DP's": "Copy data of current hour to separate datapoints",
-
-
-  "select a Icon type": "Select an icon type"
+  "use_png_or_svg": "Use PNG instead of SVG"
 }
