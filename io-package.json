@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.5.6",
+    "version": "4.5.7",
     "news": {
+      "4.5.7": {
+        "en": "dependency updates and translations",
+        "de": "Aktualisierungen und Übersetzungen von Abhängigkeiten",
+        "ru": "обновления зависимостей и переводы",
+        "pt": "atualizações de dependências e traduções",
+        "nl": "afhankelijkheidsupdates en vertalingen",
+        "fr": "mises à jour des dépendances et traductions",
+        "it": "aggiornamenti delle dipendenze e traduzioni",
+        "es": "Actualizaciones de dependencias y traducciones",
+        "pl": "aktualizacje zależności i tłumaczenia",
+        "uk": "оновлення залежностей та переклади",
+        "zh-cn": "依赖项更新和翻译"
+      },
       "4.5.6": {
         "en": "see issue #574 and #571: state roles adapted",
         "de": "Siehe Issue #574 und #571: Anpassung der Rollen von Datenpunkten",
@@ -80,19 +93,6 @@
         "pl": "* Uwaga: * * Struktura folderów dla ikon uległa zmianie. Kilka zestawów ikon jest już dostępnych, ale innych nadal brakuje. Jeśli ktoś chciałby wnieść swoje ikony, skontaktuj się ze mną.\nnowa struktura folderów dla ikon pogody, wiatru i księżyca",
         "uk": "*Примітка:*** Змінено структуру папки для ікон. Кілька іконок вже доступні, але інші все ще відсутні. Якщо хтось хотів би допомогти своїм іконам, будь ласка, зв'яжіться з нами.\nнова структура папок для погодних умов, вітрових і місячних ікон",
         "zh-cn": "*注意:** 图标的文件夹结构已经改变。 已有一些图标集可供使用,但其他的仍然缺失. 如果有人愿意献上他们的偶像,请联系我.\n用于天气、风和月亮图标的新文件夹结构"
-      },
-      "4.3.0": {
-        "en": "41 icons for DasWetter@4.x (galeria7)",
-        "de": "41 Symbole für DasWetter@4.x (galeria7)",
-        "ru": "41 значок для DasWetter@4.x (галерея7)",
-        "pt": "41 ícones para DasWitter@ 4. x (galeria7)",
-        "nl": "41 iconen voor DasWetter@4.x (galeria7)",
-        "fr": "41 icônes pour DasWetter@4.x (galeria7)",
-        "it": "41 icone per DasWetter@4.x (galeria7)",
-        "es": "41 iconos para DasWetter@4.x (galeria7)",
-        "pl": "41 ikon dla DasWetter @ 4.x (galeria7)",
-        "uk": "41 іконки для DasWetter@4.x (галерія7)",
-        "zh-cn": "41 个 DasWetter@ 4.x (galeria7) 的图标"
       }
     },
     "titleLang": {

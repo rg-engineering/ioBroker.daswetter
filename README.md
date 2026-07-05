@@ -79,8 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 4.5.7 (2026-07-05)
 * (René) dependency updates and translations
 
 ### 4.5.6 (2026-06-17)
@@ -99,16 +98,6 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 ### 4.5.1 (2026-02-01)
 * (René) bug fix: wind url was not set if wind speed was zero
 * (René) bug fix: save selected icon type (svg, png or gif) in admin
-
-### 4.5.0 (2026-01-31)
-* (René) show symbol description beside the symbol in admin as preview
-* (René) see issue #480: set minimum interval for data request to 60 minutes to avoid too many requests
-* (René) new icons (png only) added (thanks to forum member Negalein)
-* (René) see issue #478. bug fix copy current data at midnight
-* (René) see issue #492: rate limiter: check expired time of last request before new request
-* (René) see issue #490: icon file extension selectable in admin (svg, png or gif)
-* (René) current is only cpopied, if data are valid for current hour
-
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
