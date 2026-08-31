@@ -44,7 +44,7 @@
     "url": "https://github.com/rg-engineering/ioBroker.daswetter/issues"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha test/testAdapter.js --exit && node node_modules/mocha/bin/mocha test/testPackageFiles.js --exit",
+    "test": "npm run test:package",
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
