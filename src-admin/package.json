@@ -5,7 +5,7 @@
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
-        "@iobroker/adapter-react-v5": "8.2.13",
+        "@iobroker/adapter-react-v5": "8.3.2",
         "@iobroker/json-config": "^9.0.18",
         "@mui/icons-material": "^6.5.0",
         "@mui/material": "^6.5.0",
