@@ -2,8 +2,8 @@
 /* eslint-disable quote-props */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import type { AdminConnection } from '@iobroker/adapter-react-v5';
-import { I18n } from '@iobroker/adapter-react-v5';
+import type { AdminConnection } from '@iobroker/gui-components';
+import { I18n } from '@iobroker/gui-components';
 
 import type { SelectChangeEvent } from '@mui/material';
 
