@@ -1,4 +1,11 @@
 # Older changes
+## 4.5.1 (2026-02-01)
+* (René) bug fix: wind url was not set if wind speed was zero
+* (René) bug fix: save selected icon type (svg, png or gif) in admin
+
+
+
+
 ## 4.5.0 (2026-01-31)
 * (René) show symbol description beside the symbol in admin as preview
 * (René) see issue #480: set minimum interval for data request to 60 minutes to avoid too many requests

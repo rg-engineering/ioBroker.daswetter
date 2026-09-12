@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.5.9",
+    "version": "4.5.10",
     "news": {
+      "4.5.10": {
+        "en": "dependency updates\nsome bug fixes based on adapter checker recommendations",
+        "de": "Updates zu Abhängigkeiten\nEinige Bugfixes gemäß Adapter-Checker-Empfehlungen",
+        "ru": "обновления зависимостей\nнекоторые исправления ошибок, основанные на рекомендациях по проверке адаптеров",
+        "pt": "atualizações de dependência\nalgumas correções de bugs com base no Adapter Checker",
+        "nl": "updates van de afhankelijkheid\nenkele bugfixes op basis van aanbevelingen voor adaptercontroles",
+        "fr": "mises à jour de dépendance\ncorrections de bugs selon les recommandations d'Adapter Checker",
+        "it": "novità sulle dipendenze\ncorrezioni di bug basate sui consigli di Adapter Checker",
+        "es": "actualizaciones de dependencias\nalgunas correcciones de errores según lo recomendado por Adapter Checker",
+        "pl": "aktualizacje zależności\nniektóre poprawki błędów oparte na zaleceniach sprawdzania adaptera",
+        "uk": "оновлення залежностей\nдеякі виправлення помилок на основі рекомендацій перевірки адаптера",
+        "zh-cn": "依赖项更新\n根据适配器检查器建议修复了一些错误"
+      },
       "4.5.9": {
         "en": "dependency updates and translations",
         "de": "Aktualisierungen und Übersetzungen von Abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "pokaż opis symbolu obok symbolu w admin jako podgląd\nzobacz numer # 480: ustawić minimalny odstęp dla żądania danych do 60 minut, aby uniknąć zbyt wielu żądań\ndodano nowe ikony (tylko png) (dzięki członkowi forum Negalein)\nzob. numer 478. błąd naprawić kopiowanie danych bieżących o północy\npatrz numer # 492: ograniczenie stawki: sprawdzenie upłynął czas ostatniego wniosku przed nowym wnioskiem\nzobacz wydanie # 490: rozszerzenie pliku ikon wybrane w admin (svg, png lub gif)",
         "uk": "показати символ опису біля символу в адміні як попередній перегляд\nпереглянути номер #480: встановити мінімальний інтервал для запиту даних до 60 хвилин, щоб уникнути занадто багато запитів\nдодано нові ікони (тільки png)\nпереглянути номер #478. виправлення помилок на ніч\nпереглянути проблему #492: обмеження швидкості: перевірити час останнього запиту перед новим запитом\nпереглянути проблему #490: розширення файлу іконки, вибране в адмінці (, png або gif)",
         "zh-cn": "在管理员符号旁显示符号描述作为预览\n参见问题480:将数据请求的最小间隔设定为60分钟,以避免请求过多\n添加新图标( 仅 png) (感谢论坛成员 Negalein)\n见问题478。 午夜时段错误修正当前数据\n参见问题# 492: 速率限制器: 在新请求前检查上次请求的过期时间\n参见问题 # 490: 图标文件扩展名可选择在管理员( svg, png 或 gif) 中"
-      },
-      "4.4.1": {
-        "en": "*Attention:** The folder structure for the icons has changed. A few icon sets are already available, but others are still missing. If anyone would like to contribute their icons, please contact me.\nnew folder structure for weather, wind and moon icons",
-        "de": "*Attention:** Die Ordnerstruktur für die Icons hat sich geändert. Einige Icon-Sets sind bereits vorhanden, andere fehlen aber noch. Wenn jemand ihre Icons beibringen möchte, kontaktieren Sie mich bitte.\nneue ordnerstruktur für wetter-, wind- und mondsymbole",
-        "ru": "*Внимание:** Структура папок для иконок изменилась. Несколько наборов значков уже доступны, но другие все еще отсутствуют. Если кто-то хочет поделиться своими иконами, пожалуйста, свяжитесь со мной.\nновая структура папок для икон погоды, ветра и луны",
-        "pt": "*Atenção:**A estrutura da pasta para os ícones mudou. Alguns conjuntos de ícones já estão disponíveis, mas outros ainda estão faltando. Se alguém quiser contribuir com seus ícones, entre em contato comigo.\nnova estrutura de pasta para ícones de tempo, vento e lua",
-        "nl": "*Let op:** De mapstructuur voor de pictogrammen is veranderd. Een paar pictogramsets zijn al beschikbaar, maar anderen ontbreken nog. Als iemand zijn iconen wil bijdragen, neem dan contact met me op.\nnieuwe mapstructuur voor weer, wind en maanpictogrammen",
-        "fr": "*Attention :** La structure du dossier pour les icônes a changé. Quelques jeux d'icônes sont déjà disponibles, mais d'autres manquent encore. Si quelqu'un souhaite contribuer à leurs icônes, veuillez me contacter.\nnouvelle structure de dossier pour les icônes météo, vent et lune",
-        "it": "*Attenzione:** La struttura della cartella per le icone è cambiata. Alcuni set icona sono già disponibili, ma altri sono ancora mancanti. Se qualcuno vuole contribuire alle proprie icone, contattatemi.\nnuova struttura della cartella per le icone meteo, vento e luna",
-        "es": "*Atención:** La estructura de carpetas para los iconos ha cambiado. Algunos iconos ya están disponibles, pero otros siguen desaparecidos. Si alguien quiere aportar sus iconos, por favor contácteme.\nnueva estructura de carpetas para iconos meteorológicos, vientos y lunas",
-        "pl": "* Uwaga: * * Struktura folderów dla ikon uległa zmianie. Kilka zestawów ikon jest już dostępnych, ale innych nadal brakuje. Jeśli ktoś chciałby wnieść swoje ikony, skontaktuj się ze mną.\nnowa struktura folderów dla ikon pogody, wiatru i księżyca",
-        "uk": "*Примітка:*** Змінено структуру папки для ікон. Кілька іконок вже доступні, але інші все ще відсутні. Якщо хтось хотів би допомогти своїм іконам, будь ласка, зв'яжіться з нами.\nнова структура папок для погодних умов, вітрових і місячних ікон",
-        "zh-cn": "*注意:** 图标的文件夹结构已经改变。 已有一些图标集可供使用,但其他的仍然缺失. 如果有人愿意献上他们的偶像,请联系我.\n用于天气、风和月亮图标的新文件夹结构"
       }
     },
     "titleLang": {
