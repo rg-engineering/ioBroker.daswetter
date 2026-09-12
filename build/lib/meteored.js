@@ -122,11 +122,11 @@ class Meteored extends base_1.default {
             return !(code >= 32 && code <= 126) && code !== 9;
         });
         if (invalidChars.length > 0) {
-            this.logError(`API-Key enthält ${invalidChars.length} ungültige Zeichen: [${invalidChars.map(c => '\\u' + c.charCodeAt(0).toString(16)).join(', ')}]`);
+            this.logError(`API key contains ${invalidChars.length} invalid characters: [${invalidChars.map(c => '\\u' + c.charCodeAt(0).toString(16)).join(', ')}]`);
             return;
         }
         else {
-            this.logDebug("API-Key ist sauber ✅");
+            this.logDebug("API key is clean");
         }
         if (this.postcode === undefined || this.postcode == "") {
             this.logInfo("Postcode not set, skipping GetLocationPostcode");

@@ -208,6 +208,27 @@
           "agree",
           "cancel"
         ]
+      },
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<=4.5.10",
+            "newVersion>4.5.10"
+          ]
+        },
+        "title": {
+          "en": "API key is now stored encrypted"
+          
+        },
+        "text": {
+          "en": "The API key is now stored encrypted. It might be necessary to re-enter the key."
+         },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
       }
     ]
   },
@@ -242,5 +263,7 @@
   "objects": [],
   "instanceObjects": [],
   "protectedNative": [],
-  "encryptedNative": []
+  "encryptedNative": [
+    "ApiKey"
+  ]
 }

@@ -112,12 +112,13 @@ class DasWetter extends utils.Adapter {
             this.clearInterval(this.parseInterval);
             this.parseInterval = null;
         }
+        const intervalMs = Math.max(60, Math.min(1440, this.config.parseInterval)) * 60 * 1000;
         this.parseInterval = this.setInterval(() => {
             // Aufruf der async-Funktion und Fehler protokollieren, damit das Intervall nicht wegen einer unbehandelten Exception abstürzt
             (this.updateForecast.bind(this)()).catch((err) => {
                 this.log.error("updateForecast error: " + (err instanceof Error ? err.stack || err.message : String(err)));
             });
-        }, this.config.parseInterval * 60 * 1000);
+        }, intervalMs);
         if (this.updateInterval) {
             this.clearInterval(this.updateInterval);
             this.updateInterval = null;
@@ -141,7 +142,7 @@ class DasWetter extends utils.Adapter {
                 }
                 catch (err) {
                     // Loggen und weiter mit dem nächsten Eintrag
-                    this.log.error(`Fehler beim Aktualisieren von Meteored[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
+                    this.log.error(`Error updating Meteored[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
                 }
             }
         }
@@ -163,7 +164,7 @@ class DasWetter extends utils.Adapter {
             await this.copyCurrentHour();
         }
         catch (error) {
-            this.log.error("Fehler beim stündlichen Task:" + (error instanceof Error ? error.stack || error.message : String(error)));
+            this.log.error("Error in hourly task:" + (error instanceof Error ? error.stack || error.message : String(error)));
         }
     }
     async copyCurrentHour() {
@@ -174,7 +175,7 @@ class DasWetter extends utils.Adapter {
                 }
                 catch (err) {
                     // Loggen und weiter mit dem nächsten Eintrag
-                    this.log.error(`Fehler beim Kopieren von Daten[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
+                    this.log.error(`Error copying data[${n}]: ${err instanceof Error ? err.stack || err.message : String(err)}`);
                 }
             }
         }

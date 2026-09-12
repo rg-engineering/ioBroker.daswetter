@@ -58,7 +58,7 @@ const schema: ConfigItemPanel = {
         },
         "ApiKey": {
             "newLine": true,
-            "type": "text",
+            "type": "password",
             "label": "api key",
             "help": "API key from DasWetter website",
             "xs": 12,
