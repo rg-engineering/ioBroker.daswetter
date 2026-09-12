@@ -82,6 +82,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 
 ### **WORK IN PROGRESS**
 * (René) dependency updates
+* (René) some bug fixes based on adapter checker recommendations
  
 ### 4.5.9 (2026-07-05)
 * (René) dependency updates and translations
