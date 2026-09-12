@@ -21,6 +21,7 @@
   "copy data of current hour to separate DP's": "Скопируйте данные текущего часа в отдельные точки данных",
   "custom": "обычай",
   "custom_path": "собственный путь",
+  "decimal places for temperatures": "Десятичные знаки для температуры",
   "enable download of daily forecast": "Активировать загрузку ежедневного прогноза (до 5 дней)",
   "enable download of hourly forecast": "Включите почасовую загрузку прогноза (до 24 часов).",
   "enable location": "активировать это место",
@@ -39,6 +40,7 @@
   "select a Icon type": "Выберите тип значка",
   "select a PNG size": "Выберите размер PNG",
   "select a icon set": "Выберите набор значков",
+  "show temperatures with 0 to 2 decimal places": "Показывать температуру с точностью до 0 до 2 десятичных знаков.",
   "useDailyForecast": "Использовать ежедневный прогноз",
   "useHourlyForecast": "использовать почасовой прогноз",
   "use_png_or_svg": "Используйте PNG вместо SVG."

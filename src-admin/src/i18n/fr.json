@@ -21,6 +21,7 @@
   "copy data of current hour to separate DP's": "Copier les données de l'heure actuelle vers des points de données séparés",
   "custom": "coutume",
   "custom_path": "chemin personnalisé",
+  "decimal places for temperatures": "Places décimales pour les températures",
   "enable download of daily forecast": "Activer le téléchargement des prévisions quotidiennes (jusqu'à 5 jours)",
   "enable download of hourly forecast": "Activez le téléchargement des prévisions horaires (jusqu'à 24 heures).",
   "enable location": "activer cet emplacement",
@@ -39,6 +40,7 @@
   "select a Icon type": "Sélectionnez un type d'icône",
   "select a PNG size": "Sélectionnez la taille PNG",
   "select a icon set": "Sélectionnez le jeu d'icônes",
+  "show temperatures with 0 to 2 decimal places": "Afficher les températures avec 0 à 2 décimales",
   "useDailyForecast": "Utiliser les prévisions quotidiennes",
   "useHourlyForecast": "utiliser les prévisions horaires",
   "use_png_or_svg": "Utilisez PNG au lieu de SVG"

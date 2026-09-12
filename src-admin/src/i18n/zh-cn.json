@@ -21,6 +21,7 @@
   "copy data of current hour to separate DP's": "将当前小时的数据复制到单独的数据点",
   "custom": "风俗",
   "custom_path": "自定义路径",
+  "decimal places for temperatures": "温度的小数位",
   "enable download of daily forecast": "激活每日天气预报下载（最多 5 天）",
   "enable download of hourly forecast": "启用每小时预测下载（最多 24 小时）。",
   "enable location": "激活该位置",
@@ -39,6 +40,7 @@
   "select a Icon type": "选择图标类型",
   "select a PNG size": "选择 PNG 尺寸",
   "select a icon set": "选择图标集",
+  "show temperatures with 0 to 2 decimal places": "显示小数点后 0 至 2 位的温度",
   "useDailyForecast": "使用每日预测",
   "useHourlyForecast": "使用每小时预测",
   "use_png_or_svg": "使用 PNG 代替 SVG"

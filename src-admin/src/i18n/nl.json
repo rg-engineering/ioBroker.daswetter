@@ -21,6 +21,7 @@
   "copy data of current hour to separate DP's": "Kopieer gegevens van het huidige uur naar afzonderlijke datapunten",
   "custom": "aangepast",
   "custom_path": "aangepast pad",
+  "decimal places for temperatures": "Decimalen voor temperaturen",
   "enable download of daily forecast": "Activeer het downloaden van de dagelijkse voorspelling (tot 5 dagen)",
   "enable download of hourly forecast": "Schakel het downloaden van prognoses per uur in (tot 24 uur).",
   "enable location": "activeer deze locatie",
@@ -39,6 +40,7 @@
   "select a Icon type": "Selecteer een pictogramtype",
   "select a PNG size": "Selecteer PNG-formaat",
   "select a icon set": "Selecteer pictogrammenset",
+  "show temperatures with 0 to 2 decimal places": "Toon temperaturen met 0 tot 2 decimalen",
   "useDailyForecast": "Gebruik dagelijkse voorspelling",
   "useHourlyForecast": "gebruik uurvoorspelling",
   "use_png_or_svg": "Gebruik PNG in plaats van SVG"

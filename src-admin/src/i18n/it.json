@@ -1,5 +1,5 @@
 {
-  "API key from DasWetter website": "Chiave API dal sito Web Meteored. Utilizza il link qui sopra per ottenere la tua chiave API gratuita.",
+  "API key from DasWetter website": "API key from Meteored website. Use the link above to get your free API key.",
   "Configuration loaded from file": "Configurazione caricata da file",
   "Download configuration": "Scarica la configurazione",
   "Failed to download configuration": "Impossibile scaricare la configurazione",
@@ -21,6 +21,7 @@
   "copy data of current hour to separate DP's": "Copia i dati dell'ora corrente in punti dati separati",
   "custom": "costume",
   "custom_path": "percorso personalizzato",
+  "decimal places for temperatures": "Cifre decimali per le temperature",
   "enable download of daily forecast": "Attiva il download delle previsioni giornaliere (fino a 5 giorni)",
   "enable download of hourly forecast": "Abilita il download delle previsioni orarie (fino a 24 ore).",
   "enable location": "attivare questa posizione",
@@ -39,6 +40,7 @@
   "select a Icon type": "Seleziona un tipo di icona",
   "select a PNG size": "Seleziona la dimensione PNG",
   "select a icon set": "Seleziona il set di icone",
+  "show temperatures with 0 to 2 decimal places": "Mostra le temperature con 0-2 cifre decimali",
   "useDailyForecast": "Utilizza le previsioni giornaliere",
   "useHourlyForecast": "utilizzare la previsione oraria",
   "use_png_or_svg": "Usa PNG invece di SVG"

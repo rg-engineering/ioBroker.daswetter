@@ -21,6 +21,7 @@
   "copy data of current hour to separate DP's": "Copie os dados da hora atual para pontos de dados separados",
   "custom": "personalizado",
   "custom_path": "caminho personalizado",
+  "decimal places for temperatures": "Casas decimais para temperaturas",
   "enable download of daily forecast": "Ativar download da previsão diária (até 5 dias)",
   "enable download of hourly forecast": "Habilite o download da previsão por hora (até 24 horas).",
   "enable location": "ativar este local",
@@ -39,6 +40,7 @@
   "select a Icon type": "Selecione um tipo de ícone",
   "select a PNG size": "Selecione o tamanho PNG",
   "select a icon set": "Selecione o conjunto de ícones",
+  "show temperatures with 0 to 2 decimal places": "Mostrar temperaturas com 0 a 2 casas decimais",
   "useDailyForecast": "Usar previsão diária",
   "useHourlyForecast": "usar previsão horária",
   "use_png_or_svg": "Use PNG em vez de SVG"
