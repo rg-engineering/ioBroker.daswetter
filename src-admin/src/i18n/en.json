@@ -41,5 +41,8 @@
   "select a icon set": "Select icon set",
   "useDailyForecast": "Use daily forecast",
   "useHourlyForecast": "use hourly forecast",
-  "use_png_or_svg": "Use PNG instead of SVG"
+  "use_png_or_svg": "Use PNG instead of SVG",
+  "decimal places for temperatures": "Decimal places for temperatures",
+  "show temperatures with 0 to 2 decimal places": "Show temperatures with 0 to 2 decimal places"
+
 }

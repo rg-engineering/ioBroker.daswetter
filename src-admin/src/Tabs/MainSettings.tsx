@@ -26,7 +26,7 @@ interface SettingsProps {
 
 const schema: ConfigItemPanel = {
     "type": "panel",
-    "label": "Main settings",
+    "label": "Main_settings",
     "items": {
         "icontest": {
             "type": "staticImage",
