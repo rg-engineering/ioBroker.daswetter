@@ -218,12 +218,31 @@
           ]
         },
         "title": {
-          "en": "API key is now stored encrypted"
-          
+          "en": "API key is now stored encrypted",
+          "de": "Der API-Schlüssel wird jetzt verschlüsselt gespeichert",
+          "ru": "Ключ API теперь хранится в зашифрованном виде.",
+          "pt": "A chave API agora é armazenada criptografada",
+          "nl": "API-sleutel wordt nu gecodeerd opgeslagen",
+          "fr": "La clé API est désormais stockée cryptée",
+          "it": "La chiave API è ora archiviata crittografata",
+          "es": "La clave API ahora se almacena cifrada",
+          "pl": "Klucz API jest teraz przechowywany w postaci zaszyfrowanej",
+          "uk": "Ключ API тепер зберігається в зашифрованому вигляді",
+          "zh-cn": "API 密钥现已加密存储"
         },
         "text": {
-          "en": "The API key is now stored encrypted. It might be necessary to re-enter the key."
-         },
+          "en": "The API key is now stored encrypted. It might be necessary to re-enter the key.",
+          "de": "Der API-Schlüssel wird nun verschlüsselt gespeichert. Möglicherweise muss der Schlüssel erneut eingegeben werden.",
+          "ru": "Ключ API теперь хранится в зашифрованном виде. Возможно, потребуется повторно ввести ключ.",
+          "pt": "A chave API agora é armazenada criptografada. Pode ser necessário inserir novamente a chave.",
+          "nl": "De API-sleutel wordt nu versleuteld opgeslagen. Het kan nodig zijn om de sleutel opnieuw in te voeren.",
+          "fr": "La clé API est désormais stockée cryptée. Il peut être nécessaire de ressaisir la clé.",
+          "it": "La chiave API è ora archiviata crittografata. Potrebbe essere necessario reinserire la chiave.",
+          "es": "La clave API ahora se almacena cifrada. Puede que sea necesario volver a introducir la clave.",
+          "pl": "Klucz API jest teraz przechowywany w postaci zaszyfrowanej. Może być konieczne ponowne wprowadzenie klucza.",
+          "uk": "Тепер ключ API зберігається в зашифрованому вигляді. Можливо, знадобиться повторно ввести ключ.",
+          "zh-cn": "API 密钥现已加密存储。可能需要重新输入密钥。"
+        },
         "level": "warn",
         "buttons": [
           "agree",
