@@ -281,7 +281,9 @@
   },
   "objects": [],
   "instanceObjects": [],
-  "protectedNative": [],
+  "protectedNative": [
+    "ApiKey"
+  ],
   "encryptedNative": [
     "ApiKey"
   ]

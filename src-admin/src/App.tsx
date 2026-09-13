@@ -103,7 +103,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
     private symboldescription: SymbolDescription[] | null = null;
     constructor(props: GenericAppProps) {
         const extendedProps = { ...props };
-        extendedProps.encryptedFields = ['pass'];
+        extendedProps.encryptedFields = ['ApiKey'];
 
         extendedProps.translations = {
             en: enLang,
@@ -137,18 +137,9 @@ class App extends GenericApp<GenericAppProps, AppState> {
     }
 
 
-    onPrepareSave(): boolean {
-        console.log("onPrepareSave called " + JSON.stringify(this.state.native));
+    
 
-        return true;
-    }
-
-    onLoadConfig(): void {
-        console.log("onLoadConfig called " + JSON.stringify(this.state.native));
-
-        return;
-
-    }
+    
 
     async onConnectionReady(): Promise<void> {
         super.onConnectionReady();
