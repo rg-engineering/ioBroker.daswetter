@@ -2,7 +2,7 @@
 /* eslint-disable quote-props */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/gui-components';
 import type { DasWetterAdapterConfig, SymbolDescription } from "../types";
 
 import SelectIconSet from '../Components/SelectIconSet';
