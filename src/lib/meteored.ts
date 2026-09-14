@@ -1284,8 +1284,12 @@ export default class Meteored extends Base {
     // symbol functions
     getSymbolLongDescription(num: number, isNight: boolean): string {
 
+        this.logDebug("getSymbolLongDescription called called for: " + num);
+
         const translator = new WeatherTranslator();
         const lang = (this.language && typeof this.language === "string" && this.language.trim()) ? this.language : "de-DE"
+
+        this.logDebug("getSymbolLongDescription translator created for " + lang);
 
         translator.SetLanguage(lang);
 
@@ -1305,15 +1309,19 @@ export default class Meteored extends Base {
 
             if (isNight) {
                 if (found && found.night && typeof found.night.long === "string") {
-                    return translator.translateWeather( found.night.long);
+
+                    ret = ranslator.translateWeather(found.night.long);
+                    this.logDebug("getSymbolLongDescription got night description for: " + num + " " + ret);
+                    return ret;
                 }
             }
 
-
-
             //if night-value not provided or it's day:
             if (found && found.day && typeof found.day.long === "string") {
-                return translator.translateWeather(found.day.long);
+
+                ret = translator.translateWeather(found.day.long)
+                this.logDebug("getSymbolLongDescription got day description for: " + num + " " + ret);
+                return ret;
             }
 
 
