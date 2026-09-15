@@ -1310,7 +1310,7 @@ export default class Meteored extends Base {
             if (isNight) {
                 if (found && found.night && typeof found.night.long === "string") {
 
-                    ret = ranslator.translateWeather(found.night.long);
+                    const ret = translator.translateWeather(found.night.long);
                     this.logDebug("getSymbolLongDescription got night description for: " + num + " " + ret);
                     return ret;
                 }
@@ -1319,7 +1319,7 @@ export default class Meteored extends Base {
             //if night-value not provided or it's day:
             if (found && found.day && typeof found.day.long === "string") {
 
-                ret = translator.translateWeather(found.day.long)
+                const ret = translator.translateWeather(found.day.long)
                 this.logDebug("getSymbolLongDescription got day description for: " + num + " " + ret);
                 return ret;
             }
