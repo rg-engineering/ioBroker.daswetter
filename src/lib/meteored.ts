@@ -885,14 +885,19 @@ export default class Meteored extends Base {
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");
 
             for (let d = 1; d < 6; d++) {
+                // The ioBroker forecast roles are 0 based, so "...forecast.0" is today (Day_1).
+                // Without that index every day carries the very same role and consumers like the
+                // type-detector cannot tell the days apart.
+                const f = d - 1;
+
                 key = "location_" + this.id + ".ForecastDaily.Day_" + d;
                 await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily Day_" + d);
 
 
-                await this.CreateDatapoint(key + ".date_full", "state", "date", "string", "", true, false, "full date of forecast period (ISO string)");
+                await this.CreateDatapoint(key + ".date_full", "state", `date.forecast.${f}`, "string", "", true, false, "full date of forecast period (ISO string)");
                 await this.CreateDatapoint(key + ".date", "state", "date", "string", "", true, false, "date of forecast period (simple string)");
 
-                await this.CreateDatapoint(key + ".NameOfDay", "state", "dayofweek", "string", "", true, false, "weekday of date");
+                await this.CreateDatapoint(key + ".NameOfDay", "state", `dayofweek.forecast.${f}`, "string", "", true, false, "weekday of date");
 
                 if (d == 1) {
                     //only for today
@@ -908,34 +913,34 @@ export default class Meteored extends Base {
                 await this.CreateDatapoint(key + ".start", "state", "date", "number", "", true, false, "start of forecast period [UNIX timestamp]");
 
                 await this.CreateDatapoint(key + ".symbol", "state", "value", "number", "", true, false, "Identifier for weather symbol");
-                await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon", "string", "", true, false, "URL to weather symbol");
-                await this.CreateDatapoint(key + ".symbol_description", "state", "weather.state.forecast.0", "string", "", true, false, "symbol long description");
-                await this.CreateDatapoint(key + ".Temperature_Min", "state", "value.temperature.min.forecast.0", "number", "°C", true, false, "Minimum temperature");
-                await this.CreateDatapoint(key + ".Temperature_Max", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Maximum temperature");
-                await this.CreateDatapoint(key + ".Wind_Speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
-                await this.CreateDatapoint(key + ".Wind_Speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc. Beauforts scale");
+                await this.CreateDatapoint(key + ".symbol_URL", "state", `weather.icon.forecast.${f}`, "string", "", true, false, "URL to weather symbol");
+                await this.CreateDatapoint(key + ".symbol_description", "state", `weather.state.forecast.${f}`, "string", "", true, false, "symbol long description");
+                await this.CreateDatapoint(key + ".Temperature_Min", "state", `value.temperature.min.forecast.${f}`, "number", "°C", true, false, "Minimum temperature");
+                await this.CreateDatapoint(key + ".Temperature_Max", "state", `value.temperature.max.forecast.${f}`, "number", "°C", true, false, "Maximum temperature");
+                await this.CreateDatapoint(key + ".Wind_Speed", "state", `value.speed.wind.forecast.${f}`, "number", "km/h", true, false, "Wind speed");
+                await this.CreateDatapoint(key + ".Wind_Speed_Beauforts", "state", "value", "number", "", true, false, "Wind speed acc. Beauforts scale");
                 await this.CreateDatapoint(key + ".Wind_Gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
-                await this.CreateDatapoint(key + ".Wind_Direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
-                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "weather.icon.wind", "string", "", true, false, "URL to wind symbol");
+                await this.CreateDatapoint(key + ".Wind_Direction", "state", `weather.direction.wind.forecast.${f}`, "string", "", true, false, "Wind direction");
+                await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", `weather.icon.wind.forecast.${f}`, "string", "", true, false, "URL to wind symbol");
 
-                await this.CreateDatapoint(key + ".Rain", "state", "value.precipitation", "number", "mm", true, false, "Accumulated rain");
-                await this.CreateDatapoint(key + ".Rain_Probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
-                await this.CreateDatapoint(key + ".Humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
-                await this.CreateDatapoint(key + ".Pressure", "state", "value.pressure.forecast.0", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+                await this.CreateDatapoint(key + ".Rain", "state", `value.precipitation.forecast.${f}`, "number", "mm", true, false, "Accumulated rain");
+                await this.CreateDatapoint(key + ".Rain_Probability", "state", `value.precipitation.forecast.${f}`, "number", "%", true, false, "Rain probability for accumulated rain");
+                await this.CreateDatapoint(key + ".Humidity", "state", `value.humidity.forecast.${f}`, "number", "%", true, false, "Humidity");
+                await this.CreateDatapoint(key + ".Pressure", "state", `value.pressure.forecast.${f}`, "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
                 await this.CreateDatapoint(key + ".Snowline", "state", "value", "number", "m", true, false, "Snowline cote expressed in meters");
                 await this.CreateDatapoint(key + ".UV_index_max", "state", "value.uv", "number", "", true, false, "Maximum UV index for day");
 
                 //string based time values for direct display
-                await this.CreateDatapoint(key + ".Sun_in", "state", "date.sunrise", "string", "", true, false, "sunrise time [string]");
+                await this.CreateDatapoint(key + ".Sun_in", "state", `date.sunrise.forecast.${f}`, "string", "", true, false, "sunrise time [string]");
                 await this.CreateDatapoint(key + ".Sun_mid", "state", "date", "string", "", true, false, "sun noon time [string]");
-                await this.CreateDatapoint(key + ".Sun_out", "state", "date.sunset", "string", "", true, false, "sunset time [string]");
+                await this.CreateDatapoint(key + ".Sun_out", "state", `date.sunset.forecast.${f}`, "string", "", true, false, "sunset time [string]");
                 await this.CreateDatapoint(key + ".Moon_in", "state", "date", "string", "", true, false, "moonrise time [string]");
                 await this.CreateDatapoint(key + ".Moon_out", "state", "date", "string", "", true, false, "moonset time [string]");
 
                 //date based time values for further calculation
-                await this.CreateDatapoint(key + ".Sun_in_full", "state", "date.sunrise", "number", "", true, false, "sunrise time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Sun_in_full", "state", "date", "number", "", true, false, "sunrise time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Sun_mid_full", "state", "date", "number", "", true, false, "sun noon time [Unix timestamp]");
-                await this.CreateDatapoint(key + ".Sun_out_full", "state", "date.sunset", "number", "", true, false, "sunset time [Unix timestamp]");
+                await this.CreateDatapoint(key + ".Sun_out_full", "state", "date", "number", "", true, false, "sunset time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Moon_in_full", "state", "date", "number", "", true, false, "moonrise time [Unix timestamp]");
                 await this.CreateDatapoint(key + ".Moon_out_full", "state", "date", "number", "", true, false, "moonset time [Unix timestamp]");
 
@@ -984,17 +989,17 @@ export default class Meteored extends Base {
         await this.CreateDatapoint(key + ".symbol_URL", "state", "weather.icon", "string", "", true, false, "URL to weather symbol");
         await this.CreateDatapoint(key + ".symbol_description", "state", "text", "string", "", true, false, "weather symbol long description");
         await this.CreateDatapoint(key + ".night", "state", "state", "boolean", "", true, false, "Flag that indicates if the hour is at night");
-        await this.CreateDatapoint(key + ".temperature", "state", "value.temperature.max.forecast.0", "number", "°C", true, false, "Temperature value");
+        await this.CreateDatapoint(key + ".temperature", "state", "value.temperature", "number", "°C", true, false, "Temperature value");
         await this.CreateDatapoint(key + ".temperature_feels_like", "state", "value.temperature.feelslike", "number", "°C", true, false, "Temperature feels like value");
-        await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind.forecast.0", "number", "km/h", true, false, "Wind speed");
-        await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value.speed.wind.forecast.0", "number", "", true, false, "Wind speed acc Beauforts scale");
+        await this.CreateDatapoint(key + ".wind_speed", "state", "value.speed.wind", "number", "km/h", true, false, "Wind speed");
+        await this.CreateDatapoint(key + ".wind_speed_Beauforts", "state", "value", "number", "", true, false, "Wind speed acc Beauforts scale");
         await this.CreateDatapoint(key + ".wind_gust", "state", "value.speed.wind.gust", "number", "km/h", true, false, "Wind gust");
-        await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind.forecast.0", "string", "", true, false, "Wind direction");
+        await this.CreateDatapoint(key + ".wind_direction", "state", "weather.direction.wind", "string", "", true, false, "Wind direction");
         await this.CreateDatapoint(key + ".Wind_symbol_URL", "state", "weather.icon.wind", "string", "", true, false, "URL to wind symbol");
         await this.CreateDatapoint(key + ".rain", "state", "value.precipitation", "number", "mm", true, false, "Accumulated rain");
-        await this.CreateDatapoint(key + ".rain_probability", "state", "value.precipitation.chance", "number", "%", true, false, "Rain probability for accumulated rain");
+        await this.CreateDatapoint(key + ".rain_probability", "state", "value.precipitation", "number", "%", true, false, "Rain probability for accumulated rain");
         await this.CreateDatapoint(key + ".humidity", "state", "value.humidity", "number", "%", true, false, "Humidity");
-        await this.CreateDatapoint(key + ".pressure", "state", "value", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
+        await this.CreateDatapoint(key + ".pressure", "state", "value.pressure", "number", "hPa", true, false, "Pressure expressed in Millibars / hPa");
         await this.CreateDatapoint(key + ".snowline", "state", "value.snowline", "number", "m", true, false, "Snowline cote expressed in meters");
         await this.CreateDatapoint(key + ".uv_index_max", "state", "value.uv", "number", "", true, false, "Maximum UV index for day");
         await this.CreateDatapoint(key + ".clouds", "state", "value.clouds", "number", "%", true, false, "Percentage of clouds");
