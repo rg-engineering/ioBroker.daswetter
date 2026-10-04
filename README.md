@@ -79,8 +79,7 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 4.6.0 (2026-10-04)
 * (René) see issue #619: support of new API v2 for DasWetter.com
 * (Garfonso) better support of type detector
 * (René) **ATTENTION:** API key is stored encrypted now. You might need to re-enter the key in the adapter settings after update
@@ -101,10 +100,6 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
 * (René) see issue 534: bug fix for current hour: time ends at forecast period
 * (René) see issue 515: decimal places for temperature adjusable between 0 and 2 in admin
 * (René) see issue 515: add a datapoint to show last time when data was downloaded from server
-
-### 4.5.3 (2026-03-08)
-* (René) solved lint errors and warnings based on adapter checker
-* (René) dependency updates and fixes based on adapter checker recommendations
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

@@ -1,10 +1,12 @@
 # Older changes
+## 4.5.3 (2026-03-08)
+* (René) solved lint errors and warnings based on adapter checker
+* (René) dependency updates and fixes based on adapter checker recommendations
+
+
 ## 4.5.1 (2026-02-01)
 * (René) bug fix: wind url was not set if wind speed was zero
 * (René) bug fix: save selected icon type (svg, png or gif) in admin
-
-
-
 
 ## 4.5.0 (2026-01-31)
 * (René) show symbol description beside the symbol in admin as preview
