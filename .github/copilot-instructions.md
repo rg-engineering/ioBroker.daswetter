@@ -254,6 +254,9 @@ Before considering a task complete, verify:
 
 If an unrelated change was unavoidable, explicitly explain why.
 
+Never claim that code was compiled, tested, linted, or successfully executed unless you actually performed that operation 
+and observed the result. If execution is not available, clearly state that the change has not been verified by execution.
+
 ---
 
 ## Core Principles
