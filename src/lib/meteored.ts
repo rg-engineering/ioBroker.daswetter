@@ -30,55 +30,84 @@ interface location_data {
 }
 
 interface day_data {
+    "sun": sun_data,
+    "moon": moon_data,
+    "wind": wind_data,
     "start": number,
     "symbol": number,
-    "temperature_min": number,
-    "temperature_max": number,
-    "wind_speed": number,
-    "wind_gust": number,
-    "wind_direction": string,
-    "rain": number,
-    "rain_probability": number,
     "humidity": number,
     "pressure": number,
     "snowline": number,
+    "temperature": temperature_data,
     "uv_index_max": number,
-    "sun_in": number,
-    "sun_mid": number,
-    "sun_out": number,
-    "moon_in": number,
-    "moon_out": number,
-    "moon_symbol": number,
-    "moon_illumination": number
+    "precipitation": precipitation_data,
+}
+
+interface sun_data {
+    "in": number,
+    "mid": number,
+    "out": number
+}
+
+interface moon_data {
+    "in": number,
+    "out": number,
+    "symbol": number,
+    "illumination": number
+}
+
+interface wind_data{
+    "gust": number,
+    "speed": number,
+    "direction": string
+}
+
+interface temperature_data {
+    "min": number,
+    "max": number
+}
+
+interface precipitation_data {
+    "total": number,
+    "probability": number
 }
 
 interface hour_data {
     "end": number,
-    "symbol": number,
-    "night": boolean,
-    "temperature": number,
-    "temperature_feels_like": number,
-    "wind_speed": number,
-    "wind_gust": number,
-    "wind_direction": string,
-    "rain": number,
-    "rain_probability": number,
+    "snow": snow_data
+    "wind": wind_data,
+    "clouds": number,
+    "symbol": symbol_hourly_data,
     "humidity": number,
     "pressure": number,
-    "snowline": number,
+    "temperature": temperature_hourly_data,
     "uv_index_max": number,
-    "clouds": number
+    "precipitation": precipitation_data,
 }
 
-interface symbol_day {
-    "short": string,
-    "long": string
+interface snow_data {
+    snowline: number
+}
+
+interface temperature_hourly_data {
+    "value": number,
+    "feels_like": number
+}
+
+interface symbol_hourly_data {
+    "value": number,
+    "night": boolean
 }
 
 interface symbol_data {
     "id": number,
     "day": symbol_day
     "night"?: symbol_day
+}
+
+interface symbol_day {
+    "short": string,
+    "long": string
 }
 
 export default class Meteored extends Base {
@@ -240,6 +269,9 @@ export default class Meteored extends Base {
             return;
         }
         const url = "https://api.meteored.com/api/location/v1/search/postalcode/" + this.postcode;
+
+        this.logDebug("calling " + url);
+
         const headers = {
             accept: "application/json",
             "x-api-key": this.api_key
@@ -255,7 +287,7 @@ export default class Meteored extends Base {
                 });
             } catch (err) {
                 if (axios.isAxiosError(err)) {
-                    this.logError("axios error in GetLocationPostcode: message=" + err.message + ", code=" + (err.code || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
+                    this.logError("axios error in GetLocationPostcode: message=" + err.message + ", code=" + (err.name || "") + ", status=" + (err.response?.status || "no-response") + ", data=" + (err.response ? JSON.stringify(err.response.data) : "undefined"));
                 } else {
                     this.logError("exception in GetLocationPostcode (non-axios): " + String(err));
                 }
@@ -343,6 +375,9 @@ export default class Meteored extends Base {
         }
 
         const url = "https://api.meteored.com/api/location/v1/search/txt/" + this.city;
+
+        this.logDebug("calling " + url);
+
         const headers = {
             accept: "application/json",
             "x-api-key": this.api_key
@@ -461,7 +496,10 @@ export default class Meteored extends Base {
                 return;
             }
 
-            const url = "https://api.meteored.com/api/forecast/v1/daily/" + this.location_hash;
+            const url = "https://api.meteored.com/api/forecast/v2/daily/" + this.location_hash;
+
+            this.logDebug("calling " + url);
+
             const headers = {
                 accept: "application/json",
                 "x-api-key": this.api_key
@@ -520,27 +558,57 @@ export default class Meteored extends Base {
                         // Mappe rohe Objekte auf das definierte day_data-Interface mit sicheren Typen/Defaults
                         try {
                             const mapped: day_data[] = rawDays.map((d: day_data) => {
-                                return {
+                            return {
                                     start: typeof d.start === "number" ? d.start : Number(d.start) || 0,
                                     symbol: typeof d.symbol === "number" ? d.symbol : Number(d.symbol) || 0,
-                                    temperature_min: typeof d.temperature_min === "number" ? d.temperature_min : Number(d.temperature_min) || 0,
-                                    temperature_max: typeof d.temperature_max === "number" ? d.temperature_max : Number(d.temperature_max) || 0,
-                                    wind_speed: typeof d.wind_speed === "number" ? d.wind_speed : Number(d.wind_speed) || 0,
-                                    wind_gust: typeof d.wind_gust === "number" ? d.wind_gust : Number(d.wind_gust) || 0,
-                                    wind_direction: d.wind_direction ? String(d.wind_direction) : "",
-                                    rain: typeof d.rain === "number" ? d.rain : Number(d.rain) || 0,
-                                    rain_probability: typeof d.rain_probability === "number" ? d.rain_probability : Number(d.rain_probability) || 0,
+                                    temperature: typeof d.temperature === "object" && d.temperature ? {
+                                        min: typeof d.temperature.min === "number" ? d.temperature.min : Number(d.temperature.min) || 0,
+                                        max: typeof d.temperature.max === "number" ? d.temperature.max : Number(d.temperature.max) || 0
+                                    } : {
+                                        min: 0,
+                                        max: 0
+                                    },
+                                    wind: typeof d.wind === "object" && d.wind ? {
+                                        speed: typeof d.wind.speed === "number" ? d.wind.speed : Number(d.wind.speed) || 0,
+                                        gust: typeof d.wind.gust === "number" ? d.wind.gust : Number(d.wind.gust) || 0,
+                                        direction: d.wind.direction ? String(d.wind.direction) : ""
+                                    } : {
+                                        speed: 0,
+                                        gust: 0,
+                                        direction: ""
+                                    },
+                                    precipitation: typeof d.precipitation === "object" && d.precipitation ? {
+                                        total: typeof d.precipitation.total === "number" ? d.precipitation.total : Number(d.precipitation.total) || 0,
+                                        probability: typeof d.precipitation.probability === "number" ? d.precipitation.probability : Number(d.precipitation.probability) || 0
+                                    } : {
+                                        total: 0,
+                                        probability: 0
+                                    },
+                                    
                                     humidity: typeof d.humidity === "number" ? d.humidity : Number(d.humidity) || 0,
                                     pressure: typeof d.pressure === "number" ? d.pressure : Number(d.pressure) || 0,
                                     snowline: typeof d.snowline === "number" ? d.snowline : Number(d.snowline) || 0,
                                     uv_index_max: typeof d.uv_index_max === "number" ? d.uv_index_max : Number(d.uv_index_max) || 0,
-                                    sun_in: typeof d.sun_in === "number" ? d.sun_in : Number(d.sun_in) || 0,
-                                    sun_mid: typeof d.sun_mid === "number" ? d.sun_mid : Number(d.sun_mid) || 0,
-                                    sun_out: typeof d.sun_out === "number" ? d.sun_out : Number(d.sun_out) || 0,
-                                    moon_in: typeof d.moon_in === "number" ? d.moon_in : Number(d.moon_in) || 0,
-                                    moon_out: typeof d.moon_out === "number" ? d.moon_out : Number(d.moon_out) || 0,
-                                    moon_symbol: typeof d.moon_symbol === "number" ? d.moon_symbol : Number(d.moon_symbol) || 0,
-                                    moon_illumination: typeof d.moon_illumination === "number" ? d.moon_illumination : Number(d.moon_illumination) || 0
+                                    sun: typeof d.sun === "object" && d.sun ?{
+                                        in: typeof d.sun.in === "number" ? d.sun.in : Number(d.sun.in) || 0,
+                                        mid: typeof d.sun.mid === "number" ? d.sun.mid : Number(d.sun.mid) || 0,
+                                        out: typeof d.sun.out === "number" ? d.sun.out : Number(d.sun.out) || 0,
+                                    } : {
+                                            in: 0,
+                                            mid: 0,
+                                            out: 0
+                                    },
+                                    moon: typeof d.moon === "object" && d.moon ?{
+                                        in: typeof d.moon.in === "number" ? d.moon.in : Number(d.moon.in) || 0,
+                                        out: typeof d.moon.out === "number" ? d.moon.out : Number(d.moon.out) || 0,
+                                        symbol: typeof d.moon.symbol === "number" ? d.moon.symbol : Number(d.moon.symbol) || 0,
+                                        illumination: typeof d.moon.illumination === "number" ? d.moon.illumination : Number(d.moon.illumination) || 0
+                                    } : {
+                                        in: 0,
+                                        out: 0,
+                                        symbol: 0,
+                                        illumination: 0
+                                    }
                                 };
                             });
 
@@ -591,7 +659,10 @@ export default class Meteored extends Base {
 
 
             
-            const url = "https://api.meteored.com/api/forecast/v1/hourly/" + this.location_hash;
+            const url = "https://api.meteored.com/api/forecast/v2/hourly/" + this.location_hash;
+
+            this.logDebug("calling " + url);
+
             const headers = {
                 accept: "application/json",
                 "x-api-key": this.api_key
@@ -639,18 +710,47 @@ export default class Meteored extends Base {
                             const mapped: hour_data[] = rawHours.map((h: hour_data) => {
                                 return {
                                     end: typeof h.end === "number" ? h.end : Number(h.end) || 0,
-                                    symbol: typeof h.symbol === "number" ? h.symbol : Number(h.symbol) || 0,
-                                    night: typeof h.night === "boolean" ? h.night : (h.night === "true" || h.night === true) || false,
-                                    temperature: typeof h.temperature === "number" ? h.temperature : Number(h.temperature) || 0,
-                                    temperature_feels_like: typeof h.temperature_feels_like === "number" ? h.temperature_feels_like : Number(h.temperature_feels_like) || 0,
-                                    wind_speed: typeof h.wind_speed === "number" ? h.wind_speed : Number(h.wind_speed) || 0,
-                                    wind_gust: typeof h.wind_gust === "number" ? h.wind_gust : Number(h.wind_gust) || 0,
-                                    wind_direction: h.wind_direction ? String(h.wind_direction) : "",
-                                    rain: typeof h.rain === "number" ? h.rain : Number(h.rain) || 0,
-                                    rain_probability: typeof h.rain_probability === "number" ? h.rain_probability : Number(h.rain_probability) || 0,
+
+                                    symbol: typeof h.symbol === "object" && h.symbol ? {
+
+                                        value: typeof h.symbol.value === "number" ? h.symbol.value : Number(h.symbol.value) || 0,
+                                        night: typeof h.symbol.night === "boolean" ? h.symbol.night : (h.symbol.night === "true" || h.symbol.night === true) || false,
+                                    } : {
+                                            value: 0,
+                                        night:false
+                                    },
+
+                                    temperature: typeof h.temperature === "object" && h.temperature ? {
+                                        value: typeof h.temperature.value === "number" ? h.temperature.value : Number(h.temperature.value) || 0,
+                                        feels_like: typeof h.temperature.feels_like === "number" ? h.temperature.feels_like : Number(h.temperature.feels_like) || 0,
+                                    } : {
+                                            value: 0,
+                                        feels_like: 0
+                                    },
+                                    wind: typeof h.wind === "object" && h.wind ? {
+                                        speed: typeof h.wind.speed === "number" ? h.wind.speed : Number(h.wind.speed) || 0,
+                                        gust: typeof h.wind.gust === "number" ? h.wind.gust : Number(h.wind.gust) || 0,
+                                        direction: h.wind.direction ? String(h.wind.direction) : "",
+                                    } : {
+                                            speed: 0,
+                                            gust: 0,
+                                        direction:"?"
+                                    },
+                                    precipitation: typeof h.precipitation === "object" && h.precipitation ? {
+                                        total: typeof h.precipitation.total === "number" ? h.precipitation.total : Number(h.precipitation.total) || 0,
+                                        probability: typeof h.precipitation.probability === "number" ? h.precipitation.probability : Number(h.precipitation.probability) || 0
+                                    } : {
+                                        total: 0,
+                                        probability: 0
+                                    }   ,
                                     humidity: typeof h.humidity === "number" ? h.humidity : Number(h.humidity) || 0,
                                     pressure: typeof h.pressure === "number" ? h.pressure : Number(h.pressure) || 0,
-                                    snowline: typeof h.snowline === "number" ? h.snowline : Number(h.snowline) || 0,
+
+                                    snow: typeof h.snow === "object" && h.snow ? {
+                                        snowline: typeof h.snow.snowline === "number" ? h.snow.snowline : Number(h.snow.snowline) || 0,
+                                    } : {
+                                        snowline: 0
+                                    },
                                     uv_index_max: typeof h.uv_index_max === "number" ? h.uv_index_max : Number(h.uv_index_max) || 0,
                                     clouds: typeof h.clouds === "number" ? h.clouds : Number(h.clouds) || 0
                                 };
@@ -776,6 +876,7 @@ export default class Meteored extends Base {
             const sunDuration = this.CalculateSunshineDuration();
             const key = "location_" + this.id + ".ForecastDaily.Day_1.sunshineduration";
             await this.adapter.setState(key, sunDuration, true);
+            
         } catch (e) {
             this.logError("CalculateData error: " + String(e));
         }
@@ -800,8 +901,8 @@ export default class Meteored extends Base {
                 return 0;
             }
 
-            let sunIn = typeof today.sun_in === "number" ? today.sun_in : Number(today.sun_in) || 0;
-            let sunOut = typeof today.sun_out === "number" ? today.sun_out : Number(today.sun_out) || 0;
+            let sunIn = typeof today.sun.in === "number" ? today.sun.in : Number(today.sun.in) || 0;
+            let sunOut = typeof today.sun.out === "number" ? today.sun.out : Number(today.sun.out) || 0;
 
             if (!sunIn || !sunOut || sunOut <= sunIn) {
                 this.logDebug("CalculateSunshineDuration: invalid sun_in/sun_out values: sun_in=" + sunIn + " sun_out=" + sunOut);
@@ -1022,7 +1123,7 @@ export default class Meteored extends Base {
         let key = "location_" + this.id;
 
         await this.adapter.setState(key + ".URL", this.url, true);
-        await this.adapter.setState(key + ".LastDownloadTime", new Date().toLocaleString(), true);
+        await this.adapter.setState(key + ".LastDownloadTime", new Date().getTime(), true);
 
 
         for (let d = 1; d < 6; d++) {
@@ -1043,16 +1144,16 @@ export default class Meteored extends Base {
             await this.adapter.setState(key + ".symbol", day ? day.symbol : 0, true);
             await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(day ? day.symbol : 0), true);
             await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(day ? day.symbol : 0, false), true);
-            await this.adapter.setState(key + ".Temperature_Min", day ? this.formatTemperature(day.temperature_min) : 0, true);
-            await this.adapter.setState(key + ".Temperature_Max", day ? this.formatTemperature(day.temperature_max) : 0, true);
-            await this.adapter.setState(key + ".Wind_Speed", day ? day.wind_speed : 0, true);
-            await this.adapter.setState(key + ".Wind_Speed_Beauforts", this.getWindBeaufort(day ? day.wind_speed : 0), true);
-            await this.adapter.setState(key + ".Wind_Gust", day ? day.wind_gust : 0, true);
-            await this.adapter.setState(key + ".Wind_Direction", day ? day.wind_direction : "", true);
-            await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(day ? day.wind_speed : 0, day ? day.wind_direction : ""), true);
+            await this.adapter.setState(key + ".Temperature_Min", day ? this.formatTemperature(day.temperature.min) : 0, true);
+            await this.adapter.setState(key + ".Temperature_Max", day ? this.formatTemperature(day.temperature.max) : 0, true);
+            await this.adapter.setState(key + ".Wind_Speed", day ? day.wind.speed : 0, true);
+            await this.adapter.setState(key + ".Wind_Speed_Beauforts", this.getWindBeaufort(day ? day.wind.speed : 0), true);
+            await this.adapter.setState(key + ".Wind_Gust", day ? day.wind.gust : 0, true);
+            await this.adapter.setState(key + ".Wind_Direction", day ? day.wind.direction : "", true);
+            await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(day ? day.wind.speed : 0, day ? day.wind.direction : ""), true);
 
-            await this.adapter.setState(key + ".Rain", day ? day.rain : 0, true);
-            await this.adapter.setState(key + ".Rain_Probability", day ? day.rain_probability : 0, true);
+            await this.adapter.setState(key + ".Rain", day ? day.precipitation.total : 0, true);
+            await this.adapter.setState(key + ".Rain_Probability", day ? day.precipitation.probability : 0, true);
             await this.adapter.setState(key + ".Humidity", day ? day.humidity : 0, true);
             await this.adapter.setState(key + ".Pressure", day ? day.pressure : 0, true);
             await this.adapter.setState(key + ".Snowline", day ? day.snowline : 0, true);
@@ -1060,39 +1161,39 @@ export default class Meteored extends Base {
 
 
             // Sun in
-            const sunInRaw = day && day.sun_in ? day.sun_in : 0;
+            const sunInRaw = day && day.sun.in ? day.sun.in : 0;
             const sunInParts = sunInRaw ? this.FormatTimestampToLocal(sunInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_in", sunInParts.formattedTimevalTime, true);
             await this.adapter.setState(key + ".Sun_in_full", sunInRaw, true);
 
             // Sun mid
-            const sunMidRaw = day && day.sun_mid ? day.sun_mid : 0;
+            const sunMidRaw = day && day.sun.mid ? day.sun.mid : 0;
             const sunMidParts = sunMidRaw ? this.FormatTimestampToLocal(sunMidRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_mid", sunMidParts.formattedTimevalTime, true);
             await this.adapter.setState(key + ".Sun_mid_full", sunMidRaw, true);
 
             // Sun out
-            const sunOutRaw = day && day.sun_out ? day.sun_out : 0;
+            const sunOutRaw = day && day.sun.out ? day.sun.out : 0;
             const sunOutParts = sunOutRaw ? this.FormatTimestampToLocal(sunOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Sun_out", sunOutParts.formattedTimevalTime, true);
             await this.adapter.setState(key + ".Sun_out_full", sunOutRaw, true);
 
             // Moon in
-            const moonInRaw = day && day.moon_in ? day.moon_in : 0;
+            const moonInRaw = day && day.moon.in ? day.moon.in : 0;
             const moonInParts = moonInRaw ? this.FormatTimestampToLocal(moonInRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString: "" };
             await this.adapter.setState(key + ".Moon_in", moonInParts.formattedTimevalTime, true);
             await this.adapter.setState(key + ".Moon_in_full", moonInRaw, true);
 
             // Moon out
-            const moonOutRaw = day && day.moon_out ? day.moon_out : 0;
+            const moonOutRaw = day && day.moon.out ? day.moon.out : 0;
             const moonOutParts = moonOutRaw ? this.FormatTimestampToLocal(moonOutRaw) : { formattedTimeval: "", formattedTimevalDate: "", formattedTimevalWeekday: "", formattedTimevalTime: "", isoString:"" };
             await this.adapter.setState(key + ".Moon_out", moonOutParts.formattedTimevalTime, true);
             await this.adapter.setState(key + ".Moon_out_full", moonOutRaw, true);
 
-            await this.adapter.setState(key + ".Moon_symbol", day ? day.moon_symbol : 0, true);
-            await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(day ? day.moon_symbol : 0), true);
+            await this.adapter.setState(key + ".Moon_symbol", day ? day.moon.symbol : 0, true);
+            await this.adapter.setState(key + ".Moon_symbol_URL", this.getMoonIconUrl(day ? day.moon.symbol : 0), true);
 
-            await this.adapter.setState(key + ".Moon_illumination", day ? day.moon_illumination : 0, true);
+            await this.adapter.setState(key + ".Moon_illumination", day ? day.moon.illumination : 0, true);
         }
     }
 
@@ -1131,22 +1232,22 @@ export default class Meteored extends Base {
                 await this.adapter.setState(key + ".end", timeval, true);
                 await this.adapter.setState(key + ".time", endParts.formattedTimevalTime, true);
 
-                await this.adapter.setState(key + ".symbol", hour ? hour.symbol : 0, true);
-                await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol : 0), true);
-                await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol : 0, hour.night), true);
-                await this.adapter.setState(key + ".night", hour ? hour.night : false, true);
-                await this.adapter.setState(key + ".temperature", hour ? this.formatTemperature(hour.temperature) : 0, true);
-                await this.adapter.setState(key + ".temperature_feels_like", hour ? this.formatTemperature(hour.temperature_feels_like) : 0, true);
-                await this.adapter.setState(key + ".wind_speed", hour ? hour.wind_speed : 0, true);
-                await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind_speed : 0), true);
-                await this.adapter.setState(key + ".wind_gust", hour ? hour.wind_gust : 0, true);
-                await this.adapter.setState(key + ".wind_direction", hour ? hour.wind_direction : "", true);
-                await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind_speed : 0, hour ? hour.wind_direction : ""), true);
-                await this.adapter.setState(key + ".rain", hour ? hour.rain : 0, true);
-                await this.adapter.setState(key + ".rain_probability", hour ? hour.rain_probability : 0, true);
+                await this.adapter.setState(key + ".symbol", hour ? hour.symbol.value : 0, true);
+                await this.adapter.setState(key + ".symbol_URL", this.getIconUrl(hour ? hour.symbol.value : 0), true);
+                await this.adapter.setState(key + ".symbol_description", this.getSymbolLongDescription(hour ? hour.symbol.value : 0, hour.symbol.night), true);
+                await this.adapter.setState(key + ".night", hour ? hour.symbol.night : false, true);
+                await this.adapter.setState(key + ".temperature", hour ? this.formatTemperature(hour.temperature.value) : 0, true);
+                await this.adapter.setState(key + ".temperature_feels_like", hour ? this.formatTemperature(hour.temperature.feels_like) : 0, true);
+                await this.adapter.setState(key + ".wind_speed", hour ? hour.wind.speed : 0, true);
+                await this.adapter.setState(key + ".wind_speed_Beauforts", this.getWindBeaufort(hour ? hour.wind.speed : 0), true);
+                await this.adapter.setState(key + ".wind_gust", hour ? hour.wind.gust : 0, true);
+                await this.adapter.setState(key + ".wind_direction", hour ? hour.wind.direction : "", true);
+                await this.adapter.setState(key + ".Wind_symbol_URL", this.getWindIconUrl(hour ? hour.wind.speed : 0, hour ? hour.wind.direction : ""), true);
+                await this.adapter.setState(key + ".rain", hour ? hour.precipitation.total : 0, true);
+                await this.adapter.setState(key + ".rain_probability", hour ? hour.precipitation.probability : 0, true);
                 await this.adapter.setState(key + ".humidity", hour ? hour.humidity : 0, true);
                 await this.adapter.setState(key + ".pressure", hour ? hour.pressure : 0, true);
-                await this.adapter.setState(key + ".snowline", hour ? hour.snowline : 0, true);
+                await this.adapter.setState(key + ".snowline", hour ? hour.snow.snowline : 0, true);
                 await this.adapter.setState(key + ".uv_index_max", hour ? hour.uv_index_max : 0, true);
                 await this.adapter.setState(key + ".clouds", hour ? hour.clouds : 0, true);
             }
