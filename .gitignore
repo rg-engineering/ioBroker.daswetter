@@ -33,15 +33,9 @@ test*.js
 
 .commitinfo
 /.vscode/extensions.json
-/iobroker.daswetter-3.2.6.tgz
-/iobroker.daswetter-3.9.9.tgz
+
 
 /docs/old_docu/
-/iobroker.daswetter-4.0.0.tgz
-/iobroker.daswetter-4.1.0.tgz
-/iobroker.daswetter-4.2.0.tgz
-/iobroker.daswetter-4.3.0.tgz
-/iobroker.daswetter-4.4.1.tgz
-/iobroker.daswetter-4.5.0.tgz
 /iobroker.daswetter*.tgz
-/.github/copilot-instructions.md
+
+
