@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "daswetter",
-    "version": "4.6.0",
+    "version": "4.6.1",
     "news": {
+      "4.6.1": {
+        "en": "bug fix see issue #631: wrong type of data point LastDownloadTime",
+        "de": "Bugfix siehe Problem #631: Falscher Datenpunkt LastDownloadTime",
+        "ru": "исправление ошибки см. в проблеме #631: неправильный тип точки данных LastDownloadTime",
+        "pt": "veja o problema #631: tipo errado de data LastDownloadTime",
+        "nl": "probleemoplossing, zie probleem #631: verkeerd type datapunt LastDownloadTime",
+        "fr": "bug fix #631 : mauvais type de point de données LastDownloadTime",
+        "it": "bug fix vedi problema #631: dato errato LastDownloadTime",
+        "es": "corrección de error ver número #631: punto de datos incorrecto LastDownloadTime",
+        "pl": "poprawka błędu patrz problem #631: zły typ punktu danych LastDownloadTime",
+        "uk": "виправлення помилки див. Проблему #631: неправильний тип точки даних LastDownloadTime",
+        "zh-cn": "错误修复参见问题 #631: 错误的数据点类型 LastDownloadTime"
+      },
       "4.6.0": {
         "en": "see issue #619: support of new API v2 for DasWetter.com\nbetter support of type detector\n**ATTENTION:** API key is stored encrypted now. You might need to re-enter the key in the adapter settings after update\nadditional debug logs for symbol description",
         "de": "siehe Ausgabe #619: Neue API v2 für DasWetter.com\nBessere Unterstützung von Type Detector\n**ACHTUNG: ** API-Key ist jetzt verschlüsselt. Eventuell müssen Sie den Adapterschlüssel nach dem Update erneut eingeben\nweitere Debug-Logs zur Symbolbeschreibung",
@@ -80,19 +93,6 @@
         "pl": "rozwiązane błędy lintu i ostrzeżenia oparte na sprawdzaczu adaptera\naktualizacje zależności i poprawki oparte na zaleceniach kontrolera adaptera",
         "uk": "вирішені помилки і попередження на основі перевірки адаптера\nоновлення залежностей та виправлення на основі рекомендацій перевірки адаптера",
         "zh-cn": "根据适配器检查器解决了提示错误和警告\n根据适配器检查器建议进行依赖性更新和修正"
-      },
-      "4.5.1": {
-        "en": "bug fix: wind url was not set if wind speed was zero\nbug fix: save selected icon type (svg, png or gif) in admin",
-        "de": "bugfix: windurl wurde nicht eingestellt, wenn die windgeschwindigkeit null war\nfehlerbehebung: speichern ausgewählter icon-typ (svg, png oder gif) in admin",
-        "ru": "исправление ошибки: ветровой url не был установлен, если скорость ветра была нулевой\nисправление ошибок: сохранение выбранного типа значков (svg, png или gif) в админ",
-        "pt": "correção de bug: url do vento não foi definido se a velocidade do vento foi zero\ncorreção de erros: salvar o tipo de ícone selecionado (svg, png ou gif) no administrador",
-        "nl": "bug fix: wind url is niet ingesteld als de windsnelheid nul was\nbugfix: sla het geselecteerde pictogramtype (svg, png of gif) op in admin",
-        "fr": "correction du bug: l'url du vent n'était pas réglé si la vitesse du vent était nulle\ncorrection du bug : enregistrer le type d'icône sélectionné (svg, png ou gif) dans admin",
-        "it": "correzione bug: url vento non è stato impostato se la velocità del vento era zero\ncorrezione bug: salvare il tipo di icona selezionato (svg, png o gif) in admin",
-        "es": "corrección de fallos: url del viento no estaba establecido si la velocidad del viento era cero\ncorrección de errores: guardar el tipo de icono seleccionado (svg, png o gif) en administración",
-        "pl": "bug fix: wind url nie został ustawiony, jeśli prędkość wiatru była zerowa\nfix: zapisz wybrany typ ikon (svg, png lub gif) w admin",
-        "uk": "виправлено помилку: вітер виворіт не був встановлений, якщо швидкість вітру була нульовою\nвиправлено помилку: зберегти вибраний тип ікони (png або gif) в адмін",
-        "zh-cn": "错误修正: 如果风速为零, 则未设定风 url\n错误修正: 在管理员中保存选中的图标类型( svg, png 或 gif)"
       }
     },
     "titleLang": {
