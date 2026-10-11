@@ -1,11 +1,11 @@
 {
     "name": "daswetter-admin",
-    "version": "4.5.10",
+    "version": "4.6.0",
     "private": true,
     "dependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
-        "@iobroker/gui-components": "^10.2.8",
+        "@iobroker/gui-components": "^10.3.8",
         "@iobroker/dm-gui-components": "^10.0.23",
         "@iobroker/type-detector": "^6.0.1",
         "@mdi/js": "^7.4.47",

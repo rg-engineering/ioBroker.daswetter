@@ -731,7 +731,7 @@ class Meteored extends base_1.default {
         await this.CreateDatapoint(key, "channel", "", "", "", false, false, "location");
         await this.CreateDatapoint(key + ".Location", "state", "location", "string", "", true, false, "Location name");
         await this.CreateDatapoint(key + ".URL", "state", "weather.chart.url.forecast", "string", "", true, false, "Location default site URL");
-        await this.CreateDatapoint(key + ".LastDownloadTime", "state", "date", "string", "", true, false, "time of last data update from server");
+        await this.CreateDatapoint(key + ".LastDownloadTime", "state", "date", "number", "", true, false, "time of last data update from server (in UNIX timestamp)");
         if (this.useDailyForecast) {
             key = "location_" + this.id + ".ForecastDaily";
             await this.CreateDatapoint(key, "channel", "", "", "", false, false, "ForecastDaily");

@@ -79,6 +79,10 @@ A [widget for Vis-2](https://github.com/rg-engineering/ioBroker.vis-2-widgets-we
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) bug fix see issue #631: wrong type of data point LastDownloadTime
+
 ### 4.6.0 (2026-10-04)
 * (René) see issue #619: support of new API v2 for DasWetter.com
 * (Garfonso) better support of type detector
